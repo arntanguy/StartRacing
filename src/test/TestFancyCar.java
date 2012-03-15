@@ -32,6 +32,8 @@
 package test;
 
 
+import hud.Hud;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
@@ -41,15 +43,18 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -61,6 +66,8 @@ import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
+
+import de.lessvoid.nifty.Nifty;
 
 
 public class TestFancyCar extends SimpleApplication implements ActionListener {
@@ -81,37 +88,18 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private TerrainQuad terrain;
 	private Material mat_terrain;
 	private RigidBodyControl terrainPhys;
+	
+	private Hud hud;
+	
+	private float startTime = 0f;
+
+	private BitmapText hudText;
 
 
 	public static void main(String[] args) {
 		TestFancyCar app = new TestFancyCar();
 		app.start();
 	}
-
-	/** Initialize the materials used in this scene. */
-	/*
-	  public void initMaterials() {
-
-	    floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-	    TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
-	    key3.setGenerateMips(false);
-	    Texture tex3 = assetManager.loadTexture(key3);
-	    tex3.setWrap(WrapMode.Repeat);
-	    floor_mat.setTexture("ColorMap", tex3);
-	  }
-
-	  /** Make a solid floor and add it to the scene. 
-	  public void initFloor() {
-	    Geometry floor_geo = new Geometry("Floor", floor);
-	    floor_geo.setMaterial(floor_mat);
-	    floor_geo.setLocalTranslation(0, -0.1f, 0);
-	    this.rootNode.attachChild(floor_geo);
-	    // Make the floor physical with mass 0.0f!
-	    floor_phy = new RigidBodyControl(0.0f);
-	    floor_geo.addControl(floor_phy);
-	    bulletAppState.getPhysicsSpace().add(floor_phy);
-	  }
-	 */
 
 	public void initGround()	{
 		/** 1. Create terrain material and load four textures into it. */
@@ -197,9 +185,11 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 
 	@Override
 	public void simpleInitApp() {
+		this.setDisplayStatView(false);
+		
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		//        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+		
 		if (settings.getRenderer().startsWith("LWJGL")) {
 			BasicShadowRenderer bsr = new BasicShadowRenderer(assetManager, 512);
 			bsr.setDirection(new Vector3f(-0.5f, -0.3f, -0.3f).normalizeLocal());
@@ -209,11 +199,27 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		// Disable the default first-person cam!
 		flyCam.setEnabled(false);
 
+		// init GUI
+		//hud = new Hud();
+	    //stateManager.attach(hud);
+		//NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
+	    //Nifty nifty = niftyDisplay.getNifty();
+	    //guiViewPort.addProcessor(niftyDisplay);
+	    //nifty.fromXml("Interface/gui.xml", "hud", hud);
+		
 		setupKeys();
 		//		initMaterials();
 		//		initFloor();
 		initGround();
 		buildPlayer();
+		
+		// Initi Hud
+		hudText = new BitmapText(guiFont, false);          
+		hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
+		hudText.setColor(ColorRGBA.White);                             // font color
+		hudText.setText("0 km/h");             // the text
+		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+		guiNode.attachChild(hudText);
 
 
 		// Enable a chase cam
@@ -396,5 +402,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	@Override
 	public void simpleUpdate(float tpf) {
 		//	cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
+		
+		hudText.setText(player.getCurrentVehicleSpeedKmHour() +  "km/h");
 	}
 }

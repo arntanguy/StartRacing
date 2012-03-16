@@ -112,6 +112,72 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		app.start();
 	}
 
+	@Override
+	public void simpleInitApp() {
+		this.setDisplayStatView(false);
+		
+		bulletAppState = new BulletAppState();
+		stateManager.attach(bulletAppState);
+		
+		if (settings.getRenderer().startsWith("LWJGL")) {
+			BasicShadowRenderer bsr = new BasicShadowRenderer(assetManager, 512);
+			bsr.setDirection(new Vector3f(-0.5f, -0.3f, -0.3f).normalizeLocal());
+			viewPort.addProcessor(bsr);
+		}
+	
+		// Disable the default first-person cam!
+		flyCam.setEnabled(false);
+	
+		// init GUI
+		//hud = new Hud();
+	    //stateManager.attach(hud);
+		//NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
+	    //Nifty nifty = niftyDisplay.getNifty();
+	    //guiViewPort.addProcessor(niftyDisplay);
+	    //nifty.fromXml("Interface/gui.xml", "hud", hud);
+		
+		setupKeys();
+		initGround();
+		buildPlayer();
+		
+		// Initi Hud
+		hudText = new BitmapText(guiFont, false);          
+		hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
+		hudText.setColor(ColorRGBA.White);                             // font color
+		hudText.setText("0 km/h");             // the text
+		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+		guiNode.attachChild(hudText);
+		
+		// Active skybox
+		Spatial sky = SkyFactory.createSky(assetManager, "Textures/Skysphere.jpg", true);
+		rootNode.attachChild(sky);
+	
+	
+		// Enable a chase cam
+		chaseCam = new ChaseCamera(cam, chasis, inputManager);
+		chaseCam.setSmoothMotion(true);
+	
+		// Set up light
+		DirectionalLight dl = new DirectionalLight();
+		dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
+		rootNode.addLight(dl);
+		
+		AmbientLight al = new AmbientLight();
+		al.setColor(ColorRGBA.White.mult(1.3f));
+		rootNode.addLight(al);
+		
+		// Set up shadow
+		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
+		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal()); // light direction
+		viewPort.addProcessor(pssmRenderer);
+		
+		rootNode.setShadowMode(ShadowMode.Off);       		// reset all
+		carNode.setShadowMode(ShadowMode.CastAndReceive); 	// normal behaviour (slow)
+		terrain.setShadowMode(ShadowMode.Receive);
+		
+		
+	}
+
 	public void initGround()	{
 		/** 1. Create terrain material and load four textures into it. */
 		mat_terrain = new Material(assetManager, 
@@ -194,84 +260,9 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	}
 
 
-	@Override
-	public void simpleInitApp() {
-		this.setDisplayStatView(false);
-		
-		bulletAppState = new BulletAppState();
-		stateManager.attach(bulletAppState);
-		
-		if (settings.getRenderer().startsWith("LWJGL")) {
-			BasicShadowRenderer bsr = new BasicShadowRenderer(assetManager, 512);
-			bsr.setDirection(new Vector3f(-0.5f, -0.3f, -0.3f).normalizeLocal());
-			viewPort.addProcessor(bsr);
-		}
-
-		// Disable the default first-person cam!
-		flyCam.setEnabled(false);
-
-		// init GUI
-		//hud = new Hud();
-	    //stateManager.attach(hud);
-		//NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
-	    //Nifty nifty = niftyDisplay.getNifty();
-	    //guiViewPort.addProcessor(niftyDisplay);
-	    //nifty.fromXml("Interface/gui.xml", "hud", hud);
-		
-		setupKeys();
-		initGround();
-		buildPlayer();
-		
-		// Initi Hud
-		hudText = new BitmapText(guiFont, false);          
-		hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
-		hudText.setColor(ColorRGBA.White);                             // font color
-		hudText.setText("0 km/h");             // the text
-		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
-		guiNode.attachChild(hudText);
-		
-		// Active skybox
-		//Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false)
-		//rootNode.attachChild(sky);
-
-
-		// Enable a chase cam
-		chaseCam = new ChaseCamera(cam, chasis, inputManager);
-		chaseCam.setSmoothMotion(true);
-
-		// Set up light
-		DirectionalLight dl = new DirectionalLight();
-		dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
-		rootNode.addLight(dl);
-		
-		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(1.3f));
-		rootNode.addLight(al);
-		
-		// Active shadow rendering
-		//shadowRenderer = new BasicShadowRenderer(assetManager, 256);
-		//shadowRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal()); // light direction
-		//viewPort.addProcessor(shadowRenderer);
-		
-		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
-		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal()); // light direction
-		viewPort.addProcessor(pssmRenderer);
-		
-		rootNode.setShadowMode(ShadowMode.Off);       		// reset all
-		carNode.setShadowMode(ShadowMode.CastAndReceive); 	// normal behaviour (slow)
-		terrain.setShadowMode(ShadowMode.Receive);
-		
-		
-	}
-
-
 	private PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
-
-
-
-
 
 	private Geometry findGeom(Spatial spatial, String name) {
 		if (spatial instanceof Node) {

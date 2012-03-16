@@ -48,6 +48,7 @@ import com.jme3.input.ChaseCamera;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -55,17 +56,23 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.DepthOfFieldFilter;
+import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.debug.WireFrustum;
 import com.jme3.shadow.BasicShadowRenderer;
+import com.jme3.shadow.PssmShadowRenderer;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
+import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
 
@@ -90,10 +97,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private RigidBodyControl terrainPhys;
 	
 	private Hud hud;
+	private BitmapText hudText;
+	
+	private BasicShadowRenderer shadowRenderer;
+	private PssmShadowRenderer pssmRenderer;
+	private DepthOfFieldFilter dofFilter;
 	
 	private float startTime = 0f;
 
-	private BitmapText hudText;
 
 
 	public static void main(String[] args) {
@@ -208,8 +219,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	    //nifty.fromXml("Interface/gui.xml", "hud", hud);
 		
 		setupKeys();
-		//		initMaterials();
-		//		initFloor();
 		initGround();
 		buildPlayer();
 		
@@ -220,20 +229,39 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		hudText.setText("0 km/h");             // the text
 		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
 		guiNode.attachChild(hudText);
+		
+		// Active skybox
+		//Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false)
+		//rootNode.attachChild(sky);
 
 
 		// Enable a chase cam
 		chaseCam = new ChaseCamera(cam, chasis, inputManager);
 		chaseCam.setSmoothMotion(true);
 
+		// Set up light
 		DirectionalLight dl = new DirectionalLight();
 		dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
 		rootNode.addLight(dl);
-
-
-		dl = new DirectionalLight();
-		dl.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal());
-		rootNode.addLight(dl);
+		
+		AmbientLight al = new AmbientLight();
+		al.setColor(ColorRGBA.White.mult(1.3f));
+		rootNode.addLight(al);
+		
+		// Active shadow rendering
+		//shadowRenderer = new BasicShadowRenderer(assetManager, 256);
+		//shadowRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal()); // light direction
+		//viewPort.addProcessor(shadowRenderer);
+		
+		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
+		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal()); // light direction
+		viewPort.addProcessor(pssmRenderer);
+		
+		rootNode.setShadowMode(ShadowMode.Off);       		// reset all
+		carNode.setShadowMode(ShadowMode.CastAndReceive); 	// normal behaviour (slow)
+		terrain.setShadowMode(ShadowMode.Receive);
+		
+		
 	}
 
 

@@ -32,6 +32,8 @@
 package test;
 
 
+import java.util.concurrent.TimeUnit;
+
 import hud.Hud;
 
 import com.jme3.app.SimpleApplication;
@@ -104,9 +106,11 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private PssmShadowRenderer pssmRenderer;
 	private DepthOfFieldFilter dofFilter;
 	
-	private float startTime = 0f;
+	private long startTime = 0;
 
 	private AudioNode audio_motor;
+
+	private boolean soudIsActive = true;
 
 
 
@@ -260,12 +264,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_S));
 		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
+		inputManager.addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
 		inputManager.addListener(this, "Ups");
 		inputManager.addListener(this, "Downs");
 		inputManager.addListener(this, "Space");
 		inputManager.addListener(this, "Reset");
+		inputManager.addListener(this, "Mute");
 	}
 
 
@@ -371,6 +377,11 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 
 
 	public void onAction(String binding, boolean value, float tpf) {
+		// Initialisation du timer
+		if (startTime == 0)	{	
+			startTime =  System.currentTimeMillis();
+		}
+		
 		if (binding.equals("Lefts")) {
 			if (value) {
 				steeringValue += .5f;
@@ -424,6 +435,18 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			} else {
 			}
 		}
+		else if (binding.equals("Mute"))	{
+			if (soudIsActive)	{
+				audio_motor.stop();
+				audio_motor.setLooping(false);
+				soudIsActive = false;
+			}
+			else	{
+				audio_motor.setLooping(true);
+				audio_motor.play();
+				soudIsActive = true;
+			}
+		}
 	}
 
 
@@ -432,19 +455,30 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		//	cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		
 		float vitesse = Math.abs(player.getCurrentVehicleSpeedKmHour());
-		hudText.setText(vitesse +  "km/h");
+		
+		long timeMili = (System.currentTimeMillis() - startTime );
+		String timer = String.format("%d min, %d sec %d ", 
+			    TimeUnit.MILLISECONDS.toMinutes(timeMili),
+			    TimeUnit.MILLISECONDS.toSeconds(timeMili) - 
+			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeMili)),
+			    (timeMili%1000)/10
+			);
+		
+		hudText.setText(vitesse +  "km/h \t" + timer);
 		
 		// Update audio
-		float pitch; 
-		//pitch = ((vitesse%50) / 50 )* 1.5f + 0.5f;
-		pitch = (vitesse/ 350f)* 1.5f + 0.5f;
-		
-		if (pitch < 0.5f)	{
-			pitch = 0.5f;
+		if (soudIsActive)	{
+			float pitch; 
+			//pitch = ((vitesse%50) / 50 )* 1.5f + 0.5f;
+			pitch = (vitesse/ 350f)* 1.5f + 0.5f;
+
+			if (pitch < 0.5f)	{
+				pitch = 0.5f;
+			}
+			if (pitch > 2.f)	{
+				pitch = 2.f;
+			}
+			audio_motor.setPitch(pitch);
 		}
-		if (pitch > 2.f)	{
-			pitch = 2.f;
-		}
-		audio_motor.setPitch(pitch);
 	}
 }

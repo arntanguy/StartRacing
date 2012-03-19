@@ -35,6 +35,7 @@ package test;
 import hud.Hud;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -104,6 +105,8 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private DepthOfFieldFilter dofFilter;
 	
 	private float startTime = 0f;
+
+	private AudioNode audio_motor;
 
 
 
@@ -175,6 +178,12 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		carNode.setShadowMode(ShadowMode.CastAndReceive); 	// normal behaviour (slow)
 		terrain.setShadowMode(ShadowMode.Receive);
 		
+		// Init audio
+		audio_motor = new AudioNode(assetManager, "Sound/engine.wav", false);
+		audio_motor.setLooping(true);
+		rootNode.attachChild(audio_motor);
+		audio_motor.setPitch(0.5f);
+		audio_motor.play();
 		
 	}
 
@@ -422,6 +431,20 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	public void simpleUpdate(float tpf) {
 		//	cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		
-		hudText.setText(player.getCurrentVehicleSpeedKmHour() +  "km/h");
+		float vitesse = Math.abs(player.getCurrentVehicleSpeedKmHour());
+		hudText.setText(vitesse +  "km/h");
+		
+		// Update audio
+		float pitch; 
+		//pitch = ((vitesse%50) / 50 )* 1.5f + 0.5f;
+		pitch = (vitesse/ 350f)* 1.5f + 0.5f;
+		
+		if (pitch < 0.5f)	{
+			pitch = 0.5f;
+		}
+		if (pitch > 2.f)	{
+			pitch = 2.f;
+		}
+		audio_motor.setPitch(pitch);
 	}
 }

@@ -33,6 +33,7 @@ package test;
 
 import physics.CarProperties;
 import physics.EnginePhysics;
+import physics.SkylineProperties;
 import physics.tools.Conversion;
 import hud.Hud;
 
@@ -255,7 +256,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	}
 
 	private void initCar() {
-		carProperties = new CarProperties();
+		carProperties = new SkylineProperties();
 		enginePhysics = new EnginePhysics(carProperties);
 	}
 
@@ -266,12 +267,16 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_S));
 		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
+		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_A));
+		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_E));
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
 		inputManager.addListener(this, "Ups");
 		inputManager.addListener(this, "Downs");
 		inputManager.addListener(this, "Space");
 		inputManager.addListener(this, "Reset");
+		inputManager.addListener(this, "GearUp");
+		inputManager.addListener(this, "GearDown");
 	}
 
 	private PhysicsSpace getPhysicsSpace() {
@@ -421,6 +426,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				player.resetSuspension();
 			} else {
 			}
+		} else if(binding.equals("GearUp")) {
+			if(value) {
+				enginePhysics.incrementGear();
+			}
+		} else if(binding.equals("GearDown")) {
+			if(value) {
+				enginePhysics.decrementGear();
+			}
 		}
 	}
 
@@ -431,7 +444,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "
-				+ enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player
-						.getCurrentVehicleSpeedKmHour()))));
+				+ (int)enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player
+						.getCurrentVehicleSpeedKmHour())))+ "\tGear: "+enginePhysics.getGear());
 	}
 }

@@ -426,12 +426,12 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				player.resetSuspension();
 			} else {
 			}
-		} else if(binding.equals("GearUp")) {
-			if(value) {
+		} else if (binding.equals("GearUp")) {
+			if (value) {
 				enginePhysics.incrementGear();
 			}
-		} else if(binding.equals("GearDown")) {
-			if(value) {
+		} else if (binding.equals("GearDown")) {
+			if (value) {
 				enginePhysics.decrementGear();
 			}
 		}
@@ -441,12 +441,15 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	public void simpleUpdate(float tpf) {
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
-						.getCurrentVehicleSpeedKmHour()))));
-		player.accelerate(-(float)enginePhysics.getForce());
+				.getCurrentVehicleSpeedKmHour()))));
+		player.accelerate(-(float) enginePhysics.getForce()/10);
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "
-				+ (int)enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player
-						.getCurrentVehicleSpeedKmHour())))+ "\tGear: "+enginePhysics.getGear() +"\tw: "+enginePhysics.getEngineSpeed()+ "\tForce: "+enginePhysics.getForce());
+				+ (int) enginePhysics.getRpm(Conversion.kmToMiles(Math
+						.abs(player.getCurrentVehicleSpeedKmHour())))
+				+ "\tGear: " + enginePhysics.getGear() + "\tOptimal Shift: "
+				+ (int)carProperties.getOptimalShiftPoint(enginePhysics.getGear())
+				+ "\tForce: " + (int)enginePhysics.getForce());
 	}
 }

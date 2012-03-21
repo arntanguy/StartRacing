@@ -1,6 +1,5 @@
 package physics;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -14,10 +13,9 @@ public class CarProperties {
 
 	protected double idleRpm = 1000;
 	/**
-	 * Gear ratio in order 1, 2, ..., 6
+	 * Gear ratio and properties
 	 */
-	private ArrayList<Double> gearRatio;
-	protected double reverseGearRatio = 3.28;
+	protected Gears gears;
 
 	/**
 	 * Torque corresponding to given engine speed <Engine speed, Torque>
@@ -32,9 +30,6 @@ public class CarProperties {
 		this.tireRadius = tireRadius;
 	}
 
-	public ArrayList<Double> getGearRatio() {
-		return gearRatio;
-	}
 
 	public double getIdleRpm() {
 		return idleRpm;
@@ -45,13 +40,19 @@ public class CarProperties {
 	}
 
 	public CarProperties() {
-		gearRatio = new ArrayList<Double>(6);
-		gearRatio.add(3.827);
-		gearRatio.add(2.36);
-		gearRatio.add(1.685);
-		gearRatio.add(1.312);
-		gearRatio.add(1.d);
-		gearRatio.add(0.793);
+		gears = new Gears();
+		gears.setRatio(1, 3.827);
+		gears.setRatio(2, 2.36);
+		gears.setRatio(3, 1.685);
+		gears.setRatio(4, 1.312);
+		gears.setRatio(5, 1.d);
+		gears.setRatio(6, 0.793);
+		gears.setOptimalShiftPoint(1, 8387.29);
+		gears.setOptimalShiftPoint(2, 7911.1);
+		gears.setOptimalShiftPoint(3, 7623.54);
+		gears.setOptimalShiftPoint(4, 7694.66);
+		gears.setOptimalShiftPoint(5, 7562.64);
+
 
 		torque = new Hashtable<Double, Double>();
 		torque.put(0.d, 0.d);
@@ -81,24 +82,16 @@ public class CarProperties {
 		this.finalGearRatio = tgr;
 	}
 
-	public void setReverseGearRatio(double ratio) {
-		this.reverseGearRatio = ratio;
-	}
-
-	public double getReverseGearRatio() {
-		return reverseGearRatio;
-	}
-
-	public void setGearRatio(ArrayList<Double> gearRatio) {
-		this.gearRatio = gearRatio;
+	public void setGearRatio(Gears gears) {
+		this.gears = gears;
 	}
 
 	public double getGearRatio(int gear) {
-		return gearRatio.get(gear - 1);
+		return gears.getRatio(gear);
 	}
 
 	public int getNbGears() {
-		return gearRatio.size();
+		return gears.getNbGears();
 	}
 
 	public double getTorque(double engineSpeed) {
@@ -124,5 +117,9 @@ public class CarProperties {
 			}
 		}
 		return 0;
+	}
+
+	public double getOptimalShiftPoint(int gear) {
+		return gears.getOptimalShiftPoints(gear);
 	}
 }

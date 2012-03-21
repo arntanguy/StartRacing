@@ -1,6 +1,7 @@
 package physics;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /**
  * air density = 1.29kgm-3
@@ -38,5 +39,14 @@ public class SkylineProperties extends CarProperties {
 		gearR.add(1.312);
 		gearR.add(1.d);
 		gearR.add(0.793);
+		finalGearRatio = 3.545;
+		tireRadius = 0.3266;
+		
+		torque = new Hashtable<Double, Double>();
+		torque.put(0.d, 0.d);
+		torque.put(75.d, 390.d);
+		torque.put(140.d, 200.d);
+		torque.put(1000.d, 50.d);
+		torque.put(10000.d, 0.d);
 	}
 }

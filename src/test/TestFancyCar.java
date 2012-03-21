@@ -440,11 +440,13 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	@Override
 	public void simpleUpdate(float tpf) {
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-
+		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
+						.getCurrentVehicleSpeedKmHour()))));
+		player.accelerate(-(float)enginePhysics.getForce());
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "
 				+ (int)enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player
-						.getCurrentVehicleSpeedKmHour())))+ "\tGear: "+enginePhysics.getGear());
+						.getCurrentVehicleSpeedKmHour())))+ "\tGear: "+enginePhysics.getGear() +"\tw: "+enginePhysics.getEngineSpeed()+ "\tForce: "+enginePhysics.getForce());
 	}
 }

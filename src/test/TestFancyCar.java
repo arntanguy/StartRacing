@@ -31,7 +31,9 @@
  */
 package test;
 
-
+import physics.CarProperties;
+import physics.EnginePhysics;
+import physics.tools.Conversion;
 import hud.Hud;
 
 import com.jme3.app.SimpleApplication;
@@ -76,7 +78,6 @@ import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
 
-
 public class TestFancyCar extends SimpleApplication implements ActionListener {
 
 	private BulletAppState bulletAppState;
@@ -95,17 +96,18 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private TerrainQuad terrain;
 	private Material mat_terrain;
 	private RigidBodyControl terrainPhys;
-	
+
 	private Hud hud;
 	private BitmapText hudText;
-	
+
 	private BasicShadowRenderer shadowRenderer;
 	private PssmShadowRenderer pssmRenderer;
 	private DepthOfFieldFilter dofFilter;
-	
+
 	private float startTime = 0f;
 
-
+	private CarProperties carProperties;
+	private EnginePhysics enginePhysics;
 
 	public static void main(String[] args) {
 		TestFancyCar app = new TestFancyCar();
@@ -115,119 +117,128 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	@Override
 	public void simpleInitApp() {
 		this.setDisplayStatView(false);
-		
+
 		bulletAppState = new BulletAppState();
 		stateManager.attach(bulletAppState);
-		
+
 		if (settings.getRenderer().startsWith("LWJGL")) {
 			BasicShadowRenderer bsr = new BasicShadowRenderer(assetManager, 512);
 			bsr.setDirection(new Vector3f(-0.5f, -0.3f, -0.3f).normalizeLocal());
 			viewPort.addProcessor(bsr);
 		}
-	
+
 		// Disable the default first-person cam!
 		flyCam.setEnabled(false);
-	
+
 		// init GUI
-		//hud = new Hud();
-	    //stateManager.attach(hud);
-		//NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
-	    //Nifty nifty = niftyDisplay.getNifty();
-	    //guiViewPort.addProcessor(niftyDisplay);
-	    //nifty.fromXml("Interface/gui.xml", "hud", hud);
-		
+		// hud = new Hud();
+		// stateManager.attach(hud);
+		// NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,
+		// inputManager, audioRenderer, guiViewPort);
+		// Nifty nifty = niftyDisplay.getNifty();
+		// guiViewPort.addProcessor(niftyDisplay);
+		// nifty.fromXml("Interface/gui.xml", "hud", hud);
+
 		setupKeys();
 		initGround();
 		buildPlayer();
-		
+		initCar();
+
 		// Initi Hud
-		hudText = new BitmapText(guiFont, false);          
-		hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
-		hudText.setColor(ColorRGBA.White);                             // font color
-		hudText.setText("0 km/h");             // the text
+		hudText = new BitmapText(guiFont, false);
+		hudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
+		hudText.setColor(ColorRGBA.White); // font color
+		hudText.setText("0 km/h"); // the text
 		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
 		guiNode.attachChild(hudText);
-		
+
 		// Active skybox
-		Spatial sky = SkyFactory.createSky(assetManager, "Textures/Skysphere.jpg", true);
+		Spatial sky = SkyFactory.createSky(assetManager,
+				"Textures/Skysphere.jpg", true);
 		rootNode.attachChild(sky);
-	
-	
+
 		// Enable a chase cam
 		chaseCam = new ChaseCamera(cam, chasis, inputManager);
 		chaseCam.setSmoothMotion(true);
-	
+
 		// Set up light
 		DirectionalLight dl = new DirectionalLight();
 		dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
 		rootNode.addLight(dl);
-		
+
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(1.3f));
 		rootNode.addLight(al);
-		
+
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
-		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal()); // light direction
+		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f)
+				.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
-		
-		rootNode.setShadowMode(ShadowMode.Off);       		// reset all
-		carNode.setShadowMode(ShadowMode.CastAndReceive); 	// normal behaviour (slow)
+
+		rootNode.setShadowMode(ShadowMode.Off); // reset all
+		carNode.setShadowMode(ShadowMode.CastAndReceive); // normal behaviour
+															// (slow)
 		terrain.setShadowMode(ShadowMode.Receive);
-		
-		
+
 	}
 
-	public void initGround()	{
+	public void initGround() {
 		/** 1. Create terrain material and load four textures into it. */
-		mat_terrain = new Material(assetManager, 
-		"Common/MatDefs/Terrain/Terrain.j3md");
+		mat_terrain = new Material(assetManager,
+				"Common/MatDefs/Terrain/Terrain.j3md");
 
 		/** 1.1) Add ALPHA map (for red-blue-green coded splat textures) */
-		mat_terrain.setTexture("Alpha", assetManager.loadTexture(
-		"Textures/alphamap.png"));
+		mat_terrain.setTexture("Alpha",
+				assetManager.loadTexture("Textures/alphamap.png"));
 
 		/** 1.2) Add GRASS texture into the red layer (Tex1). */
-		Texture grass = assetManager.loadTexture(
-		"Textures/Terrain/splat/grass.jpg");
+		Texture grass = assetManager
+				.loadTexture("Textures/Terrain/splat/grass.jpg");
 		grass.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex1", grass);
 		mat_terrain.setFloat("Tex1Scale", 64f);
 
 		/** 1.3) Add DIRT texture into the green layer (Tex2) */
-		Texture dirt = assetManager.loadTexture(
-		"Textures/Terrain/splat/dirt.jpg");
+		Texture dirt = assetManager
+				.loadTexture("Textures/Terrain/splat/dirt.jpg");
 		dirt.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex2", dirt);
 		mat_terrain.setFloat("Tex2Scale", 32f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
-		Texture rock = assetManager.loadTexture(
-		"Textures/Terrain/splat/road.jpg");
+		Texture rock = assetManager
+				.loadTexture("Textures/Terrain/splat/road.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
 
 		/** 2. Create the height map */
 		AbstractHeightMap heightmap = null;
-		Texture heightMapImage = assetManager.loadTexture("Textures/mountains512.png");
-		//Texture heightMapImage = assetManager.loadTexture("Textures/monaco.png");
-		
+		Texture heightMapImage = assetManager
+				.loadTexture("Textures/mountains512.png");
+		// Texture heightMapImage =
+		// assetManager.loadTexture("Textures/monaco.png");
+
 		heightmap = new ImageBasedHeightMap(heightMapImage.getImage());
 		heightmap.load();
 
-		/** 3. We have prepared material and heightmap. 
-		 * Now we create the actual terrain:
-		 * 3.1) Create a TerrainQuad and name it "my terrain".
-		 * 3.2) A good value for terrain tiles is 64x64 -- so we supply 64+1=65.
-		 * 3.3) We prepared a heightmap of size 512x512 -- so we supply 512+1=513.
-		 * 3.4) As LOD step scale we supply Vector3f(1,1,1).
-		 * 3.5) We supply the prepared heightmap itself.
+		/**
+		 * 3. We have prepared material and heightmap. Now we create the actual
+		 * terrain: 3.1) Create a TerrainQuad and name it "my terrain". 3.2) A
+		 * good value for terrain tiles is 64x64 -- so we supply 64+1=65. 3.3)
+		 * We prepared a heightmap of size 512x512 -- so we supply 512+1=513.
+		 * 3.4) As LOD step scale we supply Vector3f(1,1,1). 3.5) We supply the
+		 * prepared heightmap itself.
 		 */
 		int patchSize = 65;
-		terrain = new TerrainQuad("my terrain", patchSize, 513, heightmap.getHeightMap());
+		terrain = new TerrainQuad("my terrain", patchSize, 513,
+				heightmap.getHeightMap());
 
-		/** 4. We give the terrain its material, position & scale it, and attach it. */
+		/**
+		 * 4. We give the terrain its material, position & scale it, and attach
+		 * it.
+		 */
 		terrain.setMaterial(mat_terrain);
 		terrain.setLocalTranslation(0, -100, 0);
 		terrain.setLocalScale(2f, 1f, 2f);
@@ -243,6 +254,10 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
 	}
 
+	private void initCar() {
+		carProperties = new CarProperties();
+		enginePhysics = new EnginePhysics(carProperties);
+	}
 
 	private void setupKeys() {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_Q));
@@ -258,7 +273,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		inputManager.addListener(this, "Space");
 		inputManager.addListener(this, "Reset");
 	}
-
 
 	private PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
@@ -282,42 +296,37 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		return null;
 	}
 
-
 	private void buildPlayer() {
-		float stiffness = 120.0f;//200=f1 car
-		float compValue = 0.2f; //(lower than damp!)
+		float stiffness = 120.0f;// 200=f1 car
+		float compValue = 0.2f; // (lower than damp!)
 		float dampValue = 0.3f;
 		final float mass = 1200;
 
-
-		//Load model and get chassis Geometry
-		carNode = (Node)assetManager.loadModel("Models/Ferrari/Car.scene");
+		// Load model and get chassis Geometry
+		carNode = (Node) assetManager.loadModel("Models/Ferrari/Car.scene");
 		carNode.setShadowMode(ShadowMode.Cast);
 		chasis = findGeom(carNode, "Car");
 		BoundingBox box = (BoundingBox) chasis.getModelBound();
 
+		// Create a hull collision shape for the chassis
+		CollisionShape carHull = CollisionShapeFactory
+				.createDynamicMeshShape(chasis);
 
-		//Create a hull collision shape for the chassis
-		CollisionShape carHull = CollisionShapeFactory.createDynamicMeshShape(chasis);
-
-
-		//Create a vehicle control
+		// Create a vehicle control
 		player = new VehicleControl(carHull, mass);
 		carNode.addControl(player);
 
-
-		//Setting default values for wheels
-		player.setSuspensionCompression(compValue * 2.0f * FastMath.sqrt(stiffness));
+		// Setting default values for wheels
+		player.setSuspensionCompression(compValue * 2.0f
+				* FastMath.sqrt(stiffness));
 		player.setSuspensionDamping(dampValue * 2.0f * FastMath.sqrt(stiffness));
 		player.setSuspensionStiffness(stiffness);
 		player.setMaxSuspensionForce(10000);
 
-
-		//Create four wheels and add them at their locations
-		//note that our fancy car actually goes backwards..
+		// Create four wheels and add them at their locations
+		// note that our fancy car actually goes backwards..
 		Vector3f wheelDirection = new Vector3f(0, -1, 0);
 		Vector3f wheelAxle = new Vector3f(-1, 0, 0);
-
 
 		Geometry wheel_fr = findGeom(carNode, "WheelFrontRight");
 		wheel_fr.center();
@@ -325,41 +334,39 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		wheelRadius = box.getYExtent();
 		float back_wheel_h = (wheelRadius * 1.7f) - 1f;
 		float front_wheel_h = (wheelRadius * 1.9f) - 1f;
-		player.addWheel(wheel_fr.getParent(), box.getCenter().add(0, -front_wheel_h, 0),
-				wheelDirection, wheelAxle, 0.2f, wheelRadius, true);
-
+		player.addWheel(wheel_fr.getParent(),
+				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, true);
 
 		Geometry wheel_fl = findGeom(carNode, "WheelFrontLeft");
 		wheel_fl.center();
 		box = (BoundingBox) wheel_fl.getModelBound();
-		player.addWheel(wheel_fl.getParent(), box.getCenter().add(0, -front_wheel_h, 0),
-				wheelDirection, wheelAxle, 0.2f, wheelRadius, true);
-
+		player.addWheel(wheel_fl.getParent(),
+				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, true);
 
 		Geometry wheel_br = findGeom(carNode, "WheelBackRight");
 		wheel_br.center();
 		box = (BoundingBox) wheel_br.getModelBound();
-		player.addWheel(wheel_br.getParent(), box.getCenter().add(0, -back_wheel_h, 0),
-				wheelDirection, wheelAxle, 0.2f, wheelRadius, false);
-
+		player.addWheel(wheel_br.getParent(),
+				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, false);
 
 		Geometry wheel_bl = findGeom(carNode, "WheelBackLeft");
 		wheel_bl.center();
 		box = (BoundingBox) wheel_bl.getModelBound();
-		player.addWheel(wheel_bl.getParent(), box.getCenter().add(0, -back_wheel_h, 0),
-				wheelDirection, wheelAxle, 0.2f, wheelRadius, false);
-
+		player.addWheel(wheel_bl.getParent(),
+				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, false);
 
 		player.getWheel(0).setFrictionSlip(11f);
 		player.getWheel(1).setFrictionSlip(11f);
 		player.getWheel(2).setFrictionSlip(10f);
 		player.getWheel(3).setFrictionSlip(10f);
 
-
 		rootNode.attachChild(carNode);
 		getPhysicsSpace().add(player);
 	}
-
 
 	public void onAction(String binding, boolean value, float tpf) {
 		if (binding.equals("Lefts")) {
@@ -376,17 +383,18 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				steeringValue += .5f;
 			}
 			player.steer(steeringValue);
-		} //note that our fancy car actually goes backwards..
+		} // note that our fancy car actually goes backwards..
 		else if (binding.equals("Ups")) {
 			if (value) {
 				accelerationValue -= 10000;
 			} else {
 				accelerationValue += 10000;
 			}
-			//player.accelerate(accelerationValue);
+			// player.accelerate(accelerationValue);
 			player.accelerate(3, accelerationValue);
 			player.accelerate(2, accelerationValue);
-			player.setCollisionShape(CollisionShapeFactory.createDynamicMeshShape(findGeom(carNode, "Car")));
+			player.setCollisionShape(CollisionShapeFactory
+					.createDynamicMeshShape(findGeom(carNode, "Car")));
 		} else if (binding.equals("Downs")) {
 			if (value) {
 				accelerationValue = +5000;
@@ -395,16 +403,15 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			}
 			player.accelerate(3, accelerationValue);
 			player.accelerate(2, accelerationValue);
-			player.setCollisionShape(CollisionShapeFactory.createDynamicMeshShape(findGeom(carNode, "Car")));
-		}
-		else if (binding.equals("Space"))	{
+			player.setCollisionShape(CollisionShapeFactory
+					.createDynamicMeshShape(findGeom(carNode, "Car")));
+		} else if (binding.equals("Space")) {
 			if (value) {
 				player.brake(700f);
 			} else {
 				player.brake(0f);
 			}
-		}
-		else if (binding.equals("Reset")) {
+		} else if (binding.equals("Reset")) {
 			if (value) {
 				System.out.println("Reset");
 				player.setPhysicsLocation(Vector3f.ZERO);
@@ -417,11 +424,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		}
 	}
 
-
 	@Override
 	public void simpleUpdate(float tpf) {
-		//	cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-		
-		hudText.setText(player.getCurrentVehicleSpeedKmHour() +  "km/h");
+		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
+
+		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
+				+ "km/h"
+				+ "\tRPM: "
+				+ enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player
+						.getCurrentVehicleSpeedKmHour()))));
 	}
 }

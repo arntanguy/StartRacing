@@ -31,6 +31,8 @@
  */
 package test;
 
+import java.util.concurrent.TimeUnit;
+
 import physics.CarProperties;
 import physics.DodgeViperProperties;
 import physics.EnginePhysics;
@@ -39,6 +41,7 @@ import physics.tools.Conversion;
 import hud.Hud;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -105,8 +108,13 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private BasicShadowRenderer shadowRenderer;
 	private PssmShadowRenderer pssmRenderer;
 	private DepthOfFieldFilter dofFilter;
+	
+	private long startTime = 0;
 
-	private float startTime = 0f;
+	private AudioNode audio_motor;
+
+	private boolean soudIsActive = true;
+
 
 	private CarProperties carProperties;
 	private EnginePhysics enginePhysics;
@@ -182,6 +190,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		carNode.setShadowMode(ShadowMode.CastAndReceive); // normal behaviour
 															// (slow)
 		terrain.setShadowMode(ShadowMode.Receive);
+
+		
+		// Init audio
+		audio_motor = new AudioNode(assetManager, "Sound/engine.wav", false);
+		audio_motor.setLooping(true);
+		rootNode.attachChild(audio_motor);
+		audio_motor.setPitch(0.5f);
+		audio_motor.play();
 
 	}
 
@@ -268,6 +284,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_S));
 		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
+		inputManager.addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_A));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_E));
 		inputManager.addListener(this, "Lefts");
@@ -276,8 +293,10 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		inputManager.addListener(this, "Downs");
 		inputManager.addListener(this, "Space");
 		inputManager.addListener(this, "Reset");
+		inputManager.addListener(this, "Mute");
 		inputManager.addListener(this, "GearUp");
 		inputManager.addListener(this, "GearDown");
+
 	}
 
 	private PhysicsSpace getPhysicsSpace() {
@@ -375,6 +394,11 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	}
 
 	public void onAction(String binding, boolean value, float tpf) {
+		// Initialisation du timer
+		if (startTime == 0)	{	
+			startTime =  System.currentTimeMillis();
+		}
+		
 		if (binding.equals("Lefts")) {
 			if (value) {
 				steeringValue += .5f;
@@ -436,10 +460,34 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				enginePhysics.decrementGear();
 			}
 		}
+		else if (binding.equals("Mute"))	{
+			if (soudIsActive)	{
+				audio_motor.stop();
+				audio_motor.setLooping(false);
+				soudIsActive = false;
+			}
+			else	{
+				audio_motor.setLooping(true);
+				audio_motor.play();
+				soudIsActive = true;
+			}
+		}
 	}
 
 	@Override
 	public void simpleUpdate(float tpf) {
+		float vitesse = Math.abs(player.getCurrentVehicleSpeedKmHour());
+		
+		int rpm = (int) enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player.getCurrentVehicleSpeedKmHour())));
+		
+		long timeMili = (System.currentTimeMillis() - startTime );
+		String timer = String.format("%d min, %d sec %d ", 
+			    TimeUnit.MILLISECONDS.toMinutes(timeMili),
+			    TimeUnit.MILLISECONDS.toSeconds(timeMili) - 
+			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeMili)),
+			    (timeMili%1000)/10
+			);
+		
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
 				.getCurrentVehicleSpeedKmHour()))));
@@ -447,10 +495,27 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "
-				+ (int) enginePhysics.getRpm(Conversion.kmToMiles(Math
-						.abs(player.getCurrentVehicleSpeedKmHour())))
+				+ rpm
 				+ "\tGear: " + enginePhysics.getGear() + "\tOptimal Shift: "
 				+ (int)carProperties.getOptimalShiftPoint(enginePhysics.getGear())
-				+ "\tForce: " + (int)enginePhysics.getForce());
+				+ "\tForce: " + (int)enginePhysics.getForce()
+				+ "\n " + timer);
+		
+		// Update audio
+		if (soudIsActive)	{
+			float pitch; 
+			//pitch = (vitesse/ 350f)* 1.5f + 0.5f;
+			pitch = (rpm/7000f)* 1.5f + 0.5f;
+			System.out.println(pitch);
+			
+			if (pitch < 0.5f)	{
+				pitch = 0.5f;
+			}
+			if (pitch > 2.f)	{
+				pitch = 2.f;
+			}
+			audio_motor.setPitch(pitch);
+		}
+		
 	}
 }

@@ -2,6 +2,7 @@ package physics;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.TreeMap;
 
 /**
  * air density = 1.29kgm-3 mass = 1550kg red line = 8500rpm drag coefficient
@@ -37,7 +38,10 @@ public class SkylineProperties extends CarProperties {
 		finalGearRatio = 3.545;
 		tireRadius = 0.3266;
 
-		torque = new Hashtable<Double, Double>();
+		/**
+		 * TODO : put it in rpm
+		 */
+		torque = new TreeMap<Double, Double>();
 		torque.put(0.d, 0.d);
 		torque.put(75.d, 390.d);
 		torque.put(140.d, 200.d);

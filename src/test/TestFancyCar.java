@@ -32,6 +32,7 @@
 package test;
 
 import physics.CarProperties;
+import physics.DodgeViperProperties;
 import physics.EnginePhysics;
 import physics.SkylineProperties;
 import physics.tools.Conversion;
@@ -256,7 +257,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	}
 
 	private void initCar() {
-		carProperties = new SkylineProperties();
+		carProperties = new DodgeViperProperties();
 		enginePhysics = new EnginePhysics(carProperties);
 	}
 
@@ -442,7 +443,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
 				.getCurrentVehicleSpeedKmHour()))));
-		player.accelerate(-(float) enginePhysics.getForce()/10);
+		player.accelerate(-(float) enginePhysics.getForce());
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "

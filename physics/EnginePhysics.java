@@ -84,7 +84,7 @@ gk	=	k-th gear ratio (no unit)
 F	=	--------		−	_ crrmg	−	--	cdAρv2,	where
 		r					    2 
 **/
-		System.out.println("Engine speed: " + getEngineSpeed());
-		return p.getTorque(getEngineSpeed())*p.getTgr()*p.getGearRatio(gear)/p.getTireRadius();
+		System.out.println("Engine speed: " + getEngineSpeed()+" rpm: "+getRpm(speed));
+		return p.getTorque(getRpm(speed))*p.getTgr()*p.getGearRatio(gear)/p.getTireRadius();
 	}
 }

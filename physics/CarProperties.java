@@ -2,6 +2,8 @@ package physics;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class CarProperties {
 	// tire height (24.5, 26, 27.5, ...cm)
@@ -11,6 +13,9 @@ public class CarProperties {
 	// Tire radius in meters
 	protected double tireRadius = 0.3;
 
+	// Weight in kg
+	protected double weight = 1552;
+
 	protected double idleRpm = 1000;
 	/**
 	 * Gear ratio and properties
@@ -18,9 +23,10 @@ public class CarProperties {
 	protected Gears gears;
 
 	/**
-	 * Torque corresponding to given engine speed <Engine speed, Torque>
+	 * Torque corresponding to given engine speed <Engine speed, Torque> ordered
+	 * by key
 	 */
-	protected Hashtable<Double, Double> torque;
+	protected TreeMap<Double, Double> torque;
 
 	public double getTireRadius() {
 		return tireRadius;
@@ -29,7 +35,6 @@ public class CarProperties {
 	public void setTireRadius(double tireRadius) {
 		this.tireRadius = tireRadius;
 	}
-
 
 	public double getIdleRpm() {
 		return idleRpm;
@@ -53,8 +58,7 @@ public class CarProperties {
 		gears.setOptimalShiftPoint(4, 7694.66);
 		gears.setOptimalShiftPoint(5, 7562.64);
 
-
-		torque = new Hashtable<Double, Double>();
+		torque = new TreeMap<Double, Double>();
 		torque.put(0.d, 0.d);
 		torque.put(75.d, 390.d);
 		torque.put(140.d, 200.d);
@@ -94,29 +98,34 @@ public class CarProperties {
 		return gears.getNbGears();
 	}
 
-	public double getTorque(double engineSpeed) {
-		double w1 = 0;
-		double w2 = 0;
+	public double getTorque(double rpm) {
+		System.out.println("Parameter RPM: " + rpm);
 		double t1 = 0;
 		double t2 = 0;
+
 		Iterator<Double> it = torque.keySet().iterator();
 
-		while(it.hasNext()) {
-			Double w = it.next();
-			if(w > torque.get(w)) {
-				w1 = w;
-				t1 = torque.get(w);
-				if(it.hasNext()) {
-					w2 = it.next(); 
-					t2 = torque.get(it.next());
-					return (engineSpeed-w1) * (t2-t1)/(w2-w1);
-				}
-				else {
-					return 0;
-				}
-			}
+		double w2 = 0.d;
+		double w1 = 0.d;
+		double wt = 0;
+		while (it.hasNext() && rpm - w1 >= 0) {
+			wt = w1;
+			w1 = it.next();
 		}
-		return 0;
+		w2 = w1;
+		w1 = wt;
+		
+		System.out.println("RMP (" + rpm + ") > value(" + w1
+				+ ","+w2+") : get torque (" + torque.get(w1) + ","+torque.get(w2)+")");
+		t1 = torque.get(w1);
+		if (rpm <= w2) {
+			t2 = torque.get(w2);
+			System.out.println("torque = " + t1 + (rpm - w1) * (t2 - t1)
+					/ (w2 - w1));
+			return t1 + (rpm - w1) * (t2 - t1) / (w2 - w1);
+		} else {
+			return 0;
+		}
 	}
 
 	public double getOptimalShiftPoint(int gear) {

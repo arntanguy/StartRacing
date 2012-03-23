@@ -1,8 +1,6 @@
 package physics;
 
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.TreeMap;
 
 public class CarProperties {
@@ -28,22 +26,6 @@ public class CarProperties {
 	 */
 	protected TreeMap<Double, Double> torque;
 
-	public double getTireRadius() {
-		return tireRadius;
-	}
-
-	public void setTireRadius(double tireRadius) {
-		this.tireRadius = tireRadius;
-	}
-
-	public double getIdleRpm() {
-		return idleRpm;
-	}
-
-	public void setIdleRpm(double idleRpm) {
-		this.idleRpm = idleRpm;
-	}
-
 	public CarProperties() {
 		gears = new Gears();
 		gears.setRatio(1, 3.827);
@@ -67,6 +49,22 @@ public class CarProperties {
 	public CarProperties(double th, double tgr, double idleRpm) {
 		this.tireHeight = th;
 		this.finalGearRatio = tgr;
+		this.idleRpm = idleRpm;
+	}
+
+	public double getTireRadius() {
+		return tireRadius;
+	}
+
+	public void setTireRadius(double tireRadius) {
+		this.tireRadius = tireRadius;
+	}
+
+	public double getIdleRpm() {
+		return idleRpm;
+	}
+
+	public void setIdleRpm(double idleRpm) {
 		this.idleRpm = idleRpm;
 	}
 
@@ -98,8 +96,22 @@ public class CarProperties {
 		return gears.getNbGears();
 	}
 
+	/**
+	 * Calculates the torque corresponding to a given rpm
+	 * 
+	 * @param rpm
+	 *            Rotations per Minute
+	 * @return A linear approximation of the torque
+	 **/
 	public double getTorque(double rpm) {
-		System.out.println("Parameter RPM: " + rpm);
+		/**
+		 * The values constituting the torque curve are discrete. Gets the
+		 * closer values to the given rpm, so that w1 <= rpm <= w2 That way, we
+		 * can do a linear interpolation to estimate the value of the torque at
+		 * any given rpm. This is achieved by the following : Torque ~= t1 +
+		 * (rpm-w1) * (t2-t1)/(w2-w1)
+		 */
+
 		double t1 = 0;
 		double t2 = 0;
 
@@ -114,9 +126,10 @@ public class CarProperties {
 		}
 		w2 = w1;
 		w1 = wt;
-		
-		System.out.println("RMP (" + rpm + ") > value(" + w1
-				+ ","+w2+") : get torque (" + torque.get(w1) + ","+torque.get(w2)+")");
+
+		System.out.println("RMP (" + rpm + ") > value(" + w1 + "," + w2
+				+ ") : get torque (" + torque.get(w1) + "," + torque.get(w2)
+				+ ")");
 		t1 = torque.get(w1);
 		if (rpm <= w2) {
 			t2 = torque.get(w2);
@@ -128,6 +141,14 @@ public class CarProperties {
 		}
 	}
 
+	/**
+	 * Gets the value of the optimal shift point. It is the RPM of the best
+	 * moment to go to the next gear.
+	 * 
+	 * @param gear
+	 *            The gear for which you want the optimal shift point.
+	 * @return The value of the optimal shift point (in RPM)
+	 */
 	public double getOptimalShiftPoint(int gear) {
 		return gears.getOptimalShiftPoints(gear);
 	}

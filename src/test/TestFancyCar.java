@@ -31,14 +31,14 @@
  */
 package test;
 
+import hud.Hud;
+
 import java.util.concurrent.TimeUnit;
 
 import physics.CarProperties;
 import physics.DodgeViperProperties;
 import physics.EnginePhysics;
-import physics.SkylineProperties;
 import physics.tools.Conversion;
-import hud.Hud;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
@@ -62,15 +62,11 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
-import com.jme3.niftygui.NiftyJmeDisplay;
-import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.DepthOfFieldFilter;
-import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.debug.WireFrustum;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.shadow.PssmShadowRenderer;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
@@ -80,8 +76,6 @@ import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
-
-import de.lessvoid.nifty.Nifty;
 
 public class TestFancyCar extends SimpleApplication implements ActionListener {
 
@@ -491,7 +485,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
 				.getCurrentVehicleSpeedKmHour()))));
-		player.accelerate(-(float) enginePhysics.getForce());
+		player.accelerate(-(float) enginePhysics.getForce()/5);
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "

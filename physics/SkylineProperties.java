@@ -1,7 +1,5 @@
 package physics;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.TreeMap;
 
 /**

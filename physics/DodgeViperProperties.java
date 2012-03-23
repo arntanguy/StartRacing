@@ -21,7 +21,7 @@ public class DodgeViperProperties extends CarProperties {
 
 		finalGearRatio = 3.07;
 		tireRadius = 0.3266;
-		
+
 		weight = 1552;
 
 		torque = new TreeMap<Double, Double>();

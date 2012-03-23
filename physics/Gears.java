@@ -39,12 +39,12 @@ public class Gears {
 
 	public double getRatio(int gear) {
 		Double ratio = ratios.get(gear);
-		return (ratio!=null)?ratio:0.d;
+		return (ratio != null) ? ratio : 0.d;
 	}
 
 	public double getOptimalShiftPoints(int gear) {
 		Double os = optimalShiftPoints.get(gear);
-		return (os!=null) ? os : 0;
+		return (os != null) ? os : 0;
 	}
 
 	public int getNbGears() {

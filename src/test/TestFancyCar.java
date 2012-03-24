@@ -31,6 +31,8 @@
  */
 package test;
 
+import ia.IA;
+
 import java.util.concurrent.TimeUnit;
 
 import physics.CarProperties;
@@ -77,6 +79,8 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private Car bot;
 	private CarProperties botCarProperties;
 	private EnginePhysics botEnginePhysics;
+
+	private IA botIA;
 
 	private float steeringValue = 0;
 	private float accelerationValue = 0;
@@ -174,6 +178,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		rootNode.setShadowMode(ShadowMode.Off); // reset all
 		player.getNode().setShadowMode(ShadowMode.CastAndReceive); // normal
 																	// behaviour
+		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		// (slow)
 		terrain.setShadowMode(ShadowMode.Receive);
 
@@ -294,6 +299,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
 		bot.setPhysicsLocation(new Vector3f(10, 0, 0));
+		botIA = new IA(botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());
 		rootNode.attachChild(bot.getNode());
@@ -354,12 +360,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				player.setPhysicsRotation(new Matrix3f());
 				player.setLinearVelocity(Vector3f.ZERO);
 				player.setAngularVelocity(Vector3f.ZERO);
+				playerEnginePhysics.setGear(1);
 				player.resetSuspension();
 
 				bot.setPhysicsLocation(new Vector3f(10, 0, 0));
 				bot.setPhysicsRotation(new Matrix3f());
 				bot.setLinearVelocity(Vector3f.ZERO);
 				bot.setAngularVelocity(Vector3f.ZERO);
+				botEnginePhysics.setGear(1);
 				bot.resetSuspension();
 			} else {
 			}
@@ -389,10 +397,12 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		float playerSpeed = Math.abs(player.getCurrentVehicleSpeedKmHour());
 		float botSpeed = Math.abs(bot.getCurrentVehicleSpeedKmHour());
 
-		int playerRpm = (int) playerEnginePhysics.getRpm(Conversion
-				.kmToMiles(playerSpeed));
-		int botRpm = (int) botEnginePhysics.getRpm(Conversion
-				.kmToMiles(botSpeed));
+		playerEnginePhysics
+				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
+		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+
+		int playerRpm = (int) playerEnginePhysics.getRpm();
+		int botRpm = (int) botEnginePhysics.getRpm();
 
 		long timeMili = (System.currentTimeMillis() - startTime);
 		String timer = String.format(
@@ -403,9 +413,8 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 								.toMinutes(timeMili)), (timeMili % 1000) / 10);
 
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-		playerEnginePhysics
-				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
-		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+
+		botIA.act();
 		player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
 		bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())

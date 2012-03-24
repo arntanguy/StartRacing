@@ -22,13 +22,13 @@ public class EnginePhysics {
 	}
 
 	/**
+	 * The speed must be up to date to get accurate value
 	 * 
-	 * @param d
-	 *            miles per hour
 	 * @return rotation per minute
 	 */
-	public double getRpm(double d) {
-		double rpm = p.getGearRatio(gear) * d * 336 * p.getTgr() / p.getTh();
+	public double getRpm() {
+		double rpm = p.getGearRatio(gear) * speed * 336 * p.getTgr()
+				/ p.getTh();
 		return (rpm <= p.getIdleRpm()) ? p.getIdleRpm() : rpm;
 	}
 
@@ -108,8 +108,12 @@ public class EnginePhysics {
 		 * Γ(ω)G*gk 1 F = -------- − _ crrmg − -- cdAρv2, where r 2
 		 **/
 		System.out.println("Engine speed: " + getEngineSpeed() + " rpm: "
-				+ getRpm(speed));
-		return p.getTorque(getRpm(speed)) * p.getTgr() * p.getGearRatio(gear)
+				+ getRpm());
+		return p.getTorque(getRpm()) * p.getTgr() * p.getGearRatio(gear)
 				/ p.getTireRadius();
+	}
+
+	public CarProperties getCarProperties() {
+		return p;
 	}
 }

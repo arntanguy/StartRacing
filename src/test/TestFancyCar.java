@@ -55,7 +55,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.shadow.PssmShadowRenderer;
@@ -72,6 +71,13 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private BulletAppState bulletAppState;
 
 	private Car player;
+	private CarProperties playerCarProperties;
+	private EnginePhysics playerEnginePhysics;
+
+	private Car bot;
+	private CarProperties botCarProperties;
+	private EnginePhysics botEnginePhysics;
+
 	private float steeringValue = 0;
 	private float accelerationValue = 0;
 
@@ -82,6 +88,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private RigidBodyControl terrainPhys;
 
 	private BitmapText hudText;
+	private BitmapText botHudText;
 
 	private PssmShadowRenderer pssmRenderer;
 	private long startTime = 0;
@@ -89,9 +96,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private AudioNode audio_motor;
 
 	private boolean soudIsActive = true;
-
-	private CarProperties carProperties;
-	private EnginePhysics enginePhysics;
 
 	public static void main(String[] args) {
 		TestFancyCar app = new TestFancyCar();
@@ -134,6 +138,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		hudText.setText("0 km/h"); // the text
 		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
 		guiNode.attachChild(hudText);
+
+		botHudText = new BitmapText(guiFont, false);
+		botHudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
+		botHudText.setColor(ColorRGBA.Yellow); // font color
+		botHudText.setText("0 km/h"); // the text
+		botHudText.setLocalTranslation(300, 5 + 2 * botHudText.getLineHeight(),
+				0); // position
+		guiNode.attachChild(botHudText);
 
 		// Active skybox
 		Spatial sky = SkyFactory.createSky(assetManager,
@@ -271,15 +283,24 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	}
 
 	private void buildPlayer() {
-		carProperties = new DodgeViperProperties();
-		enginePhysics = new EnginePhysics(carProperties);
+		playerCarProperties = new DodgeViperProperties();
+		playerEnginePhysics = new EnginePhysics(playerCarProperties);
 
 		// Create a vehicle control
-		player = new Car(assetManager, carProperties);
+		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
 
+		botCarProperties = new DodgeViperProperties();
+		botEnginePhysics = new EnginePhysics(botCarProperties);
+		bot = new Car(assetManager, botCarProperties);
+		bot.setPhysicsLocation(new Vector3f(10, 0, 0));
+
 		rootNode.attachChild(player.getNode());
+		rootNode.attachChild(bot.getNode());
+
 		getPhysicsSpace().add(player);
+		getPhysicsSpace().add(bot);
+
 	}
 
 	public void onAction(String binding, boolean value, float tpf) {
@@ -334,15 +355,21 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				player.setLinearVelocity(Vector3f.ZERO);
 				player.setAngularVelocity(Vector3f.ZERO);
 				player.resetSuspension();
+
+				bot.setPhysicsLocation(new Vector3f(10, 0, 0));
+				bot.setPhysicsRotation(new Matrix3f());
+				bot.setLinearVelocity(Vector3f.ZERO);
+				bot.setAngularVelocity(Vector3f.ZERO);
+				bot.resetSuspension();
 			} else {
 			}
 		} else if (binding.equals("GearUp")) {
 			if (value) {
-				enginePhysics.incrementGear();
+				playerEnginePhysics.incrementGear();
 			}
 		} else if (binding.equals("GearDown")) {
 			if (value) {
-				enginePhysics.decrementGear();
+				playerEnginePhysics.decrementGear();
 			}
 		} else if (binding.equals("Mute")) {
 			if (soudIsActive) {
@@ -359,10 +386,13 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 
 	@Override
 	public void simpleUpdate(float tpf) {
-		float vitesse = Math.abs(player.getCurrentVehicleSpeedKmHour());
+		float playerSpeed = Math.abs(player.getCurrentVehicleSpeedKmHour());
+		float botSpeed = Math.abs(bot.getCurrentVehicleSpeedKmHour());
 
-		int rpm = (int) enginePhysics.getRpm(Conversion.kmToMiles(Math
-				.abs(player.getCurrentVehicleSpeedKmHour())));
+		int playerRpm = (int) playerEnginePhysics.getRpm(Conversion
+				.kmToMiles(playerSpeed));
+		int botRpm = (int) botEnginePhysics.getRpm(Conversion
+				.kmToMiles(botSpeed));
 
 		long timeMili = (System.currentTimeMillis() - startTime);
 		String timer = String.format(
@@ -373,25 +403,37 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 								.toMinutes(timeMili)), (timeMili % 1000) / 10);
 
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
-				.getCurrentVehicleSpeedKmHour()))));
-		player.accelerate(-(float) enginePhysics.getForce() / 5);
+		playerEnginePhysics
+				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
+		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+		player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
+		bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "
-				+ rpm
+				+ playerRpm
 				+ "\tGear: "
-				+ enginePhysics.getGear()
+				+ playerEnginePhysics.getGear()
 				+ "\tOptimal Shift: "
-				+ (int) carProperties.getOptimalShiftPoint(enginePhysics
+				+ (int) playerCarProperties
+						.getOptimalShiftPoint(playerEnginePhysics.getGear())
+				+ "\tForce: " + (int) playerEnginePhysics.getForce() + "\n "
+				+ timer);
+		botHudText.setText(Math.abs(bot.getCurrentVehicleSpeedKmHour())
+				+ "km/h"
+				+ "\tRPM: "
+				+ botRpm
+				+ "\tGear: "
+				+ botEnginePhysics.getGear()
+				+ "\tOptimal Shift: "
+				+ (int) botCarProperties.getOptimalShiftPoint(botEnginePhysics
 						.getGear()) + "\tForce: "
-				+ (int) enginePhysics.getForce() + "\n " + timer);
-
+				+ (int) botEnginePhysics.getForce() + "\n ");
 		// Update audio
 		if (soudIsActive) {
 			float pitch;
 			// pitch = (vitesse/ 350f)* 1.5f + 0.5f;
-			pitch = (rpm / 7000f) * 1.5f + 0.5f;
+			pitch = (playerRpm / 7000f) * 1.5f + 0.5f;
 			System.out.println(pitch);
 
 			if (pitch < 0.5f) {

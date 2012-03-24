@@ -31,8 +31,6 @@
  */
 package test;
 
-import hud.Hud;
-
 import java.util.concurrent.TimeUnit;
 
 import physics.CarProperties;
@@ -42,14 +40,9 @@ import physics.tools.Conversion;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.control.VehicleControl;
-import com.jme3.bullet.objects.VehicleWheel;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.KeyInput;
@@ -59,13 +52,10 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
-import com.jme3.post.filters.DepthOfFieldFilter;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.shadow.PssmShadowRenderer;
@@ -81,14 +71,9 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 
 	private BulletAppState bulletAppState;
 
-	private VehicleControl player;
-	private VehicleWheel fr, fl, br, bl;
-	private Node node_fr, node_fl, node_br, node_bl;
-	private float wheelRadius;
+	private Car player;
 	private float steeringValue = 0;
 	private float accelerationValue = 0;
-	private Node carNode;
-	private Geometry chasis;
 
 	private ChaseCamera chaseCam;
 
@@ -96,19 +81,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private Material mat_terrain;
 	private RigidBodyControl terrainPhys;
 
-	private Hud hud;
 	private BitmapText hudText;
 
-	private BasicShadowRenderer shadowRenderer;
 	private PssmShadowRenderer pssmRenderer;
-	private DepthOfFieldFilter dofFilter;
-	
 	private long startTime = 0;
 
 	private AudioNode audio_motor;
 
 	private boolean soudIsActive = true;
-
 
 	private CarProperties carProperties;
 	private EnginePhysics enginePhysics;
@@ -146,7 +126,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		setupKeys();
 		initGround();
 		buildPlayer();
-		initCar();
 
 		// Initi Hud
 		hudText = new BitmapText(guiFont, false);
@@ -162,7 +141,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		rootNode.attachChild(sky);
 
 		// Enable a chase cam
-		chaseCam = new ChaseCamera(cam, chasis, inputManager);
+		chaseCam = new ChaseCamera(cam, player.getChassis(), inputManager);
 		chaseCam.setSmoothMotion(true);
 
 		// Set up light
@@ -181,18 +160,17 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		viewPort.addProcessor(pssmRenderer);
 
 		rootNode.setShadowMode(ShadowMode.Off); // reset all
-		carNode.setShadowMode(ShadowMode.CastAndReceive); // normal behaviour
-															// (slow)
+		player.getNode().setShadowMode(ShadowMode.CastAndReceive); // normal
+																	// behaviour
+		// (slow)
 		terrain.setShadowMode(ShadowMode.Receive);
 
-		
 		// Init audio
 		audio_motor = new AudioNode(assetManager, "Sound/engine.wav", false);
 		audio_motor.setLooping(true);
 		rootNode.attachChild(audio_motor);
 		audio_motor.setPitch(0.5f);
 		audio_motor.play();
-
 	}
 
 	public void initGround() {
@@ -266,11 +244,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
 	}
 
-	private void initCar() {
-		carProperties = new DodgeViperProperties();
-		enginePhysics = new EnginePhysics(carProperties);
-	}
-
 	private void setupKeys() {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_Q));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
@@ -297,102 +270,24 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		return bulletAppState.getPhysicsSpace();
 	}
 
-	private Geometry findGeom(Spatial spatial, String name) {
-		if (spatial instanceof Node) {
-			Node node = (Node) spatial;
-			for (int i = 0; i < node.getQuantity(); i++) {
-				Spatial child = node.getChild(i);
-				Geometry result = findGeom(child, name);
-				if (result != null) {
-					return result;
-				}
-			}
-		} else if (spatial instanceof Geometry) {
-			if (spatial.getName().startsWith(name)) {
-				return (Geometry) spatial;
-			}
-		}
-		return null;
-	}
-
 	private void buildPlayer() {
-		float stiffness = 120.0f;// 200=f1 car
-		float compValue = 0.2f; // (lower than damp!)
-		float dampValue = 0.3f;
-		final float mass = 1200;
-
-		// Load model and get chassis Geometry
-		carNode = (Node) assetManager.loadModel("Models/Ferrari/Car.scene");
-		carNode.setShadowMode(ShadowMode.Cast);
-		chasis = findGeom(carNode, "Car");
-		BoundingBox box = (BoundingBox) chasis.getModelBound();
-
-		// Create a hull collision shape for the chassis
-		CollisionShape carHull = CollisionShapeFactory
-				.createDynamicMeshShape(chasis);
+		carProperties = new DodgeViperProperties();
+		enginePhysics = new EnginePhysics(carProperties);
 
 		// Create a vehicle control
-		player = new VehicleControl(carHull, mass);
-		carNode.addControl(player);
+		player = new Car(assetManager, carProperties);
+		player.getNode().addControl(player);
 
-		// Setting default values for wheels
-		player.setSuspensionCompression(compValue * 2.0f
-				* FastMath.sqrt(stiffness));
-		player.setSuspensionDamping(dampValue * 2.0f * FastMath.sqrt(stiffness));
-		player.setSuspensionStiffness(stiffness);
-		player.setMaxSuspensionForce(10000);
-
-		// Create four wheels and add them at their locations
-		// note that our fancy car actually goes backwards..
-		Vector3f wheelDirection = new Vector3f(0, -1, 0);
-		Vector3f wheelAxle = new Vector3f(-1, 0, 0);
-
-		Geometry wheel_fr = findGeom(carNode, "WheelFrontRight");
-		wheel_fr.center();
-		box = (BoundingBox) wheel_fr.getModelBound();
-		wheelRadius = box.getYExtent();
-		float back_wheel_h = (wheelRadius * 1.7f) - 1f;
-		float front_wheel_h = (wheelRadius * 1.9f) - 1f;
-		player.addWheel(wheel_fr.getParent(),
-				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, true);
-
-		Geometry wheel_fl = findGeom(carNode, "WheelFrontLeft");
-		wheel_fl.center();
-		box = (BoundingBox) wheel_fl.getModelBound();
-		player.addWheel(wheel_fl.getParent(),
-				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, true);
-
-		Geometry wheel_br = findGeom(carNode, "WheelBackRight");
-		wheel_br.center();
-		box = (BoundingBox) wheel_br.getModelBound();
-		player.addWheel(wheel_br.getParent(),
-				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, false);
-
-		Geometry wheel_bl = findGeom(carNode, "WheelBackLeft");
-		wheel_bl.center();
-		box = (BoundingBox) wheel_bl.getModelBound();
-		player.addWheel(wheel_bl.getParent(),
-				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, false);
-
-		player.getWheel(0).setFrictionSlip(11f);
-		player.getWheel(1).setFrictionSlip(11f);
-		player.getWheel(2).setFrictionSlip(10f);
-		player.getWheel(3).setFrictionSlip(10f);
-
-		rootNode.attachChild(carNode);
+		rootNode.attachChild(player.getNode());
 		getPhysicsSpace().add(player);
 	}
 
 	public void onAction(String binding, boolean value, float tpf) {
 		// Initialisation du timer
-		if (startTime == 0)	{	
-			startTime =  System.currentTimeMillis();
+		if (startTime == 0) {
+			startTime = System.currentTimeMillis();
 		}
-		
+
 		if (binding.equals("Lefts")) {
 			if (value) {
 				steeringValue += .5f;
@@ -417,8 +312,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			// player.accelerate(accelerationValue);
 			player.accelerate(3, accelerationValue);
 			player.accelerate(2, accelerationValue);
-			player.setCollisionShape(CollisionShapeFactory
-					.createDynamicMeshShape(findGeom(carNode, "Car")));
 		} else if (binding.equals("Downs")) {
 			if (value) {
 				accelerationValue = +5000;
@@ -427,8 +320,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			}
 			player.accelerate(3, accelerationValue);
 			player.accelerate(2, accelerationValue);
-			player.setCollisionShape(CollisionShapeFactory
-					.createDynamicMeshShape(findGeom(carNode, "Car")));
 		} else if (binding.equals("Space")) {
 			if (value) {
 				player.brake(700f);
@@ -453,14 +344,12 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			if (value) {
 				enginePhysics.decrementGear();
 			}
-		}
-		else if (binding.equals("Mute"))	{
-			if (soudIsActive)	{
+		} else if (binding.equals("Mute")) {
+			if (soudIsActive) {
 				audio_motor.stop();
 				audio_motor.setLooping(false);
 				soudIsActive = false;
-			}
-			else	{
+			} else {
 				audio_motor.setLooping(true);
 				audio_motor.play();
 				soudIsActive = true;
@@ -471,45 +360,48 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	@Override
 	public void simpleUpdate(float tpf) {
 		float vitesse = Math.abs(player.getCurrentVehicleSpeedKmHour());
-		
-		int rpm = (int) enginePhysics.getRpm(Conversion.kmToMiles(Math.abs(player.getCurrentVehicleSpeedKmHour())));
-		
-		long timeMili = (System.currentTimeMillis() - startTime );
-		String timer = String.format("%d min, %d sec %d ", 
-			    TimeUnit.MILLISECONDS.toMinutes(timeMili),
-			    TimeUnit.MILLISECONDS.toSeconds(timeMili) - 
-			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeMili)),
-			    (timeMili%1000)/10
-			);
-		
+
+		int rpm = (int) enginePhysics.getRpm(Conversion.kmToMiles(Math
+				.abs(player.getCurrentVehicleSpeedKmHour())));
+
+		long timeMili = (System.currentTimeMillis() - startTime);
+		String timer = String.format(
+				"%d min, %d sec %d ",
+				TimeUnit.MILLISECONDS.toMinutes(timeMili),
+				TimeUnit.MILLISECONDS.toSeconds(timeMili)
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+								.toMinutes(timeMili)), (timeMili % 1000) / 10);
+
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		enginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(Math.abs(player
 				.getCurrentVehicleSpeedKmHour()))));
-		player.accelerate(-(float) enginePhysics.getForce()/5);
+		player.accelerate(-(float) enginePhysics.getForce() / 5);
 		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
 				+ "km/h"
 				+ "\tRPM: "
 				+ rpm
-				+ "\tGear: " + enginePhysics.getGear() + "\tOptimal Shift: "
-				+ (int)carProperties.getOptimalShiftPoint(enginePhysics.getGear())
-				+ "\tForce: " + (int)enginePhysics.getForce()
-				+ "\n " + timer);
-		
+				+ "\tGear: "
+				+ enginePhysics.getGear()
+				+ "\tOptimal Shift: "
+				+ (int) carProperties.getOptimalShiftPoint(enginePhysics
+						.getGear()) + "\tForce: "
+				+ (int) enginePhysics.getForce() + "\n " + timer);
+
 		// Update audio
-		if (soudIsActive)	{
-			float pitch; 
-			//pitch = (vitesse/ 350f)* 1.5f + 0.5f;
-			pitch = (rpm/7000f)* 1.5f + 0.5f;
+		if (soudIsActive) {
+			float pitch;
+			// pitch = (vitesse/ 350f)* 1.5f + 0.5f;
+			pitch = (rpm / 7000f) * 1.5f + 0.5f;
 			System.out.println(pitch);
-			
-			if (pitch < 0.5f)	{
+
+			if (pitch < 0.5f) {
 				pitch = 0.5f;
 			}
-			if (pitch > 2.f)	{
+			if (pitch > 2.f) {
 				pitch = 2.f;
 			}
 			audio_motor.setPitch(pitch);
 		}
-		
+
 	}
 }

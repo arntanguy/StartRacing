@@ -13,6 +13,10 @@ public class CarProperties {
 
 	// Weight in kg
 	protected double weight = 1552;
+	protected float stiffness = 120.0f;// 200=f1 car
+	protected float compValue = 0.2f; // (lower than damp!)
+	protected float dampValue = 0.3f;
+	protected float mass = 1200;
 
 	protected double idleRpm = 1000;
 	/**
@@ -151,5 +155,45 @@ public class CarProperties {
 	 */
 	public double getOptimalShiftPoint(int gear) {
 		return gears.getOptimalShiftPoints(gear);
+	}
+
+	public double getTireHeight() {
+		return tireHeight;
+	}
+
+	public void setTireHeight(double tireHeight) {
+		this.tireHeight = tireHeight;
+	}
+
+	public float getStiffness() {
+		return stiffness;
+	}
+
+	public void setStiffness(float stiffness) {
+		this.stiffness = stiffness;
+	}
+
+	public float getCompValue() {
+		return compValue;
+	}
+
+	public void setCompValue(float compValue) {
+		this.compValue = compValue;
+	}
+
+	public float getDampValue() {
+		return dampValue;
+	}
+
+	public void setDampValue(float dampValue) {
+		this.dampValue = dampValue;
+	}
+
+	public float getMass() {
+		return mass;
+	}
+
+	public void setMass(float mass) {
+		this.mass = (mass >= 0) ? mass : 0.f;
 	}
 }

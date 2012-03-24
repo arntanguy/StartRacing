@@ -107,10 +107,10 @@ public class EnginePhysics {
 		 * 
 		 * Γ(ω)G*gk 1 F = -------- − _ crrmg − -- cdAρv2, where r 2
 		 **/
-		System.out.println("Engine speed: " + getEngineSpeed() + " rpm: "
-				+ getRpm());
-		return p.getTorque(getRpm()) * p.getTgr() * p.getGearRatio(gear)
-				/ p.getTireRadius();
+	//	System.out.println("Engine speed: " + getEngineSpeed() + " rpm: "
+	//			+ getRpm());
+		return (getRpm()<p.getRedLine()) ? p.getTorque(getRpm()) * p.getTgr() * p.getGearRatio(gear)
+				/ p.getTireRadius():-1000;
 	}
 
 	public CarProperties getCarProperties() {

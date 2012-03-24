@@ -14,10 +14,10 @@ public class IA {
 	/**
 	 * Percentage to switch gear at the optimal shift point
 	 */
-	private double optimalShiftGearPercentage = 0.8;
+	private double optimalShiftGearPercentage = 0.70;
 
 	private long time = 0;
-	private int delay = 500; // 500 ms delay
+	private int delay = 50; // 50 ms delay
 
 	public IA(EnginePhysics enginePhysics) {
 		this.enginePhysics = enginePhysics;
@@ -58,7 +58,8 @@ public class IA {
 	 * more probability there is that the bot will change gear. The probability
 	 * depends upon: - The selected zone allowed to switch gear. It will only
 	 * try to change between optimalShiftPoint-zone and optimalShiftPoint+rpm -
-	 * The probability at optimalShiftPoint
+	 * The probability at optimalShiftPoint XXX: Non equiprobable !!! Plus de
+	 * chance de changer de vitesse avant le point optimal qu'après
 	 */
 	public void act() {
 		int gear = enginePhysics.getGear();
@@ -68,12 +69,15 @@ public class IA {
 		if (rpm >= optimalShiftPoint - zone) {
 			int lower = 0;
 			int higher = 100;
+
 			int nb = (int) (100 * proba(rpm, optimalShiftPoint));
 
 			int random = (int) (Math.random() * (higher - lower)) + lower;
 
-			if (random == nb) {
+			if (random < nb) {
 				enginePhysics.incrementGear();
+				System.err.println("Shifting to gear "
+						+ enginePhysics.getGear() + " at RPM: " + rpm);
 			}
 		}
 	}

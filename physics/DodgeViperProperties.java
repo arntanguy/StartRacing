@@ -13,16 +13,17 @@ public class DodgeViperProperties extends CarProperties {
 		gears.setRatio(4, 1.d);
 		gears.setRatio(5, 0.74);
 		gears.setRatio(6, 0.5);
-		gears.setOptimalShiftPoint(1, 8387.29);
-		gears.setOptimalShiftPoint(2, 7911.1);
-		gears.setOptimalShiftPoint(3, 7623.54);
-		gears.setOptimalShiftPoint(4, 7694.66);
-		gears.setOptimalShiftPoint(5, 7562.64);
+		gears.setOptimalShiftPoint(1, 5000.29);
+		gears.setOptimalShiftPoint(2, 5000.1);
+		gears.setOptimalShiftPoint(3, 5000.54);
+		gears.setOptimalShiftPoint(4,5000.66);
+		gears.setOptimalShiftPoint(5, 5000.64);
 
 		finalGearRatio = 3.07;
 		tireRadius = 0.3266;
 
 		weight = 1552;
+		
 
 		torque = new TreeMap<Double, Double>();
 		torque.put(0.d, 0.d);

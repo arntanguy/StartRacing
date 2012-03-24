@@ -35,6 +35,7 @@ import ia.IA;
 
 import java.util.concurrent.TimeUnit;
 
+import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.DodgeViperProperties;
 import physics.EnginePhysics;
@@ -288,17 +289,19 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	}
 
 	private void buildPlayer() {
-		playerCarProperties = new DodgeViperProperties();
+		playerCarProperties = new BMWM3Properties();
 		playerEnginePhysics = new EnginePhysics(playerCarProperties);
 
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
+		player.setPhysicsLocation(new Vector3f(0, -36, 0));
 
-		botCarProperties = new DodgeViperProperties();
+
+		botCarProperties = new BMWM3Properties();
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
-		bot.setPhysicsLocation(new Vector3f(10, 0, 0));
+		bot.setPhysicsLocation(new Vector3f(10, -36, 0));
 		botIA = new IA(botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());
@@ -356,14 +359,14 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		} else if (binding.equals("Reset")) {
 			if (value) {
 				System.out.println("Reset");
-				player.setPhysicsLocation(Vector3f.ZERO);
+				player.setPhysicsLocation(new Vector3f(0,-36,0));
 				player.setPhysicsRotation(new Matrix3f());
 				player.setLinearVelocity(Vector3f.ZERO);
 				player.setAngularVelocity(Vector3f.ZERO);
 				playerEnginePhysics.setGear(1);
 				player.resetSuspension();
 
-				bot.setPhysicsLocation(new Vector3f(10, 0, 0));
+				bot.setPhysicsLocation(new Vector3f(10, -36, 0));
 				bot.setPhysicsRotation(new Matrix3f());
 				bot.setLinearVelocity(Vector3f.ZERO);
 				bot.setAngularVelocity(Vector3f.ZERO);

@@ -23,6 +23,8 @@ public class CarProperties {
 	 * Gear ratio and properties
 	 */
 	protected Gears gears;
+	
+	protected int redline=6000;
 
 	/**
 	 * Torque corresponding to given engine speed <Engine speed, Torque> ordered
@@ -131,14 +133,14 @@ public class CarProperties {
 		w2 = w1;
 		w1 = wt;
 
-		System.out.println("RMP (" + rpm + ") > value(" + w1 + "," + w2
-				+ ") : get torque (" + torque.get(w1) + "," + torque.get(w2)
-				+ ")");
+		//System.out.println("RMP (" + rpm + ") > value(" + w1 + "," + w2
+		//		+ ") : get torque (" + torque.get(w1) + "," + torque.get(w2)
+		//		+ ")");
 		t1 = torque.get(w1);
 		if (rpm <= w2) {
 			t2 = torque.get(w2);
-			System.out.println("torque = " + t1 + (rpm - w1) * (t2 - t1)
-					/ (w2 - w1));
+		//	System.out.println("torque = " + t1 + (rpm - w1) * (t2 - t1)
+		//			/ (w2 - w1));
 			return t1 + (rpm - w1) * (t2 - t1) / (w2 - w1);
 		} else {
 			return 0;
@@ -195,5 +197,9 @@ public class CarProperties {
 
 	public void setMass(float mass) {
 		this.mass = (mass >= 0) ? mass : 0.f;
+	}
+	
+	public int getRedLine() {
+		return redline;
 	}
 }

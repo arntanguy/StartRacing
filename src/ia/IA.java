@@ -10,7 +10,7 @@ public class IA {
 	 * The bot will start trying to change gear at optimalShiftPoint-zone Thus,
 	 * bigger the number, dumber the bot is!!
 	 */
-	private int zone = 1000;
+	private int zone = 100;
 	/**
 	 * Percentage to switch gear at the optimal shift point
 	 */
@@ -59,7 +59,7 @@ public class IA {
 	 * depends upon: - The selected zone allowed to switch gear. It will only
 	 * try to change between optimalShiftPoint-zone and optimalShiftPoint+rpm -
 	 * The probability at optimalShiftPoint XXX: Non equiprobable !!! Plus de
-	 * chance de changer de vitesse avant le point optimal qu'après
+	 * chance de changer de vitesse avant le point optimal qu'apr��s
 	 */
 	public void act() {
 		int gear = enginePhysics.getGear();

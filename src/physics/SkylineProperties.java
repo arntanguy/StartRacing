@@ -39,11 +39,11 @@ public class SkylineProperties extends CarProperties {
 		/**
 		 * TODO : put it in rpm
 		 */
-		torque = new TreeMap<Double, Double>();
-		torque.put(0.d, 0.d);
-		torque.put(75.d, 390.d);
-		torque.put(140.d, 200.d);
-		torque.put(1000.d, 50.d);
-		torque.put(10000.d, 0.d);
+		torque = new TreeMap<Integer, Integer>();
+		torque.put(0, 0);
+		torque.put(75, 390);
+		torque.put(140, 200);
+		torque.put(1000, 50);
+		torque.put(10000, 0);
 	}
 }

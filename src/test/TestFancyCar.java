@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
 import physics.CarProperties;
-import physics.DodgeViperProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
 
@@ -194,8 +193,8 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		LinkedHashMap<Integer, String> channels =  new LinkedHashMap<Integer, String>();
 		channels.put((int) playerCarProperties.getIdleRpm(), "Models/Default/verylow.wav");
 		channels.put((int) playerCarProperties.getIdleRpm() + 2000, "Models/Default/low.wav");
-		channels.put((int) playerCarProperties.getRedLine() / 2, "Models/Default/mid.wav");
-		channels.put((int) playerCarProperties.getRedLine(), "Models/Default/high.wav");
+		channels.put((int) playerCarProperties.getRedline() / 2, "Models/Default/mid.wav");
+		channels.put((int) playerCarProperties.getRedline(), "Models/Default/high.wav");
 		
 		HashMap<String, String>	extraSound = new HashMap<String, String>();
 		extraSound.put("start", "Models/Default/start.wav");

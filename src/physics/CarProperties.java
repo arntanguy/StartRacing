@@ -12,13 +12,13 @@ public class CarProperties {
 	protected double tireRadius = 0.3;
 
 	// Weight in kg
-	protected double weight = 1552;
+	protected int weight = 1552;
 	protected float stiffness = 120.0f;// 200=f1 car
 	protected float compValue = 0.2f; // (lower than damp!)
 	protected float dampValue = 0.3f;
 	protected float mass = 1200;
 
-	protected double idleRpm = 1000;
+	protected int idleRpm = 1000;
 	/**
 	 * Gear ratio and properties
 	 */
@@ -30,7 +30,7 @@ public class CarProperties {
 	 * Torque corresponding to given engine speed <Engine speed, Torque> ordered
 	 * by key
 	 */
-	protected TreeMap<Double, Double> torque;
+	protected TreeMap<Integer, Integer> torque;
 
 	public CarProperties() {
 		gears = new Gears();
@@ -46,13 +46,13 @@ public class CarProperties {
 		gears.setOptimalShiftPoint(4, 7694.66);
 		gears.setOptimalShiftPoint(5, 7562.64);
 
-		torque = new TreeMap<Double, Double>();
-		torque.put(0.d, 0.d);
-		torque.put(75.d, 390.d);
-		torque.put(140.d, 200.d);
+		torque = new TreeMap<Integer, Integer>();
+		torque.put(0, 0);
+		torque.put(75, 390);
+		torque.put(140, 200);
 	}
 
-	public CarProperties(double th, double tgr, double idleRpm) {
+	public CarProperties(double th, double tgr, int idleRpm) {
 		this.tireHeight = th;
 		this.finalGearRatio = tgr;
 		this.idleRpm = idleRpm;
@@ -66,11 +66,11 @@ public class CarProperties {
 		this.tireRadius = tireRadius;
 	}
 
-	public double getIdleRpm() {
+	public int getIdleRpm() {
 		return idleRpm;
 	}
 
-	public void setIdleRpm(double idleRpm) {
+	public void setIdleRpm(int idleRpm) {
 		this.idleRpm = idleRpm;
 	}
 
@@ -121,11 +121,11 @@ public class CarProperties {
 		double t1 = 0;
 		double t2 = 0;
 
-		Iterator<Double> it = torque.keySet().iterator();
+		Iterator<Integer> it = torque.keySet().iterator();
 
-		double w2 = 0.d;
-		double w1 = 0.d;
-		double wt = 0;
+		int w2 = 0;
+		int w1 = 0;
+		int wt = 0;
 		while (it.hasNext() && rpm - w1 >= 0) {
 			wt = w1;
 			w1 = it.next();
@@ -199,7 +199,7 @@ public class CarProperties {
 		this.mass = (mass >= 0) ? mass : 0.f;
 	}
 	
-	public int getRedLine() {
+	public int getRedline() {
 		return redline;
 	}
 }

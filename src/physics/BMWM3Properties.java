@@ -33,15 +33,15 @@ public class BMWM3Properties extends CarProperties {
 		weight = 1570;
 		redline = 8500; // not real value
 
-		torque = new TreeMap<Double, Double>();
-		torque.put(0.d, 0.d);
-		torque.put(1000.d, 400.d);
-		torque.put(2000.d, 450.d);
-		torque.put(3000.d, 480.d);
-		torque.put(4000.d, 500.d);
-		torque.put(5000.d, 550.d);
-		torque.put(6000.d, 500.d);
-		torque.put(8000.d, 450.d); // wrong value
-		torque.put(15000.d, 0.d);
+		torque = new TreeMap<Integer, Integer>();
+		torque.put(0, 0);
+		torque.put(1000, 400);
+		torque.put(2000, 450);
+		torque.put(3000, 480);
+		torque.put(4000, 500);
+		torque.put(5000, 550);
+		torque.put(6000, 500);
+		torque.put(8000, 450); // wrong value
+		torque.put(15000, 0);
 	}
 }

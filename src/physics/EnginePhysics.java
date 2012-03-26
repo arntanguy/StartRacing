@@ -17,6 +17,13 @@ public class EnginePhysics {
 	private int gear = 1;
 	private double speed = 0;
 
+	private long rpmTimer = 0;
+
+	/**
+	 * Used to know whether the rpm is over the redline.
+	 */
+	private boolean isBreaking = false;
+
 	public EnginePhysics(CarProperties prop) {
 		this.p = prop;
 	}
@@ -27,9 +34,30 @@ public class EnginePhysics {
 	 * @return rotation per minute
 	 */
 	public int getRpm() {
-		int rpm = (int) (p.getGearRatio(gear) * speed * 336 * p.getTgr()
-				/ p.getTh());
-		return (rpm <= p.getIdleRpm()) ? p.getIdleRpm() : rpm;
+		int rpm = (int) (p.getGearRatio(gear) * speed * 336 * p.getTgr() / p
+				.getTh());
+		int redline = p.getRedline();
+		if (rpm > redline) {
+			isBreaking = true;
+			/**
+			 * When engine is breaking, oscillate rpm a little to simulate
+			 * engine failure and get a nice sound ^^
+			 */
+			if (System.currentTimeMillis() - rpmTimer < 50) {
+				rpm = redline - 100;
+			} else if (System.currentTimeMillis() - rpmTimer < 100) {
+				rpm = redline;
+			} else {
+				rpm = redline;
+				rpmTimer = System.currentTimeMillis();
+			}
+		} else {
+			isBreaking = false;
+			if (rpm < p.getIdleRpm()) {
+				return p.getIdleRpm();
+			}
+		}
+		return rpm;
 	}
 
 	/**
@@ -86,7 +114,7 @@ public class EnginePhysics {
 	 */
 	public double getEngineSpeed() {
 		/**
-		 * v = 2��r��/(G*gk) w = v*G*gk/(2*pi*r)
+		 *  w = v*G*gk/(2*pi*r)
 		 */
 		return speed * p.getTgr() * p.getGearRatio(gear)
 				/ (2 * Math.PI * p.getTireRadius());
@@ -100,17 +128,11 @@ public class EnginePhysics {
 	 * @return The force generated (in Newtons)
 	 */
 	public double getForce() {
-		/**
-		 * v = 2��r��/Ggk, where v = velocity of the car (ms-1) r = radius of tire
-		 * (m) �� = engine speed in rotations per second (s-1) G = final drive
-		 * ratio (no unit) gk = k-th gear ratio (no unit)
-		 * 
-		 * ��(��)G*gk 1 F = -------- ��� _ crrmg ��� -- cdA��v2, where r 2
-		 **/
-	//	System.out.println("Engine speed: " + getEngineSpeed() + " rpm: "
-	//			+ getRpm());
-		return (getRpm()<p.getRedline()) ? p.getTorque(getRpm()) * p.getTgr() * p.getGearRatio(gear)
-				/ p.getTireRadius():-1000;
+		if (!isBreaking)
+			return p.getTorque(getRpm())
+					* p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
+		else
+			return 0;
 	}
 
 	public CarProperties getCarProperties() {

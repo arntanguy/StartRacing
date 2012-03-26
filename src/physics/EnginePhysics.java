@@ -86,7 +86,7 @@ public class EnginePhysics {
 	 */
 	public double getEngineSpeed() {
 		/**
-		 * v = 2πrω/(G*gk) w = v*G*gk/(2*pi*r)
+		 * v = 2��r��/(G*gk) w = v*G*gk/(2*pi*r)
 		 */
 		return speed * p.getTgr() * p.getGearRatio(gear)
 				/ (2 * Math.PI * p.getTireRadius());
@@ -101,15 +101,15 @@ public class EnginePhysics {
 	 */
 	public double getForce() {
 		/**
-		 * v = 2πrω/Ggk, where v = velocity of the car (ms-1) r = radius of tire
-		 * (m) ω = engine speed in rotations per second (s-1) G = final drive
+		 * v = 2��r��/Ggk, where v = velocity of the car (ms-1) r = radius of tire
+		 * (m) �� = engine speed in rotations per second (s-1) G = final drive
 		 * ratio (no unit) gk = k-th gear ratio (no unit)
 		 * 
-		 * Γ(ω)G*gk 1 F = -------- − _ crrmg − -- cdAρv2, where r 2
+		 * ��(��)G*gk 1 F = -------- ��� _ crrmg ��� -- cdA��v2, where r 2
 		 **/
 	//	System.out.println("Engine speed: " + getEngineSpeed() + " rpm: "
 	//			+ getRpm());
-		return (getRpm()<p.getRedLine()) ? p.getTorque(getRpm()) * p.getTgr() * p.getGearRatio(gear)
+		return (getRpm()<p.getRedline()) ? p.getTorque(getRpm()) * p.getTgr() * p.getGearRatio(gear)
 				/ p.getTireRadius():-1000;
 	}
 

@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
 import physics.CarProperties;
-import physics.DodgeViperProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
 
@@ -446,7 +445,6 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			float pitch;
 			// pitch = (vitesse/ 350f)* 1.5f + 0.5f;
 			pitch = (playerRpm / 7000f) * 1.5f + 0.5f;
-			System.out.println(pitch);
 
 			if (pitch < 0.5f) {
 				pitch = 0.5f;

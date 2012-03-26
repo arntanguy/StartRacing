@@ -4,17 +4,23 @@ import physics.CarProperties;
 import physics.EnginePhysics;
 
 public class IA {
+	public enum IALevel { NOOB, INTERMEDIATE, PRO, BOSS };
 	private EnginePhysics enginePhysics;
 	private CarProperties carProperties;
 	/**
 	 * The bot will start trying to change gear at optimalShiftPoint-zone Thus,
 	 * bigger the number, dumber the bot is!!
 	 */
-	private int zone = 100;
+	private int zone = 1000;
+
 	/**
 	 * Percentage to switch gear at the optimal shift point
 	 */
-	private double optimalShiftGearPercentage = 0.70;
+	private double optimalShiftGearPercentage = 1.0;
+	/**
+	 * Probablility of changing gear after the redline is reached
+	 */
+	private double redlineShiftProba = 0.5;
 
 	private long time = 0;
 	private int delay = 50; // 50 ms delay
@@ -22,6 +28,33 @@ public class IA {
 	public IA(EnginePhysics enginePhysics) {
 		this.enginePhysics = enginePhysics;
 		carProperties = enginePhysics.getCarProperties();
+		
+		setIALevel(IALevel.PRO);
+	}
+	
+	public void setIALevel(IALevel level) {
+		switch(level) {
+		case NOOB:
+			zone = 4000;
+			optimalShiftGearPercentage = 0.5;
+			redlineShiftProba = 0.5;
+			break;
+		case INTERMEDIATE:
+			zone = 2000;
+			optimalShiftGearPercentage = 0.75;
+			redlineShiftProba = 0.6;
+			break;
+		case PRO:
+			zone = 400;
+			optimalShiftGearPercentage = 0.90;
+			redlineShiftProba = 0.7;
+			break;
+		case BOSS:
+			zone = 20;
+			optimalShiftGearPercentage = 0.95;
+			redlineShiftProba = 0.8;
+			break;
+		}
 	}
 
 	/**
@@ -39,17 +72,13 @@ public class IA {
 	 * @return Probability that the bot will change gear
 	 */
 	public double proba(double rpm, double optimalShiftPoint) {
-		System.out.println("TIME: " + time);
-		if (System.currentTimeMillis() - time >= delay) {
-			time = System.currentTimeMillis();
-			if (rpm < optimalShiftPoint - rpm)
-				return 0.d;
-			else
-				return (rpm <= optimalShiftPoint + zone) ? optimalShiftGearPercentage
-						* Math.cos(Math.PI / zone * (rpm - optimalShiftPoint))
-						: 1.d;
-		}
-		return 0.d;
+
+		if (rpm < optimalShiftPoint - rpm)
+			return 0.d;
+		else
+			return (rpm <= optimalShiftPoint + zone) ? optimalShiftGearPercentage
+					* Math.cos(Math.PI / zone * (rpm - optimalShiftPoint))
+					: 1.d;
 	}
 
 	/**
@@ -59,26 +88,40 @@ public class IA {
 	 * depends upon: - The selected zone allowed to switch gear. It will only
 	 * try to change between optimalShiftPoint-zone and optimalShiftPoint+rpm -
 	 * The probability at optimalShiftPoint XXX: Non equiprobable !!! Plus de
-	 * chance de changer de vitesse avant le point optimal qu'apr��s
+	 * chance de changer de vitesse avant le point optimal qu'après
 	 */
 	public void act() {
-		int gear = enginePhysics.getGear();
-		double optimalShiftPoint = carProperties.getOptimalShiftPoint(gear);
-		double rpm = enginePhysics.getRpm();
+		if (System.currentTimeMillis() - time >= delay) {
+			time = System.currentTimeMillis();
+			int gear = enginePhysics.getGear();
+			double optimalShiftPoint = carProperties.getOptimalShiftPoint(gear);
+			double rpm = enginePhysics.getRpm();
 
-		if (rpm >= optimalShiftPoint - zone) {
-			int lower = 0;
-			int higher = 100;
+			if (rpm >= optimalShiftPoint - zone) {
+				if (rpm <= carProperties.getRedline()) {
 
-			int nb = (int) (100 * proba(rpm, optimalShiftPoint));
+					if (isProba(proba(rpm, optimalShiftPoint))) {
+						enginePhysics.incrementGear();
+						System.out.println("Shifting to gear "
+								+ enginePhysics.getGear() + " at RPM: " + rpm);
+					}
+				}
 
-			int random = (int) (Math.random() * (higher - lower)) + lower;
-
-			if (random < nb) {
+			}
+			if (rpm > carProperties.getRedline() && isProba(redlineShiftProba)) {
 				enginePhysics.incrementGear();
-				System.err.println("Shifting to gear "
-						+ enginePhysics.getGear() + " at RPM: " + rpm);
 			}
 		}
+	}
+
+	private boolean isProba(double proba) {
+		int lower = 0;
+		int higher = 100;
+
+		int nb = (int) (100 * proba);
+
+		int random = (int) (Math.random() * (higher - lower)) + lower;
+
+		return random < nb;
 	}
 }

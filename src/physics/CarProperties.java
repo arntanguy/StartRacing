@@ -199,7 +199,7 @@ public class CarProperties {
 		this.mass = (mass >= 0) ? mass : 0.f;
 	}
 	
-	public int getRedLine() {
+	public int getRedline() {
 		return redline;
 	}
 }

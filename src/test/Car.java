@@ -20,7 +20,7 @@ public class Car extends VehicleControl {
 
 	private CarProperties properties;
 
-	private Node carNode;
+	private Node carNode;  // fresdt
 
 	private Geometry chasis;
 

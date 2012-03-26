@@ -177,39 +177,63 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
 		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f)
-				.normalizeLocal()); // light direction
+		.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
 
 		rootNode.setShadowMode(ShadowMode.Off); // reset all
 		player.getNode().setShadowMode(ShadowMode.CastAndReceive); // normal
-																	// behaviour
+		// behaviour
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		// (slow)
 		terrain.setShadowMode(ShadowMode.Receive);
 
 		// Init audio
 		audio_motor = new audioRender(assetManager, player.getNode());
-		
+
 		LinkedHashMap<Integer, String> channels =  new LinkedHashMap<Integer, String>();
-		channels.put((int) playerCarProperties.getIdleRpm(), "Models/Default/verylow.wav");
-		channels.put((int) playerCarProperties.getIdleRpm() + 2000, "Models/Default/low.wav");
-		channels.put((int) playerCarProperties.getRedline() / 2, "Models/Default/mid.wav");
-		channels.put((int) playerCarProperties.getRedline(), "Models/Default/high.wav");
-		
+		channels.put(1000, "Models/Default/1052_P.wav");
+//		channels.put(1126, "Models/Default/1126_P.wav");
+//		channels.put(1205, "Models/Default/1205_P.wav");
+//		channels.put(1289, "Models/Default/1289_P.wav");
+//		channels.put(1380, "Models/Default/1380_P.wav");
+//		channels.put(1476, "Models/Default/1476_P.wav");
+		channels.put(1579, "Models/Default/1579_P.wav");
+//		channels.put(1690, "Models/Default/1690_P.wav");
+//		channels.put(1808, "Models/Default/1808_P.wav");
+//		channels.put(1935, "Models/Default/1935_P.wav");
+//		channels.put(2070, "Models/Default/2070_P.wav");
+//		channels.put(2215, "Models/Default/2215_P.wav");
+		channels.put(2370, "Models/Default/2370_P.wav");
+//		channels.put(2536, "Models/Default/2536_P.wav");
+//		channels.put(2714, "Models/Default/2714_P.wav");
+		channels.put(2904, "Models/Default/2904_P.wav");
+//		channels.put(3107, "Models/Default/3107_P.wav");
+//		channels.put(3324, "Models/Default/3324_P.wav");
+		channels.put(3557, "Models/Default/3557_P.wav");
+//		channels.put(3806, "Models/Default/3806_P.wav");
+//		channels.put(4073, "Models/Default/4073_P.wav");
+		channels.put(4358, "Models/Default/4358_P.wav");
+//		channels.put(4663, "Models/Default/4663_P.wav");
+//		channels.put(4989, "Models/Default/4989_P.wav");
+		channels.put(5338, "Models/Default/5338_P.wav");
+//		channels.put(5712, "Models/Default/5712_P.wav");
+		channels.put(6112, "Models/Default/6112_P.wav");
+		channels.put(8540, "Models/Default/6540_P.wav");
+
 		HashMap<String, String>	extraSound = new HashMap<String, String>();
 		extraSound.put("start", "Models/Default/start.wav");
 		extraSound.put("up", "Models/Default/up.wav");
-		
+
 		audio_motor.init(channels, extraSound);
-		
+
 		audio_motor.playStartSound();
-		
+
 	}
 
 	public void initGround() {
 		/** 1. Create terrain material and load four textures into it. */
 		mat_terrain = new Material(assetManager,
-				"Common/MatDefs/Terrain/Terrain.j3md");
+		"Common/MatDefs/Terrain/Terrain.j3md");
 
 		/** 1.1) Add ALPHA map (for red-blue-green coded splat textures) */
 		mat_terrain.setTexture("Alpha",
@@ -217,21 +241,21 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 
 		/** 1.2) Add GRASS texture into the red layer (Tex1). */
 		Texture grass = assetManager
-				.loadTexture("Textures/Terrain/splat/grass.jpg");
+		.loadTexture("Textures/Terrain/splat/grass.jpg");
 		grass.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex1", grass);
 		mat_terrain.setFloat("Tex1Scale", 64f);
 
 		/** 1.3) Add DIRT texture into the green layer (Tex2) */
 		Texture dirt = assetManager
-				.loadTexture("Textures/Terrain/splat/dirt.jpg");
+		.loadTexture("Textures/Terrain/splat/dirt.jpg");
 		dirt.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex2", dirt);
 		mat_terrain.setFloat("Tex2Scale", 32f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
 		Texture rock = assetManager
-				.loadTexture("Textures/Terrain/splat/road.jpg");
+		.loadTexture("Textures/Terrain/splat/road.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
@@ -239,7 +263,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		/** 2. Create the height map */
 		AbstractHeightMap heightmap = null;
 		Texture heightMapImage = assetManager
-				.loadTexture("Textures/mountains512.png");
+		.loadTexture("Textures/mountains512.png");
 		// Texture heightMapImage =
 		// assetManager.loadTexture("Textures/monaco.png");
 
@@ -407,7 +431,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		float botSpeed = Math.abs(bot.getCurrentVehicleSpeedKmHour());
 
 		playerEnginePhysics
-				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
+		.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
 		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
 		int playerRpm = (int) playerEnginePhysics.getRpm();
@@ -418,8 +442,8 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				"%d min, %d sec %d ",
 				TimeUnit.MILLISECONDS.toMinutes(timeMili),
 				TimeUnit.MILLISECONDS.toSeconds(timeMili)
-						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
-								.toMinutes(timeMili)), (timeMili % 1000) / 10);
+				- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+						.toMinutes(timeMili)), (timeMili % 1000) / 10);
 
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 
@@ -434,7 +458,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				+ playerEnginePhysics.getGear()
 				+ "\tOptimal Shift: "
 				+ (int) playerCarProperties
-						.getOptimalShiftPoint(playerEnginePhysics.getGear())
+				.getOptimalShiftPoint(playerEnginePhysics.getGear())
 				+ "\tForce: " + (int) playerEnginePhysics.getForce() + "\n "
 				+ timer);
 		botHudText.setText(Math.abs(bot.getCurrentVehicleSpeedKmHour())
@@ -446,7 +470,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				+ "\tOptimal Shift: "
 				+ (int) botCarProperties.getOptimalShiftPoint(botEnginePhysics
 						.getGear()) + "\tForce: "
-				+ (int) botEnginePhysics.getForce() + "\n ");
+						+ (int) botEnginePhysics.getForce() + "\n ");
 		// Update audio
 		if (soudIsActive) {
 			audio_motor.setRPM(playerRpm);

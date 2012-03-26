@@ -51,11 +51,13 @@ public class audioRender {
 	
 	public void playStartSound()	{
 		AudioNode sample = extraChan.get("start");
+		sample.setVolume(0.3f);
 		sample.playInstance();
 	}
 	
 	public void gearUp()	{
 		AudioNode sample = extraChan.get("up");
+		sample.setVolume(0.3f);
 		sample.playInstance();
 	}
 	
@@ -75,25 +77,36 @@ public class audioRender {
 		rpmHigh = rpmTmp;
 		
 		float num = (rpm - rpmLow);
-		float pourcentLow = num / (float)(rpmHigh - rpmLow);
+		float pourcentLow = 1 - (num / (float)(rpmHigh - rpmLow));
 		System.out.println(pourcentLow);
 		
 		AudioNode low = channels.get(rpmLow);
 		AudioNode high = channels.get(rpmHigh);
 		
 		// Muter le son précédent
-		if (prevLow != null)	{
+		if (prevLow != null && prevLow != low)	{
 			prevLow.setVolume(0);
 		}
-		if (prevHigh != null)	{
+		if (prevHigh != null && prevHigh != high)	{
 			prevHigh.setVolume(0);
 		}
 		
-		low.setPitch(1.f + pourcentLow);
-		low.setVolume(1 - pourcentLow);
+		if (pourcentLow > 1)	{
+			pourcentLow = 1;
+		}
 		
-		high.setPitch(1.f - pourcentLow/2);
-		high.setVolume(1 - pourcentLow);
+		try {
+			low.setPitch(1.f + pourcentLow);
+		} catch (Exception e) {
+		}
+		low.setVolume(1 + 1 - pourcentLow);
+		
+		try {
+			high.setPitch(1.f - (pourcentLow/2.f));
+		} catch (Exception e) {
+			
+		}
+		high.setVolume(pourcentLow * 2 +1 );
 		
 		prevLow = low;
 		prevHigh = high;

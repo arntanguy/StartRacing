@@ -33,6 +33,8 @@ package test;
 
 import ia.IA;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
@@ -41,8 +43,11 @@ import physics.DodgeViperProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
 
+import audio.audioRender;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -98,7 +103,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 	private PssmShadowRenderer pssmRenderer;
 	private long startTime = 0;
 
-	private AudioNode audio_motor;
+	private audioRender audio_motor;
 
 	private boolean soudIsActive = true;
 
@@ -184,11 +189,22 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 		terrain.setShadowMode(ShadowMode.Receive);
 
 		// Init audio
-		audio_motor = new AudioNode(assetManager, "Sound/engine.wav", false);
-		audio_motor.setLooping(true);
-		rootNode.attachChild(audio_motor);
-		audio_motor.setPitch(0.5f);
-		audio_motor.play();
+		audio_motor = new audioRender(assetManager, player.getNode());
+		
+		LinkedHashMap<Integer, String> channels =  new LinkedHashMap<Integer, String>();
+		channels.put((int) playerCarProperties.getIdleRpm(), "Models/Default/verylow.wav");
+		channels.put((int) playerCarProperties.getIdleRpm() + 2000, "Models/Default/low.wav");
+		channels.put((int) playerCarProperties.getRedLine() / 2, "Models/Default/mid.wav");
+		channels.put((int) playerCarProperties.getRedLine(), "Models/Default/high.wav");
+		
+		HashMap<String, String>	extraSound = new HashMap<String, String>();
+		extraSound.put("start", "Models/Default/start.wav");
+		extraSound.put("up", "Models/Default/up.wav");
+		
+		audio_motor.init(channels, extraSound);
+		
+		audio_motor.playStartSound();
+		
 	}
 
 	public void initGround() {
@@ -376,21 +392,12 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 			}
 		} else if (binding.equals("GearUp")) {
 			if (value) {
+				audio_motor.gearUp();
 				playerEnginePhysics.incrementGear();
 			}
 		} else if (binding.equals("GearDown")) {
 			if (value) {
 				playerEnginePhysics.decrementGear();
-			}
-		} else if (binding.equals("Mute")) {
-			if (soudIsActive) {
-				audio_motor.stop();
-				audio_motor.setLooping(false);
-				soudIsActive = false;
-			} else {
-				audio_motor.setLooping(true);
-				audio_motor.play();
-				soudIsActive = true;
 			}
 		}
 	}
@@ -443,18 +450,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 				+ (int) botEnginePhysics.getForce() + "\n ");
 		// Update audio
 		if (soudIsActive) {
-			float pitch;
-			// pitch = (vitesse/ 350f)* 1.5f + 0.5f;
-			pitch = (playerRpm / 7000f) * 1.5f + 0.5f;
-			System.out.println(pitch);
-
-			if (pitch < 0.5f) {
-				pitch = 0.5f;
-			}
-			if (pitch > 2.f) {
-				pitch = 2.f;
-			}
-			audio_motor.setPitch(pitch);
+			audio_motor.setRPM(playerRpm);
 		}
 
 	}

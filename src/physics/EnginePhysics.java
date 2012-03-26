@@ -26,9 +26,9 @@ public class EnginePhysics {
 	 * 
 	 * @return rotation per minute
 	 */
-	public double getRpm() {
-		double rpm = p.getGearRatio(gear) * speed * 336 * p.getTgr()
-				/ p.getTh();
+	public int getRpm() {
+		int rpm = (int) (p.getGearRatio(gear) * speed * 336 * p.getTgr()
+				/ p.getTh());
 		return (rpm <= p.getIdleRpm()) ? p.getIdleRpm() : rpm;
 	}
 

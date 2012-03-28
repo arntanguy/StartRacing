@@ -17,7 +17,7 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
 public class StartScreenState extends AbstractAppState implements ScreenController {
-	private SimpleApplication app;
+	private App app;
 
 	private Nifty nifty;
 	private NiftyJmeDisplay niftyDisplay;
@@ -50,20 +50,16 @@ public class StartScreenState extends AbstractAppState implements ScreenControll
 	public void initialize(AppStateManager stateManager, Application app) {
 		/** init the screen */
 		super.initialize(stateManager, app);
-		this.app = (SimpleApplication) app;
+		this.app = (App) app;
 
 		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
 				audioRenderer, guiViewport);
 		nifty = niftyDisplay.getNifty();
-		// nifty.fromXml("Interface/Nifty/HelloJme.xml", "start", this);
 		nifty.fromXml("Interface/Nifty/StartScreen.xml", "start", this);
 
 		// attach the nifty display to the gui view port as a processor
 		guiViewport.addProcessor(niftyDisplay);
 
-		// disable the fly cam
-		// flyCam.setEnabled(false);
-		// flyCam.setDragToRotate(true);
 		inputManager.setCursorVisible(true);
 	}
 
@@ -105,7 +101,7 @@ public class StartScreenState extends AbstractAppState implements ScreenControll
 	}
 	
 	public void startGame(String nextScreen) {
-		nifty.gotoScreen("hud");
+		app.switchView(View.GAME, nifty);
 	}
 	
 	public void quitGame() {

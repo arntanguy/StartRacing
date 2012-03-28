@@ -1,10 +1,11 @@
 package game;
 
+import ia.IA;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
-import ia.IA;
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
@@ -20,12 +21,11 @@ import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.controls.InputListener;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
@@ -38,7 +38,6 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.shadow.PssmShadowRenderer;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
@@ -52,7 +51,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class GameScreenState extends AbstractAppState implements ScreenController, InputListener {
+public class GameScreenState extends AbstractAppState implements ScreenController, ActionListener {
 	private SimpleApplication app;
 
 	private Nifty nifty;
@@ -127,15 +126,14 @@ public class GameScreenState extends AbstractAppState implements ScreenControlle
 		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
 				audioRenderer, guiViewport);
 		nifty = niftyDisplay.getNifty();
-		nifty.fromXml("Interface/Nifty/StartScreen.xml", "hub", this);
-
+		nifty.fromXml("Interface/Nifty/StartScreen.xml", "hud", this);
+		
 		// attach the nifty display to the gui view port as a processor
 		guiViewport.addProcessor(niftyDisplay);
 
 		// disable the fly cam
 		// flyCam.setEnabled(false);
 		// flyCam.setDragToRotate(true);
-		inputManager.setCursorVisible(true);
 		
 		initGame();
 	}

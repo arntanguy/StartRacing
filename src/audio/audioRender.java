@@ -99,14 +99,14 @@ public class audioRender {
 			low.setPitch(1.f + pourcentLow);
 		} catch (Exception e) {
 		}
-		low.setVolume(1 + 1 - pourcentLow);
+		low.setVolume((1 + 1 - pourcentLow) *4);
 		
 		try {
 			high.setPitch(1.f - (pourcentLow/2.f));
 		} catch (Exception e) {
 			
 		}
-		high.setVolume(pourcentLow * 2 +1 );
+		high.setVolume(pourcentLow * 4);
 		
 		prevLow = low;
 		prevHigh = high;

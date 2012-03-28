@@ -1,7 +1,7 @@
 <nifty>
 	<useControls filename="nifty-default-controls.xml" />
 	<useStyles filename="nifty-default-styles.xml" />
-	<screen id="start" controller="game.Game">
+	<screen id="start" controller="game.StartScreenState">
 		<layer id="background" childLayout="center">
 			<image filename="Interface/Nifty/start_background.jpg" width="100%"
 				height="100%" />

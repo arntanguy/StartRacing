@@ -1,26 +1,31 @@
 package game;
 
-import ia.IA;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
+import ia.IA;
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
-import test.Car;
 import audio.audioRender;
 
+import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
@@ -29,7 +34,9 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
+import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.BasicShadowRenderer;
 import com.jme3.shadow.PssmShadowRenderer;
@@ -45,10 +52,27 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class Game extends SimpleApplication implements ActionListener,
-		ScreenController {
-	private Nifty nifty;
+public class GameScreenState extends AbstractAppState implements ScreenController, InputListener {
+	private SimpleApplication app;
 
+	private Nifty nifty;
+	private NiftyJmeDisplay niftyDisplay;
+
+	private ViewPort viewPort;
+	private Node rootNode;
+	private Node guiNode;
+	private AssetManager assetManager;
+	private Node localRootNode = new Node("Start Screen RootNode");
+	private Node localGuiNode = new Node("Start Screen GuiNode");
+	private final ColorRGBA backgroundColor = ColorRGBA.Gray;
+
+	private AudioRenderer audioRenderer;
+	private InputManager inputManager;
+	private ViewPort guiViewport;
+	
+	
+	
+	
 	private BulletAppState bulletAppState;
 
 	private Car player;
@@ -80,41 +104,66 @@ public class Game extends SimpleApplication implements ActionListener,
 
 	private boolean soudIsActive = true;
 
-	public static void main(String[] args) {
-		Game app = new Game();
-		app.start();
+	private AppStateManager stateManager;
+	
+
+	public GameScreenState(SimpleApplication app) {
+		this.rootNode = app.getRootNode();
+		this.viewPort = app.getViewPort();
+		this.guiNode = app.getGuiNode();
+		this.assetManager = app.getAssetManager();
+		this.audioRenderer = app.getAudioRenderer();
+		this.inputManager = app.getInputManager();
+		this.guiViewport = app.getGuiViewPort();
 	}
 
 	@Override
-	public void simpleInitApp() {
-		this.setDisplayStatView(false);
+	public void initialize(AppStateManager stateManager, Application app) {
+		super.initialize(stateManager, app);
+		/** init the screen */
+		super.initialize(stateManager, app);
+		this.app = (SimpleApplication) app;
+
+		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
+				audioRenderer, guiViewport);
+		nifty = niftyDisplay.getNifty();
+		nifty.fromXml("Interface/Nifty/StartScreen.xml", "hub", this);
+
+		// attach the nifty display to the gui view port as a processor
+		guiViewport.addProcessor(niftyDisplay);
+
+		// disable the fly cam
+		// flyCam.setEnabled(false);
+		// flyCam.setDragToRotate(true);
+		inputManager.setCursorVisible(true);
+		
+		initGame();
+	}
+
+
+	private void initGame() {
+		app.setDisplayStatView(false);
 
 		bulletAppState = new BulletAppState();
+		stateManager = app.getStateManager();
 		stateManager.attach(bulletAppState);
-
+		/*
 		if (settings.getRenderer().startsWith("LWJGL")) {
 			BasicShadowRenderer bsr = new BasicShadowRenderer(assetManager, 512);
 			bsr.setDirection(new Vector3f(-0.5f, -0.3f, -0.3f).normalizeLocal());
 			viewPort.addProcessor(bsr);
 		}
-
+		 */
+		
 		// Disable the default first-person cam!
-		flyCam.setEnabled(false);
-
-		// init GUI
-		// hud = new Hud();
-		// stateManager.attach(hud);
-		// NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,
-		// inputManager, audioRenderer, guiViewPort);
-		// Nifty nifty = niftyDisplay.getNifty();
-		// guiViewPort.addProcessor(niftyDisplay);
-		// nifty.fromXml("Interface/gui.xml", "hud", hud);
+		//flyCam.setEnabled(false);
 
 		setupKeys();
 		initGround();
 		buildPlayer();
 
-		// Initi Hud
+		
+/*		// Initi Hud
 		hudText = new BitmapText(guiFont, false);
 		hudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
 		hudText.setColor(ColorRGBA.White); // font color
@@ -128,7 +177,7 @@ public class Game extends SimpleApplication implements ActionListener,
 		botHudText.setText("0 km/h"); // the text
 		botHudText.setLocalTranslation(300, 5 + 2 * botHudText.getLineHeight(),
 				0); // position
-		guiNode.attachChild(botHudText);
+		guiNode.attachChild(botHudText); */
 
 		// Active skybox
 		Spatial sky = SkyFactory.createSky(assetManager,
@@ -136,7 +185,7 @@ public class Game extends SimpleApplication implements ActionListener,
 		rootNode.attachChild(sky);
 
 		// Enable a chase cam
-		chaseCam = new ChaseCamera(cam, player.getChassis(), inputManager);
+		chaseCam = new ChaseCamera(app.getCamera(), player.getChassis(), inputManager);
 		chaseCam.setSmoothMotion(true);
 
 		// Set up light
@@ -200,22 +249,96 @@ public class Game extends SimpleApplication implements ActionListener,
 
 		audio_motor.init(channels, extraSound);
 
-		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,
-				inputManager, audioRenderer, guiViewPort);
-		nifty = niftyDisplay.getNifty();
-		// nifty.fromXml("Interface/Nifty/HelloJme.xml", "start", this);
-		nifty.fromXml("Interface/Nifty/StartScreen.xml", "start", this);
 
-		// attach the nifty display to the gui view port as a processor
-		guiViewPort.addProcessor(niftyDisplay);
+	}
+	
+	@Override
+	public void update(float tpf) {
+		/** any main loop action happens here */
+		float playerSpeed = Math.abs(player.getCurrentVehicleSpeedKmHour());
+		float botSpeed = Math.abs(bot.getCurrentVehicleSpeedKmHour());
 
-		// disable the fly cam
-		// flyCam.setEnabled(false);
-		// flyCam.setDragToRotate(true);
-		inputManager.setCursorVisible(true);
+		playerEnginePhysics
+				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
+		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+
+		int playerRpm = (int) playerEnginePhysics.getRpm();
+		int botRpm = (int) botEnginePhysics.getRpm();
+
+		long timeMili = (System.currentTimeMillis() - startTime);
+		String timer = String.format(
+				"%d min, %d sec %d ",
+				TimeUnit.MILLISECONDS.toMinutes(timeMili),
+				TimeUnit.MILLISECONDS.toSeconds(timeMili)
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+								.toMinutes(timeMili)), (timeMili % 1000) / 10);
+
+		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
+
+		botIA.act();
+		player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
+		bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
+	/*	hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
+				+ "km/h"
+				+ "\tRPM: "
+				+ playerRpm
+				+ "\tGear: "
+				+ playerEnginePhysics.getGear()
+				+ "\tOptimal Shift: "
+				+ (int) playerCarProperties
+						.getOptimalShiftPoint(playerEnginePhysics.getGear())
+				+ "\tForce: " + (int) playerEnginePhysics.getForce() + "\n "
+				+ timer);
+		botHudText.setText(Math.abs(bot.getCurrentVehicleSpeedKmHour())
+				+ "km/h"
+				+ "\tRPM: "
+				+ botRpm
+				+ "\tGear: "
+				+ botEnginePhysics.getGear()
+				+ "\tOptimal Shift: "
+				+ (int) botCarProperties.getOptimalShiftPoint(botEnginePhysics
+						.getGear()) + "\tForce: "
+				+ (int) botEnginePhysics.getForce() + "\n "); */
+		// Update audio
+		if (soudIsActive) {
+			audio_motor.setRPM(playerRpm);
+		}
 
 	}
 
+	@Override
+	public void stateAttached(AppStateManager stateManager) {
+		rootNode.attachChild(localRootNode);
+		guiNode.attachChild(localGuiNode);
+		viewPort.setBackgroundColor(backgroundColor);
+	}
+
+	@Override
+	public void stateDetached(AppStateManager stateManager) {
+		rootNode.detachChild(localRootNode);
+		guiNode.detachChild(localGuiNode);
+		guiViewport.removeProcessor(niftyDisplay);
+	}
+
+	@Override
+	public void bind(Nifty arg0, Screen arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onEndScreen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStartScreen() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	public void initGround() {
 		/** 1. Create terrain material and load four textures into it. */
 		mat_terrain = new Material(assetManager,
@@ -278,7 +401,7 @@ public class Game extends SimpleApplication implements ActionListener,
 		rootNode.attachChild(terrain);
 
 		/** 5. The LOD (level of detail) depends on were the camera is: */
-		TerrainLodControl control = new TerrainLodControl(terrain, getCamera());
+		TerrainLodControl control = new TerrainLodControl(terrain, app.getCamera());
 		terrain.addControl(control);
 
 		// Rendre le terrain physique
@@ -409,84 +532,5 @@ public class Game extends SimpleApplication implements ActionListener,
 				playerEnginePhysics.decrementGear();
 			}
 		}
-	}
-
-	@Override
-	public void simpleUpdate(float tpf) {
-		float playerSpeed = Math.abs(player.getCurrentVehicleSpeedKmHour());
-		float botSpeed = Math.abs(bot.getCurrentVehicleSpeedKmHour());
-
-		playerEnginePhysics
-				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
-		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
-
-		int playerRpm = (int) playerEnginePhysics.getRpm();
-		int botRpm = (int) botEnginePhysics.getRpm();
-
-		long timeMili = (System.currentTimeMillis() - startTime);
-		String timer = String.format(
-				"%d min, %d sec %d ",
-				TimeUnit.MILLISECONDS.toMinutes(timeMili),
-				TimeUnit.MILLISECONDS.toSeconds(timeMili)
-						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
-								.toMinutes(timeMili)), (timeMili % 1000) / 10);
-
-		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-
-		botIA.act();
-		player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
-		bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
-		hudText.setText(Math.abs(player.getCurrentVehicleSpeedKmHour())
-				+ "km/h"
-				+ "\tRPM: "
-				+ playerRpm
-				+ "\tGear: "
-				+ playerEnginePhysics.getGear()
-				+ "\tOptimal Shift: "
-				+ (int) playerCarProperties
-						.getOptimalShiftPoint(playerEnginePhysics.getGear())
-				+ "\tForce: " + (int) playerEnginePhysics.getForce() + "\n "
-				+ timer);
-		botHudText.setText(Math.abs(bot.getCurrentVehicleSpeedKmHour())
-				+ "km/h"
-				+ "\tRPM: "
-				+ botRpm
-				+ "\tGear: "
-				+ botEnginePhysics.getGear()
-				+ "\tOptimal Shift: "
-				+ (int) botCarProperties.getOptimalShiftPoint(botEnginePhysics
-						.getGear()) + "\tForce: "
-				+ (int) botEnginePhysics.getForce() + "\n ");
-		// Update audio
-		if (soudIsActive) {
-			audio_motor.setRPM(playerRpm);
-		}
-
-	}
-
-	public void bind(Nifty nifty, Screen screen) {
-		System.out.println("bind( " + screen.getScreenId() + ")");
-	}
-
-	public void onStartScreen() {
-		System.out.println("onStartScreen");
-	}
-
-	public void onEndScreen() {
-		System.out.println("onEndScreen");
-	}
-
-	public void quit() {
-		nifty.gotoScreen("end");
-	}
-
-	/** custom methods */
-	public void startGame(String nextScreen) {
-		nifty.gotoScreen(nextScreen); // switch to another screen
-		// start the game and do some more stuff...
-	}
-
-	public void quitGame() {
-		stop();
 	}
 }

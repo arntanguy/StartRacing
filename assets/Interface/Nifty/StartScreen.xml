@@ -44,7 +44,7 @@
 			</panel>
 		</layer>
 	</screen>
-	<screen id="hud">
+	<screen id="hud" controller="game.GameScreenState">
 		<layer id="background" childLayout="center">
 		</layer>
 		<layer id="foreground" backgroundColor="#0000" childLayout="vertical">

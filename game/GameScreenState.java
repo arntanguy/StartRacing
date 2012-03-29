@@ -13,11 +13,8 @@ import physics.tools.Conversion;
 import audio.audioRender;
 
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -33,7 +30,6 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
-import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
@@ -49,28 +45,13 @@ import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.screen.ScreenController;
 
-public class GameScreenState extends AbstractAppState implements ScreenController, ActionListener {
-	private SimpleApplication app;
-
-	private Nifty nifty;
-	private NiftyJmeDisplay niftyDisplay;
+public class GameScreenState extends AbstractScreenController implements ActionListener {
 
 	private ViewPort viewPort;
 	private Node rootNode;
-	private Node guiNode;
 	private AssetManager assetManager;
-	private Node localRootNode = new Node("Start Screen RootNode");
-	private Node localGuiNode = new Node("Start Screen GuiNode");
-	private final ColorRGBA backgroundColor = ColorRGBA.Gray;
-
-	private AudioRenderer audioRenderer;
 	private InputManager inputManager;
-	private ViewPort guiViewport;
-	
-	
-	
 	
 	private BulletAppState bulletAppState;
 
@@ -105,36 +86,20 @@ public class GameScreenState extends AbstractAppState implements ScreenControlle
 
 	private AppStateManager stateManager;
 	
-
-	public GameScreenState(SimpleApplication app) {
+	public GameScreenState() {
+		super();
+	}
+	
+	@Override
+	public void initialize(AppStateManager stateManager, Application a) {		
+		/** init the screen */
+		super.initialize(stateManager, a);
+		
 		this.rootNode = app.getRootNode();
 		this.viewPort = app.getViewPort();
-		this.guiNode = app.getGuiNode();
 		this.assetManager = app.getAssetManager();
-		this.audioRenderer = app.getAudioRenderer();
 		this.inputManager = app.getInputManager();
-		this.guiViewport = app.getGuiViewPort();
-	}
 
-	@Override
-	public void initialize(AppStateManager stateManager, Application app) {
-		super.initialize(stateManager, app);
-		/** init the screen */
-		super.initialize(stateManager, app);
-		this.app = (SimpleApplication) app;
-
-		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
-				audioRenderer, guiViewport);
-		nifty = niftyDisplay.getNifty();
-		nifty.fromXml("Interface/Nifty/StartScreen.xml", "hud", this);
-		
-		// attach the nifty display to the gui view port as a processor
-		guiViewport.addProcessor(niftyDisplay);
-
-		// disable the fly cam
-		// flyCam.setEnabled(false);
-		// flyCam.setDragToRotate(true);
-		
 		initGame();
 	}
 
@@ -306,34 +271,31 @@ public class GameScreenState extends AbstractAppState implements ScreenControlle
 
 	@Override
 	public void stateAttached(AppStateManager stateManager) {
-		rootNode.attachChild(localRootNode);
-		guiNode.attachChild(localGuiNode);
-		viewPort.setBackgroundColor(backgroundColor);
+		//rootNode.attachChild(localRootNode);
+		//guiNode.attachChild(localGuiNode);
+		//viewPort.setBackgroundColor(backgroundColor);
 	}
 
 	@Override
 	public void stateDetached(AppStateManager stateManager) {
-		rootNode.detachChild(localRootNode);
-		guiNode.detachChild(localGuiNode);
-		guiViewport.removeProcessor(niftyDisplay);
+		//rootNode.detachChild(localRootNode);
+		//guiNode.detachChild(localGuiNode);
 	}
 
 	@Override
-	public void bind(Nifty arg0, Screen arg1) {
+	public void bind(Nifty nifty, Screen screen) {
 		// TODO Auto-generated method stub
-		
+		super.bind(nifty, screen);
 	}
 
 	@Override
 	public void onEndScreen() {
-		// TODO Auto-generated method stub
-		
+		stateManager.detach(this);
 	}
 
 	@Override
 	public void onStartScreen() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 	
 	

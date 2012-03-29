@@ -1,40 +1,43 @@
 package game;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
+import com.jme3.niftygui.NiftyJmeDisplay;
 
 import de.lessvoid.nifty.Nifty;
 
 public class App extends SimpleApplication {
-	private AppStateManager appStateMgr;
-	private AbstractAppState appState;
 	
+	private Nifty nifty;
+	private NiftyJmeDisplay niftyDisplay;
 	
 	@Override
 	public void simpleInitApp() {
-	
+
+		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
+				audioRenderer, guiViewPort);
+		nifty = niftyDisplay.getNifty();
+		nifty.addXml("Interface/Nifty/StartScreen.xml");
+		gotoStart();
+		
 		// disable the fly cam
 		flyCam.setEnabled(false);
-
+		 	
+    	// attach the nifty display to the gui view port as a processor
+		guiViewPort.addProcessor(niftyDisplay);
 		inputManager.setCursorVisible(true);
-		
-		appStateMgr = this.getStateManager();
-		appState = new StartScreenState(this);
-		appStateMgr.attach(appState);
-		appState.setEnabled(true);
 	}
 	
-	public void switchView(View view, Nifty nifty) {
-		switch(view) {
-		case START:
-			appStateMgr.attach(appState);
-			break;
-		case GAME:
-			appStateMgr.detach(appState);
-			appState.setEnabled(false);
-			appStateMgr.attach(new GameScreenState(this));
-			break;
-		} 
-	}
+	public void gotoGame() {
+        nifty.gotoScreen("hud");
+        GameScreenState gameScreenController = (GameScreenState) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(gameScreenController);
+ 
+    }
+ 
+    public void gotoStart() {
+        nifty.gotoScreen("start");
+        StartScreenState startScreenController = (StartScreenState) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(startScreenController);
+ 
+    }
 }

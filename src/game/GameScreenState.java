@@ -87,6 +87,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 	private AppStateManager stateManager;
 	
 	private Tachometer tachometer;
+	private Shiftlight shiftlight;
 	
 	public GameScreenState() {
 		super();
@@ -215,7 +216,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		audio_motor.init(channels, extraSound);
 		
 		tachometer = new Tachometer(nifty, screen, playerCarProperties, playerEnginePhysics);
-
+		shiftlight = new Shiftlight(nifty, screen, playerCarProperties, playerEnginePhysics);
 		
 
 	}
@@ -244,6 +245,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		
 		tachometer.setRpm(playerRpm);
+		shiftlight.setRpm(playerRpm);
+		
 		botIA.act();
 		player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
 		bot.accelerate(-(float) botEnginePhysics.getForce() / 5);

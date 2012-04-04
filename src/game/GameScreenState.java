@@ -15,6 +15,7 @@ import audio.audioRender;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.Listener;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -274,6 +275,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		// Update audio
 		if (soudIsActive) {
 			audio_motor.setRPM(playerRpm);
+			app.getListener().setLocation(player.getNode().getWorldTranslation());
 		}
 
 	}

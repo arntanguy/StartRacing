@@ -27,7 +27,7 @@ public class MainMenu extends JFrame {
 		/* Mise en place des layout */
 		mergeComponents();
 		
-		/* Paramètrage */
+		/* Paramï¿½trage */
 		parameter();
 		
 		this.setVisible(true);

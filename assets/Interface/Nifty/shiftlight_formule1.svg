@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="800"
+   height="100"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="shiftlight_formule1.svg"
+   inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_0.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="283.79612"
+     inkscape:cy="95.930476"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="853"
+     inkscape:window-x="-8"
+     inkscape:window-y="23"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-952.36215)">
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37"
+       id="path3003"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,-7.672217,949.58564)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_1.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37"
+       id="path3003-0"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,78.042064,948.51421)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_2.png"
+       inkscape:export-xdpi="363.45999"
+       inkscape:export-ydpi="363.45999" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37"
+       id="path3003-0-6"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,160.18492,949.94278)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_3.png"
+       inkscape:export-xdpi="363.46152"
+       inkscape:export-ydpi="363.46152" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37"
+       id="path3003-0-6-2"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,247.32778,948.51421)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_4.png"
+       inkscape:export-xdpi="363.46158"
+       inkscape:export-ydpi="363.46158" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37;fill-opacity:1"
+       id="path3003-0-6-2-9"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,355.18493,950.65706)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_5.png"
+       inkscape:export-xdpi="363.45999"
+       inkscape:export-ydpi="363.45999" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37;fill-opacity:1"
+       id="path3003-0-6-2-9-9"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,439.47064,949.94277)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_6.png"
+       inkscape:export-xdpi="363.45999"
+       inkscape:export-ydpi="363.45999" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37;fill-opacity:1"
+       id="path3003-0-6-2-9-9-0"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,518.04207,947.79992)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_7.png"
+       inkscape:export-xdpi="363.45999"
+       inkscape:export-ydpi="363.45999" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37;fill-opacity:1"
+       id="path3003-0-6-2-9-9-0-8"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,616.6135,948.51421)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#483e37"
+       id="path3003-0-6-2-9-9-0-8-1"
+       sodipodi:cx="79.64286"
+       sodipodi:cy="83.214287"
+       sodipodi:rx="58.214287"
+       sodipodi:ry="58.214287"
+       d="m 137.85715,83.214287 a 58.214287,58.214287 0 1 1 -2.5e-4,-0.171121"
+       transform="matrix(0.63803682,0,0,0.61963191,706.6135,949.2285)"
+       sodipodi:start="0"
+       sodipodi:end="6.2802458"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/arnaud/programmation/devint/StartRacing/assets/Interface/Nifty/shiftlight_f1_8.png"
+       inkscape:export-xdpi="363.46158"
+       inkscape:export-ydpi="363.46158" />
+  </g>
+</svg>

@@ -87,7 +87,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 	private AppStateManager stateManager;
 	
 	private Tachometer tachometer;
-	private Shiftlight shiftlight;
+	private ShiftlightFormule1 shiftlight;
 	
 	public GameScreenState() {
 		super();
@@ -216,7 +216,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		audio_motor.init(channels, extraSound);
 		
 		tachometer = new Tachometer(nifty, screen, playerCarProperties, playerEnginePhysics);
-		shiftlight = new Shiftlight(nifty, screen, playerCarProperties, playerEnginePhysics);
+		shiftlight = new ShiftlightFormule1(nifty, screen, playerCarProperties, playerEnginePhysics);
 		
 
 	}

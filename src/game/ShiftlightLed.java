@@ -2,19 +2,13 @@ package game;
 
 import physics.CarProperties;
 import physics.EnginePhysics;
-
-import com.jme3.math.Vector2f;
-
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 
-public class Shiftlight {
-	private double alpha;
-	private Vector2f start;
-	private Vector2f end;
+public class ShiftlightLed {
 
 	private Nifty nifty;
 	private Screen screen;
@@ -28,10 +22,10 @@ public class Shiftlight {
 	private CarProperties carProperties;
 	private EnginePhysics enginePhysics;
 
-	private final int margin = 200;
+	private final int margin = 500;
 	private final int optimalMargin = 40;
 
-	public Shiftlight(Nifty nifty, Screen screen, CarProperties carProperties,
+	public ShiftlightLed(Nifty nifty, Screen screen, CarProperties carProperties,
 			EnginePhysics enginePhysics) {
 		this.nifty = nifty;
 		this.screen = screen;

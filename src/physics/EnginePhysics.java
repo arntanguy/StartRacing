@@ -43,9 +43,9 @@ public class EnginePhysics {
 			 * When engine is breaking, oscillate rpm a little to simulate
 			 * engine failure and get a nice sound ^^
 			 */
-			if (System.currentTimeMillis() - rpmTimer < 50) {
-				rpm = redline - 100;
-			} else if (System.currentTimeMillis() - rpmTimer < 100) {
+			if (System.currentTimeMillis() - rpmTimer < 100) {
+				rpm = redline - 200;
+			} else if (System.currentTimeMillis() - rpmTimer < 200) {
 				rpm = redline;
 			} else {
 				rpm = redline;

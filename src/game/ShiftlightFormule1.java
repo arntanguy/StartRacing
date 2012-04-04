@@ -19,9 +19,10 @@ public class ShiftlightFormule1 extends AbstractShiftlight {
 
 	private Element shiftlightElement;
 
-	private int yellowMargin = 200;
+	private int yellowMargin = 100;
 	private int currentImage = 0;
 	private int optimalShiftPoint;
+	private int minimal;
 
 	private int ospY;
 
@@ -63,35 +64,38 @@ public class ShiftlightFormule1 extends AbstractShiftlight {
 
 		optimalShiftPoint = (int) carProperties
 				.getOptimalShiftPoint(enginePhysics.getGear());
-		ospY =  optimalShiftPoint - yellowMargin;
+		ospY = optimalShiftPoint - yellowMargin;
 		zoneGreen = ospY / greenImages.size();
 		zoneYellow = 2 * yellowMargin;
 		zoneRed = carProperties.getRedline()
 				- (optimalShiftPoint + yellowMargin);
-		
+		minimal = optimalShiftPoint - 1500;
+
 	}
 
 	@Override
 	public void setRpm(int rpm) {
 		int img = currentImage;
-		if (rpm <= ospY) {
+		if (rpm <= minimal) {
+			shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+					idleImage);
+		} else if (rpm <= ospY) {
 			img = rpm / zoneGreen;
-			img = (img < greenImages.size()) ? img : greenImages.size()-1;
+			img = (img < greenImages.size()) ? img : greenImages.size() - 1;
 			if (img != currentImage) {
 				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
 						greenImages.get(img));
 			}
-
 		} else if (rpm <= optimalShiftPoint + yellowMargin) {
 			img = (rpm - ospY) / zoneYellow;
-			img = (img < yellowImages.size()) ? img : yellowImages.size()-1;
+			img = (img < yellowImages.size()) ? img : yellowImages.size() - 1;
 			if (img != currentImage) {
 				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
 						yellowImages.get(img));
 			}
-		} else {
+		} else if (rpm > optimalShiftPoint + yellowMargin) {
 			img = (rpm - (optimalShiftPoint + yellowMargin)) / zoneRed;
-			img = (img < redImages.size()) ? img : redImages.size()-1;
+			img = (img < redImages.size()) ? img : redImages.size() - 1;
 			if (img != currentImage) {
 
 				shiftlightElement.getRenderer(ImageRenderer.class).setImage(

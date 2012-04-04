@@ -48,13 +48,20 @@
 		<layer id="background" childLayout="center">
 		</layer>
 		<layer id="foreground" backgroundColor="#0000" childLayout="vertical">
-			<panel id="panel_top" width="100%" height="80%" childLayout="vertical"
+			<panel id="panel_top" width="100%" height="70%" childLayout="vertical"
 				backgroundColor="#0000">
 				<!-- spacer -->
 			</panel>
-			<panel id="panel_bottom" width="100%" height="20%" childLayout="horizontal"
+			<panel id="panel_bottom" width="100%" height="30%" childLayout="horizontal"
 				backgroundColor="#00f8">
-			
+				<panel id="tachometer" width="30%" height="100%" childLayout="vertical">
+				</panel>
+				<panel id="shiftlight" width="50px" height="50px" childLayout="vertical">
+					<image id="shiftlightImage" />
+				</panel>
+
+
+				<!-- Here goes the tachometer -->
 			</panel>
 		</layer>
 	</screen>

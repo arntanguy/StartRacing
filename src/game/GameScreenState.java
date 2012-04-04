@@ -86,6 +86,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 
 	private AppStateManager stateManager;
 	
+	private Tachometer tachometer;
+	
 	public GameScreenState() {
 		super();
 	}
@@ -211,7 +213,10 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		extraSound.put("up", "Models/Default/up.wav");
 
 		audio_motor.init(channels, extraSound);
+		
+		tachometer = new Tachometer(nifty, screen, playerCarProperties, playerEnginePhysics);
 
+		
 
 	}
 	
@@ -237,7 +242,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 								.toMinutes(timeMili)), (timeMili % 1000) / 10);
 
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-
+		
+		tachometer.setRpm(playerRpm);
 		botIA.act();
 		player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
 		bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
@@ -286,6 +292,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 	public void bind(Nifty nifty, Screen screen) {
 		// TODO Auto-generated method stub
 		super.bind(nifty, screen);
+		//nifty.setDebugOptionPanelColors(true);
 	}
 
 	@Override

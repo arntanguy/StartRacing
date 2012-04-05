@@ -1,7 +1,8 @@
 <nifty>
 	<useControls filename="nifty-default-controls.xml" />
 	<useStyles filename="nifty-default-styles.xml" />
-	<registerSound id="playSound" filename="Interface/Sounds/ACDC.wav" />
+	<!-- <registerSound id="playSound" filename="Interface/Sounds/ACDC.wav" 
+		/> -->
 
 	<screen id="start" controller="game.StartScreenState">
 		<layer id="background" childLayout="center">
@@ -38,11 +39,10 @@
 					valign="center" childLayout="center">
 					<control name="button" label="Quit" id="QuitButton" align="center"
 						valign="center" width="100%" height="100%"
-						font="Interface/Fonts/ArialBlack_60.fnt">s
+						font="Interface/Fonts/ArialBlack_60.fnt">
+						s
 						<interact onClick="quitGame()" />
-						<effect>
-							<onGetFocus name="playSound" sound="playSound" />
-						</effect>
+						<!-- <effect> <onGetFocus name="playSound" sound="playSound" /> </effect> -->
 					</control>
 				</panel>
 			</panel>

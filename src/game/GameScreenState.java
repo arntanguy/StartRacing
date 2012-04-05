@@ -182,32 +182,32 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 
 		LinkedHashMap<Integer, String> channels = new LinkedHashMap<Integer, String>();
 		channels.put(1000, "Models/Default/1052_P.wav");
-		// channels.put(1126, "Models/Default/1126_P.wav");
-		// channels.put(1205, "Models/Default/1205_P.wav");
-		// channels.put(1289, "Models/Default/1289_P.wav");
-		// channels.put(1380, "Models/Default/1380_P.wav");
-		// channels.put(1476, "Models/Default/1476_P.wav");
-		// channels.put(1579, "Models/Default/1579_P.wav");
-		// channels.put(1690, "Models/Default/1690_P.wav");
-		// channels.put(1808, "Models/Default/1808_P.wav");
-		// channels.put(1935, "Models/Default/1935_P.wav");
-		// channels.put(2070, "Models/Default/2070_P.wav");
-		// channels.put(2215, "Models/Default/2215_P.wav");
-		// channels.put(2370, "Models/Default/2370_P.wav");
-		// channels.put(2536, "Models/Default/2536_P.wav");
-		// channels.put(2714, "Models/Default/2714_P.wav");
-		// channels.put(2904, "Models/Default/2904_P.wav");
-		// channels.put(3107, "Models/Default/3107_P.wav");
-		// channels.put(3324, "Models/Default/3324_P.wav");
-		// channels.put(3557, "Models/Default/3557_P.wav");
-		// channels.put(3806, "Models/Default/3806_P.wav");
-		channels.put(4073, "Models/Default/4073_P.wav");
-		// channels.put(4358, "Models/Default/4358_P.wav");
-		// channels.put(4663, "Models/Default/4663_P.wav");
-		// channels.put(4989, "Models/Default/4989_P.wav");
-		// channels.put(5338, "Models/Default/5338_P.wav");
-		// channels.put(5712, "Models/Default/5712_P.wav");
-		// channels.put(6112, "Models/Default/6112_P.wav");
+//		 channels.put(1126, "Models/Default/1126_P.wav");
+//		 channels.put(1205, "Models/Default/1205_P.wav");
+//		 channels.put(1289, "Models/Default/1289_P.wav");
+//		 channels.put(1380, "Models/Default/1380_P.wav");
+//		 channels.put(1476, "Models/Default/1476_P.wav");
+//		 channels.put(1579, "Models/Default/1579_P.wav");
+//		 channels.put(1690, "Models/Default/1690_P.wav");
+//		 channels.put(1808, "Models/Default/1808_P.wav");
+//		 channels.put(1935, "Models/Default/1935_P.wav");
+//		 channels.put(2070, "Models/Default/2070_P.wav");
+//		 channels.put(2215, "Models/Default/2215_P.wav");
+//		 channels.put(2370, "Models/Default/2370_P.wav");
+//		 channels.put(2536, "Models/Default/2536_P.wav");
+		 channels.put(2714, "Models/Default/2714_P.wav");
+//		 channels.put(2904, "Models/Default/2904_P.wav");
+//		channels.put(3107, "Models/Default/3107_P.wav");
+//		 channels.put(3324, "Models/Default/3324_P.wav");
+//		 channels.put(3557, "Models/Default/3557_P.wav");
+//		 channels.put(3806, "Models/Default/3806_P.wav");
+//		 channels.put(4073, "Models/Default/4073_P.wav");
+//		 channels.put(4358, "Models/Default/4358_P.wav");
+//		 channels.put(4663, "Models/Default/4663_P.wav");
+//		 channels.put(4989, "Models/Default/4989_P.wav");
+//		 channels.put(5338, "Models/Default/5338_P.wav");
+//		 channels.put(5712, "Models/Default/5712_P.wav");
+//		 channels.put(6112, "Models/Default/6112_P.wav");
 		channels.put(8540, "Models/Default/6540_P.wav");
 
 		HashMap<String, String> extraSound = new HashMap<String, String>();
@@ -345,8 +345,6 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		AbstractHeightMap heightmap = null;
 		Texture heightMapImage = assetManager
 				.loadTexture("Textures/mountains512.png");
-		// Texture heightMapImage =
-		// assetManager.loadTexture("Textures/monaco.png");
 
 		heightmap = new ImageBasedHeightMap(heightMapImage.getImage());
 		heightmap.load();

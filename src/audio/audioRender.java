@@ -100,21 +100,20 @@ public class audioRender {
 		float pourcentHigh = ((((float)rpmHigh - rpm)/(float)(rpmHigh -rpmLow)))/2.f;
 
 		
-//		System.err.println(rpmLow + "val du pich bas = " + pourcentLow);
 		try {
 			low.setPitch(pourcentLow + 1.f);
 		} catch (Exception e1) {
 			System.err.println("val du pich bas = " + pourcentLow);
 		}
 
-		low.setVolume(volumLow*2.f);
+		low.setVolume((volumHigh)*2.f);
 
 		try	{
 			high.setPitch(1 - pourcentHigh);
 		} catch	(Exception e)	{
 			System.err.println("valu du pich haut = " + pourcentHigh);
 		}
-		high.setVolume(volumHigh * 2.f);
+		high.setVolume(volumLow * 2.f);
 
 		prevLow = low;
 		prevHigh = high;

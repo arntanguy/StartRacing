@@ -87,7 +87,9 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 
 	private AppStateManager stateManager;
 	
-	private Tachometer tachometer;
+//	private Tachometer tachometer;
+	private DigitalDisplay digitalTachometer;
+	private DigitalDisplay digitalSpeed;
 	private ShiftlightFormule1 shiftlight;
 	
 	public GameScreenState() {
@@ -216,7 +218,9 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 
 		audio_motor.init(channels, extraSound);
 		
-		tachometer = new Tachometer(nifty, screen, playerCarProperties, playerEnginePhysics);
+//		tachometer = new Tachometer(nifty, screen, playerCarProperties, playerEnginePhysics);
+		digitalTachometer = new DigitalDisplay(nifty, screen, "digital_tachometer", 80);
+		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
 		shiftlight = new ShiftlightFormule1(nifty, screen, playerCarProperties, playerEnginePhysics);
 		
 
@@ -225,8 +229,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 	@Override
 	public void update(float tpf) {
 		/** any main loop action happens here */
-		float playerSpeed = Math.abs(player.getCurrentVehicleSpeedKmHour());
-		float botSpeed = Math.abs(bot.getCurrentVehicleSpeedKmHour());
+		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
+		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
 
 		playerEnginePhysics
 				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
@@ -245,7 +249,9 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		
-		tachometer.setRpm(playerRpm);
+		//tachometer.setRpm(playerRpm);
+		digitalTachometer.setText(((Integer)playerRpm).toString());
+		digitalSpeed.setText(((Integer)playerSpeed).toString());
 		shiftlight.setRpm(playerRpm);
 		
 		botIA.act();

@@ -70,7 +70,6 @@ public class ShiftlightFormule1 extends AbstractShiftlight {
 		zoneRed = carProperties.getRedline()
 				- (optimalShiftPoint + yellowMargin);
 		minimal = optimalShiftPoint - 1500;
-
 	}
 
 	@Override

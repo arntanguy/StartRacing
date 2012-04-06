@@ -32,7 +32,6 @@
 						align="center" valign="center" width="100%" height="100%"
 						font="Interface/Fonts/DS_Digital.fnt">
 						<interact onClick="startGame(hud)" />
-
 					</control>
 				</panel>
 				<panel id="panel_bottom_right" height="50%" width="50%"
@@ -61,26 +60,27 @@
 				backgroundColor="#0000">
 				<!-- spacer -->
 			</panel>
-			<panel id="panel_bottom" width="100%" height="30%" childLayout="vertical"
-				align="center" backgroundColor="#f1f0">
+			<panel id="panel_bottom" width="100%" height="30%" childLayout="horizontal"
+				align="center" backgroundColor="#0000">
 				<!-- <panel id="tachometer" width="30%" height="100%" childLayout="vertical" 
 					visible="false"> </panel> -->
-
-				<panel id="shiftlight_panel" width="250px" height="50px"
-					childLayout="vertical">
-					<image id="shiftlight" />
-				</panel>
-				<panel id="digital_tachometer_panel" childLayout="vertical">
-					<text text="RPM" font="Interface/Fonts/Default.fnt" width="20%"
-						height="10%" />
-					<text id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
-						size="20" color="#000" text="0" width="20%" height="100%" />
-				</panel>
-				<panel id="digital_speed_panel" childLayout="vertical">
-					<text text="SPEED" font="Interface/Fonts/Default.fnt" width="20%"
-						height="10%" />
-					<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
-						size="20" color="#000" text="0" width="20%" height="100%" />
+				<panel childLayout="vertical" backgroundColor="#582900" width="20%">
+					<panel id="shiftlight_panel" width="100%" height="50px"
+						childLayout="vertical">
+						<image id="shiftlight" />
+					</panel>
+					<panel id="digital_tachometer_panel" childLayout="vertical">
+						<text text="RPM" font="Interface/Fonts/Default.fnt" width="100%"
+							height="10%" />
+						<text id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
+							size="20" text="0" width="100%" height="100%" />
+					</panel>
+					<panel id="digital_speed_panel" childLayout="vertical">
+						<text text="SPEED" font="Interface/Fonts/Default.fnt" width="100%"
+							height="10%" />
+						<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
+							size="20" text="0" width="100%" height="100%" />
+					</panel>
 				</panel>
 			</panel>
 		</layer>

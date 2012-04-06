@@ -419,12 +419,12 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
-		player.setPhysicsLocation(new Vector3f(0, -36, 0));
+		player.setPhysicsLocation(new Vector3f(0, -36, 500));
 
 		botCarProperties = new BMWM3Properties();
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
-		bot.setPhysicsLocation(new Vector3f(10, -36, 0));
+		bot.setPhysicsLocation(new Vector3f(10, -36, 500));
 		botIA = new IA(botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());

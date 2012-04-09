@@ -90,7 +90,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 //	private Tachometer tachometer;
 	private DigitalDisplay digitalTachometer;
 	private DigitalDisplay digitalSpeed;
-	private ShiftlightFormule1 shiftlight;
+	private DigitalDisplay digitalGear;
+	private ShiftlightLed shiftlight;
 	
 	public GameScreenState() {
 		super();
@@ -221,7 +222,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 //		tachometer = new Tachometer(nifty, screen, playerCarProperties, playerEnginePhysics);
 		digitalTachometer = new DigitalDisplay(nifty, screen, "digital_tachometer", 80);
 		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
-		shiftlight = new ShiftlightFormule1(nifty, screen, playerCarProperties, playerEnginePhysics);
+		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
+		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties, playerEnginePhysics);
 		
 
 	}
@@ -252,6 +254,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		//tachometer.setRpm(playerRpm);
 		digitalTachometer.setText(((Integer)playerRpm).toString());
 		digitalSpeed.setText(((Integer)playerSpeed).toString());
+		digitalGear.setText(((Integer)playerEnginePhysics.getGear()).toString());
 		shiftlight.setRpm(playerRpm);
 		
 		botIA.act();

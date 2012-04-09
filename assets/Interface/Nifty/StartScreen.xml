@@ -64,22 +64,33 @@
 				align="center" backgroundColor="#0000">
 				<!-- <panel id="tachometer" width="30%" height="100%" childLayout="vertical" 
 					visible="false"> </panel> -->
-				<panel childLayout="vertical" backgroundColor="#582900" width="20%">
-					<panel id="shiftlight_panel" width="100%" height="50px"
-						childLayout="vertical">
-						<image id="shiftlight" />
+				<panel childLayout="horizontal" backgroundColor="#582900"
+					width="35%">
+					<panel childLayout="vertical" align="center">
+						<panel id="shiftlight_panel" width="100%" height="50px"
+							childLayout="vertical">
+							<image id="shiftlight" />
+						</panel>
+						<panel id="digital_tachometer_panel" childLayout="vertical">
+							<text text="RPM" font="Interface/Fonts/Default.fnt" width="100%"
+								height="10%" />
+							<text id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
+								size="20" text="0" width="100%" height="100%" />
+						</panel>
+						<panel id="digital_speed_panel" childLayout="vertical">
+							<text text="SPEED" font="Interface/Fonts/Default.fnt" width="100%"
+								height="10%" />
+							<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
+								size="20" text="0" width="100%" height="100%" />
+						</panel>
 					</panel>
-					<panel id="digital_tachometer_panel" childLayout="vertical">
-						<text text="RPM" font="Interface/Fonts/Default.fnt" width="100%"
-							height="10%" />
-						<text id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
-							size="20" text="0" width="100%" height="100%" />
-					</panel>
-					<panel id="digital_speed_panel" childLayout="vertical">
-						<text text="SPEED" font="Interface/Fonts/Default.fnt" width="100%"
-							height="10%" />
-						<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
-							size="20" text="0" width="100%" height="100%" />
+					<panel childLayout="vertical">
+						<panel id="gear_panel" childLayout="vertical">
+							<text text="Vitesse" font="Interface/Fonts/Default.fnt" width="100%"
+								height="10%" />
+							<text id="digital_gear" font="Interface/Fonts/DS-Digital.fnt"
+								size="20" text="0" width="100%" height="100%" />
+						</panel>
 					</panel>
 				</panel>
 			</panel>

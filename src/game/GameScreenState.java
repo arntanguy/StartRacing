@@ -18,7 +18,11 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.Listener;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.PlaneCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
@@ -30,11 +34,14 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
+import com.jme3.math.Plane;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.jme3.shadow.PssmShadowRenderer;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
@@ -89,6 +96,8 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 	
 	private Tachometer tachometer;
 	private ShiftlightFormule1 shiftlight;
+	private Spatial map;
+	private RigidBodyControl mapPhysic;
 	
 	public GameScreenState() {
 		super();
@@ -175,8 +184,9 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		// behaviour
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		// (slow)
+		//map.setShadowMode(ShadowMode.Receive);
 		terrain.setShadowMode(ShadowMode.Receive);
-
+		
 		// Init audio
 		audio_motor = new audioRender(assetManager, player.getNode());
 
@@ -378,6 +388,38 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		terrainPhys = new RigidBodyControl(0.0f);
 		terrain.addControl(terrainPhys);
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
+		
+//		
+//		map = assetManager.loadModel("Models/Map/vc-a.j3o");
+//	    map.setLocalScale(2f);
+//	    rootNode.attachChild(map);
+//	 
+//	    // We set up collision detection for the scene by creating a
+//	    // compound collision shape and a static RigidBodyControl with mass zero.
+//	    PlaneCollisionShape ground = new PlaneCollisionShape(new Plane(new Vector3f(0, 1, 0), 0));
+//	    Node node = new Node("Physicsground");
+//        RigidBodyControl control = new RigidBodyControl(ground, 0f);
+//        node.addControl(control);
+//        node.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0f, -77.3f, 0f));
+//        
+//	    //CollisionShape sceneShape = CollisionShapeFactory.createMeshShape((Node) map);
+//	    //mapPhysic = new RigidBodyControl(sceneShape, 0);
+//	    //control.setFriction(1f);
+//	    //map.addControl(mapPhysic);
+//	
+//	    Box floor_shape = new Box(new Vector3f(0, -77.5f, 0), 500f, 0.1f, 500f);
+//	    Geometry floor = new Geometry("floor", floor_shape);
+//	    Material floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+//	    floor.setMaterial(floor_mat);
+//	    // floor phy
+//	    RigidBodyControl floor_phy = new RigidBodyControl(0);
+//	    floor.addControl(floor_phy);
+//	    rootNode.attachChild(floor);
+//	    
+//	    //bulletAppState.getPhysicsSpace().add(mapPhysic);
+//	    bulletAppState.getPhysicsSpace().add(floor_phy);
+//	    //bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0, -9.81f, 0));
+//	    bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
 	private void setupKeys() {
@@ -413,12 +455,12 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
-		player.setPhysicsLocation(new Vector3f(0, -36, 0));
+		player.setPhysicsLocation(new Vector3f(0, -37, 0));
 
 		botCarProperties = new BMWM3Properties();
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
-		bot.setPhysicsLocation(new Vector3f(10, -36, 0));
+		bot.setPhysicsLocation(new Vector3f(10, -37, 0));
 		botIA = new IA(botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());
@@ -469,14 +511,14 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 			player.accelerate(2, accelerationValue);
 		} else if (binding.equals("Space")) {
 			if (value) {
-				player.brake(700f);
+				player.brake(700000000f);
 			} else {
 				player.brake(0f);
 			}
 		} else if (binding.equals("Reset")) {
 			if (value) {
 				System.out.println("Reset");
-				player.setPhysicsLocation(new Vector3f(0, -36, 0));
+				player.setPhysicsLocation(new Vector3f(0, -37, 0));
 				player.setPhysicsRotation(new Matrix3f());
 				player.setLinearVelocity(Vector3f.ZERO);
 				player.setAngularVelocity(Vector3f.ZERO);
@@ -484,7 +526,7 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 				player.resetSuspension();
 				audio_motor.playStartSound();
 
-				bot.setPhysicsLocation(new Vector3f(10, -36, 0));
+				bot.setPhysicsLocation(new Vector3f(10, -37, 0));
 				bot.setPhysicsRotation(new Matrix3f());
 				bot.setLinearVelocity(Vector3f.ZERO);
 				bot.setAngularVelocity(Vector3f.ZERO);

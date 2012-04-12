@@ -343,7 +343,10 @@ public class GameScreenState extends AbstractScreenController implements
 
 		if (runIsOn) {
 			botIA.act();
-			player.accelerate(-(float) playerEnginePhysics.getForce() / 5);
+			float force = -(float) playerEnginePhysics.getForce() / 5;
+			player.accelerate(2, force*2);
+			player.accelerate(3, force*2);
+			
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 		} else {
 			// Baisser le régime moteur à l'arrêt
@@ -377,7 +380,7 @@ public class GameScreenState extends AbstractScreenController implements
 	}
 	
 	private void reset() {
-		player.setPhysicsLocation(new Vector3f(0, -37, 500));
+		player.setPhysicsLocation(new Vector3f(0, 27, 500));
 		player.setPhysicsRotation(new Matrix3f());
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
@@ -391,7 +394,7 @@ public class GameScreenState extends AbstractScreenController implements
 		playerEnginePhysics.setRpm(1000);
 
 
-		bot.setPhysicsLocation(new Vector3f(10, -37, 500));
+		bot.setPhysicsLocation(new Vector3f(10, 27, 500));
 		bot.setPhysicsRotation(new Matrix3f());
 		bot.setLinearVelocity(Vector3f.ZERO);
 		bot.setAngularVelocity(Vector3f.ZERO);
@@ -492,9 +495,16 @@ public class GameScreenState extends AbstractScreenController implements
 		terrain.addControl(control);
 
 		// Rendre le terrain physique
+		
+		terrain.setLocalScale(3f, 2f, 2f);
+		
 		terrainPhys = new RigidBodyControl(0.0f);
 		terrain.addControl(terrainPhys);
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
+		
+		bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0, -9.81f, 0));
+		terrainPhys.setFriction(0.5f);
+		
 		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
 		//
@@ -551,7 +561,7 @@ public class GameScreenState extends AbstractScreenController implements
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
 //		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_LEFT)); // frein
-		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 
@@ -581,12 +591,12 @@ public class GameScreenState extends AbstractScreenController implements
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
-		player.setPhysicsLocation(new Vector3f(0, -37, 500));
+		player.setPhysicsLocation(new Vector3f(0, 27, 500));
 
 		botCarProperties = new BMWM3Properties();
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
-		bot.setPhysicsLocation(new Vector3f(10, -37, 500));
+		bot.setPhysicsLocation(new Vector3f(10, 27, 500));
 		botIA = new IA(botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());

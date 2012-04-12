@@ -38,6 +38,5 @@ public class App extends SimpleApplication {
         nifty.gotoScreen("start");
         StartScreenState startScreenController = (StartScreenState) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(startScreenController);
- 
     }
 }

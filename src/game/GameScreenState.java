@@ -461,7 +461,7 @@ public class GameScreenState extends AbstractScreenController implements
 		terrainPhys = new RigidBodyControl(0.0f);
 		terrain.addControl(terrainPhys);
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
-		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
 		//
 		// map = assetManager.loadModel("Models/Map/vc-a.j3o");
@@ -518,6 +518,8 @@ public class GameScreenState extends AbstractScreenController implements
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
 		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_LEFT)); // frein
 		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RIGHT));
+
+		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
@@ -635,6 +637,8 @@ public class GameScreenState extends AbstractScreenController implements
 			if (value) {
 				playerEnginePhysics.decrementGear();
 			}
+		} else if(binding.equals("Menu")) {
+			app.gotoStart();
 		}
 	}
 

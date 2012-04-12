@@ -102,6 +102,8 @@ public class GameScreenState extends AbstractScreenController implements
 	private long rpmTimer;
 	private GhostControl finishCell;
 	private Node finishNode;
+	
+	private boolean needReset;
 
 	public GameScreenState() {
 		super();
@@ -116,7 +118,7 @@ public class GameScreenState extends AbstractScreenController implements
 		this.viewPort = app.getViewPort();
 		this.assetManager = app.getAssetManager();
 		this.inputManager = app.getInputManager();
-
+		
 		initGame();
 	}
 
@@ -129,6 +131,7 @@ public class GameScreenState extends AbstractScreenController implements
 		runIsOn = false;
 		initialRev = 0;
 		this.isBreaking = false;
+		this.needReset = false;
 
 		/*
 		 * if (settings.getRenderer().startsWith("LWJGL")) { BasicShadowRenderer
@@ -260,6 +263,7 @@ public class GameScreenState extends AbstractScreenController implements
 	public void update(float tpf) {
 		/** any main loop action happens here */
 
+		
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
 
@@ -269,7 +273,10 @@ public class GameScreenState extends AbstractScreenController implements
 
 		int playerRpm = initialRev;
 
+		if(needReset) reset();
+
 		if (runIsOn) {
+
 			// Test if the player is first
 			// if (finishCell.getOverlappingCount() > 0) {
 			// runIsOn = false;
@@ -288,7 +295,6 @@ public class GameScreenState extends AbstractScreenController implements
 			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
 			playerRpm = (int) playerEnginePhysics.getRpm();
-			int botRpm = (int) botEnginePhysics.getRpm();
 
 			long timeMili = (System.currentTimeMillis() - startTime);
 			/*
@@ -306,6 +312,7 @@ public class GameScreenState extends AbstractScreenController implements
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
 		} else {
+			botEnginePhysics.setBreaking(true);
 			// Afficher le compte à rebour
 			long time = System.currentTimeMillis() - startTime;
 			if (time > 5000) {
@@ -367,6 +374,33 @@ public class GameScreenState extends AbstractScreenController implements
 					player.getNode().getWorldTranslation());
 		}
 
+	}
+	
+	private void reset() {
+		player.setPhysicsLocation(new Vector3f(0, -37, 500));
+		player.setPhysicsRotation(new Matrix3f());
+		player.setLinearVelocity(Vector3f.ZERO);
+		player.setAngularVelocity(Vector3f.ZERO);
+		playerEnginePhysics.setGear(1);
+		player.resetSuspension();
+		audio_motor.playStartSound();
+		
+		playerEnginePhysics.setSpeed(0);
+		botEnginePhysics.setSpeed(0);
+		botEnginePhysics.setRpm(1000);
+		playerEnginePhysics.setRpm(1000);
+
+
+		bot.setPhysicsLocation(new Vector3f(10, -37, 500));
+		bot.setPhysicsRotation(new Matrix3f());
+		bot.setLinearVelocity(Vector3f.ZERO);
+		bot.setAngularVelocity(Vector3f.ZERO);
+		botEnginePhysics.setGear(1);
+		bot.resetSuspension();
+		
+		startTime = System.currentTimeMillis();
+		runIsOn = false;
+		needReset = false;
 	}
 
 	@Override
@@ -612,21 +646,8 @@ public class GameScreenState extends AbstractScreenController implements
 		} else if (binding.equals("Reset")) {
 			if (value) {
 				System.out.println("Reset");
-				player.setPhysicsLocation(new Vector3f(0, -37, 500));
-				player.setPhysicsRotation(new Matrix3f());
-				player.setLinearVelocity(Vector3f.ZERO);
-				player.setAngularVelocity(Vector3f.ZERO);
-				playerEnginePhysics.setGear(1);
-				player.resetSuspension();
-				audio_motor.playStartSound();
-
-				bot.setPhysicsLocation(new Vector3f(10, -37, 500));
-				bot.setPhysicsRotation(new Matrix3f());
-				bot.setLinearVelocity(Vector3f.ZERO);
-				bot.setAngularVelocity(Vector3f.ZERO);
-				botEnginePhysics.setGear(1);
-				bot.resetSuspension();
-			} else {
+				// XXX: reset
+				needReset = true;
 			}
 		} else if (binding.equals("GearUp")) {
 			if (value) {
@@ -644,7 +665,6 @@ public class GameScreenState extends AbstractScreenController implements
 
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
-		// TODO Auto-generated method stub
 		if (binding.equals("Throttle")) {
 			initialRev += 400;
 

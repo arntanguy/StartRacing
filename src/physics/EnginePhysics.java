@@ -154,4 +154,8 @@ public class EnginePhysics {
 	public CarProperties getCarProperties() {
 		return p;
 	}
+
+	public void setBreaking(boolean b) {
+		isBreaking = b;
+	}
 }

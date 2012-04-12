@@ -16,6 +16,7 @@ public class EnginePhysics {
 	 */
 	private int gear = 1;
 	private double speed = 0;
+	private int rpm;
 
 	private long rpmTimer = 0;
 
@@ -26,6 +27,8 @@ public class EnginePhysics {
 
 	public EnginePhysics(CarProperties prop) {
 		this.p = prop;
+		
+		rpm = p.idleRpm;
 	}
 
 	/**
@@ -106,6 +109,15 @@ public class EnginePhysics {
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
+	
+	/**
+	 * Set the vehicule rpm. Use it as a kick starting when the vehicule is not moving wet.
+	 * @param rpm
+	 * 				The rpm of the engine
+	 */
+	public void setRpm(int rpm) 	{
+		this.rpm = rpm;
+	}
 
 	/**
 	 * Gets the speed of the internal wheel of the engine
@@ -128,11 +140,15 @@ public class EnginePhysics {
 	 * @return The force generated (in Newtons)
 	 */
 	public double getForce() {
-		if (!isBreaking)
-			return p.getTorque(getRpm())
-					* p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
-		else
+		if (!isBreaking)	{
+			if (speed != 0)	{
+				rpm = getRpm();
+			}
+			return p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
+		}
+		else	{
 			return 0;
+		}
 	}
 
 	public CarProperties getCarProperties() {

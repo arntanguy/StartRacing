@@ -52,13 +52,19 @@ public class audioRender {
 
 	public void playStartSound()	{
 		AudioNode sample = extraChan.get("start");
-		sample.setVolume(0.3f);
+		sample.setVolume(0.6f);
 		sample.playInstance();
 	}
 
 	public void gearUp()	{
 		AudioNode sample = extraChan.get("up");
-		sample.setVolume(0.3f);
+		sample.setVolume(1f);
+		sample.playInstance();
+	}
+	
+	public void playStartBeep()	{
+		AudioNode sample = extraChan.get("beep");
+		sample.setVolume(1f);
 		sample.playInstance();
 	}
 

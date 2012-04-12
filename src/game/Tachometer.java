@@ -46,8 +46,8 @@ public class Tachometer {
 		tachometerNeedleElement = screen.findElementByName("tachometerNeedle");
 		screen.findElementByName("tachometer").getRenderer(ImageRenderer.class)
 				.setImage(tachometer);
-		tachometerNeedleElement.getRenderer(ImageRenderer.class).setImage(
-				tachometerNeedle);
+		//tachometerNeedleElement.getRenderer(ImageRenderer.class).setImage(
+		//		tachometerNeedle);
 	}
 
 	public void setRpm(int rpm) {

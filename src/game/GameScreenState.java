@@ -551,7 +551,7 @@ public class GameScreenState extends AbstractScreenController implements
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
 //		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_LEFT)); // frein
-//		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RIGHT));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_LCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 

@@ -380,7 +380,7 @@ public class GameScreenState extends AbstractScreenController implements
 	}
 	
 	private void reset() {
-		player.setPhysicsLocation(new Vector3f(0, 27, 500));
+		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		player.setPhysicsRotation(new Matrix3f());
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
@@ -394,7 +394,7 @@ public class GameScreenState extends AbstractScreenController implements
 		playerEnginePhysics.setRpm(1000);
 
 
-		bot.setPhysicsLocation(new Vector3f(10, 27, 500));
+		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.setPhysicsRotation(new Matrix3f());
 		bot.setLinearVelocity(Vector3f.ZERO);
 		bot.setAngularVelocity(Vector3f.ZERO);
@@ -496,7 +496,7 @@ public class GameScreenState extends AbstractScreenController implements
 
 		// Rendre le terrain physique
 		
-		terrain.setLocalScale(3f, 2f, 2f);
+		terrain.setLocalScale(3f, 2f, 4f);
 		
 		terrainPhys = new RigidBodyControl(0.0f);
 		terrain.addControl(terrainPhys);
@@ -591,12 +591,12 @@ public class GameScreenState extends AbstractScreenController implements
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
-		player.setPhysicsLocation(new Vector3f(0, 27, 500));
+		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 
 		botCarProperties = new BMWM3Properties();
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
-		bot.setPhysicsLocation(new Vector3f(10, 27, 500));
+		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		botIA = new IA(botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());

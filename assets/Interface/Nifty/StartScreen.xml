@@ -56,8 +56,16 @@
 		<layer id="background" childLayout="center">
 		</layer>
 		<layer id="foreground" backgroundColor="#0000" childLayout="vertical">
-			<panel id="panel_top" width="100%" height="70%" childLayout="vertical"
-				backgroundColor="#0000">
+			<panel id="panel_top" width="100%" height="70%" childLayout="horizontal"
+				backgroundColor="#0000" align="center">
+				<panel height="30%" width="100%" childLayout="horizontal">
+					<panel width="80%"></panel>
+					<panel childLayout="vertical" width="20%">
+						<text text="Temps" font="Interface/Fonts/Default.fnt" width="100%" />
+						<text id="timer" text="0" font="Interface/Fonts/DS-Digital.fnt"
+							width="100%" height="100%" />
+					</panel>
+				</panel>
 				<!-- spacer -->
 			</panel>
 			<panel id="panel_bottom" width="100%" height="30%" childLayout="horizontal"
@@ -86,8 +94,8 @@
 					</panel>
 					<panel childLayout="vertical">
 						<panel id="gear_panel" childLayout="vertical">
-							<text text="Vitesse" font="Interface/Fonts/Default.fnt" width="100%"
-								height="10%" />
+							<text text="Vitesse" font="Interface/Fonts/Default.fnt"
+								width="100%" height="10%" />
 							<text id="digital_gear" font="Interface/Fonts/DS-Digital.fnt"
 								size="20" text="0" width="100%" height="100%" />
 						</panel>

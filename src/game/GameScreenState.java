@@ -45,6 +45,7 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
 public class GameScreenState extends AbstractScreenController implements ActionListener {
@@ -242,13 +243,16 @@ public class GameScreenState extends AbstractScreenController implements ActionL
 		int botRpm = (int) botEnginePhysics.getRpm();
 
 		long timeMili = (System.currentTimeMillis() - startTime);
-		String timer = String.format(
+		/*String timer = String.format(
 				"%d min, %d sec %d ",
 				TimeUnit.MILLISECONDS.toMinutes(timeMili),
 				TimeUnit.MILLISECONDS.toSeconds(timeMili)
 						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
-								.toMinutes(timeMili)), (timeMili % 1000) / 10);
+								.toMinutes(timeMili)), (timeMili % 1000) / 10);*/
 
+		String sTimer =	String.format("%d : %d", TimeUnit.MILLISECONDS.toSeconds(timeMili), (timeMili % 1000) / 10);
+
+		screen.findElementByName("timer").getRenderer(TextRenderer.class).setText(sTimer);
 		// cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
 		
 		//tachometer.setRpm(playerRpm);

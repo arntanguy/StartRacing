@@ -82,6 +82,7 @@ public class GameScreenState extends AbstractScreenController implements
 
 	private PssmShadowRenderer pssmRenderer;
 	private long startTime = 0;
+	private long countDown = 0;
 
 	private audioRender audio_motor;
 
@@ -212,19 +213,19 @@ public class GameScreenState extends AbstractScreenController implements
 
 		LinkedHashMap<Integer, String> channels = new LinkedHashMap<Integer, String>();
 		channels.put(1000, "Models/Default/1052_P.wav");
-		// channels.put(1126, "Models/Default/1126_P.wav");
-		// channels.put(1205, "Models/Default/1205_P.wav");
-		// channels.put(1289, "Models/Default/1289_P.wav");
-		// channels.put(1380, "Models/Default/1380_P.wav");
-		// channels.put(1476, "Models/Default/1476_P.wav");
-		// channels.put(1579, "Models/Default/1579_P.wav");
-		// channels.put(1690, "Models/Default/1690_P.wav");
-		// channels.put(1808, "Models/Default/1808_P.wav");
-		// channels.put(1935, "Models/Default/1935_P.wav");
-		// channels.put(2070, "Models/Default/2070_P.wav");
-		// channels.put(2215, "Models/Default/2215_P.wav");
-		// channels.put(2370, "Models/Default/2370_P.wav");
-		// channels.put(2536, "Models/Default/2536_P.wav");
+//		 channels.put(1126, "Models/Default/1126_P.wav");
+//		 channels.put(1205, "Models/Default/1205_P.wav");
+//		 channels.put(1289, "Models/Default/1289_P.wav");
+//		 channels.put(1380, "Models/Default/1380_P.wav");
+//		 channels.put(1476, "Models/Default/1476_P.wav");
+//		 channels.put(1579, "Models/Default/1579_P.wav");
+//		 channels.put(1690, "Models/Default/1690_P.wav");
+//		 channels.put(1808, "Models/Default/1808_P.wav");
+//		 channels.put(1935, "Models/Default/1935_P.wav");
+//		 channels.put(2070, "Models/Default/2070_P.wav");
+//		 channels.put(2215, "Models/Default/2215_P.wav");
+//		 channels.put(2370, "Models/Default/2370_P.wav");
+//		 channels.put(2536, "Models/Default/2536_P.wav");
 		channels.put(2714, "Models/Default/2714_P.wav");
 		// channels.put(2904, "Models/Default/2904_P.wav");
 		// channels.put(3107, "Models/Default/3107_P.wav");
@@ -232,7 +233,7 @@ public class GameScreenState extends AbstractScreenController implements
 		// channels.put(3557, "Models/Default/3557_P.wav");
 		// channels.put(3806, "Models/Default/3806_P.wav");
 		// channels.put(4073, "Models/Default/4073_P.wav");
-		// channels.put(4358, "Models/Default/4358_P.wav");
+		 channels.put(4358, "Models/Default/4358_P.wav");
 		// channels.put(4663, "Models/Default/4663_P.wav");
 		// channels.put(4989, "Models/Default/4989_P.wav");
 		// channels.put(5338, "Models/Default/5338_P.wav");
@@ -255,8 +256,6 @@ public class GameScreenState extends AbstractScreenController implements
 		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
-
-		startTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -264,18 +263,20 @@ public class GameScreenState extends AbstractScreenController implements
 		/** any main loop action happens here */
 
 		
-		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
-		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
-
-		playerEnginePhysics
-				.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
-		botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
 		int playerRpm = initialRev;
 
-		if(needReset) reset();
+		if(needReset) 	{
+			reset();
+			return;
+		}
 
+		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
+		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
 		if (runIsOn) {
+			
+			playerEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
+			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
 			// Test if the player is first
 			// if (finishCell.getOverlappingCount() > 0) {
@@ -314,24 +315,27 @@ public class GameScreenState extends AbstractScreenController implements
 		} else {
 			botEnginePhysics.setBreaking(true);
 			// Afficher le compte à rebour
-			long time = System.currentTimeMillis() - startTime;
-			if (time > 5000) {
-				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("");
-				runIsOn = true;
-				audio_motor.playStartBeep();
-				playerEnginePhysics.setRpm(initialRev);
-				startTime = System.currentTimeMillis();
-			} else if (time > 4000) {
-				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("1");
+			long time = System.currentTimeMillis() - countDown;
+			
+			if (countDown != 0) {
+				if (time > 5000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("");
+					runIsOn = true;
+					audio_motor.playStartBeep();
+					playerEnginePhysics.setRpm(initialRev);
+					startTime = System.currentTimeMillis();
+				} else if (time > 4000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("1");
 
-			} else if (time > 3000) {
-				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("2");
-			} else if (time > 2000) {
-				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("3");
+				} else if (time > 3000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("2");
+				} else if (time > 2000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("3");
+				}
 			}
 		}
 		// tachometer.setRpm(playerRpm);
@@ -388,6 +392,8 @@ public class GameScreenState extends AbstractScreenController implements
 		player.resetSuspension();
 		audio_motor.playStartSound();
 		
+		player.accelerate(0);
+		bot.accelerate(0);
 		playerEnginePhysics.setSpeed(0);
 		botEnginePhysics.setSpeed(0);
 		botEnginePhysics.setRpm(1000);
@@ -401,9 +407,10 @@ public class GameScreenState extends AbstractScreenController implements
 		botEnginePhysics.setGear(1);
 		bot.resetSuspension();
 		
-		startTime = System.currentTimeMillis();
 		runIsOn = false;
 		needReset = false;
+		startTime = 0;
+		countDown = 0;
 	}
 
 	@Override
@@ -610,11 +617,6 @@ public class GameScreenState extends AbstractScreenController implements
 	}
 
 	public void onAction(String binding, boolean value, float tpf) {
-		// Initialisation du timer
-		if (startTime == 0) {
-			startTime = System.currentTimeMillis();
-		}
-
 		if (binding.equals("Lefts")) {
 			if (value) {
 				steeringValue += .5f;
@@ -678,6 +680,10 @@ public class GameScreenState extends AbstractScreenController implements
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
+			if (countDown == 0)	{
+				countDown = System.currentTimeMillis();
+			}
+		
 			initialRev += 400;
 
 			int redline = playerCarProperties.getRedline();

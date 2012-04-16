@@ -1,7 +1,9 @@
-<nifty>
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
 	<useControls filename="nifty-default-controls.xml" />
 	<useStyles filename="nifty-default-styles.xml" />
-	<!-- <registerSound id="playSound" filename="Interface/Sounds/ACDC.wav" 
+	 <!--<registerSound id="playSound" filename="Interface/Sounds/ACDC.wav" 
 		/> -->
 
 	<screen id="start" controller="game.StartScreenState">
@@ -39,7 +41,6 @@
 					<control name="button" label="Quit" id="QuitButton" align="center"
 						valign="center" width="100%" height="100%"
 						font="Interface/Fonts/ArialBlack_60.fnt">
-						s
 						<interact onClick="quitGame()" />
 						<!-- <effect> <onGetFocus name="playSound" sound="playSound" /> </effect> -->
 					</control>
@@ -64,8 +65,7 @@
 				align="center" backgroundColor="#0000">
 				<!-- <panel id="tachometer" width="30%" height="100%" childLayout="vertical" 
 					visible="false"> </panel> -->
-				<panel childLayout="horizontal" backgroundColor="#582900"
-					width="35%">
+				<panel childLayout="horizontal" backgroundColor="#5829" width="35%">
 					<panel childLayout="vertical" align="center">
 						<panel id="shiftlight_panel" width="100%" height="50px"
 							childLayout="vertical">

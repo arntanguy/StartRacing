@@ -17,7 +17,10 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsCollisionEvent;
+import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.ChaseCamera;
@@ -50,7 +53,7 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
 public class GameScreenState extends AbstractScreenController implements
-		ActionListener, AnalogListener {
+		ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	private ViewPort viewPort;
 	private Node rootNode;
@@ -199,14 +202,14 @@ public class GameScreenState extends AbstractScreenController implements
 		terrain.setShadowMode(ShadowMode.Receive);
 
 		// Init finish cell detection
-		finishCell = new GhostControl(new BoxCollisionShape(new Vector3f(20, 1,
-				1)));
+		finishCell =  new GhostControl(new BoxCollisionShape(new Vector3f(40, 1, 1)));
 		finishNode = new Node("finish zone");
 		finishNode.addControl(finishCell);
-		finishNode.move(0, -76, -98);
-
+		finishNode.move(0, 27, 300);
+		
 		rootNode.attachChild(finishNode);
 		getPhysicsSpace().add(finishCell);
+		getPhysicsSpace().addCollisionListener(this);
 
 		// Init audio
 		audio_motor = new audioRender(assetManager, player.getNode());
@@ -551,7 +554,7 @@ public class GameScreenState extends AbstractScreenController implements
 		// bulletAppState.getPhysicsSpace().add(floor_phy);
 		// //bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0, -9.81f,
 		// 0));
-		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+		 bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
 	private void setupKeys() {
@@ -707,5 +710,18 @@ public class GameScreenState extends AbstractScreenController implements
 			}
 		}
 
+	}
+
+	@Override
+	public void collision(PhysicsCollisionEvent arg0) {
+		if (finishCell.getOverlappingObjects().contains(player))	{
+			audio_motor.playStartBeep();
+			
+			long timeMili = (System.currentTimeMillis() - startTime);
+			System.out.println(String.format("%d : %d",
+					TimeUnit.MILLISECONDS.toSeconds(timeMili),
+					(timeMili % 1000) / 10));
+		}
+		
 	}
 }

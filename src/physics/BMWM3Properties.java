@@ -26,7 +26,7 @@ public class BMWM3Properties extends CarProperties {
 		gears.setOptimalShiftPoint(3, 7996);
 		gears.setOptimalShiftPoint(4, 7996);
 		gears.setOptimalShiftPoint(5, 7996);
-
+		
 		finalGearRatio = 2.93;
 		tireRadius = 0.3266;
 

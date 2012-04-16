@@ -25,8 +25,8 @@ public class ShiftlightLed {
 	private final int margin = 500;
 	private final int optimalMargin = 40;
 
-	public ShiftlightLed(Nifty nifty, Screen screen, CarProperties carProperties,
-			EnginePhysics enginePhysics) {
+	public ShiftlightLed(Nifty nifty, Screen screen,
+			CarProperties carProperties, EnginePhysics enginePhysics) {
 		this.nifty = nifty;
 		this.screen = screen;
 		this.carProperties = carProperties;
@@ -50,20 +50,31 @@ public class ShiftlightLed {
 		int optimalShiftPoint = (int) carProperties
 				.getOptimalShiftPoint(enginePhysics.getGear());
 
-		if (rpm < optimalShiftPoint - margin) {
-			shiftlightElement.getRenderer(ImageRenderer.class).setImage(
-					shiftlightGrey);
-		} else if (rpm >= optimalShiftPoint - optimalMargin
-				&& rpm <= optimalShiftPoint + optimalMargin) {
-			shiftlightElement.getRenderer(ImageRenderer.class).setImage(
-					shiftlightBlue);
-		} else if (rpm >= optimalShiftPoint - margin
-				&& rpm <= optimalShiftPoint + margin) {
-			shiftlightElement.getRenderer(ImageRenderer.class).setImage(
-					shiftlightGreen);
-		} else if (rpm > optimalShiftPoint + margin) {
-			shiftlightElement.getRenderer(ImageRenderer.class).setImage(
-					shiftlightRed);
+		if (enginePhysics.getGear() == carProperties.getNbGears()) {
+			if (rpm >= carProperties.getRedline()) {
+				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+						shiftlightRed);
+			} else {
+				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+						shiftlightGrey);
+			}
+		} else {
+
+			if (rpm < optimalShiftPoint - margin) {
+				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+						shiftlightGrey);
+			} else if (rpm >= optimalShiftPoint - optimalMargin
+					&& rpm <= optimalShiftPoint + optimalMargin) {
+				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+						shiftlightBlue);
+			} else if (rpm >= optimalShiftPoint - margin
+					&& rpm <= optimalShiftPoint + margin) {
+				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+						shiftlightGreen);
+			} else if (rpm > optimalShiftPoint + margin) {
+				shiftlightElement.getRenderer(ImageRenderer.class).setImage(
+						shiftlightRed);
+			}
 		}
 	}
 }

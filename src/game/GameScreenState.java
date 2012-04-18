@@ -76,6 +76,9 @@ public class GameScreenState extends AbstractScreenController implements
 	private float accelerationValue = 0;
 
 	private boolean runIsOn;
+	private boolean playerFinish;
+	private boolean botFinish;
+	private boolean runFinish;
 
 	private ChaseCamera chaseCam;
 
@@ -84,8 +87,14 @@ public class GameScreenState extends AbstractScreenController implements
 	private RigidBodyControl terrainPhys;
 
 	private PssmShadowRenderer pssmRenderer;
+
 	private long startTime = 0;
 	private long countDown = 0;
+	private long timerStopPlayer = 0;
+	private long timerStopBot = 0;
+
+	private long timePlayer;
+	private long timeBot;
 
 	private audioRender audio_motor;
 
@@ -133,6 +142,9 @@ public class GameScreenState extends AbstractScreenController implements
 		stateManager = app.getStateManager();
 		stateManager.attach(bulletAppState);
 		runIsOn = false;
+		runFinish = false;
+		playerFinish = false;
+		botFinish = false;
 		initialRev = 0;
 		this.isBreaking = false;
 		this.needReset = false;
@@ -205,7 +217,7 @@ public class GameScreenState extends AbstractScreenController implements
 		finishCell =  new GhostControl(new BoxCollisionShape(new Vector3f(40, 1, 1)));
 		finishNode = new Node("finish zone");
 		finishNode.addControl(finishCell);
-		finishNode.move(0, 27, 300);
+		finishNode.move(0, 27, 298);
 		
 		rootNode.attachChild(finishNode);
 		getPhysicsSpace().add(finishCell);
@@ -273,6 +285,40 @@ public class GameScreenState extends AbstractScreenController implements
 			reset();
 			return;
 		}
+		
+		// Arrêter le joueur s'il a passé la ligne d'arrivée
+		if (playerFinish && (System.currentTimeMillis() - timerStopPlayer > 1000))	{
+			player.accelerate(0);
+			player.setLinearVelocity(Vector3f.ZERO);
+			
+		}
+		if (botFinish && (System.currentTimeMillis() - timerStopBot > 1000))	{
+			bot.accelerate(0);
+			bot.setLinearVelocity(Vector3f.ZERO);
+		}
+		
+		// Tester si le round est fini
+		if (playerFinish && botFinish)	{
+			String text = "";
+			if (timePlayer < timeBot)	{
+				text = "Gagne !\n ";
+			}
+			else	{
+				text = "Perdu !\n ";
+			}
+			text += String.format("Joueur:  %d : %d\n",
+					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
+					(timePlayer % 1000) / 10);
+			text += String.format("Bot:  %d : %d",
+					TimeUnit.MILLISECONDS.toSeconds(timeBot),
+					(timeBot % 1000) / 10);
+			
+			screen.findElementByName("startTimer")
+			.getRenderer(TextRenderer.class).setText(text);
+			
+			runFinish = true;
+			runIsOn = false;
+		}
 
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
@@ -315,7 +361,7 @@ public class GameScreenState extends AbstractScreenController implements
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
-		} else {
+		} else if (!runFinish) {
 			botEnginePhysics.setBreaking(true);
 			// Afficher le compte à rebour
 			long time = System.currentTimeMillis() - countDown;
@@ -412,8 +458,14 @@ public class GameScreenState extends AbstractScreenController implements
 		
 		runIsOn = false;
 		needReset = false;
+		runFinish = false;
+		playerFinish = false;
+		botFinish = false;
 		startTime = 0;
 		countDown = 0;
+		
+		screen.findElementByName("startTimer")
+		.getRenderer(TextRenderer.class).setText("Ready ?");
 	}
 
 	@Override
@@ -714,13 +766,26 @@ public class GameScreenState extends AbstractScreenController implements
 
 	@Override
 	public void collision(PhysicsCollisionEvent arg0) {
-		if (finishCell.getOverlappingObjects().contains(player))	{
+		if (finishCell.getOverlappingObjects().contains(player) && !playerFinish)	{
 			audio_motor.playStartBeep();
 			
-			long timeMili = (System.currentTimeMillis() - startTime);
-			System.out.println(String.format("%d : %d",
-					TimeUnit.MILLISECONDS.toSeconds(timeMili),
-					(timeMili % 1000) / 10));
+			timePlayer = (System.currentTimeMillis() - startTime);
+			System.out.println(String.format("player : %d : %d",
+					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
+					(timePlayer % 1000) / 10));
+		
+			
+			timerStopPlayer = System.currentTimeMillis();
+			playerFinish = true;
+		}
+		if (finishCell.getOverlappingObjects().contains(bot) && !botFinish)	{
+			timeBot = (System.currentTimeMillis() - startTime);
+			System.out.println(String.format("player : %d : %d",
+					TimeUnit.MILLISECONDS.toSeconds(timeBot),
+					(timeBot % 1000) / 10));
+			
+			timerStopBot = System.currentTimeMillis();
+			botFinish = true;
 		}
 		
 	}

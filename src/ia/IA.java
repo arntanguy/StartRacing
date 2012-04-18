@@ -92,6 +92,17 @@ public class IA {
 					: 1.d;
 	}
 
+	private boolean isProba(double proba) {
+		int lower = 0;
+		int higher = 100;
+
+		int nb = (int) (100 * proba);
+
+		int random = (int) (Math.random() * (higher - lower)) + lower;
+
+		return random < nb;
+	}
+	
 	/**
 	 * This method will make the bot change gear according to a parabolic
 	 * probability curve. The closer it gets to the optimal shift point, the
@@ -107,17 +118,19 @@ public class IA {
 			int gear = enginePhysics.getGear();
 			double optimalShiftPoint = carProperties.getOptimalShiftPoint(gear);
 			double rpm = enginePhysics.getRpm();
-
+			
 			if (rpm >= optimalShiftPoint - zone) {
 				if (rpm <= carProperties.getRedline()) {
-
 					if (isProba(proba(rpm, optimalShiftPoint))) {
 						enginePhysics.incrementGear();
 						System.out.println("Shifting to gear "
 								+ enginePhysics.getGear() + " at RPM: " + rpm);
 					}
 				}
-
+			} else if(gear != 1 && rpm <= optimalShiftPoint/5) {
+					enginePhysics.decrementGear();
+					System.out.println("Shifting to gear "
+							+ enginePhysics.getGear() + " at RPM: " + rpm);
 			}
 			if (rpm > carProperties.getRedline() && isProba(redlineShiftProba)) {
 				enginePhysics.incrementGear();
@@ -168,14 +181,4 @@ public class IA {
 		this.iaCar.steer(-angle(iaForward2, targetDirection2));
 	}
 
-	private boolean isProba(double proba) {
-		int lower = 0;
-		int higher = 100;
-
-		int nb = (int) (100 * proba);
-
-		int random = (int) (Math.random() * (higher - lower)) + lower;
-
-		return random < nb;
-	}
 }

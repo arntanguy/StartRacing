@@ -388,7 +388,7 @@ public class GameScreenState extends AbstractScreenController implements
 		// tachometer.setRpm(playerRpm);
 		digitalTachometer.setText(((Integer) playerRpm).toString());
 		digitalSpeed.setText(((Integer) playerSpeed).toString());
-		digitalGear.setText(((Integer) playerEnginePhysics.getGear())
+		digitalGear.setText(((Integer) botEnginePhysics.getGear())
 				.toString());
 		shiftlight.setRpm(playerRpm);
 

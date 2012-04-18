@@ -262,8 +262,6 @@ public class GameScreenState extends AbstractScreenController implements
 	public void update(float tpf) {
 		/** any main loop action happens here */
 
-		
-
 		int playerRpm = initialRev;
 
 		if(needReset) 	{
@@ -347,6 +345,7 @@ public class GameScreenState extends AbstractScreenController implements
 
 		if (runIsOn) {
 			botIA.act();
+			botIA.target(player);
 			float force = -(float) playerEnginePhysics.getForce() / 5;
 			player.accelerate(2, force*2);
 			player.accelerate(3, force*2);
@@ -390,6 +389,7 @@ public class GameScreenState extends AbstractScreenController implements
 		player.setAngularVelocity(Vector3f.ZERO);
 		playerEnginePhysics.setGear(1);
 		player.resetSuspension();
+		player.steer(0);
 		audio_motor.playStartSound();
 		
 		player.accelerate(0);
@@ -406,6 +406,7 @@ public class GameScreenState extends AbstractScreenController implements
 		bot.setAngularVelocity(Vector3f.ZERO);
 		botEnginePhysics.setGear(1);
 		bot.resetSuspension();
+		bot.steer(0);
 		
 		runIsOn = false;
 		needReset = false;
@@ -604,7 +605,7 @@ public class GameScreenState extends AbstractScreenController implements
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
-		botIA = new IA(botEnginePhysics);
+		botIA = new IA(bot, botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());
 		rootNode.attachChild(bot.getNode());

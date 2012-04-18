@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<useStyles filename="nifty-default-styles.xml" />
+	<useControls filename="nifty-default-controls.xml" />
+	
+	<screen id="start" controller="game.StartScreenState">
+		<layer id="background" childLayout="center">
+			<image filename="Interface/Nifty/start_background.jpg"
+				width="100%" height="100%" />
+		</layer>
+		<layer id="foreground" childLayout="center">
+			<panel id="centerWrapper" height="100%" childLayout="vertical" backgroundColor="#0007">
+				<text font="aurulent-sans-16.fnt" height="40%" align="center" color="#ffff"
+					text="Hello World!" />
+					
+				<control id="freeRunButton" align="center" name="button" label="Course Libre"
+					width="32%" height="11%">
+					<interact onClick="startGame(free)" />
+				</control>
+				<panel height="0.5%" />
+				
+				<control id="halfMileButton" align="center" name="button" label="Course Demi-Mile"
+					width="32%" height="11%">
+					<interact onClick="startGame(half)" />
+				</control>
+				<panel height="0.5%" />
+				
+				<control id="quarterMileButton" align="center" name="button" label="Course Quart de Mile"
+					width="32%" height="11%">
+					<interact onClick="startGame(quarter)" />
+				</control>
+				<panel height="0.5%" />
+				
+				<control id="optionButton" align="center" name="button" label="Options"
+					width="32%" height="11%">
+					<interact onClick="showQuitPopup(true)" />
+				</control>
+				<panel height="0.5%" />
+				
+				<control id="quitButton" align="center" name="button" label="Quitter"
+					width="32%" height="11%">
+					<interact onClick="quitGame()" />
+				</control>
+			</panel>
+			<popup id="exitPopup" childLayout="center">
+				<text text="HELLO" />
+			</popup>
+		</layer>
+	</screen>
+</nifty>

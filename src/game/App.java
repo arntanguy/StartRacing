@@ -1,7 +1,5 @@
 package game;
 
-import java.awt.Toolkit;
-
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
@@ -16,18 +14,21 @@ public class App extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		
+		AppSettings set = new AppSettings(true);
+		
 		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
 				audioRenderer, guiViewPort);
 		nifty = niftyDisplay.getNifty();
-		nifty.addXml("Interface/Nifty/StartScreen.xml");
 		
-		/* ******* DEBUG ******* */
-		if (!validateXML()) {
-			this.destroy();
-		}
+		validateXML();
 		
+		set.setHeight(760);
+		set.setWidth(1024);
+		set.setTitle(StringStore.APP_TITLE);
+		this.setSettings(set);
+        
 		gotoStart();
-		
+
 		// disable the fly cam
 		flyCam.setEnabled(false);
 		 	
@@ -37,6 +38,7 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoGame() {
+		nifty.addXml("Interface/Nifty/GameScreen.xml");
         nifty.gotoScreen("hud");
         GameScreenState gameScreenController = (GameScreenState) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(gameScreenController);
@@ -44,6 +46,8 @@ public class App extends SimpleApplication {
     }
  
     public void gotoStart() {
+//    	nifty.addXml("Interface/Nifty/DevTest.xml");
+    	nifty.addXml("Interface/Nifty/StartScreen.xml");
         nifty.gotoScreen("start");
         StartScreenState startScreenController = (StartScreenState) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(startScreenController);
@@ -52,7 +56,8 @@ public class App extends SimpleApplication {
     public boolean validateXML() {
     	try {
     		nifty.validateXml("Interface/Nifty/StartScreen.xml");
-    		
+//    		nifty.validateXml("Interface/Nifty/GameScreen.xml");
+//    		nifty.validateXml("Interface/Nifty/DevTest.xml");
     		return true;
     	} catch(Exception e) {
     		System.out.println("XML Exception: " + e.getMessage());

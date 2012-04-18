@@ -137,11 +137,17 @@ public class IA {
 	private static float orientedAngle(Vector2f v1, Vector2f v2) {
 		v1 = v1.normalize();
 		v2 = v2.normalize();
-		float ps = v1.x * v2.x + v1.y * v2.y;
-		float det = v1.x * v2.y - v1.y * v2.x;
+		float ps = v1.dot(v2);
+		float det = v1.determinant(v2);
 		float angle = FastMath.acos(ps);
-		angle = (det < 0) ? -angle : angle;
-		return angle;
+		return (det < 0) ? -angle : angle;
+		
+	}
+	
+	public static float angle(Vector2f v1, Vector2f v2) {
+		float angle = orientedAngle(v1, v2);
+		angle = (float) ((angle < 0.5) ? angle : 0.5);
+		return (float) ((angle < -0.5) ? -0.5 : angle); 
 	}
 
 	/**
@@ -151,29 +157,15 @@ public class IA {
 	 *            the targetted car
 	 */
 	public void target(Car targetCar) {
-		Vector3f targetPos = targetCar.getPhysicsLocation();
-		Vector3f iaPos = iaCar.getPhysicsLocation();
-
 		Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
 				iaCar.getForwardVector(null)).normalize();
-		Vector3f targetDirection = targetPos.subtract(iaPos).normalize();
+		Vector3f targetDirection = targetCar.getPhysicsLocation().subtract(iaCar.getPhysicsLocation()).normalize();
 
 		Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
 		Vector2f targetDirection2 = new Vector2f(targetDirection.x,
 				targetDirection.z);
-
-		System.out.println("FW: " + iaForward);
-		System.out.println("TARGET: " + targetDirection);
-		float angle = (float) (iaForward.angleBetween(targetDirection));
-		if (angle < Math.PI / 2) {
-			System.out.println("Derrière");
-			angle = orientedAngle(iaForward2, targetDirection2);
-		} else {
-			angle = 0;
-			System.out.println("Devant");
-		}
-		this.iaCar.steer(-angle);
-		System.out.println("ANGLE: " + angle);
+		
+		this.iaCar.steer(-angle(iaForward2, targetDirection2));
 	}
 
 	private boolean isProba(double proba) {

@@ -40,7 +40,7 @@ public class App extends SimpleApplication {
 	public void gotoGame() {
 		nifty.addXml("Interface/Nifty/GameScreen.xml");
         nifty.gotoScreen("hud");
-        GameScreenState gameScreenController = (GameScreenState) nifty.getCurrentScreen().getScreenController();
+        AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(gameScreenController);
  
     }

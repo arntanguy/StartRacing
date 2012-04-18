@@ -1,6 +1,8 @@
 package game;
 
+import ia.IA;
 import physics.CarProperties;
+import physics.EnginePhysics;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
@@ -26,10 +28,17 @@ public class Car extends VehicleControl {
 
 	private float wheelRadius;
 
+	private EnginePhysics enginePhysics;
+
+	private IA ia;
+
 	public Car(AssetManager assetManager, CarProperties properties) {
 		super();
 		this.assetManager = assetManager;
 		this.properties = properties;
+		this.enginePhysics = new EnginePhysics(properties);
+		this.ia = new IA(this, enginePhysics);
+
 		buildPlayer();
 	}
 
@@ -128,5 +137,17 @@ public class Car extends VehicleControl {
 
 	public Node getNode() {
 		return carNode;
+	}
+
+	public CarProperties getProperties() {
+		return properties;
+	}
+
+	public EnginePhysics getEnginePhysics() {
+		return enginePhysics;
+	}
+
+	public IA getIA() {
+		return ia;
 	}
 }

@@ -8,7 +8,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
 
-public class audioRender {
+public class AudioRender {
 	private LinkedHashMap<Integer, AudioNode> channels;
 	private HashMap<String, AudioNode> extraChan;
 	private AssetManager assetM;
@@ -17,7 +17,7 @@ public class audioRender {
 	private AudioNode prevLow;
 	private AudioNode prevHigh;
 
-	public audioRender(AssetManager asset, Node player) {
+	public AudioRender(AssetManager asset, Node player) {
 		channels = new LinkedHashMap<Integer, AudioNode>();
 		extraChan = new HashMap<String, AudioNode>();
 

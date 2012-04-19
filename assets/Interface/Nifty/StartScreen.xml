@@ -15,7 +15,7 @@
 					
 				<control id="freeRunButton" align="center" name="button" label="Course Libre"
 					width="32%" height="11%">
-					<interact onClick="startGame(free)" />
+					<interact onClick="startFreeForAll()" />
 				</control>
 				<panel height="0.5%" />
 				

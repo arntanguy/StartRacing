@@ -15,8 +15,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
@@ -56,14 +54,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	private InputManager inputManager;
 
 	private BulletAppState bulletAppState;
-	protected PhysicsSpace physicsSpace;
 
 	protected AudioRender audio_motor;
 
 	protected Car player;
 	protected CarProperties playerCarProperties;
 	protected EnginePhysics playerEnginePhysics;
-	
+
 	protected boolean runIsOn;
 	protected boolean runFinish;
 
@@ -79,7 +76,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected long countDown = 0;
 
 	protected boolean soudIsActive = true;
-	//XXX: to improve with real engine physics
 	protected int initialRev;
 
 	protected AppStateManager stateManager;
@@ -90,7 +86,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected ShiftlightLed shiftlight;
 	protected boolean isBreaking;
 	protected long rpmTimer;
-	
 
 	protected boolean needReset;
 	private int accelerationValue;
@@ -124,7 +119,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	public void onStartScreen() {
 	}
 
-	
 	/******* Initialize game ******/
 	@Override
 	public void initialize(AppStateManager stateManager, Application a) {
@@ -143,7 +137,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		bulletAppState = new BulletAppState();
 		stateManager = app.getStateManager();
 		stateManager.attach(bulletAppState);
-		physicsSpace = getPhysicsSpace();
 		runIsOn = false;
 		runFinish = false;
 		initialRev = 0;
@@ -185,7 +178,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// map.setShadowMode(ShadowMode.Receive);
 		terrain.setShadowMode(ShadowMode.Receive);
 
-		physicsSpace.addCollisionListener(this);
+		getPhysicsSpace().addCollisionListener(this);
 
 		// Init audio
 		audio_motor = new AudioRender(assetManager, player.getNode());
@@ -234,7 +227,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
 	}
-	
 
 	private void buildPlayer() {
 		playerCarProperties = new BMWM3Properties();
@@ -243,7 +235,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		player = new Car(assetManager, playerCarProperties);
 		player.getNode().addControl(player);
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-
 
 		playerCarProperties = player.getProperties();
 		playerEnginePhysics = player.getEnginePhysics();
@@ -254,7 +245,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		initialRev = playerCarProperties.getIdleRpm();
 	}
-
 
 	public void initGround() {
 		/** 1. Create terrain material and load four textures into it. */
@@ -366,7 +356,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "Throttle");
 
 	}
-	
 
 	@Override
 	public void update(float tpf) {
@@ -383,16 +372,18 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		if (runIsOn) {
 			playerEnginePhysics.setSpeed(Math.abs(Conversion
 					.kmToMiles(playerSpeed)));
+			float force = -(float) playerEnginePhysics.getForce() / 5;
+			player.accelerate(2, force * 2);
+			player.accelerate(3, force * 2);
 		}
-		
-		//Update audio
+
+		// Update audio
 		if (soudIsActive) {
 			audio_motor.setRPM(playerRpm);
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
 	}
-	
 
 	protected void reset() {
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
@@ -418,7 +409,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.setText("Ready ?");
 	}
 
-	private PhysicsSpace getPhysicsSpace() {
+	protected PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
 
@@ -427,7 +418,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			if (value) {
 				player.setSteeringValue(.5f);
 			} else {
-				player.setSteeringValue(0.f);;
+				player.setSteeringValue(0.f);
+				;
 			}
 			player.steer(player.getSteeringValue());
 		} else if (binding.equals("Rights")) {

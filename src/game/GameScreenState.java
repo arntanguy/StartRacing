@@ -26,18 +26,18 @@ public class GameScreenState extends AbstractGameScreenState {
 	private CarProperties botCarProperties;
 	private EnginePhysics botEnginePhysics;
 	private IA botIA;
-	
+
 	protected GhostControl finishCell;
 	private Node finishNode;
 
 	private boolean playerFinish;
 	private boolean botFinish;
-	
+
 	private long timerStopPlayer = 0;
 	private long timerStopBot = 0;
 	private long timePlayer;
 	private long timeBot;
-	
+
 	public GameScreenState() {
 		super();
 	}
@@ -52,16 +52,15 @@ public class GameScreenState extends AbstractGameScreenState {
 
 	protected void initGame() {
 		super.initGame();
-		
+
 		buildBot();
 		buildFinishLine();
-		
+
 		playerFinish = false;
 		botFinish = false;
-		
-		
+
 	}
-	
+
 	protected void buildFinishLine() {
 		// Init finish cell detection
 		finishCell = new GhostControl(new BoxCollisionShape(new Vector3f(40, 1,
@@ -71,7 +70,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		finishNode.move(0, 27, 298);
 
 		rootNode.attachChild(finishNode);
-		physicsSpace.add(finishCell);
+		getPhysicsSpace().add(finishCell);
 	}
 
 	private void buildBot() {
@@ -82,19 +81,18 @@ public class GameScreenState extends AbstractGameScreenState {
 		botEnginePhysics = bot.getEnginePhysics();
 		botIA = bot.getIA();
 		rootNode.attachChild(bot.getNode());
-		physicsSpace.add(bot);
+		getPhysicsSpace().add(bot);
 	}
 
 	@Override
 	public void update(float tpf) {
 		/** any main loop action happens here */
-		if(needReset) 	{
+		if (needReset) {
 			reset();
 			return;
 		}
 		super.update(tpf);
 
-		
 		// Arrêter le joueur s'il a passé la ligne d'arrivée
 		if (playerFinish
 				&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
@@ -174,15 +172,9 @@ public class GameScreenState extends AbstractGameScreenState {
 				}
 			}
 		}
-	
 
 		if (runIsOn) {
 			botIA.act();
-			botIA.target(player);
-			float force = -(float) playerEnginePhysics.getForce() / 5;
-			player.accelerate(2, force * 2);
-			player.accelerate(3, force * 2);
-
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 		} else {
 			// Baisser le régime moteur à l'arrêt
@@ -193,14 +185,11 @@ public class GameScreenState extends AbstractGameScreenState {
 			}
 
 		}
-		// Update audio
-		
-
 	}
 
 	protected void reset() {
 		super.reset();
-		
+
 		bot.accelerate(0);
 		botEnginePhysics.setSpeed(0);
 		botEnginePhysics.setRpm(1000);
@@ -217,8 +206,6 @@ public class GameScreenState extends AbstractGameScreenState {
 				.setText("Ready ?");
 	}
 
-	
-	
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
@@ -250,7 +237,6 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 
 	}
-
 
 	@Override
 	public void collision(PhysicsCollisionEvent arg0) {

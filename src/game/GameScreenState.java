@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.lwjgl.Sys;
-
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
@@ -22,7 +20,6 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.effect.ParticleEmitter;
@@ -420,6 +417,7 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		if (runIsOn) {
 			botIA.act();
+			botIA.target(player);
 			float force = -(float) playerEnginePhysics.getForce() / 5;
 			
 			if (!burstIsEnable)	{
@@ -673,6 +671,7 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		player.setAngularVelocity(Vector3f.ZERO);
 		playerEnginePhysics.setGear(1);
 		player.resetSuspension();
+		player.steer(0);
 		audio_motor.playStartSound();
 
 		player.accelerate(0);
@@ -693,7 +692,8 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		if (burstIsEnable)	{
 			player.getNode().detachChild(explosionEffect);
 		}
-		
+
+		bot.steer(0);		
 		burstIsEnable = false;
 		runIsOn = false;
 		needReset = false;
@@ -901,7 +901,7 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		botEnginePhysics = new EnginePhysics(botCarProperties);
 		bot = new Car(assetManager, botCarProperties);
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
-		botIA = new IA(botEnginePhysics);
+		botIA = new IA(bot, botEnginePhysics);
 
 		rootNode.attachChild(player.getNode());
 		rootNode.attachChild(bot.getNode());

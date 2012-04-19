@@ -1,12 +1,22 @@
 package ia;
 
+import game.Car;
 import physics.CarProperties;
 import physics.EnginePhysics;
 
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
+
 public class IA {
-	public enum IALevel { NOOB, INTERMEDIATE, PRO, BOSS };
+	public enum IALevel {
+		NOOB, INTERMEDIATE, PRO, BOSS
+	};
+
 	private EnginePhysics enginePhysics;
 	private CarProperties carProperties;
+	private Car iaCar;
+
 	/**
 	 * The bot will start trying to change gear at optimalShiftPoint-zone Thus,
 	 * bigger the number, dumber the bot is!!
@@ -25,15 +35,16 @@ public class IA {
 	private long time = 0;
 	private int delay = 50; // 50 ms delay
 
-	public IA(EnginePhysics enginePhysics) {
+	public IA(Car car, EnginePhysics enginePhysics) {
+		this.iaCar = car;
 		this.enginePhysics = enginePhysics;
 		carProperties = enginePhysics.getCarProperties();
-		
-		setIALevel(IALevel.INTERMEDIATE);
+
+		setIALevel(IALevel.PRO);
 	}
-	
+
 	public void setIALevel(IALevel level) {
-		switch(level) {
+		switch (level) {
 		case NOOB:
 			zone = 4000;
 			optimalShiftGearPercentage = 0.5;
@@ -81,6 +92,17 @@ public class IA {
 					: 1.d;
 	}
 
+	private boolean isProba(double proba) {
+		int lower = 0;
+		int higher = 100;
+
+		int nb = (int) (100 * proba);
+
+		int random = (int) (Math.random() * (higher - lower)) + lower;
+
+		return random < nb;
+	}
+	
 	/**
 	 * This method will make the bot change gear according to a parabolic
 	 * probability curve. The closer it gets to the optimal shift point, the
@@ -96,17 +118,19 @@ public class IA {
 			int gear = enginePhysics.getGear();
 			double optimalShiftPoint = carProperties.getOptimalShiftPoint(gear);
 			double rpm = enginePhysics.getRpm();
-
+			
 			if (rpm >= optimalShiftPoint - zone) {
 				if (rpm <= carProperties.getRedline()) {
-
 					if (isProba(proba(rpm, optimalShiftPoint))) {
 						enginePhysics.incrementGear();
 						System.out.println("Shifting to gear "
 								+ enginePhysics.getGear() + " at RPM: " + rpm);
 					}
 				}
-
+			} else if(gear != 1 && rpm <= optimalShiftPoint/5) {
+					enginePhysics.decrementGear();
+					System.out.println("Shifting to gear "
+							+ enginePhysics.getGear() + " at RPM: " + rpm);
 			}
 			if (rpm > carProperties.getRedline() && isProba(redlineShiftProba)) {
 				enginePhysics.incrementGear();
@@ -114,14 +138,47 @@ public class IA {
 		}
 	}
 
-	private boolean isProba(double proba) {
-		int lower = 0;
-		int higher = 100;
-
-		int nb = (int) (100 * proba);
-
-		int random = (int) (Math.random() * (higher - lower)) + lower;
-
-		return random < nb;
+	/**
+	 * Returns the oriented angle between 2 vectors 2d. v1 is considered as the
+	 * "fixed" direction, and v2 and the vector rotation Thus, a positive
+	 * returns value means that v2 is rotating in the trigonometric way
+	 * 
+	 * @param v1
+	 * @param v2
+	 * @return The oriented angle between v1 and v2, in radian between [-Pi;Pi]
+	 */
+	private static float orientedAngle(Vector2f v1, Vector2f v2) {
+		v1 = v1.normalize();
+		v2 = v2.normalize();
+		float ps = v1.dot(v2);
+		float det = v1.determinant(v2);
+		float angle = FastMath.acos(ps);
+		return (det < 0) ? -angle : angle;
+		
 	}
+	
+	public static float angle(Vector2f v1, Vector2f v2) {
+		float angle = orientedAngle(v1, v2);
+		angle = (float) ((angle < 0.5) ? angle : 0.5);
+		return (float) ((angle < -0.5) ? -0.5 : angle); 
+	}
+
+	/**
+	 * The bot will target the given car, and try to bump into it.
+	 * 
+	 * @param targetCar
+	 *            the targetted car
+	 */
+	public void target(Car targetCar) {
+		Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
+				iaCar.getForwardVector(null)).normalize();
+		Vector3f targetDirection = targetCar.getPhysicsLocation().subtract(iaCar.getPhysicsLocation()).normalize();
+
+		Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
+		Vector2f targetDirection2 = new Vector2f(targetDirection.x,
+				targetDirection.z);
+		
+		this.iaCar.steer(-angle(iaForward2, targetDirection2));
+	}
+
 }

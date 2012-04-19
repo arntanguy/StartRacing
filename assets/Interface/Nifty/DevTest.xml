@@ -10,8 +10,8 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical" backgroundColor="#0007">
-				<text font="Interface/Fonts/ArialBlack_60.fnt" height="40%" align="center" color="#ffff"
-					text="${CALL.getTitle()}" />
+				<text font="aurulent-sans-16.fnt" height="40%" align="center" color="#ffff"
+					text="Hello World!" />
 					
 				<control id="freeRunButton" align="center" name="button" label="Course Libre"
 					width="32%" height="11%">

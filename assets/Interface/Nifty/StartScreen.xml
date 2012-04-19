@@ -17,25 +17,25 @@
 					width="32%" height="11%">
 					<interact onClick="startGame(free)" />
 				</control>
-				<panel height="0.5%" />
+				<panel height="5px" />
 				
 				<control id="halfMileButton" align="center" name="button" label="Course Demi-Mile"
 					width="32%" height="11%">
 					<interact onClick="startGame(half)" />
 				</control>
-				<panel height="0.5%" />
+				<panel height="5px" />
 				
 				<control id="quarterMileButton" align="center" name="button" label="Course Quart de Mile"
 					width="32%" height="11%">
 					<interact onClick="startGame(quarter)" />
 				</control>
-				<panel height="0.5%" />
+				<panel height="5px" />
 				
 				<control id="optionButton" align="center" name="button" label="Options"
 					width="32%" height="11%">
 					<interact onClick="showOptions()" />
 				</control>
-				<panel height="0.5%" />
+				<panel height="5px" />
 				
 				<control id="quitButton" align="center" name="button" label="Quitter"
 					width="32%" height="11%">

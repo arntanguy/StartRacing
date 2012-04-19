@@ -20,7 +20,6 @@ public class App extends SimpleApplication {
 				audioRenderer, guiViewPort);
 		nifty = niftyDisplay.getNifty();
 		
-		validateXML();
 		XMLFileStore.validateXMLFiles(nifty);
 		addXMLFiles();		
 		set.setHeight(760);
@@ -38,6 +37,12 @@ public class App extends SimpleApplication {
 		inputManager.setCursorVisible(false);
 	}
 	
+	public void addXMLFiles() {
+		nifty.addXml(XMLFileStore.START_SCREEN_FILE);
+		nifty.addXml(XMLFileStore.OPTION_SCREEN_FILE);
+		nifty.addXml(XMLFileStore.GAME_SCREEN_FILE);
+	}
+	
 	public void gotoGame(String mode) {
         nifty.gotoScreen("hud");
         GameScreenState gameScreenController = (GameScreenState) nifty.getCurrentScreen().getScreenController();
@@ -47,7 +52,7 @@ public class App extends SimpleApplication {
  
 	public void gotoOptions() {
         nifty.gotoScreen("options");
-        GameScreenState gameScreenController = (GameScreenState) nifty.getCurrentScreen().getScreenController();
+        OptionScreenState gameScreenController = (OptionScreenState) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(gameScreenController);
 	}
 	

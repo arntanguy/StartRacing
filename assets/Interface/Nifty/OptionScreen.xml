@@ -10,13 +10,20 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
-				<text font="Interface/Fonts/ArialBlack_60.fnt" height="40%" align="center" color="#ffff"
+				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="${CALL.getMenuTitle()}" />
-				<panel id="controlButtonsPanel" childLayout="horizontal">
-					<control id="returnButton" align="center">
+				<panel id="centerPanel" height="65%" childLayout="center">
+					<control name="textfield" text="HELLO">
+					</control>
+				</panel>
+				
+				<panel height="14%" width="52%" valign="bottom" align="center" childLayout="horizontal">
+					<control id="returnButton" width="50%" align="center" height="100%" name="button" label="Menu Principal">
 						<interact onClick="gotoMainMenu()" />
 					</control>
-					<control id="applyButton" align="center">
+					<panel width="5px" />
+					
+					<control id="applyButton" width="50%" align="center" height="100%" name="button" label="Appliquer">
 						<interact onClick="applyOptions()" />
 					</control>
 				</panel>

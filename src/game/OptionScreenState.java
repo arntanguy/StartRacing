@@ -28,6 +28,14 @@ public class OptionScreenState extends AbstractScreenController {
 		stateManager.detach(this);
 	}
 	
+	public void gotoMainMenu() {
+		app.gotoStart();
+	}
+	
+	public void applyOptions() {
+		System.out.println("Option saved");
+	}
+	
 	public String getMenuTitle() {
 		return StringStore.OPTION_MENU_TITLE;
 	}

@@ -440,7 +440,9 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		 */
 		// Update audio
 		if (soudIsActive) {
-			audio_motor.setRPM(playerRpm);
+			if (!particule_motor.getBurstEnabled())	{
+				audio_motor.setRPM(playerRpm);
+			}
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}

@@ -56,15 +56,14 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	private InputManager inputManager;
 
 	private BulletAppState bulletAppState;
+	protected PhysicsSpace physicsSpace;
 
 	protected AudioRender audio_motor;
 
 	protected Car player;
 	protected CarProperties playerCarProperties;
 	protected EnginePhysics playerEnginePhysics;
-	private float steeringValue = 0;
-	private float accelerationValue = 0;
-
+	
 	protected boolean runIsOn;
 	protected boolean runFinish;
 
@@ -80,26 +79,53 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected long countDown = 0;
 
 	protected boolean soudIsActive = true;
+	//XXX: to improve with real engine physics
 	protected int initialRev;
 
 	protected AppStateManager stateManager;
 
-	// private Tachometer tachometer;
 	protected DigitalDisplay digitalTachometer;
 	protected DigitalDisplay digitalSpeed;
 	protected DigitalDisplay digitalGear;
 	protected ShiftlightLed shiftlight;
 	protected boolean isBreaking;
 	protected long rpmTimer;
-	protected GhostControl finishCell;
-	private Node finishNode;
+	
 
 	protected boolean needReset;
+	private int accelerationValue;
 
 	public AbstractGameScreenState() {
 		super();
 	}
 
+	/***** Initialize Nifty gui ****/
+	@Override
+	public void stateAttached(AppStateManager stateManager) {
+	}
+
+	@Override
+	public void stateDetached(AppStateManager stateManager) {
+
+	}
+
+	@Override
+	public void bind(Nifty nifty, Screen screen) {
+		super.bind(nifty, screen);
+		// nifty.setDebugOptionPanelColors(true);
+	}
+
+	@Override
+	public void onEndScreen() {
+		stateManager.detach(this);
+	}
+
+	@Override
+	public void onStartScreen() {
+	}
+
+	
+	/******* Initialize game ******/
 	@Override
 	public void initialize(AppStateManager stateManager, Application a) {
 		/** init the screen */
@@ -117,6 +143,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		bulletAppState = new BulletAppState();
 		stateManager = app.getStateManager();
 		stateManager.attach(bulletAppState);
+		physicsSpace = getPhysicsSpace();
 		runIsOn = false;
 		runFinish = false;
 		initialRev = 0;
@@ -158,16 +185,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// map.setShadowMode(ShadowMode.Receive);
 		terrain.setShadowMode(ShadowMode.Receive);
 
-		// Init finish cell detection
-		finishCell = new GhostControl(new BoxCollisionShape(new Vector3f(40, 1,
-				1)));
-		finishNode = new Node("finish zone");
-		finishNode.addControl(finishCell);
-		finishNode.move(0, 27, 298);
-
-		rootNode.attachChild(finishNode);
-		getPhysicsSpace().add(finishCell);
-		getPhysicsSpace().addCollisionListener(this);
+		physicsSpace.addCollisionListener(this);
 
 		// Init audio
 		audio_motor = new AudioRender(assetManager, player.getNode());
@@ -216,80 +234,27 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
 	}
+	
 
-	@Override
-	public void update(float tpf) {
-		// tachometer.setRpm(playerRpm);
-		int playerRpm = player.getEnginePhysics().getRpm();
-		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
+	private void buildPlayer() {
+		playerCarProperties = new BMWM3Properties();
 
-		digitalTachometer.setText(((Integer) playerRpm).toString());
-		digitalSpeed.setText(((Integer) playerSpeed).toString());
-		digitalGear.setText(((Integer) playerEnginePhysics.getGear())
-				.toString());
-		shiftlight.setRpm(playerRpm);
-
-		if (runIsOn) {
-			playerEnginePhysics.setSpeed(Math.abs(Conversion
-					.kmToMiles(playerSpeed)));
-		}
-		
-		//Update audio
-		if (soudIsActive) {
-			audio_motor.setRPM(playerRpm);
-			app.getListener().setLocation(
-					player.getNode().getWorldTranslation());
-		}
-
-	}
-
-	protected void reset() {
+		// Create a vehicle control
+		player = new Car(assetManager, playerCarProperties);
+		player.getNode().addControl(player);
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		player.setPhysicsRotation(new Matrix3f());
-		player.setLinearVelocity(Vector3f.ZERO);
-		player.setAngularVelocity(Vector3f.ZERO);
-		playerEnginePhysics.setGear(1);
-		player.resetSuspension();
-		player.steer(0);
-		audio_motor.playStartSound();
 
-		player.accelerate(0);
-		playerEnginePhysics.setSpeed(0);
-		playerEnginePhysics.setRpm(1000);
 
-		runIsOn = false;
-		needReset = false;
-		runFinish = false;
-		startTime = 0;
-		countDown = 0;
+		playerCarProperties = player.getProperties();
+		playerEnginePhysics = player.getEnginePhysics();
 
-		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
-				.setText("Ready ?");
+		rootNode.attachChild(player.getNode());
+
+		getPhysicsSpace().add(player);
+
+		initialRev = playerCarProperties.getIdleRpm();
 	}
 
-	@Override
-	public void stateAttached(AppStateManager stateManager) {
-	}
-
-	@Override
-	public void stateDetached(AppStateManager stateManager) {
-
-	}
-
-	@Override
-	public void bind(Nifty nifty, Screen screen) {
-		super.bind(nifty, screen);
-		// nifty.setDebugOptionPanelColors(true);
-	}
-
-	@Override
-	public void onEndScreen() {
-		stateManager.detach(this);
-	}
-
-	@Override
-	public void onStartScreen() {
-	}
 
 	public void initGround() {
 		/** 1. Create terrain material and load four textures into it. */
@@ -382,8 +347,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		// inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_LEFT));
-		// // frein
 		inputManager.addMapping("Throttle", new KeyTrigger(
 				KeyInput.KEY_RCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
@@ -403,45 +366,77 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "Throttle");
 
 	}
+	
+
+	@Override
+	public void update(float tpf) {
+		// tachometer.setRpm(playerRpm);
+		int playerRpm = player.getEnginePhysics().getRpm();
+		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
+
+		digitalTachometer.setText(((Integer) playerRpm).toString());
+		digitalSpeed.setText(((Integer) playerSpeed).toString());
+		digitalGear.setText(((Integer) playerEnginePhysics.getGear())
+				.toString());
+		shiftlight.setRpm(playerRpm);
+
+		if (runIsOn) {
+			playerEnginePhysics.setSpeed(Math.abs(Conversion
+					.kmToMiles(playerSpeed)));
+		}
+		
+		//Update audio
+		if (soudIsActive) {
+			audio_motor.setRPM(playerRpm);
+			app.getListener().setLocation(
+					player.getNode().getWorldTranslation());
+		}
+	}
+	
+
+	protected void reset() {
+		player.setPhysicsLocation(new Vector3f(0, 27, 700));
+		player.setPhysicsRotation(new Matrix3f());
+		player.setLinearVelocity(Vector3f.ZERO);
+		player.setAngularVelocity(Vector3f.ZERO);
+		playerEnginePhysics.setGear(1);
+		player.resetSuspension();
+		player.steer(0);
+		audio_motor.playStartSound();
+
+		player.accelerate(0);
+		playerEnginePhysics.setSpeed(0);
+		playerEnginePhysics.setRpm(1000);
+
+		runIsOn = false;
+		needReset = false;
+		runFinish = false;
+		startTime = 0;
+		countDown = 0;
+
+		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
+				.setText("Ready ?");
+	}
 
 	private PhysicsSpace getPhysicsSpace() {
 		return bulletAppState.getPhysicsSpace();
 	}
 
-	private void buildPlayer() {
-		playerCarProperties = new BMWM3Properties();
-
-		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties);
-		player.getNode().addControl(player);
-		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-
-
-		playerCarProperties = player.getProperties();
-		playerEnginePhysics = player.getEnginePhysics();
-
-		rootNode.attachChild(player.getNode());
-
-		getPhysicsSpace().add(player);
-
-		initialRev = playerCarProperties.getIdleRpm();
-	}
-
 	public void onAction(String binding, boolean value, float tpf) {
 		if (binding.equals("Lefts")) {
 			if (value) {
-				steeringValue += .5f;
+				player.setSteeringValue(.5f);
 			} else {
-				steeringValue += -.5f;
+				player.setSteeringValue(0.f);;
 			}
-			player.steer(steeringValue);
+			player.steer(player.getSteeringValue());
 		} else if (binding.equals("Rights")) {
 			if (value) {
-				steeringValue += -.5f;
+				player.setSteeringValue(-.5f);
 			} else {
-				steeringValue += .5f;
+				player.setSteeringValue(0.f);
 			}
-			player.steer(steeringValue);
+			player.steer(player.getSteeringValue());
 		} // note that our fancy car actually goes backwards..
 		else if (binding.equals("Ups")) {
 			if (value) {
@@ -517,9 +512,5 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		}
 
-	}
-	
-	public PhysicsSpace getPhysicSpace() {
-		return getPhysicsSpace();
 	}
 }

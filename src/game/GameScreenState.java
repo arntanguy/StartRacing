@@ -12,9 +12,12 @@ import physics.tools.Conversion;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Node;
 
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
@@ -23,6 +26,9 @@ public class GameScreenState extends AbstractGameScreenState {
 	private CarProperties botCarProperties;
 	private EnginePhysics botEnginePhysics;
 	private IA botIA;
+	
+	protected GhostControl finishCell;
+	private Node finishNode;
 
 	private boolean playerFinish;
 	private boolean botFinish;
@@ -47,11 +53,26 @@ public class GameScreenState extends AbstractGameScreenState {
 	protected void initGame() {
 		super.initGame();
 		
+		buildBot();
+		buildFinishLine();
+		
 		playerFinish = false;
 		botFinish = false;
 		
-		buildBot();
-	}	
+		
+	}
+	
+	protected void buildFinishLine() {
+		// Init finish cell detection
+		finishCell = new GhostControl(new BoxCollisionShape(new Vector3f(40, 1,
+				1)));
+		finishNode = new Node("finish zone");
+		finishNode.addControl(finishCell);
+		finishNode.move(0, 27, 298);
+
+		rootNode.attachChild(finishNode);
+		physicsSpace.add(finishCell);
+	}
 
 	private void buildBot() {
 		botCarProperties = new BMWM3Properties();
@@ -61,7 +82,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		botEnginePhysics = bot.getEnginePhysics();
 		botIA = bot.getIA();
 		rootNode.attachChild(bot.getNode());
-		getPhysicSpace().add(bot);
+		physicsSpace.add(bot);
 	}
 
 	@Override

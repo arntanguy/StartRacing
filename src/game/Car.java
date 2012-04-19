@@ -21,16 +21,14 @@ public class Car extends VehicleControl {
 	private AssetManager assetManager;
 
 	private CarProperties properties;
+	private EnginePhysics enginePhysics;
+	private IA ia;
 
 	private Node carNode;
 
 	private Geometry chasis;
-
 	private float wheelRadius;
-
-	private EnginePhysics enginePhysics;
-
-	private IA ia;
+	private float steeringValue = 0;
 
 	public Car(AssetManager assetManager, CarProperties properties) {
 		super();
@@ -149,5 +147,16 @@ public class Car extends VehicleControl {
 
 	public IA getIA() {
 		return ia;
+	}
+
+	public float getSteeringValue() {
+		return steeringValue;
+	}
+
+	public void setSteeringValue(float steeringValue) {
+		this.steeringValue = (float) ((steeringValue <= 0.5) ? steeringValue
+				: 0.5);
+		this.steeringValue = (float) ((steeringValue >= -0.5) ? steeringValue
+				: -0.5);
 	}
 }

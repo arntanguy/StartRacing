@@ -12,7 +12,6 @@ public class StartScreenState extends AbstractScreenController {
 
 	private InputManager inputManager;
 
-
 	public StartScreenState() {
 		super();
 	}
@@ -59,9 +58,8 @@ public class StartScreenState extends AbstractScreenController {
 		app.gotoGame();
 	}
 	
-	public void showQuitPopup(String s) {
-		Element pop = nifty.createPopup("exitPopup");
-		nifty.showPopup(nifty.getCurrentScreen(), pop.getId(), null);
+	public void showOptions() {
+		app.gotoOptions();
 	}
 	
 	public void quitGame() {

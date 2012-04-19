@@ -55,7 +55,7 @@ public class StartScreenState extends AbstractScreenController {
 	}
 
 	public void startGame(String nextScreen) {
-		app.gotoGame();
+		app.gotoGame(nextScreen);
 	}
 
 	public void startFreeForAll() {

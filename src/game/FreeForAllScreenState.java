@@ -98,7 +98,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					screen.findElementByName("startTimer")
 							.getRenderer(TextRenderer.class).setText("");
 					runIsOn = true;
-					audio_motor.playStartBeep();
+					// audio_motor.playStartBeep();
 					playerEnginePhysics.setRpm(initialRev);
 					startTime = System.currentTimeMillis();
 				} else if (time > 4000) {

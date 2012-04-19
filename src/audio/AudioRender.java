@@ -25,11 +25,12 @@ public class AudioRender {
 		this.assetM = asset;
 	}
 
-	public void init(LinkedHashMap<Integer, String>	soundPaths, HashMap<String, String>	extraSound)	{
+	public void init(LinkedHashMap<Integer, String> soundPaths,
+			HashMap<String, String> extraSound) {
 		// Charger les sons
 		Iterator<Integer> it = soundPaths.keySet().iterator();
 
-		while (it.hasNext())	{
+		while (it.hasNext()) {
 			int key = it.next();
 			AudioNode sample = new AudioNode(assetM, soundPaths.get(key), false);
 			sample.setLooping(true);
@@ -42,7 +43,7 @@ public class AudioRender {
 
 		Iterator<String> itr = extraSound.keySet().iterator();
 
-		while (itr.hasNext())	{
+		while (itr.hasNext()) {
 			String key = itr.next();
 			AudioNode sample = new AudioNode(assetM, extraSound.get(key), false);
 			rootNode.attachChild(sample);
@@ -50,25 +51,36 @@ public class AudioRender {
 		}
 	}
 
-	public void playStartSound()	{
+	public void playStartSound() {
 		AudioNode sample = extraChan.get("start");
 		sample.setVolume(0.6f);
 		sample.playInstance();
 	}
 
-	public void gearUp()	{
+	public void gearUp() {
 		AudioNode sample = extraChan.get("up");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
-	
-	public void playStartBeep()	{
+
+	public void playStartBeep() {
 		AudioNode sample = extraChan.get("beep");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
 
-	public void setRPM(int rpm)	{
+	public void playBurst() {
+		AudioNode sample = extraChan.get("burst");
+		sample.setVolume(1f);
+		sample.playInstance();
+	}
+
+	public void mute() {
+		prevHigh.setVolume(0);
+		prevLow.setVolume(0);
+	}
+
+	public void setRPM(int rpm) {
 
 		Iterator<Integer> it = channels.keySet().iterator();
 
@@ -82,41 +94,39 @@ public class AudioRender {
 		}
 		rpmLow = rpmTmp;
 
-		float denum = (float)(rpmHigh - rpmLow);
+		float denum = (float) (rpmHigh - rpmLow);
 
-		float volumLow = (float)(rpm - rpmLow)/denum;
-		float volumHigh = (float)(rpmHigh - rpm)/denum;
-
+		float volumLow = (float) (rpm - rpmLow) / denum;
+		float volumHigh = (float) (rpmHigh - rpm) / denum;
 
 		AudioNode low = channels.get(rpmLow);
 		AudioNode high = channels.get(rpmHigh);
 
 		// Muter le son précédent
-		if (prevLow != null && prevLow != low)	{
+		if (prevLow != null && prevLow != low) {
 			prevLow.setVolume(0);
 		}
-		if (prevHigh != null && prevHigh != high)	{
+		if (prevHigh != null && prevHigh != high) {
 			prevHigh.setVolume(0);
 		}
 
-//		float pourcentLow = ((float)rpm/(float)rpmLow);
-//		float pourcentHigh = ((float)rpm/(float)rpmHigh);
+		// float pourcentLow = ((float)rpm/(float)rpmLow);
+		// float pourcentHigh = ((float)rpm/(float)rpmHigh);
 
-		float pourcentLow = (((float)rpm - rpmLow)/(float)(rpmHigh -rpmLow));
-		float pourcentHigh = ((((float)rpmHigh - rpm)/(float)(rpmHigh -rpmLow)))/2.f;
+		float pourcentLow = (((float) rpm - rpmLow) / (float) (rpmHigh - rpmLow));
+		float pourcentHigh = ((((float) rpmHigh - rpm) / (float) (rpmHigh - rpmLow))) / 2.f;
 
-		
 		try {
 			low.setPitch(pourcentLow + 1.f);
 		} catch (Exception e1) {
 			System.err.println("val du pich bas = " + pourcentLow);
 		}
 
-		low.setVolume((volumHigh)*2.f);
+		low.setVolume((volumHigh) * 2.f);
 
-		try	{
+		try {
 			high.setPitch(1 - pourcentHigh);
-		} catch	(Exception e)	{
+		} catch (Exception e) {
 			System.err.println("valu du pich haut = " + pourcentHigh);
 		}
 		high.setVolume(volumLow * 2.f);

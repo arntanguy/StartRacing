@@ -34,10 +34,10 @@ public class App extends SimpleApplication {
 
 		// attach the nifty display to the gui view port as a processor
 		guiViewPort.addProcessor(niftyDisplay);
-		inputManager.setCursorVisible(true);
+		inputManager.setCursorVisible(false);
 	}
-
-	public void gotoGame() {
+	
+	public void gotoGame(String mode) {
 		nifty.addXml("Interface/Nifty/GameScreen.xml");
 		nifty.gotoScreen("hud");
 		AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty

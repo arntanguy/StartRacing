@@ -217,6 +217,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		extraSound.put("start", "Models/Default/start.wav");
 		extraSound.put("up", "Models/Default/up.wav");
 		extraSound.put("beep", "Sound/start_beep.wav");
+		// XXX: put real sound
+		extraSound.put("burst", "Sound/start_beep.wav");
 
 		audio_motor.init(channels, extraSound);
 

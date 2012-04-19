@@ -34,7 +34,7 @@ public class App extends SimpleApplication {
 		 	
     	// attach the nifty display to the gui view port as a processor
 		guiViewPort.addProcessor(niftyDisplay);
-		inputManager.setCursorVisible(true);
+		inputManager.setCursorVisible(false);
 	}
 	
 	public void gotoGame(String mode) {

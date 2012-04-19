@@ -63,7 +63,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		super.update(tpf);
 
 		// int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
-		if (runIsOn) {
+		if (runIsOn) {			
 			for (Car bot : bots) {
 				bot.getEnginePhysics().setSpeed(
 						Math.abs(Conversion.kmToMiles(bot

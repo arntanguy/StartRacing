@@ -90,6 +90,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected boolean needReset;
 	private int accelerationValue;
 
+	protected ParticuleMotor particule_motor;
+	private long timerRedZone = 0;
+	protected boolean playerFinish;
+	protected long timerStopPlayer = 0;
+	protected long timePlayer = 0;
+
 	public AbstractGameScreenState() {
 		super();
 	}
@@ -182,6 +188,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Init audio
 		audio_motor = new AudioRender(assetManager, player.getNode());
+
+		// Init particule motor
+		particule_motor = new ParticuleMotor(assetManager);
 
 		LinkedHashMap<Integer, String> channels = new LinkedHashMap<Integer, String>();
 		channels.put(1000, "Models/Default/1052_P.wav");
@@ -371,7 +380,33 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.toString());
 		shiftlight.setRpm(playerRpm);
 
+		// Traiter le cas du sur-régime
+		if (playerRpm > (playerCarProperties.getRedline() - 500)) {
+			if (!particule_motor.getBurstEnabled()) {
+				// Déclencher le timer s'il n'est pas activé
+				if (timerRedZone == 0) {
+					timerRedZone = System.currentTimeMillis();
+				} else {
+					if (System.currentTimeMillis() - timerRedZone > 3000) {
+						triggerBurst(player);
+						audio_motor.playBurst();
+					}
+				}
+			}
+		} else {
+			timerRedZone = 0;
+		}
+
+		particule_motor.controlBurst();
+
 		if (runIsOn) {
+			// Arrêter le joueur s'il a passé la ligne d'arrivée
+			if (playerFinish
+					&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
+				player.accelerate(0);
+				player.setLinearVelocity(Vector3f.ZERO);
+			}
+
 			playerEnginePhysics.setSpeed(Math.abs(Conversion
 					.kmToMiles(playerSpeed)));
 			float force = -(float) playerEnginePhysics.getForce() / 5;
@@ -385,6 +420,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
+	}
+
+	public void triggerBurst(Car vehicule) {
+		audio_motor.playBurst();
+		particule_motor.addExplosion(vehicule.getNode());
+		audio_motor.mute();
+		playerFinish = true;
+		timePlayer = 0;
+		timerStopPlayer = System.currentTimeMillis();
 	}
 
 	protected void reset() {
@@ -401,6 +445,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerEnginePhysics.setSpeed(0);
 		playerEnginePhysics.setRpm(1000);
 
+		if (particule_motor.getBurstEnabled()) {
+			particule_motor.removeExplosion(player.getNode());
+		}
+
+		timerRedZone = 0;
+		playerFinish = false;
 		runIsOn = false;
 		needReset = false;
 		runFinish = false;
@@ -479,30 +529,32 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
-			if (countDown == 0) {
-				countDown = System.currentTimeMillis();
-			}
-
-			initialRev += 400;
-
-			int redline = playerCarProperties.getRedline();
-
-			if (initialRev > redline) {
-				isBreaking = true;
-				/**
-				 * When engine is breaking, oscillate rpm a little to simulate
-				 * engine failure and get a nice sound ^^
-				 */
-				if (System.currentTimeMillis() - rpmTimer < 100) {
-					initialRev = redline - 200;
-				} else if (System.currentTimeMillis() - rpmTimer < 200) {
-					initialRev = redline;
-				} else {
-					initialRev = redline;
-					rpmTimer = System.currentTimeMillis();
+			if (!particule_motor.getBurstEnabled()) {
+				if (countDown == 0) {
+					countDown = System.currentTimeMillis();
 				}
-			} else {
-				isBreaking = false;
+
+				initialRev += 400;
+
+				int redline = playerCarProperties.getRedline();
+
+				if (initialRev > redline) {
+					isBreaking = true;
+					/**
+					 * When engine is breaking, oscillate rpm a little to
+					 * simulate engine failure and get a nice sound ^^
+					 */
+					if (System.currentTimeMillis() - rpmTimer < 100) {
+						initialRev = redline - 200;
+					} else if (System.currentTimeMillis() - rpmTimer < 200) {
+						initialRev = redline;
+					} else {
+						initialRev = redline;
+						rpmTimer = System.currentTimeMillis();
+					}
+				} else {
+					isBreaking = false;
+				}
 			}
 		}
 

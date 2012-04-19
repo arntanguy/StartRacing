@@ -29,21 +29,15 @@ public class GameScreenState extends AbstractGameScreenState {
 	private EnginePhysics botEnginePhysics;
 	private IA botIA;
 
-	private boolean playerFinish;
 	private boolean botFinish;
 
-	private long timerStopPlayer = 0;
 	private long timerStopBot = 0;
-	private long timePlayer;
 	private long timeBot;
-
-	private long timerRedZone = 0;
 
 	private long rpmTimer;
 	private GhostControl finishCell;
 	private Node finishNode;
 
-	private ParticuleMotor particule_motor;
 
 	public GameScreenState() {
 		super();
@@ -65,10 +59,6 @@ public class GameScreenState extends AbstractGameScreenState {
 
 		playerFinish = false;
 		botFinish = false;
-
-		// Init particule motor
-		particule_motor = new ParticuleMotor(assetManager);
-
 	}
 
 	protected void buildFinishLine() {
@@ -103,13 +93,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		// Arrêter le joueur s'il a passé la ligne d'arrivée
-		if (playerFinish
-				&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
-			player.accelerate(0);
-			player.setLinearVelocity(Vector3f.ZERO);
-
-		}
+		
 		if (botFinish && (System.currentTimeMillis() - timerStopBot > 1000)) {
 			bot.accelerate(0);
 			bot.setLinearVelocity(Vector3f.ZERO);
@@ -137,8 +121,6 @@ public class GameScreenState extends AbstractGameScreenState {
 			runFinish = true;
 			runIsOn = false;
 		}
-
-		particule_motor.controlBurst();
 
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
 		if (runIsOn) {
@@ -179,27 +161,6 @@ public class GameScreenState extends AbstractGameScreenState {
 			}
 		}
 
-		// Traiter le cas du sur-régime
-		int playerRpm = player.getEnginePhysics().getRpm();
-		if (playerRpm > (playerCarProperties.getRedline() - 500)) {
-			if (!particule_motor.getBurstEnabled()) {
-				// Déclencher le timer s'il n'est pas activé
-				if (timerRedZone == 0) {
-					timerRedZone = System.currentTimeMillis();
-				} else {
-					if (System.currentTimeMillis() - timerRedZone > 3000) {
-						triggerBurst(player);
-						audio_motor.playBurst();
-						playerFinish = true;
-						timePlayer = 0;
-						timerStopPlayer = System.currentTimeMillis();
-					}
-				}
-			}
-		} else {
-			timerRedZone = 0;
-		}
-
 		if (runIsOn) {
 			botIA.act();
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
@@ -212,12 +173,6 @@ public class GameScreenState extends AbstractGameScreenState {
 			}
 
 		}
-	}
-
-	public void triggerBurst(Car vehicule) {
-		audio_motor.playBurst();
-		particule_motor.addExplosion(vehicule.getNode());
-		audio_motor.mute();
 	}
 
 	protected void reset() {
@@ -234,80 +189,13 @@ public class GameScreenState extends AbstractGameScreenState {
 		botEnginePhysics.setGear(1);
 		bot.resetSuspension();
 
-		if (particule_motor.getBurstEnabled()) {
-			particule_motor.removeExplosion(player.getNode());
-		}
 
 		bot.steer(0);
 
-		runIsOn = false;
-		runFinish = false;
-		playerFinish = false;
 		botFinish = false;
-		startTime = 0;
-		countDown = 0;
-		timerRedZone = 0;
 
 		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
 				.setText("Ready ?");
-	}
-
-	@Override
-	public void stateAttached(AppStateManager stateManager) {
-	}
-
-	@Override
-	public void stateDetached(AppStateManager stateManager) {
-
-	}
-
-	@Override
-	public void bind(Nifty nifty, Screen screen) {
-		super.bind(nifty, screen);
-		// nifty.setDebugOptionPanelColors(true);
-	}
-
-	@Override
-	public void onEndScreen() {
-		stateManager.detach(this);
-	}
-
-	@Override
-	public void onStartScreen() {
-	}
-
-	@Override
-	public void onAnalog(String binding, float value, float tpf) {
-		if (binding.equals("Throttle")) {
-			if (!particule_motor.getBurstEnabled()) {
-				if (countDown == 0) {
-					countDown = System.currentTimeMillis();
-				}
-
-				initialRev += 400;
-
-				int redline = playerCarProperties.getRedline();
-
-				if (initialRev > redline) {
-					isBreaking = true;
-					/**
-					 * When engine is breaking, oscillate rpm a little to
-					 * simulate engine failure and get a nice sound ^^
-					 */
-					if (System.currentTimeMillis() - rpmTimer < 100) {
-						initialRev = redline - 200;
-					} else if (System.currentTimeMillis() - rpmTimer < 200) {
-						initialRev = redline;
-					} else {
-						initialRev = redline;
-						rpmTimer = System.currentTimeMillis();
-					}
-				} else {
-					isBreaking = false;
-				}
-			}
-		}
-
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
-import audio.audioRender;
+import audio.AudioRender;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -20,9 +20,9 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.effect.ParticleEmitter;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -53,11 +53,11 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
 public class GameScreenState extends AbstractScreenController implements
-		ActionListener, AnalogListener, PhysicsCollisionListener {
+ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	private ViewPort viewPort;
 	private Node rootNode;
-	private AssetManager assetManager;
+	AssetManager assetManager;
 	private InputManager inputManager;
 
 	private BulletAppState bulletAppState;
@@ -92,11 +92,12 @@ public class GameScreenState extends AbstractScreenController implements
 	private long countDown = 0;
 	private long timerStopPlayer = 0;
 	private long timerStopBot = 0;
+	private long timerRedZone = 0;
 
 	private long timePlayer;
 	private long timeBot;
 
-	private audioRender audio_motor;
+	private AudioRender audio_motor;
 
 	private boolean soudIsActive = true;
 	private int initialRev;
@@ -115,8 +116,9 @@ public class GameScreenState extends AbstractScreenController implements
 	private long rpmTimer;
 	private GhostControl finishCell;
 	private Node finishNode;
-	
+
 	private boolean needReset;
+	private ParticuleMotor particule_motor;
 
 	public GameScreenState() {
 		super();
@@ -131,7 +133,7 @@ public class GameScreenState extends AbstractScreenController implements
 		this.viewPort = app.getViewPort();
 		this.assetManager = app.getAssetManager();
 		this.inputManager = app.getInputManager();
-		
+
 		initGame();
 	}
 
@@ -202,7 +204,7 @@ public class GameScreenState extends AbstractScreenController implements
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
 		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f)
-				.normalizeLocal()); // light direction
+		.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
 
 		rootNode.setShadowMode(ShadowMode.Off); // reset all
@@ -218,29 +220,33 @@ public class GameScreenState extends AbstractScreenController implements
 		finishNode = new Node("finish zone");
 		finishNode.addControl(finishCell);
 		finishNode.move(0, 27, 298);
-		
+		//		finishNode.move(0, 27, -104);
+
 		rootNode.attachChild(finishNode);
 		getPhysicsSpace().add(finishCell);
 		getPhysicsSpace().addCollisionListener(this);
 
+		// Init particule motor
+		particule_motor = new ParticuleMotor(assetManager);
+		
 		// Init audio
-		audio_motor = new audioRender(assetManager, player.getNode());
+		audio_motor = new AudioRender(assetManager, player.getNode());
 
 		LinkedHashMap<Integer, String> channels = new LinkedHashMap<Integer, String>();
 		channels.put(1000, "Models/Default/1052_P.wav");
-//		 channels.put(1126, "Models/Default/1126_P.wav");
-//		 channels.put(1205, "Models/Default/1205_P.wav");
-//		 channels.put(1289, "Models/Default/1289_P.wav");
-//		 channels.put(1380, "Models/Default/1380_P.wav");
-//		 channels.put(1476, "Models/Default/1476_P.wav");
-//		 channels.put(1579, "Models/Default/1579_P.wav");
-//		 channels.put(1690, "Models/Default/1690_P.wav");
-//		 channels.put(1808, "Models/Default/1808_P.wav");
-//		 channels.put(1935, "Models/Default/1935_P.wav");
-//		 channels.put(2070, "Models/Default/2070_P.wav");
-//		 channels.put(2215, "Models/Default/2215_P.wav");
-//		 channels.put(2370, "Models/Default/2370_P.wav");
-//		 channels.put(2536, "Models/Default/2536_P.wav");
+		//		 channels.put(1126, "Models/Default/1126_P.wav");
+		//		 channels.put(1205, "Models/Default/1205_P.wav");
+		//		 channels.put(1289, "Models/Default/1289_P.wav");
+		//		 channels.put(1380, "Models/Default/1380_P.wav");
+		//		 channels.put(1476, "Models/Default/1476_P.wav");
+		//		 channels.put(1579, "Models/Default/1579_P.wav");
+		//		 channels.put(1690, "Models/Default/1690_P.wav");
+		//		 channels.put(1808, "Models/Default/1808_P.wav");
+		//		 channels.put(1935, "Models/Default/1935_P.wav");
+		//		 channels.put(2070, "Models/Default/2070_P.wav");
+		//		 channels.put(2215, "Models/Default/2215_P.wav");
+		//		 channels.put(2370, "Models/Default/2370_P.wav");
+		//		 channels.put(2536, "Models/Default/2536_P.wav");
 		channels.put(2714, "Models/Default/2714_P.wav");
 		// channels.put(2904, "Models/Default/2904_P.wav");
 		// channels.put(3107, "Models/Default/3107_P.wav");
@@ -248,7 +254,7 @@ public class GameScreenState extends AbstractScreenController implements
 		// channels.put(3557, "Models/Default/3557_P.wav");
 		// channels.put(3806, "Models/Default/3806_P.wav");
 		// channels.put(4073, "Models/Default/4073_P.wav");
-		 channels.put(4358, "Models/Default/4358_P.wav");
+		channels.put(4358, "Models/Default/4358_P.wav");
 		// channels.put(4663, "Models/Default/4663_P.wav");
 		// channels.put(4989, "Models/Default/4989_P.wav");
 		// channels.put(5338, "Models/Default/5338_P.wav");
@@ -260,7 +266,8 @@ public class GameScreenState extends AbstractScreenController implements
 		extraSound.put("start", "Models/Default/start.wav");
 		extraSound.put("up", "Models/Default/up.wav");
 		extraSound.put("beep", "Sound/start_beep.wav");
-
+		extraSound.put("burst", "Sound/explosion.wav");
+		
 		audio_motor.init(channels, extraSound);
 
 		// tachometer = new Tachometer(nifty, screen, playerCarProperties,
@@ -276,29 +283,30 @@ public class GameScreenState extends AbstractScreenController implements
 	@Override
 	public void update(float tpf) {
 		/** any main loop action happens here */
-
 		int playerRpm = initialRev;
 
 		if(needReset) 	{
 			reset();
 			return;
 		}
-		
+
 		// Arrêter le joueur s'il a passé la ligne d'arrivée
 		if (playerFinish && (System.currentTimeMillis() - timerStopPlayer > 1000))	{
 			player.accelerate(0);
 			player.setLinearVelocity(Vector3f.ZERO);
-			
+
 		}
 		if (botFinish && (System.currentTimeMillis() - timerStopBot > 1000))	{
 			bot.accelerate(0);
 			bot.setLinearVelocity(Vector3f.ZERO);
 		}
-		
+
 		// Tester si le round est fini
-		if (playerFinish && botFinish)	{
+		if (playerFinish && botFinish && !runFinish)	{
 			String text = "";
-			if (timePlayer < timeBot)	{
+
+
+			if (timePlayer < timeBot && !particule_motor.getBurstEnabled())	{
 				text = "Gagne !\n ";
 			}
 			else	{
@@ -310,34 +318,24 @@ public class GameScreenState extends AbstractScreenController implements
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10);
-			
+
 			screen.findElementByName("startTimer")
 			.getRenderer(TextRenderer.class).setText(text);
-			
+
 			runFinish = true;
 			runIsOn = false;
 		}
+		
+
+		particule_motor.controlBurst();
 
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
 		if (runIsOn) {
-			
+
 			playerEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(playerSpeed)));
 			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
-			// Test if the player is first
-			// if (finishCell.getOverlappingCount() > 0) {
-			// runIsOn = false;
-			// audio_motor.playStartBeep();
-			//
-			// for (PhysicsCollisionObject obj :
-			// finishCell.getOverlappingObjects()) {
-			// System.out.println(obj.toString());
-			// }
-			//
-			// System.out.println("joueur premier");
-			// }
-			//
 			playerEnginePhysics.setSpeed(Math.abs(Conversion
 					.kmToMiles(playerSpeed)));
 			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
@@ -345,60 +343,78 @@ public class GameScreenState extends AbstractScreenController implements
 			playerRpm = (int) playerEnginePhysics.getRpm();
 
 			long timeMili = (System.currentTimeMillis() - startTime);
-			/*
-			 * String timer = String.format( "%d min, %d sec %d ",
-			 * TimeUnit.MILLISECONDS.toMinutes(timeMili),
-			 * TimeUnit.MILLISECONDS.toSeconds(timeMili) -
-			 * TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
-			 * .toMinutes(timeMili)), (timeMili % 1000) / 10);
-			 */
 
 			String sTimer = String.format("%d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeMili),
 					(timeMili % 1000) / 10);
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
-					.setText(sTimer);
+			.setText(sTimer);
+			
 		} else if (!runFinish) {
 			botEnginePhysics.setBreaking(true);
 			// Afficher le compte à rebour
 			long time = System.currentTimeMillis() - countDown;
-			
+
 			if (countDown != 0) {
 				if (time > 5000) {
 					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("");
+					.getRenderer(TextRenderer.class).setText("");
 					runIsOn = true;
 					audio_motor.playStartBeep();
 					playerEnginePhysics.setRpm(initialRev);
 					startTime = System.currentTimeMillis();
 				} else if (time > 4000) {
 					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("1");
+					.getRenderer(TextRenderer.class).setText("1");
 
 				} else if (time > 3000) {
 					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("2");
+					.getRenderer(TextRenderer.class).setText("2");
 				} else if (time > 2000) {
 					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("3");
+					.getRenderer(TextRenderer.class).setText("3");
 				}
 			}
 		}
 		// tachometer.setRpm(playerRpm);
 		digitalTachometer.setText(((Integer) playerRpm).toString());
 		digitalSpeed.setText(((Integer) playerSpeed).toString());
-		digitalGear.setText(((Integer) botEnginePhysics.getGear())
+		digitalGear.setText(((Integer) playerEnginePhysics.getGear())
 				.toString());
 		shiftlight.setRpm(playerRpm);
 
+		// Traiter le cas du sur-régime
+		if (playerRpm > (playerCarProperties.getRedline() - 500))	{
+			if (!particule_motor.getBurstEnabled())	{
+				// Déclencher le timer s'il n'est pas activé
+				if (timerRedZone == 0)	{
+					timerRedZone = System.currentTimeMillis();
+				}
+				else	{
+					if (System.currentTimeMillis() - timerRedZone > 3000)	{
+						triggerBurst(player);
+						audio_motor.playBurst();
+						playerFinish = true;
+						timePlayer = 0;
+						timerStopPlayer = System.currentTimeMillis();
+					}
+				}
+			}
+		}
+		else	{
+			timerRedZone = 0;
+		}
+
 		if (runIsOn) {
 			botIA.act();
-			botIA.target(player);
+		//	botIA.target(player);
 			float force = -(float) playerEnginePhysics.getForce() / 5;
-			player.accelerate(2, force*2);
-			player.accelerate(3, force*2);
 			
+			if (!particule_motor.getBurstEnabled())	{
+				player.accelerate(2, force*2);
+				player.accelerate(3, force*2);
+			}
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 		} else {
 			// Baisser le régime moteur à l'arrêt
@@ -430,7 +446,13 @@ public class GameScreenState extends AbstractScreenController implements
 		}
 
 	}
-	
+
+	public void triggerBurst(Car vehicule) {
+		audio_motor.playBurst();
+		particule_motor.addExplosion(vehicule.getNode());
+		audio_motor.mute();
+	}
+
 	private void reset() {
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		player.setPhysicsRotation(new Matrix3f());
@@ -440,7 +462,7 @@ public class GameScreenState extends AbstractScreenController implements
 		player.resetSuspension();
 		player.steer(0);
 		audio_motor.playStartSound();
-		
+
 		player.accelerate(0);
 		bot.accelerate(0);
 		playerEnginePhysics.setSpeed(0);
@@ -455,8 +477,12 @@ public class GameScreenState extends AbstractScreenController implements
 		bot.setAngularVelocity(Vector3f.ZERO);
 		botEnginePhysics.setGear(1);
 		bot.resetSuspension();
+
+		if (particule_motor.getBurstEnabled())	{
+			particule_motor.removeExplosion(player.getNode());
+		}
+
 		bot.steer(0);
-		
 		runIsOn = false;
 		needReset = false;
 		runFinish = false;
@@ -464,7 +490,9 @@ public class GameScreenState extends AbstractScreenController implements
 		botFinish = false;
 		startTime = 0;
 		countDown = 0;
-		
+		timerRedZone = 0;
+
+	
 		screen.findElementByName("startTimer")
 		.getRenderer(TextRenderer.class).setText("Ready ?");
 	}
@@ -511,17 +539,17 @@ public class GameScreenState extends AbstractScreenController implements
 
 		/** 1.3) Add DIRT texture into the green layer (Tex2) */
 		Texture dirt = assetManager
-				.loadTexture("Textures/Terrain/splat/dirt.jpg");
+				.loadTexture("Textures/checker_large.gif");
 		dirt.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex2", dirt);
 		mat_terrain.setFloat("Tex2Scale", 32f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
 		Texture rock = assetManager
-				.loadTexture("Textures/Terrain/splat/road.jpg");
+				.loadTexture("Textures/asphalt.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
-		mat_terrain.setFloat("Tex3Scale", 128f);
+		mat_terrain.setFloat("Tex3Scale", 512f);
 
 		/** 2. Create the height map */
 		AbstractHeightMap heightmap = null;
@@ -558,16 +586,16 @@ public class GameScreenState extends AbstractScreenController implements
 		terrain.addControl(control);
 
 		// Rendre le terrain physique
-		
+
 		terrain.setLocalScale(3f, 2f, 4f);
-		
+
 		terrainPhys = new RigidBodyControl(0.0f);
 		terrain.addControl(terrainPhys);
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
-		
+
 		bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0, -9.81f, 0));
 		terrainPhys.setFriction(0.5f);
-		
+
 		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
 		//
@@ -607,7 +635,7 @@ public class GameScreenState extends AbstractScreenController implements
 		// bulletAppState.getPhysicsSpace().add(floor_phy);
 		// //bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0, -9.81f,
 		// 0));
-		 bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
 	private void setupKeys() {
@@ -623,7 +651,7 @@ public class GameScreenState extends AbstractScreenController implements
 
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
-//		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_LEFT)); // frein
+		//		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_LEFT)); // frein
 		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
@@ -736,30 +764,32 @@ public class GameScreenState extends AbstractScreenController implements
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
-			if (countDown == 0)	{
-				countDown = System.currentTimeMillis();
-			}
-		
-			initialRev += 400;
-
-			int redline = playerCarProperties.getRedline();
-
-			if (initialRev > redline) {
-				isBreaking = true;
-				/**
-				 * When engine is breaking, oscillate rpm a little to simulate
-				 * engine failure and get a nice sound ^^
-				 */
-				if (System.currentTimeMillis() - rpmTimer < 100) {
-					initialRev = redline - 200;
-				} else if (System.currentTimeMillis() - rpmTimer < 200) {
-					initialRev = redline;
-				} else {
-					initialRev = redline;
-					rpmTimer = System.currentTimeMillis();
+			if (!particule_motor.getBurstEnabled())	{
+				if (countDown == 0)	{
+					countDown = System.currentTimeMillis();
 				}
-			} else {
-				isBreaking = false;
+
+				initialRev += 400;
+
+				int redline = playerCarProperties.getRedline();
+
+				if (initialRev > redline) {
+					isBreaking = true;
+					/**
+					 * When engine is breaking, oscillate rpm a little to simulate
+					 * engine failure and get a nice sound ^^
+					 */
+					if (System.currentTimeMillis() - rpmTimer < 100) {
+						initialRev = redline - 200;
+					} else if (System.currentTimeMillis() - rpmTimer < 200) {
+						initialRev = redline;
+					} else {
+						initialRev = redline;
+						rpmTimer = System.currentTimeMillis();
+					}
+				} else {
+					isBreaking = false;
+				}
 			}
 		}
 
@@ -769,13 +799,13 @@ public class GameScreenState extends AbstractScreenController implements
 	public void collision(PhysicsCollisionEvent arg0) {
 		if (finishCell.getOverlappingObjects().contains(player) && !playerFinish)	{
 			audio_motor.playStartBeep();
-			
+
 			timePlayer = (System.currentTimeMillis() - startTime);
 			System.out.println(String.format("player : %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
 					(timePlayer % 1000) / 10));
-		
-			
+
+
 			timerStopPlayer = System.currentTimeMillis();
 			playerFinish = true;
 		}
@@ -784,10 +814,10 @@ public class GameScreenState extends AbstractScreenController implements
 			System.out.println(String.format("player : %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10));
-			
+
 			timerStopBot = System.currentTimeMillis();
 			botFinish = true;
 		}
-		
+
 	}
 }

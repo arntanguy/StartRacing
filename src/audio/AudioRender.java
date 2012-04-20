@@ -81,7 +81,6 @@ public class AudioRender {
 	}
 
 	public void setRPM(int rpm) {
-
 		Iterator<Integer> it = channels.keySet().iterator();
 
 		int rpmLow = 0;

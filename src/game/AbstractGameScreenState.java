@@ -339,8 +339,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	private void setupKeys() {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_Q));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
-		inputManager.addMapping("Ups", new KeyTrigger(KeyInput.KEY_Z));
-		inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_S));
+		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_Z));
+		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_S));
 		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
 		inputManager.addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
@@ -370,56 +370,29 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void update(float tpf) {
-		// tachometer.setRpm(playerRpm);
-		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 		int playerRpm = initialRev;
+		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
+
+		/** Stops 1 second after the finish line */
+		if (playerFinish
+				&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
+			player.accelerate(0);
+			player.setLinearVelocity(Vector3f.ZERO);
+		}
 
 		if (runIsOn) {
 			playerRpm = player.getEnginePhysics().getRpm();
-
-			// Arrêter le joueur s'il a passé la ligne d'arrivée
-			if (playerFinish
-					&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
-				player.accelerate(0);
-				player.setLinearVelocity(Vector3f.ZERO);
-			}
 
 			playerEnginePhysics.setSpeed(Math.abs(Conversion
 					.kmToMiles(playerSpeed)));
 			float force = -(float) playerEnginePhysics.getForce() / 5;
 			player.accelerate(2, force * 2);
 			player.accelerate(3, force * 2);
-		} else if (!runFinish) {
-			// Afficher le compte à rebour
-			long time = System.currentTimeMillis() - countDown;
+		} else {
+			countDown(1000);
 
-			if (countDown != 0) {
-				if (time > 5000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("");
-					runIsOn = true;
-					audio_motor.playStartBeep();
-					playerEnginePhysics.setRpm(initialRev);
-					startTime = System.currentTimeMillis();
-				} else if (time > 4000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("1");
-
-				} else if (time > 3000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("2");
-				} else if (time > 2000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("3");
-				}
-
-			}
-		}
-
-		// Baisser le régime moteur à l'arrêt
-		if (!runIsOn) {
+			// Baisser le régime moteur à l'arrêt
 			initialRev -= 100;
-
 			if (initialRev < playerCarProperties.getIdleRpm()) {
 				initialRev = playerCarProperties.getIdleRpm();
 			}
@@ -458,6 +431,37 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		shiftlight.setRpm(playerRpm);
 	}
 
+	/**
+	 * Displays a countdown for a given duration
+	 * 
+	 * @param time
+	 *            Duration of the countdown (in ms)
+	 */
+	private void countDown(int time) {
+		long ellapsedTime = System.currentTimeMillis() - countDown;
+
+		if (ellapsedTime < time) {
+			screen.findElementByName("startTimer")
+					.getRenderer(TextRenderer.class)
+					.setText(
+							((Long) ((time - ellapsedTime + 1000) / 1000))
+									.toString());
+		} else if (ellapsedTime >= time && ellapsedTime < time + 500) {
+			screen.findElementByName("startTimer")
+					.getRenderer(TextRenderer.class).setText("");
+			runIsOn = true;
+			audio_motor.playStartBeep();
+			playerEnginePhysics.setRpm(initialRev);
+			startTime = System.currentTimeMillis();
+			countDown = 0;
+		}
+	}
+
+	/**
+	 * Triggers an explosion, occurs when you stay in redline for too long
+	 * 
+	 * @param vehicule
+	 */
 	public void triggerBurst(Car vehicule) {
 		audio_motor.playBurst();
 		particule_motor.addExplosion(vehicule.getNode());
@@ -485,7 +489,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			particule_motor.removeExplosion(player.getNode());
 		}
 
+		initialRev = playerCarProperties.getIdleRpm();
 		timerRedZone = 0;
+		timerStopPlayer = 0;
 		playerFinish = false;
 		runIsOn = false;
 		needReset = false;
@@ -517,26 +523,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				player.setSteeringValue(0.f);
 			}
 			player.steer(player.getSteeringValue());
-		} // note that our fancy car actually goes backwards..
-		else if (binding.equals("Ups")) {
-			if (value) {
-				accelerationValue -= 10000;
-			} else {
-				accelerationValue += 10000;
-			}
-			// player.accelerate(accelerationValue);
-			if (runIsOn) {
-				player.accelerate(3, accelerationValue);
-				player.accelerate(2, accelerationValue);
-			}
-		} else if (binding.equals("Downs")) {
-			if (value) {
-				accelerationValue = +5000;
-			} else {
-				accelerationValue = 0;
-			}
-			player.accelerate(3, accelerationValue);
-			player.accelerate(2, accelerationValue);
 		} else if (binding.equals("Space")) {
 			if (value) {
 				player.brake(700f);
@@ -568,29 +554,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			if (!particule_motor.getBurstEnabled()) {
 				if (countDown == 0) {
 					countDown = System.currentTimeMillis();
+					initialRev = playerCarProperties.getIdleRpm();
 				}
 
 				initialRev += 400;
 
-				int redline = playerCarProperties.getRedline();
-
-				if (initialRev > redline) {
-					isBreaking = true;
-					/**
-					 * When engine is breaking, oscillate rpm a little to
-					 * simulate engine failure and get a nice sound ^^
-					 */
-					if (System.currentTimeMillis() - rpmTimer < 100) {
-						initialRev = redline - 200;
-					} else if (System.currentTimeMillis() - rpmTimer < 200) {
-						initialRev = redline;
-					} else {
-						initialRev = redline;
-						rpmTimer = System.currentTimeMillis();
-					}
-				} else {
-					isBreaking = false;
-				}
+				player.getEnginePhysics().setRpm(initialRev);
 			}
 		}
 

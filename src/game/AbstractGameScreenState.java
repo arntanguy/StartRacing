@@ -329,7 +329,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		terrain.addControl(terrainPhys);
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
 
-		bulletAppState.getPhysicsSpace().setGravity(new Vector3f(0, -9.81f, 0));
+		bulletAppState.getPhysicsSpace()
+				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
 		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
@@ -365,20 +366,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "GearUp");
 		inputManager.addListener(this, "GearDown");
 		inputManager.addListener(this, "Throttle");
-
 	}
 
 	@Override
 	public void update(float tpf) {
 		// tachometer.setRpm(playerRpm);
-		int playerRpm = player.getEnginePhysics().getRpm();
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
-
-		digitalTachometer.setText(((Integer) playerRpm).toString());
-		digitalSpeed.setText(((Integer) playerSpeed).toString());
-		digitalGear.setText(((Integer) playerEnginePhysics.getGear())
-				.toString());
-		shiftlight.setRpm(playerRpm);
+		int playerRpm = initialRev;
 
 		// Traiter le cas du sur-régime
 		if (playerRpm > (playerCarProperties.getRedline() - 500)) {
@@ -400,6 +394,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		particule_motor.controlBurst();
 
 		if (runIsOn) {
+			playerRpm = player.getEnginePhysics().getRpm();
+
 			// Arrêter le joueur s'il a passé la ligne d'arrivée
 			if (playerFinish
 					&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
@@ -412,6 +408,40 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			float force = -(float) playerEnginePhysics.getForce() / 5;
 			player.accelerate(2, force * 2);
 			player.accelerate(3, force * 2);
+		} else if (!runFinish) {
+			// Afficher le compte à rebour
+			long time = System.currentTimeMillis() - countDown;
+
+			if (countDown != 0) {
+				if (time > 5000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("");
+					runIsOn = true;
+					audio_motor.playStartBeep();
+					playerEnginePhysics.setRpm(initialRev);
+					startTime = System.currentTimeMillis();
+				} else if (time > 4000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("1");
+
+				} else if (time > 3000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("2");
+				} else if (time > 2000) {
+					screen.findElementByName("startTimer")
+							.getRenderer(TextRenderer.class).setText("3");
+				}
+
+			}
+		}
+
+		// Baisser le régime moteur à l'arrêt
+		if (!runIsOn) {
+			initialRev -= 100;
+
+			if (initialRev < playerCarProperties.getIdleRpm()) {
+				initialRev = playerCarProperties.getIdleRpm();
+			}
 		}
 
 		// Update audio
@@ -420,6 +450,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
+
+		digitalTachometer.setText(((Integer) playerRpm).toString());
+		digitalSpeed.setText(((Integer) playerSpeed).toString());
+		digitalGear.setText(((Integer) playerEnginePhysics.getGear())
+				.toString());
+		shiftlight.setRpm(playerRpm);
 	}
 
 	public void triggerBurst(Car vehicule) {

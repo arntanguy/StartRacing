@@ -37,9 +37,22 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		super.initGame();
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		addBot(new Vector3f(new Vector3f(10, 27, 700)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(20, 27, 700)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(30, 27, 700)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(40, 27, 700)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(20, 27, 800)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(30, 27, 500)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
+
+		/*
+		addBot(new Vector3f(new Vector3f(300, 27, 800)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(200, 27, 700)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(100, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(400, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(500, 27, 500)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(70, 27, 650)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(90, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(0, 27, 600)), new BMWM3Properties());
+		*/
+
 	}
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
@@ -88,30 +101,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		} else if (!runFinish) {
 			for (Car bot : bots) {
 				bot.getEnginePhysics().setBreaking(true);
-			}
-
-			// Afficher le compte à rebour
-			long time = System.currentTimeMillis() - countDown;
-
-			if (countDown != 0) {
-				if (time > 5000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("");
-					runIsOn = true;
-					// audio_motor.playStartBeep();
-					playerEnginePhysics.setRpm(initialRev);
-					startTime = System.currentTimeMillis();
-				} else if (time > 4000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("1");
-
-				} else if (time > 3000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("2");
-				} else if (time > 2000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("3");
-				}
 			}
 		}
 

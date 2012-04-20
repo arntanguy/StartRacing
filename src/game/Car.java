@@ -29,6 +29,8 @@ public class Car extends VehicleControl {
 	private Geometry chasis;
 	private float wheelRadius;
 	private float steeringValue = 0;
+	
+	private int life = 100;
 
 	public Car(AssetManager assetManager, CarProperties properties) {
 		super();
@@ -158,5 +160,15 @@ public class Car extends VehicleControl {
 				: 0.5);
 		this.steeringValue = (float) ((steeringValue >= -0.5) ? steeringValue
 				: -0.5);
+	}
+	
+	public void increaseLife(int value) {
+		life += value;
+		if(life > 100) life = 100;
+	}
+	
+	public void decreaseLife(int value) {
+		life -= value;
+		if(life < 0) life = 0;
 	}
 }

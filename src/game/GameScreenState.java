@@ -134,32 +134,10 @@ public class GameScreenState extends AbstractGameScreenState {
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
-		} else if (!runFinish) {
+		} else if(!runFinish) { 		
 			botEnginePhysics.setBreaking(true);
-			// Afficher le compte à rebour
-			long time = System.currentTimeMillis() - countDown;
-
-			if (countDown != 0) {
-				if (time > 5000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("");
-					runIsOn = true;
-					audio_motor.playStartBeep();
-					playerEnginePhysics.setRpm(initialRev);
-					startTime = System.currentTimeMillis();
-				} else if (time > 4000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("1");
-
-				} else if (time > 3000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("2");
-				} else if (time > 2000) {
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("3");
-				}
-			}
 		}
+
 
 		if (runIsOn) {
 			botIA.act();

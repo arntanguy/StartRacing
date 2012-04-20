@@ -374,25 +374,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 		int playerRpm = initialRev;
 
-		// Traiter le cas du sur-régime
-		if (playerRpm > (playerCarProperties.getRedline() - 500)) {
-			if (!particule_motor.getBurstEnabled()) {
-				// Déclencher le timer s'il n'est pas activé
-				if (timerRedZone == 0) {
-					timerRedZone = System.currentTimeMillis();
-				} else {
-					if (System.currentTimeMillis() - timerRedZone > 3000) {
-						triggerBurst(player);
-						audio_motor.playBurst();
-					}
-				}
-			}
-		} else {
-			timerRedZone = 0;
-		}
-
-		particule_motor.controlBurst();
-
 		if (runIsOn) {
 			playerRpm = player.getEnginePhysics().getRpm();
 
@@ -450,6 +431,25 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
+
+		// Traiter le cas du sur-régime
+		if (playerRpm > (playerCarProperties.getRedline() - 500)) {
+			if (!particule_motor.getBurstEnabled()) {
+				// Déclencher le timer s'il n'est pas activé
+				if (timerRedZone == 0) {
+					timerRedZone = System.currentTimeMillis();
+				} else {
+					if (System.currentTimeMillis() - timerRedZone > 3000) {
+						triggerBurst(player);
+						audio_motor.playBurst();
+					}
+				}
+			}
+		} else {
+			timerRedZone = 0;
+		}
+
+		particule_motor.controlBurst();
 
 		digitalTachometer.setText(((Integer) playerRpm).toString());
 		digitalSpeed.setText(((Integer) playerSpeed).toString());

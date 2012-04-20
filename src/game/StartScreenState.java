@@ -67,6 +67,10 @@ public class StartScreenState extends AbstractScreenController {
 		Element pop = nifty.createPopup("exitPopup");
 		nifty.showPopup(nifty.getCurrentScreen(), pop.getId(), null);
 	}
+	
+	public void showOptions() {
+		app.gotoOptions();
+	}
 
 	public void quitGame() {
 		app.stop();

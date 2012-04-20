@@ -9,4 +9,6 @@ public final class StringStore {
 	
 	public static final String APP_TITLE = "StartRacing";
 	
+	public static final String OPTION_MENU_TITLE = "Options";
+	
 }

@@ -100,6 +100,10 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 	private AudioRender audio_motor;
 
 	private boolean soudIsActive = true;
+	private boolean threeSec;
+	private boolean twoSec;
+	private boolean oneSec;
+	private boolean zeroSec;
 	private int initialRev;
 
 	private AppStateManager stateManager;
@@ -147,6 +151,12 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		runFinish = false;
 		playerFinish = false;
 		botFinish = false;
+		
+		threeSec = false;
+		twoSec = false;
+		oneSec = false;
+		zeroSec = false;
+		
 		initialRev = 0;
 		this.isBreaking = false;
 		this.needReset = false;
@@ -265,7 +275,10 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		HashMap<String, String> extraSound = new HashMap<String, String>();
 		extraSound.put("start", "Models/Default/start.wav");
 		extraSound.put("up", "Models/Default/up.wav");
-		extraSound.put("beep", "Sound/start_beep.wav");
+		extraSound.put("lost", "Sound/lost.wav");
+		extraSound.put("win", "Sound/win.wav");
+		extraSound.put("start_low", "Sound/start_low.wav");
+		extraSound.put("start_high", "Sound/start_high.wav");
 		extraSound.put("burst", "Sound/explosion.wav");
 		
 		audio_motor.init(channels, extraSound);
@@ -308,8 +321,10 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 
 			if (timePlayer < timeBot && !particule_motor.getBurstEnabled())	{
 				text = "Gagne !\n ";
+				audio_motor.playWin();
 			}
 			else	{
+				audio_motor.playLost();
 				text = "Perdu !\n ";
 			}
 			text += String.format("Joueur:  %d : %d\n",
@@ -352,26 +367,39 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 			.setText(sTimer);
 			
 		} else if (!runFinish) {
-			botEnginePhysics.setBreaking(true);
 			// Afficher le compte à rebour
 			long time = System.currentTimeMillis() - countDown;
 
 			if (countDown != 0) {
 				if (time > 5000) {
+					if (!zeroSec)	{
+						audio_motor.playStartBeepHigh();
+						zeroSec = true;
+					}
 					screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText("");
 					runIsOn = true;
-					audio_motor.playStartBeep();
 					playerEnginePhysics.setRpm(initialRev);
 					startTime = System.currentTimeMillis();
 				} else if (time > 4000) {
+					if (!oneSec)	{
+						audio_motor.playStartBeepLow();
+						oneSec = true;
+					}
 					screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText("1");
-
 				} else if (time > 3000) {
+					if (!twoSec)	{
+						audio_motor.playStartBeepLow();
+						twoSec = true;
+					}
 					screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText("2");
 				} else if (time > 2000) {
+					if (!threeSec)	{
+						audio_motor.playStartBeepLow();
+						threeSec = true;
+					}
 					screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText("3");
 				}
@@ -408,7 +436,7 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		if (runIsOn) {
 			botIA.act();
-		//	botIA.target(player);
+			botIA.target(player);
 			float force = -(float) playerEnginePhysics.getForce() / 5;
 			
 			if (!particule_motor.getBurstEnabled())	{
@@ -490,6 +518,12 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		runFinish = false;
 		playerFinish = false;
 		botFinish = false;
+		
+		threeSec = false;
+		twoSec = false;
+		oneSec = false;
+		zeroSec = false;
+		
 		startTime = 0;
 		countDown = 0;
 		timerRedZone = 0;
@@ -746,7 +780,6 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 		} else if (binding.equals("Reset")) {
 			if (value) {
 				System.out.println("Reset");
-				// XXX: reset
 				needReset = true;
 			}
 		} else if (binding.equals("GearUp")) {
@@ -800,7 +833,6 @@ ActionListener, AnalogListener, PhysicsCollisionListener {
 	@Override
 	public void collision(PhysicsCollisionEvent arg0) {
 		if (finishCell.getOverlappingObjects().contains(player) && !playerFinish)	{
-			audio_motor.playStartBeep();
 
 			timePlayer = (System.currentTimeMillis() - startTime);
 			System.out.println(String.format("player : %d : %d",

@@ -100,7 +100,9 @@ public class GameScreenState extends AbstractGameScreenState {
 
 			if (timePlayer < timeBot && !particule_motor.getBurstEnabled()) {
 				text = "Gagne !\n ";
+				audio_motor.playWin();
 			} else {
+				audio_motor.playLost();
 				text = "Perdu !\n ";
 			}
 			text += String.format("Joueur:  %d : %d\n",
@@ -129,8 +131,8 @@ public class GameScreenState extends AbstractGameScreenState {
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
-			botIA.act();
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
+			botIA.act();
 		} else if (!runFinish) {
 			botEnginePhysics.setBreaking(true);
 		}
@@ -153,6 +155,14 @@ public class GameScreenState extends AbstractGameScreenState {
 		bot.steer(0);
 
 		botFinish = false;
+		runIsOn = false;
+		needReset = false;
+		runFinish = false;
+		playerFinish = false;
+		botFinish = false;
+
+		startTime = 0;
+		countDown = 0;
 
 		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
 				.setText("Ready ?");
@@ -162,8 +172,6 @@ public class GameScreenState extends AbstractGameScreenState {
 	public void collision(PhysicsCollisionEvent arg0) {
 		if (finishCell.getOverlappingObjects().contains(player)
 				&& !playerFinish) {
-			audio_motor.playStartBeep();
-
 			timePlayer = (System.currentTimeMillis() - startTime);
 			System.out.println(String.format("player : %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timePlayer),

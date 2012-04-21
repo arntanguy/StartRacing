@@ -88,13 +88,17 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected long rpmTimer;
 
 	protected boolean needReset;
-	private int accelerationValue;
 
 	protected ParticuleMotor particule_motor;
 	private long timerRedZone = 0;
 	protected boolean playerFinish;
 	protected long timerStopPlayer = 0;
 	protected long timePlayer = 0;
+
+	boolean zeroSec;
+	boolean oneSec;
+	boolean twoSec;
+	boolean threeSec;
 
 	public AbstractGameScreenState() {
 		super();
@@ -148,6 +152,10 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		initialRev = 0;
 		this.isBreaking = false;
 		this.needReset = false;
+		zeroSec = false;
+		oneSec = false;
+		twoSec = false;
+		threeSec = false;
 
 		initGround();
 		buildPlayer();
@@ -225,9 +233,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		HashMap<String, String> extraSound = new HashMap<String, String>();
 		extraSound.put("start", "Models/Default/start.wav");
 		extraSound.put("up", "Models/Default/up.wav");
-		extraSound.put("beep", "Sound/start_beep.wav");
-		// XXX: put real sound
-		extraSound.put("burst", "Sound/start_beep.wav");
+		extraSound.put("lost", "Sound/lost.wav");
+		extraSound.put("win", "Sound/win.wav");
+		extraSound.put("start_low", "Sound/start_low.wav");
+		extraSound.put("start_high", "Sound/start_high.wav");
+		extraSound.put("burst", "Sound/explosion.wav");
 
 		audio_motor.init(channels, extraSound);
 
@@ -389,7 +399,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			player.accelerate(2, force * 2);
 			player.accelerate(3, force * 2);
 		} else {
-			countDown(1000);
+			if (!runFinish) {
+				countDown();
+			}
 
 			// Baisser le régime moteur à l'arrêt
 			initialRev -= 100;
@@ -432,28 +444,56 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	}
 
 	/**
-	 * Displays a countdown for a given duration
-	 * 
-	 * @param time
-	 *            Duration of the countdown (in ms)
+	 * Displays a countdown
 	 */
-	private void countDown(int time) {
-		long ellapsedTime = System.currentTimeMillis() - countDown;
-
-		if (ellapsedTime < time) {
-			screen.findElementByName("startTimer")
-					.getRenderer(TextRenderer.class)
-					.setText(
-							((Long) ((time - ellapsedTime + 1000) / 1000))
-									.toString());
-		} else if (ellapsedTime >= time && ellapsedTime < time + 500) {
-			screen.findElementByName("startTimer")
-					.getRenderer(TextRenderer.class).setText("");
-			runIsOn = true;
-			audio_motor.playStartBeep();
-			playerEnginePhysics.setRpm(initialRev);
-			startTime = System.currentTimeMillis();
-			countDown = 0;
+	private void countDown() {
+		/*
+		 * long ellapsedTime = System.currentTimeMillis() - countDown;
+		 * 
+		 * if (ellapsedTime < time) { screen.findElementByName("startTimer")
+		 * .getRenderer(TextRenderer.class) .setText( ((Long) ((time -
+		 * ellapsedTime + 1000) / 1000)) .toString()); } else if (ellapsedTime
+		 * >= time && ellapsedTime < time + 500) {
+		 * screen.findElementByName("startTimer")
+		 * .getRenderer(TextRenderer.class).setText(""); runIsOn = true;
+		 * audio_motor.playStartBeepHigh();
+		 * playerEnginePhysics.setRpm(initialRev); startTime =
+		 * System.currentTimeMillis(); countDown = 0; }
+		 */
+		if (countDown != 0) {
+			long time = System.currentTimeMillis() - countDown;
+			if (time > 5000) {
+				if (!zeroSec) {
+					audio_motor.playStartBeepHigh();
+					zeroSec = true;
+				}
+				screen.findElementByName("startTimer")
+						.getRenderer(TextRenderer.class).setText("");
+				runIsOn = true;
+				playerEnginePhysics.setRpm(initialRev);
+				startTime = System.currentTimeMillis();
+			} else if (time > 4000) {
+				if (!oneSec) {
+					audio_motor.playStartBeepLow();
+					oneSec = true;
+				}
+				screen.findElementByName("startTimer")
+						.getRenderer(TextRenderer.class).setText("1");
+			} else if (time > 3000) {
+				if (!twoSec) {
+					audio_motor.playStartBeepLow();
+					twoSec = true;
+				}
+				screen.findElementByName("startTimer")
+						.getRenderer(TextRenderer.class).setText("2");
+			} else if (time > 2000) {
+				if (!threeSec) {
+					audio_motor.playStartBeepLow();
+					threeSec = true;
+				}
+				screen.findElementByName("startTimer")
+						.getRenderer(TextRenderer.class).setText("3");
+			}
 		}
 	}
 
@@ -498,6 +538,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		runFinish = false;
 		startTime = 0;
 		countDown = 0;
+
+		threeSec = false;
+		twoSec = false;
+		oneSec = false;
+		zeroSec = false;
 
 		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
 				.setText("Ready ?");

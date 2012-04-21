@@ -63,8 +63,26 @@ public class AudioRender {
 		sample.playInstance();
 	}
 
-	public void playStartBeep() {
-		AudioNode sample = extraChan.get("beep");
+	public void playWin() {
+		AudioNode sample = extraChan.get("win");
+		sample.setVolume(1f);
+		sample.playInstance();
+	}
+
+	public void playLost() {
+		AudioNode sample = extraChan.get("lost");
+		sample.setVolume(1f);
+		sample.playInstance();
+	}
+
+	public void playStartBeepLow() {
+		AudioNode sample = extraChan.get("start_low");
+		sample.setVolume(1f);
+		sample.playInstance();
+	}
+
+	public void playStartBeepHigh() {
+		AudioNode sample = extraChan.get("start_high");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}

@@ -43,15 +43,17 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
 
 		/*
-		addBot(new Vector3f(new Vector3f(300, 27, 800)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(200, 27, 700)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(100, 27, 600)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(400, 27, 600)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(500, 27, 500)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(70, 27, 650)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(90, 27, 600)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(0, 27, 600)), new BMWM3Properties());
-		*/
+		 * addBot(new Vector3f(new Vector3f(300, 27, 800)), new
+		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(200, 27, 700)),
+		 * new BMWM3Properties()); addBot(new Vector3f(new Vector3f(100, 27,
+		 * 600)), new BMWM3Properties()); addBot(new Vector3f(new Vector3f(400,
+		 * 27, 600)), new BMWM3Properties()); addBot(new Vector3f(new
+		 * Vector3f(500, 27, 500)), new BMWM3Properties()); addBot(new
+		 * Vector3f(new Vector3f(70, 27, 650)), new BMWM3Properties());
+		 * addBot(new Vector3f(new Vector3f(90, 27, 600)), new
+		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(0, 27, 600)),
+		 * new BMWM3Properties());
+		 */
 
 	}
 
@@ -76,11 +78,14 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		super.update(tpf);
 
 		// int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
-		if (runIsOn) {			
+		if (runIsOn) {
 			for (Car bot : bots) {
 				bot.getEnginePhysics().setSpeed(
 						Math.abs(Conversion.kmToMiles(bot
 								.getCurrentVehicleSpeedKmHour())));
+				bot.getIA().act();
+				bot.getIA().target(player);
+				bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
 			}
 
 			long timeMili = (System.currentTimeMillis() - startTime);
@@ -103,22 +108,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 				bot.getEnginePhysics().setBreaking(true);
 			}
 		}
-
-		if (runIsOn) {
-			for (Car bot : bots) {
-				bot.getIA().act();
-				bot.getIA().target(player);
-				bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
-			}
-		} else {
-			// Baisser le régime moteur à l'arrêt
-			initialRev -= 100;
-
-			if (initialRev < playerCarProperties.getIdleRpm()) {
-				initialRev = playerCarProperties.getIdleRpm();
-			}
-		}
-
 	}
 
 	@Override

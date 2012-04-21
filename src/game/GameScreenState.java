@@ -19,9 +19,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.render.TextRenderer;
-import de.lessvoid.nifty.screen.Screen;
 
 public class GameScreenState extends AbstractGameScreenState {
 	private Car bot;
@@ -34,10 +32,8 @@ public class GameScreenState extends AbstractGameScreenState {
 	private long timerStopBot = 0;
 	private long timeBot;
 
-	private long rpmTimer;
 	private GhostControl finishCell;
 	private Node finishNode;
-
 
 	public GameScreenState() {
 		super();
@@ -93,7 +89,6 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		
 		if (botFinish && (System.currentTimeMillis() - timerStopBot > 1000)) {
 			bot.accelerate(0);
 			bot.setLinearVelocity(Vector3f.ZERO);
@@ -134,22 +129,10 @@ public class GameScreenState extends AbstractGameScreenState {
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
-		} else if(!runFinish) { 		
-			botEnginePhysics.setBreaking(true);
-		}
-
-
-		if (runIsOn) {
 			botIA.act();
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
-		} else {
-			// Baisser le régime moteur à l'arrêt
-			initialRev -= 100;
-
-			if (initialRev < playerCarProperties.getIdleRpm()) {
-				initialRev = playerCarProperties.getIdleRpm();
-			}
-
+		} else if (!runFinish) {
+			botEnginePhysics.setBreaking(true);
 		}
 	}
 
@@ -166,7 +149,6 @@ public class GameScreenState extends AbstractGameScreenState {
 		bot.setAngularVelocity(Vector3f.ZERO);
 		botEnginePhysics.setGear(1);
 		bot.resetSuspension();
-
 
 		bot.steer(0);
 

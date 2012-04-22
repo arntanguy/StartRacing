@@ -35,6 +35,8 @@ public class IA {
 	private long time = 0;
 	private int delay = 50; // 50 ms delay
 
+	private long followTimer = 0;
+
 	public IA(Car car, EnginePhysics enginePhysics) {
 		this.iaCar = car;
 		this.enginePhysics = enginePhysics;
@@ -98,11 +100,11 @@ public class IA {
 
 		int nb = (int) (100 * proba);
 
-		int random = (int) (Math.random() * (higher - lower)) + lower;
+		int random = IATools.randBetween(lower, higher);
 
 		return random < nb;
 	}
-	
+
 	/**
 	 * This method will make the bot change gear according to a parabolic
 	 * probability curve. The closer it gets to the optimal shift point, the
@@ -118,7 +120,7 @@ public class IA {
 			int gear = enginePhysics.getGear();
 			double optimalShiftPoint = carProperties.getOptimalShiftPoint(gear);
 			double rpm = enginePhysics.getRpm();
-			
+
 			if (rpm >= optimalShiftPoint - zone) {
 				if (rpm <= carProperties.getRedline()) {
 					if (isProba(proba(rpm, optimalShiftPoint))) {
@@ -127,10 +129,10 @@ public class IA {
 								+ enginePhysics.getGear() + " at RPM: " + rpm);
 					}
 				}
-			} else if(gear != 1 && rpm <= optimalShiftPoint/5) {
-					enginePhysics.decrementGear();
-					System.out.println("Shifting to gear "
-							+ enginePhysics.getGear() + " at RPM: " + rpm);
+			} else if (gear != 1 && rpm <= optimalShiftPoint / 5) {
+				enginePhysics.decrementGear();
+				System.out.println("Shifting to gear "
+						+ enginePhysics.getGear() + " at RPM: " + rpm);
 			}
 			if (rpm > carProperties.getRedline() && isProba(redlineShiftProba)) {
 				enginePhysics.incrementGear();
@@ -154,13 +156,13 @@ public class IA {
 		float det = v1.determinant(v2);
 		float angle = FastMath.acos(ps);
 		return (det < 0) ? -angle : angle;
-		
+
 	}
-	
+
 	public static float angle(Vector2f v1, Vector2f v2) {
 		float angle = orientedAngle(v1, v2);
 		angle = (float) ((angle < 0.5) ? angle : 0.5);
-		return (float) ((angle < -0.5) ? -0.5 : angle); 
+		return (float) ((angle < -0.5) ? -0.5 : angle);
 	}
 
 	/**
@@ -169,16 +171,24 @@ public class IA {
 	 * @param targetCar
 	 *            the targetted car
 	 */
-	public void target(Car targetCar) {
-		Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
-				iaCar.getForwardVector(null)).normalize();
-		Vector3f targetDirection = targetCar.getPhysicsLocation().subtract(iaCar.getPhysicsLocation()).normalize();
+	public void target(Car targetCar, int delayMs, double angularErrorFactor) {
+		if (followTimer == 0)
+			followTimer = System.currentTimeMillis();
+		if (System.currentTimeMillis() - followTimer > delayMs) {
+			Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
+					iaCar.getForwardVector(null)).normalize();
+			Vector3f targetDirection = targetCar.getPhysicsLocation()
+					.subtract(iaCar.getPhysicsLocation()).normalize();
 
-		Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
-		Vector2f targetDirection2 = new Vector2f(targetDirection.x,
-				targetDirection.z);
-		
-		this.iaCar.steer(-angle(iaForward2, targetDirection2));
+			Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
+			Vector2f targetDirection2 = new Vector2f(targetDirection.x,
+					targetDirection.z);
+
+			int intError = (int) (angularErrorFactor * 1000);
+			float errorVal = ((float) IATools.randBetween(-intError, intError)) / 1000.f;
+			System.out.println("Error " + errorVal);
+			this.iaCar.steer(-angle(iaForward2, targetDirection2) + errorVal);
+			followTimer = System.currentTimeMillis();
+		}
 	}
-
 }

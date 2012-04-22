@@ -84,7 +84,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 						Math.abs(Conversion.kmToMiles(bot
 								.getCurrentVehicleSpeedKmHour())));
 				bot.getIA().act();
-				bot.getIA().target(player);
+				bot.getIA().target(player, 200, 0);
 				bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
 			}
 

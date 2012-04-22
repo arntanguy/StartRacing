@@ -76,7 +76,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected long countDown = 0;
 
 	protected boolean soudIsActive = true;
-	protected int initialRev;
 
 	protected AppStateManager stateManager;
 
@@ -149,7 +148,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		stateManager.attach(bulletAppState);
 		runIsOn = false;
 		runFinish = false;
-		initialRev = 0;
 		this.isBreaking = false;
 		this.needReset = false;
 		zeroSec = false;
@@ -264,7 +262,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		getPhysicsSpace().add(player);
 
-		initialRev = playerCarProperties.getIdleRpm();
 	}
 
 	public void initGround() {
@@ -380,7 +377,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void update(float tpf) {
-		int playerRpm = initialRev;
+		int playerRpm = player.getEnginePhysics().getFreeRpm();
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 
 		/** Stops 1 second after the finish line */
@@ -404,17 +401,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 
 			// Baisser le régime moteur à l'arrêt
-			initialRev -= 100;
-			if (initialRev < playerCarProperties.getIdleRpm()) {
-				initialRev = playerCarProperties.getIdleRpm();
-			}
-		}
-
-		// Update audio
-		if (soudIsActive) {
-			audio_motor.setRPM(playerRpm);
-			app.getListener().setLocation(
-					player.getNode().getWorldTranslation());
+			playerEnginePhysics.setRpm(playerEnginePhysics.getFreeRpm() - 100);
 		}
 
 		// Traiter le cas du sur-régime
@@ -432,6 +419,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else {
 			timerRedZone = 0;
+		}
+
+		// Update audio
+		if (soudIsActive) {
+			audio_motor.setRPM(playerRpm);
+			app.getListener().setLocation(
+					player.getNode().getWorldTranslation());
 		}
 
 		particule_motor.controlBurst();
@@ -470,7 +464,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				screen.findElementByName("startTimer")
 						.getRenderer(TextRenderer.class).setText("");
 				runIsOn = true;
-				playerEnginePhysics.setRpm(initialRev);
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
 				if (!oneSec) {
@@ -529,7 +522,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			particule_motor.removeExplosion(player.getNode());
 		}
 
-		initialRev = playerCarProperties.getIdleRpm();
 		timerRedZone = 0;
 		timerStopPlayer = 0;
 		playerFinish = false;
@@ -554,20 +546,16 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	public void onAction(String binding, boolean value, float tpf) {
 		if (binding.equals("Lefts")) {
-			if (value) {
-				player.setSteeringValue(.5f);
-			} else {
+			// XXX: Needs analog controller for releasing the wheels too!
+			if (!value) {
 				player.setSteeringValue(0.f);
-				;
+				player.steer(player.getSteeringValue());
 			}
-			player.steer(player.getSteeringValue());
 		} else if (binding.equals("Rights")) {
-			if (value) {
-				player.setSteeringValue(-.5f);
-			} else {
-				player.setSteeringValue(0.f);
+			if (!value) {
+				player.setSteeringValue(0);
+				player.steer(0);
 			}
-			player.steer(player.getSteeringValue());
 		} else if (binding.equals("Space")) {
 			if (value) {
 				player.brake(700f);
@@ -597,16 +585,30 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
 			if (!particule_motor.getBurstEnabled()) {
+				// Start countdown
 				if (countDown == 0) {
 					countDown = System.currentTimeMillis();
-					initialRev = playerCarProperties.getIdleRpm();
 				}
 
-				initialRev += 400;
-
-				player.getEnginePhysics().setRpm(initialRev);
+				playerEnginePhysics
+						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
 			}
+		} else if (binding.equals("Rights")) {
+			System.out.println("Value " + value + " tpf: " + tpf);
+			float val = player.getSteeringValue();
+			val = val - value;
+			if (val < -0.5)
+				val = -0.5f;
+			player.setSteeringValue(val);
+			System.out.println("New value " + player.getSteeringValue());
+			player.steer(player.getSteeringValue());
+		} else if (binding.equals("Lefts")) {
+			float val = player.getSteeringValue();
+			val = val + value;
+			if (val > 0.5)
+				val = 0.5f;
+			player.setSteeringValue(val);
+			player.steer(player.getSteeringValue());
 		}
-
 	}
 }

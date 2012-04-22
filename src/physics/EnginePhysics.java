@@ -27,7 +27,7 @@ public class EnginePhysics {
 
 	public EnginePhysics(CarProperties prop) {
 		this.p = prop;
-		
+
 		rpm = p.idleRpm;
 	}
 
@@ -109,14 +109,45 @@ public class EnginePhysics {
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
-	
+
 	/**
-	 * Set the vehicule rpm. Use it as a kick starting when the vehicule is not moving wet.
+	 * Set the vehicule rpm. Use it as a kick starting when the vehicule is not
+	 * moving yet.
+	 * 
 	 * @param rpm
-	 * 				The rpm of the engine
+	 *            The rpm of the engine
 	 */
-	public void setRpm(int rpm) 	{
-		this.rpm = rpm;
+	public void setRpm(int rpm) {
+		if (rpm > p.getRedline())
+			this.rpm = p.getRedline();
+		else if (rpm < p.getIdleRpm())
+			this.rpm = p.getIdleRpm();
+		else
+			this.rpm = rpm;
+	}
+
+	/**
+	 * Get rpm when the clutch is disengaged
+	 * 
+	 * @return
+	 */
+	public int getFreeRpm() {
+		/**
+		 * When engine is breaking, oscillate rpm a little to simulate engine
+		 * failure and get a nice sound ^^
+		 */
+		int redline = p.getRedline();
+		if (rpm >= redline) {
+			if (System.currentTimeMillis() - rpmTimer < 100) {
+				rpm = redline - 200;
+			} else if (System.currentTimeMillis() - rpmTimer < 200) {
+				rpm = redline;
+			} else {
+				rpm = redline;
+				rpmTimer = System.currentTimeMillis();
+			}
+		}
+		return rpm;
 	}
 
 	/**
@@ -126,7 +157,7 @@ public class EnginePhysics {
 	 */
 	public double getEngineSpeed() {
 		/**
-		 *  w = v*G*gk/(2*pi*r)
+		 * w = v*G*gk/(2*pi*r)
 		 */
 		return speed * p.getTgr() * p.getGearRatio(gear)
 				/ (2 * Math.PI * p.getTireRadius());
@@ -140,13 +171,13 @@ public class EnginePhysics {
 	 * @return The force generated (in Newtons)
 	 */
 	public double getForce() {
-		if (!isBreaking)	{
-			if (speed != 0)	{
+		if (!isBreaking) {
+			if (speed != 0) {
 				rpm = getRpm();
 			}
-			return p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
-		}
-		else	{
+			return p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear)
+					/ p.getTireRadius();
+		} else {
 			return 0;
 		}
 	}

@@ -139,7 +139,8 @@ public class AudioRender {
 			System.err.println("val du pich bas = " + pourcentLow);
 		}
 
-		low.setVolume((volumHigh) * 2.f);
+		float vol = (volumHigh) * 2.f;
+		low.setVolume((vol > 0) ? vol : 0.f);
 
 		try {
 			high.setPitch(1 - pourcentHigh);

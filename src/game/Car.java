@@ -1,7 +1,5 @@
 package game;
 
-import java.io.ObjectInputStream.GetField;
-
 import ia.IA;
 import physics.CarProperties;
 import physics.EnginePhysics;
@@ -34,7 +32,7 @@ public class Car extends VehicleControl {
 	private float wheelRadius;
 	private float steeringValue = 0;
 	
-	private int life = 100;
+	private double life = 100;
 	private String driverName;
 	public enum CarType { BOT, PLAYER };
 	private CarType type;
@@ -172,26 +170,18 @@ public class Car extends VehicleControl {
 				: -0.5);
 	}
 	
-	public void increaseLife(int value) {
+	public void increaseLife(double value) {
 		life += value;
 		if(life > 100) life = 100;
 	}
 	
-	public void decreaseLife(int value) {
+	public void decreaseLife(double value) {
 		life -= value;
 		if(life < 0) life = 0;
 	}
 	
-	public void alterLife(int value) {
-		System.out.println("Alter life "+value);
-		if(value >= 0)
-			increaseLife(value);
-		else
-			decreaseLife(-value);
-	}
-	
 	public int getLife() {
-		return life;
+		return (int)life;
 	}
 	
 	public void setDriverName(String name) {

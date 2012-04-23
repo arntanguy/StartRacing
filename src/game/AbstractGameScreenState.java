@@ -633,12 +633,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Two cars collide
 		if (car1 != null && car2 != null) {
-			float lateral1 = event.getAppliedImpulseLateral1() / 10;
-			float lateral2 = event.getAppliedImpulseLateral2() / 10;
 			float speed1 = Math.abs(car1.getCurrentVehicleSpeedKmHour());
 			float speed2 = Math.abs(car2.getCurrentVehicleSpeedKmHour());
 			float appliedImpulse = event.getAppliedImpulse();
-			float impulseDamage = appliedImpulse / 2000;
+			// Impact, reduce friction
+			float damageForce = (appliedImpulse - event.getCombinedFriction() / 10) / 10000;
 
 			System.out.println("Collision between " + car1.getType() + " "
 					+ car1.getDriverName() + " and " + car2.getType() + " "
@@ -676,33 +675,31 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				System.out.println("Frontal collision " + speed1 + " " + speed2
 						+ "  at force " + appliedImpulse);
 				float speedPercent1 = speed1 / (speed1 + speed2);
-				car1.decreaseLife((int) (speedPercent1 * impulseDamage));
-				car2.decreaseLife((int) ((1 - speedPercent1) * impulseDamage));
-			} else if (angle <= Math.PI / 4) {
-				// back collision
+				car1.decreaseLife(speedPercent1 * damageForce);
+				car2.decreaseLife((1 - speedPercent1) * damageForce);
+			} else {
+				// back collision if (angle <= Math.PI / 4)
 				// the car in front will have 75% of the damages
 				// 25% for the car in back
 				System.out.println("Back collision " + speed1 + " " + speed2
 						+ "  at force " + appliedImpulse);
 				System.out.println("Distance 1" + event.getDistance1());
 				double speedDifferenceDamage = Math.abs(speed2 - speed1)
-						* impulseDamage;
+						* damageForce / 2;
 				if (car1.inFront(car2)) {
-					car1.decreaseLife((int) (0.75 * speedDifferenceDamage));
-					car2.decreaseLife((int) (0.25 * speedDifferenceDamage));
+					car1.decreaseLife(0.75 * speedDifferenceDamage);
+					car2.decreaseLife(0.25 * speedDifferenceDamage);
 					System.out.println(car1.getType() + " In Front");
 				} else {
-					car1.decreaseLife((int) (0.25 * speedDifferenceDamage));
-					car2.decreaseLife((int) (0.75 * speedDifferenceDamage));
+					car1.decreaseLife(0.25 * speedDifferenceDamage);
+					car2.decreaseLife(0.75 * speedDifferenceDamage);
 					System.out.println(car2.getType() + " In Front");
 				}
 			}
 
 			System.out.println(car1.getType() + " life " + car1.getLife());
 			System.out.println(car2.getType() + " life " + car2.getLife());
+
 		}
-
-		// System.out.println("COLLIDE "+event.getObjectB().getUserObject().getClass());
-
 	}
 }

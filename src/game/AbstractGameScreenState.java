@@ -1,7 +1,12 @@
 package game;
 
+import game.Car.CarType;
+
+import ia.IATools;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
 import physics.CarProperties;
@@ -14,6 +19,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.ChaseCamera;
@@ -27,6 +33,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
@@ -252,6 +259,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties);
+		player.setType(CarType.PLAYER);
+		player.setDriverName("Player");
 		player.getNode().addControl(player);
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 
@@ -611,5 +620,61 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			player.setSteeringValue(val);
 			player.steer(player.getSteeringValue());
 		}
+	}
+
+	@Override
+	public void collision(PhysicsCollisionEvent event) {
+		Car car1 = null;
+		Car car2 = null;
+		if (event.getObjectA() instanceof Car) {
+			car1 = (Car) event.getObjectA();
+		}
+		if (event.getObjectB() instanceof Car) {
+			car2 = (Car) event.getObjectB();
+		}
+
+		// Two cars collide
+		if (car1 != null && car2 != null) {
+			float lateral1 = event.getAppliedImpulseLateral1() / 10;
+			float lateral2 = event.getAppliedImpulseLateral2() / 10;
+			float speed1 = Math.abs(car1.getCurrentVehicleSpeedKmHour());
+			float speed2 = Math.abs(car2.getCurrentVehicleSpeedKmHour());
+			float appliedImpulse = event.getAppliedImpulse();
+
+			System.out.println("Collision between " + car1.getType() + " "
+					+ car1.getDriverName() + " and " + car2.getType() + " "
+					+ car2.getDriverName());
+			System.out.println("Lateral 1 impulse "
+					+ event.getAppliedImpulseLateral1());
+			System.out.println("Lateral 2 impulse "
+					+ event.getAppliedImpulseLateral2());
+			System.out.println("Combined friction "
+					+ event.getCombinedFriction());
+			System.out.println("Force " + appliedImpulse);
+
+			Vector3f forward1 = new Vector3f(0, 0, 0).subtract(
+					car1.getForwardVector(null)).normalize();
+			Vector3f forward2 = new Vector3f(0, 0, 0).subtract(
+					car2.getForwardVector(null)).normalize();
+			System.out.println("Forward " + forward1 + " " + forward2);
+			float angle = Math.abs(IATools.orientedAngle(new Vector2f(
+					forward1.x, forward1.z), new Vector2f(forward2.x,
+					forward2.z)));
+			System.out.println("Angle " + angle);
+			if (angle >= Math.PI - Math.PI / 4
+					&& angle <= Math.PI + Math.PI / 4) {
+				System.out.println("Frontal collision " + speed1 + " " + speed2
+						+ "  at force " + appliedImpulse);
+				float speedPercent1 = speed1 / (speed1 + speed2);
+				car1.decreaseLife((int) (speedPercent1 * appliedImpulse / 2000));
+				car2.decreaseLife((int) ((1 - speedPercent1) * appliedImpulse / 2000));
+			}
+
+			System.out.println(car1.getType() + " life " + car1.getLife());
+			System.out.println(car2.getType() + " life " + car2.getLife());
+		}
+
+		// System.out.println("COLLIDE "+event.getObjectB().getUserObject().getClass());
+
 	}
 }

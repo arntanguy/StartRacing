@@ -77,8 +77,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		// int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
 		if (runIsOn) {
+			screen.findElementByName("startTimer")
+					.getRenderer(TextRenderer.class)
+					.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
 				bot.getEnginePhysics().setSpeed(
 						Math.abs(Conversion.kmToMiles(bot
@@ -111,7 +113,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	}
 
 	@Override
-	public void collision(PhysicsCollisionEvent arg0) {
+	public void collision(PhysicsCollisionEvent event) {
+		super.collision(event);
 	}
 
 }

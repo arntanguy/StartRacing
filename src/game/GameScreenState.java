@@ -169,7 +169,8 @@ public class GameScreenState extends AbstractGameScreenState {
 	}
 
 	@Override
-	public void collision(PhysicsCollisionEvent arg0) {
+	public void collision(PhysicsCollisionEvent event) {
+		super.collision(event);
 		if (finishCell.getOverlappingObjects().contains(player)
 				&& !playerFinish) {
 			timePlayer = (System.currentTimeMillis() - startTime);

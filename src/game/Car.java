@@ -31,14 +31,20 @@ public class Car extends VehicleControl {
 	private float steeringValue = 0;
 	
 	private int life = 100;
-
+	private String driverName;
+	public enum CarType { BOT, PLAYER };
+	private CarType type;
+	
 	public Car(AssetManager assetManager, CarProperties properties) {
 		super();
 		this.assetManager = assetManager;
 		this.properties = properties;
 		this.enginePhysics = new EnginePhysics(properties);
 		this.ia = new IA(this, enginePhysics);
-
+		
+		this.driverName = "Unknown";
+		this.type = CarType.BOT;
+		
 		buildPlayer();
 	}
 
@@ -170,5 +176,33 @@ public class Car extends VehicleControl {
 	public void decreaseLife(int value) {
 		life -= value;
 		if(life < 0) life = 0;
+	}
+	
+	public void alterLife(int value) {
+		System.out.println("Alter life "+value);
+		if(value >= 0)
+			increaseLife(value);
+		else
+			decreaseLife(-value);
+	}
+	
+	public int getLife() {
+		return life;
+	}
+	
+	public void setDriverName(String name) {
+		this.driverName = name;
+	}
+	
+	public String getDriverName() {
+		return driverName;
+	}
+	
+	public void setType(CarType type) {
+		this.type = type;
+	}
+	
+	public CarType getType() {
+		return type;
 	}
 }

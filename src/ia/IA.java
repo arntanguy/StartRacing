@@ -140,27 +140,8 @@ public class IA {
 		}
 	}
 
-	/**
-	 * Returns the oriented angle between 2 vectors 2d. v1 is considered as the
-	 * "fixed" direction, and v2 and the vector rotation Thus, a positive
-	 * returns value means that v2 is rotating in the trigonometric way
-	 * 
-	 * @param v1
-	 * @param v2
-	 * @return The oriented angle between v1 and v2, in radian between [-Pi;Pi]
-	 */
-	private static float orientedAngle(Vector2f v1, Vector2f v2) {
-		v1 = v1.normalize();
-		v2 = v2.normalize();
-		float ps = v1.dot(v2);
-		float det = v1.determinant(v2);
-		float angle = FastMath.acos(ps);
-		return (det < 0) ? -angle : angle;
-
-	}
-
 	public static float angle(Vector2f v1, Vector2f v2) {
-		float angle = orientedAngle(v1, v2);
+		float angle = IATools.orientedAngle(v1, v2);
 		angle = (float) ((angle < 0.5) ? angle : 0.5);
 		return (float) ((angle < -0.5) ? -0.5 : angle);
 	}

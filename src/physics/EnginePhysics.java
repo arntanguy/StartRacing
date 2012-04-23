@@ -39,28 +39,15 @@ public class EnginePhysics {
 	public int getRpm() {
 		int rpm = (int) (p.getGearRatio(gear) * speed * 336 * p.getTgr() / p
 				.getTh());
-		int redline = p.getRedline();
-		if (rpm > redline) {
+		if (checkRedline()) {
 			isBreaking = true;
-			/**
-			 * When engine is breaking, oscillate rpm a little to simulate
-			 * engine failure and get a nice sound ^^
-			 */
-			if (System.currentTimeMillis() - rpmTimer < 100) {
-				rpm = redline - 200;
-			} else if (System.currentTimeMillis() - rpmTimer < 200) {
-				rpm = redline;
-			} else {
-				rpm = redline;
-				rpmTimer = System.currentTimeMillis();
-			}
 		} else {
 			isBreaking = false;
 			if (rpm < p.getIdleRpm()) {
 				return p.getIdleRpm();
 			}
 		}
-		return rpm;
+		return (rpm >= p.getIdleRpm()) ? rpm : p.getIdleRpm();
 	}
 
 	/**
@@ -136,6 +123,11 @@ public class EnginePhysics {
 		 * When engine is breaking, oscillate rpm a little to simulate engine
 		 * failure and get a nice sound ^^
 		 */
+		checkRedline();
+		return rpm;
+	}
+
+	private boolean checkRedline() {
 		int redline = p.getRedline();
 		if (rpm >= redline) {
 			if (System.currentTimeMillis() - rpmTimer < 100) {
@@ -146,8 +138,9 @@ public class EnginePhysics {
 				rpm = redline;
 				rpmTimer = System.currentTimeMillis();
 			}
+			return true;
 		}
-		return rpm;
+		return false;
 	}
 
 	/**

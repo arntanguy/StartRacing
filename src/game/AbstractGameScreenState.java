@@ -423,6 +423,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Update audio
 		if (soudIsActive) {
+			System.out.println("RPM " + playerRpm);
 			audio_motor.setRPM(playerRpm);
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());

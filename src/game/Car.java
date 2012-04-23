@@ -1,8 +1,11 @@
 package game;
 
+import java.io.ObjectInputStream.GetField;
+
 import ia.IA;
 import physics.CarProperties;
 import physics.EnginePhysics;
+import physics.tools.MathTools;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
@@ -10,6 +13,7 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
@@ -204,5 +208,19 @@ public class Car extends VehicleControl {
 	
 	public CarType getType() {
 		return type;
+	}
+	
+	public boolean inFront(Car c) {
+		Vector3f vect3 = getPhysicsLocation().subtract(c.getPhysicsLocation());
+		Vector2f vect = new Vector2f(vect3.x, vect3.z);
+		
+		Vector3f ref = new Vector3f().subtract(this.getForwardVector(null));
+		Vector2f referenceOrientation = new Vector2f(ref.x, ref.z);
+
+		float angle = Math.abs(MathTools.orientedAngle(vect, referenceOrientation));
+		if (angle <= Math.PI / 2)
+			return true;
+		else
+			return false;
 	}
 }

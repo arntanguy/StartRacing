@@ -3,8 +3,8 @@ package ia;
 import game.Car;
 import physics.CarProperties;
 import physics.EnginePhysics;
+import physics.tools.MathTools;
 
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 
@@ -100,7 +100,7 @@ public class IA {
 
 		int nb = (int) (100 * proba);
 
-		int random = IATools.randBetween(lower, higher);
+		int random = MathTools.randBetween(lower, higher);
 
 		return random < nb;
 	}
@@ -141,7 +141,7 @@ public class IA {
 	}
 
 	public static float angle(Vector2f v1, Vector2f v2) {
-		float angle = IATools.orientedAngle(v1, v2);
+		float angle = MathTools.orientedAngle(v1, v2);
 		angle = (float) ((angle < 0.5) ? angle : 0.5);
 		return (float) ((angle < -0.5) ? -0.5 : angle);
 	}
@@ -166,7 +166,8 @@ public class IA {
 					targetDirection.z);
 
 			int intError = (int) (angularErrorFactor * 1000);
-			float errorVal = ((float) IATools.randBetween(-intError, intError)) / 1000.f;
+			float errorVal = ((float) MathTools
+					.randBetween(-intError, intError)) / 1000.f;
 			System.out.println("Error " + errorVal);
 			this.iaCar.steer(-angle(iaForward2, targetDirection2) + errorVal);
 			followTimer = System.currentTimeMillis();

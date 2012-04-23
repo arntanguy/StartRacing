@@ -2,16 +2,14 @@ package game;
 
 import game.Car.CarType;
 
-import ia.IATools;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
+import physics.tools.MathTools;
 import audio.AudioRender;
 
 import com.jme3.app.Application;
@@ -640,6 +638,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			float speed1 = Math.abs(car1.getCurrentVehicleSpeedKmHour());
 			float speed2 = Math.abs(car2.getCurrentVehicleSpeedKmHour());
 			float appliedImpulse = event.getAppliedImpulse();
+			float impulseDamage = appliedImpulse / 2000;
 
 			System.out.println("Collision between " + car1.getType() + " "
 					+ car1.getDriverName() + " and " + car2.getType() + " "
@@ -656,18 +655,47 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					car1.getForwardVector(null)).normalize();
 			Vector3f forward2 = new Vector3f(0, 0, 0).subtract(
 					car2.getForwardVector(null)).normalize();
-			System.out.println("Forward " + forward1 + " " + forward2);
-			float angle = Math.abs(IATools.orientedAngle(new Vector2f(
-					forward1.x, forward1.z), new Vector2f(forward2.x,
-					forward2.z)));
+			Vector2f f1 = new Vector2f(forward1.x, forward1.z);
+			Vector2f f2 = new Vector2f(forward2.x, forward2.z);
+
+			Vector3f position1 = event.getPositionWorldOnA();
+			Vector3f position2 = event.getPositionWorldOnB();
+
+			Vector2f pos1 = new Vector2f(position1.x, position1.z);
+			Vector2f pos2 = new Vector2f(position2.x, position2.z);
+			System.out.println("Position A: " + pos1);
+			System.out.println("Position B: " + pos2);
+
+			System.out.println("Forward " + f1 + " " + f2);
+			float angle = Math.abs(MathTools.orientedAngle(f1, f2));
 			System.out.println("Angle " + angle);
+
+			// Frontal collision
 			if (angle >= Math.PI - Math.PI / 4
 					&& angle <= Math.PI + Math.PI / 4) {
 				System.out.println("Frontal collision " + speed1 + " " + speed2
 						+ "  at force " + appliedImpulse);
 				float speedPercent1 = speed1 / (speed1 + speed2);
-				car1.decreaseLife((int) (speedPercent1 * appliedImpulse / 2000));
-				car2.decreaseLife((int) ((1 - speedPercent1) * appliedImpulse / 2000));
+				car1.decreaseLife((int) (speedPercent1 * impulseDamage));
+				car2.decreaseLife((int) ((1 - speedPercent1) * impulseDamage));
+			} else if (angle <= Math.PI / 4) {
+				// back collision
+				// the car in front will have 75% of the damages
+				// 25% for the car in back
+				System.out.println("Back collision " + speed1 + " " + speed2
+						+ "  at force " + appliedImpulse);
+				System.out.println("Distance 1" + event.getDistance1());
+				double speedDifferenceDamage = Math.abs(speed2 - speed1)
+						* impulseDamage;
+				if (car1.inFront(car2)) {
+					car1.decreaseLife((int) (0.75 * speedDifferenceDamage));
+					car2.decreaseLife((int) (0.25 * speedDifferenceDamage));
+					System.out.println(car1.getType() + " In Front");
+				} else {
+					car1.decreaseLife((int) (0.25 * speedDifferenceDamage));
+					car2.decreaseLife((int) (0.75 * speedDifferenceDamage));
+					System.out.println(car2.getType() + " In Front");
+				}
 			}
 
 			System.out.println(car1.getType() + " life " + car1.getLife());

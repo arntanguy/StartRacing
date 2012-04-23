@@ -1,9 +1,9 @@
-package ia;
+package physics.tools;
 
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 
-public class IATools {
+public class MathTools {
 	/**
 	 * Returns a random between lower and higher included
 	 * 
@@ -33,5 +33,15 @@ public class IATools {
 		float det = v1.determinant(v2);
 		float angle = FastMath.acos(ps);
 		return (det < 0) ? -angle : angle;
+	}
+
+	public static Vector2f inFront(Vector2f v1, Vector2f v2,
+			Vector2f referenceDirection) {
+		Vector2f vect = v2.subtract(v1);
+		float angle = Math.abs(orientedAngle(vect, referenceDirection));
+		if (angle <= Math.PI / 2)
+			return v1;
+		else
+			return v2;
 	}
 }

@@ -13,6 +13,7 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -20,6 +21,7 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.texture.Texture.WrapMode;
 
 public class Car extends VehicleControl {
 
@@ -47,7 +49,7 @@ public class Car extends VehicleControl {
 	protected ParticuleMotor particuleMotor;
 	protected AudioRender audioRender;
 
-	public Car(AssetManager assetManager, CarProperties properties) {
+	public Car(AssetManager assetManager, CarProperties properties, String scene) {
 		super();
 		this.assetManager = assetManager;
 		this.properties = properties;
@@ -57,7 +59,7 @@ public class Car extends VehicleControl {
 		this.driverName = "Unknown";
 		this.type = CarType.BOT;
 
-		buildPlayer();
+		buildCar(scene);
 		buildParticuleMotor();
 		buildAudioRender();
 	}
@@ -71,7 +73,7 @@ public class Car extends VehicleControl {
 		audioRender = new AudioRender(carNode, SoundStore.getInstance());
 	}
 
-	private void buildPlayer() {
+	private void buildCar(String scene) {
 		float stiffness = properties.getStiffness();// 200=f1 car
 		float compValue = properties.getCompValue(); // (lower than damp!)
 		float dampValue = properties.getDampValue();
@@ -80,7 +82,7 @@ public class Car extends VehicleControl {
 		this.setMass(mass);
 
 		// Load model and get chassis Geometry
-		carNode = (Node) assetManager.loadModel("Models/Ferrari/Car.scene");
+		carNode = (Node) assetManager.loadModel(scene);
 		carNode.setShadowMode(ShadowMode.Cast);
 
 		// Create a hull collision shape for the chassis

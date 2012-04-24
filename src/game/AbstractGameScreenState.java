@@ -254,7 +254,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerCarProperties = new BMWM3Properties();
 
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties);
+		player = new Car(assetManager, playerCarProperties, "Models/FerrariRed/Car.scene");
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
 		player.getNode().addControl(player);

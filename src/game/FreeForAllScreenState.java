@@ -58,7 +58,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	}
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
-		Car bot = new Car(assetManager, carProperties);
+		Car bot = new Car(assetManager, carProperties, "Models/FerrariGreen/Car.scene");
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 

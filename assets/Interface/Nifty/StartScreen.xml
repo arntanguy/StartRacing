@@ -10,35 +10,47 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
-				<text font="Interface/Fonts/ArialBlack_60.fnt" height="40%" align="center" color="#ffff"
+				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="${CALL.getTitle()}" />
 					
 				<control id="freeRunButton" align="center" name="button" label="Course Libre"
-					width="32%" height="11%">
+					width="32%" height="10%">
 					<interact onClick="startFreeForAll()" />
 				</control>
 				<panel height="5px" />
 				
 				<control id="halfMileButton" align="center" name="button" label="Course Demi-Mile"
-					width="32%" height="11%">
+					width="32%" height="10%">
 					<interact onClick="startGame(half)" />
 				</control>
 				<panel height="5px" />
 				
 				<control id="quarterMileButton" align="center" name="button" label="Course Quart de Mile"
-					width="32%" height="11%">
+					width="32%" height="10%">
 					<interact onClick="startGame(quarter)" />
 				</control>
 				<panel height="5px" />
 				
 				<control id="optionButton" align="center" name="button" label="Options"
-					width="32%" height="11%">
+					width="32%" height="10%">
 					<interact onClick="showOptions()" />
 				</control>
 				<panel height="5px" />
 				
+				<control id="newProfil" align="center" name="button" label="Nouveau profil"
+					width="32%" height="10%">
+					<interact onClick="newProfil()" />
+				</control>
+				<panel height="5px" />
+				
+				<control id="oldProfil" align="center" name="button" label="Choisir un profil"
+					width="32%" height="10%">
+					<interact onClick="chooseProfil()" />
+				</control>
+				<panel height="5px" />
+				
 				<control id="quitButton" align="center" name="button" label="Quitter"
-					width="32%" height="11%">
+					width="32%" height="10%">
 					<interact onClick="quitGame()" />
 				</control>
 			</panel>

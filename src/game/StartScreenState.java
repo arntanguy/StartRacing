@@ -72,6 +72,20 @@ public class StartScreenState extends AbstractScreenController {
 		app.gotoOptions();
 	}
 
+	public void newProfil() {
+/**
+ * TO DO
+ */
+		app.gotoCrtProfil();
+	}
+	
+	public void chooseProfil() {
+		/**
+		 * TO DO
+		 */
+		app.gotoAffProfil();
+	}
+	
 	public void quitGame() {
 		app.stop();
 	}

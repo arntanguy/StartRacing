@@ -75,6 +75,17 @@ public class App extends SimpleApplication {
 		stateManager.attach(startScreenController);
 	}
 
+	public void gotoCrtProfil() {
+		nifty.addXml("Interface/Nifty/CreateProfil.xml");
+		nifty.gotoScreen("createprofil");
+		
+        //stateManager.attach(gameScreenController);
+	}
+	
+	public void gotoAffProfil() {
+		
+	}
+	
 	public boolean validateXML() {
 		try {
 			nifty.validateXml("Interface/Nifty/StartScreen.xml");

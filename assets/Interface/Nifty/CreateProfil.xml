@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<useStyles filename="nifty-default-styles.xml" />
+	<useControls filename="nifty-default-controls.xml" />
+	
+	<screen id="createprofil" controller="save.Comptes">
+		<layer id="background" childLayout="center">
+			<image filename="Interface/Nifty/start_background.jpg"
+				width="100%" height="100%" />
+		</layer>
+		<layer id="foreground" childLayout="center">
+			<panel id="centerWrapper" height="100%" childLayout="vertical">
+				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
+					text="Création Profil" />
+				<panel id="centerPanel" height="65%" childLayout="center" >
+					<control name="textfield" width="40%" text="Login"></control>
+				</panel>
+				
+				<panel height="14%" width="52%" valign="bottom" align="center" childLayout="horizontal">
+					<control id="returnButton" width="50%" align="center" height="100%" name="button" label="Menu Principal">
+						<interact onClick="gotoMainMenu()" />
+					</control>
+					<panel width="5px" />
+					
+					<control id="applyButton" width="50%" align="center" height="100%" name="button" label="Appliquer">
+						<interact onClick="applyOptions()" />
+					</control>
+				</panel>
+			</panel>
+		</layer>
+	</screen>
+</nifty>

@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.thoughtworks.xstream.*;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -30,7 +29,17 @@ public class Comptes {
 		return max;
 	}
 	
-	public boolean Enregistrer () {
+	public boolean existLogin(String login) {
+		for (int i = 0; i < listProfil.size(); ++i) {
+			if (listProfil.get(i).getLogin().equals(login)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean Enregistrer (Profil profil) {
+		listProfil.add(profil);
 		XStream xs = new XStream(new DomDriver());
 		try {
 		    FileOutputStream fs = new FileOutputStream(NOMFICHIERXML);
@@ -59,8 +68,8 @@ public class Comptes {
 		return listProfil;
 	}
 	
-	public void addProfil(Profil profil) {
+	/*public void addProfil(Profil profil) {
 		listProfil.add(profil);
-	}
+	}*/
 	
 }

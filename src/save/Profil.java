@@ -1,21 +1,23 @@
 package save;
 
+import java.util.ArrayList;
+
 import physics.CarProperties;
 
 public class Profil {
 	
 	private int id;
 	private String login;
-	private CarProperties car;
-	private int score;
-	private String time;
+	private ArrayList<CarProperties> car;
+	private String timedemi;
+	private String timequart;
 	
-	public Profil (int id, String login, CarProperties car, int score, String time) {
+	public Profil (int id, String login, ArrayList<CarProperties> car, String timedemi, String timequart) {
 		this.id = id;
 		this.login = login;
 		this.car = car;
-		this.score = score;
-		this.time = time;
+		this.timedemi = timedemi;
+		this.timequart = timequart;
 	}
 		
 	public int getId() {
@@ -26,16 +28,16 @@ public class Profil {
 		return login;
 	}
 
-	public CarProperties getCar() {
+	public ArrayList<CarProperties> getCar() {
 		return car;
 	}
 
-	public int getScore() {
-		return score;
+	public String getScore() {
+		return timedemi;
 	}
 
 	public String getTime() {
-		return time;
+		return timequart;
 	}
 	
 }

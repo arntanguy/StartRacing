@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
 
@@ -16,6 +17,8 @@ public class AudioRender {
 
 	private AudioNode prevLow;
 	private AudioNode prevHigh;
+	
+	private SoundStore soundStore;
 
 	public AudioRender(AssetManager asset, Node player) {
 		channels = new LinkedHashMap<Integer, AudioNode>();
@@ -25,14 +28,17 @@ public class AudioRender {
 		this.assetM = asset;
 	}
 
-	public void init(LinkedHashMap<Integer, String> soundPaths,
-			HashMap<String, String> extraSound) {
+	public void init(SoundStore soundStore) {
+		this.soundStore = soundStore.getInstance();
+		
+		LinkedHashMap<Integer, AudioData> engineSounds = soundStore.getEngineSounds();
 		// Charger les sons
-		Iterator<Integer> it = soundPaths.keySet().iterator();
+		Iterator<Integer> it = engineSounds.keySet().iterator();
 
 		while (it.hasNext()) {
 			int key = it.next();
-			AudioNode sample = new AudioNode(assetM, soundPaths.get(key), false);
+			AudioNode sample = new AudioNode();
+			sample.setAudioData(engineSounds.get(key), null);
 			sample.setLooping(true);
 			sample.setPositional(true);
 			sample.setVolume(0);
@@ -41,11 +47,13 @@ public class AudioRender {
 			channels.put(key, sample);
 		}
 
-		Iterator<String> itr = extraSound.keySet().iterator();
+		HashMap<String, AudioData> extraSounds = soundStore.getExtraSounds();
+		Iterator<String> itr = extraSounds.keySet().iterator();
 
 		while (itr.hasNext()) {
 			String key = itr.next();
-			AudioNode sample = new AudioNode(assetM, extraSound.get(key), false);
+			AudioNode sample = new AudioNode();
+			sample.setAudioData(extraSounds.get(key), null);
 			rootNode.attachChild(sample);
 			extraChan.put(key, sample);
 		}

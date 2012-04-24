@@ -11,6 +11,7 @@ import physics.EnginePhysics;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
 import audio.AudioRender;
+import audio.SoundStore;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -60,6 +61,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	private BulletAppState bulletAppState;
 
+	protected SoundStore soundStore;
 	protected AudioRender audio_motor;
 
 	protected Car player;
@@ -196,11 +198,24 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		getPhysicsSpace().addCollisionListener(this);
 
+		initAudio();
+
+		digitalTachometer = new DigitalDisplay(nifty, screen,
+				"digital_tachometer", 80);
+		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
+		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
+		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
+				playerEnginePhysics);
+	}
+	
+	private void initAudio() {
+
 		// Init audio
 		audio_motor = new AudioRender(assetManager, player.getNode());
-
-		LinkedHashMap<Integer, String> channels = new LinkedHashMap<Integer, String>();
-		channels.put(1000, "Models/Default/1052_P.wav");
+		soundStore = SoundStore.getInstance();
+		soundStore.setAssetManager(assetManager);
+		
+		soundStore.addEngineSound(1000, "Models/Default/1052_P.wav");
 		// channels.put(1126, "Models/Default/1126_P.wav");
 		// channels.put(1205, "Models/Default/1205_P.wav");
 		// channels.put(1289, "Models/Default/1289_P.wav");
@@ -214,38 +229,30 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// channels.put(2215, "Models/Default/2215_P.wav");
 		// channels.put(2370, "Models/Default/2370_P.wav");
 		// channels.put(2536, "Models/Default/2536_P.wav");
-		channels.put(2714, "Models/Default/2714_P.wav");
+		soundStore.addEngineSound(2714, "Models/Default/2714_P.wav");
 		// channels.put(2904, "Models/Default/2904_P.wav");
 		// channels.put(3107, "Models/Default/3107_P.wav");
 		// channels.put(3324, "Models/Default/3324_P.wav");
 		// channels.put(3557, "Models/Default/3557_P.wav");
 		// channels.put(3806, "Models/Default/3806_P.wav");
 		// channels.put(4073, "Models/Default/4073_P.wav");
-		channels.put(4358, "Models/Default/4358_P.wav");
+		soundStore.addEngineSound(4358, "Models/Default/4358_P.wav");
 		// channels.put(4663, "Models/Default/4663_P.wav");
 		// channels.put(4989, "Models/Default/4989_P.wav");
 		// channels.put(5338, "Models/Default/5338_P.wav");
 		// channels.put(5712, "Models/Default/5712_P.wav");
 		// channels.put(6112, "Models/Default/6112_P.wav");
-		channels.put(8540, "Models/Default/6540_P.wav");
+		soundStore.addEngineSound(8540, "Models/Default/6540_P.wav");
 
-		HashMap<String, String> extraSound = new HashMap<String, String>();
-		extraSound.put("start", "Models/Default/start.wav");
-		extraSound.put("up", "Models/Default/up.wav");
-		extraSound.put("lost", "Sound/lost.wav");
-		extraSound.put("win", "Sound/win.wav");
-		extraSound.put("start_low", "Sound/start_low.wav");
-		extraSound.put("start_high", "Sound/start_high.wav");
-		extraSound.put("burst", "Sound/explosion.wav");
+		soundStore.addExtraSound("start", "Models/Default/start.wav");
+		soundStore.addExtraSound("up", "Models/Default/up.wav");
+		soundStore.addExtraSound("lost", "Sound/lost.wav");
+		soundStore.addExtraSound("win", "Sound/win.wav");
+		soundStore.addExtraSound("start_low", "Sound/start_low.wav");
+		soundStore.addExtraSound("start_high", "Sound/start_high.wav");
+		soundStore.addExtraSound("burst", "Sound/explosion.wav");
 
-		audio_motor.init(channels, extraSound);
-
-		digitalTachometer = new DigitalDisplay(nifty, screen,
-				"digital_tachometer", 80);
-		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
-		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
-		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
-				playerEnginePhysics);
+		audio_motor.init(soundStore);
 	}
 
 	private void buildPlayer() {

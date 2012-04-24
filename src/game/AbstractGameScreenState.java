@@ -1,10 +1,6 @@
 package game;
 
 import game.Car.CarType;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
@@ -62,7 +58,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	private BulletAppState bulletAppState;
 
 	protected SoundStore soundStore;
-	protected AudioRender audio_motor;
 
 	protected Car player;
 	protected CarProperties playerCarProperties;
@@ -104,6 +99,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	boolean oneSec;
 	boolean twoSec;
 	boolean threeSec;
+
+	protected AudioRender audioMotor;
 
 	public AbstractGameScreenState() {
 		super();
@@ -161,6 +158,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		twoSec = false;
 		threeSec = false;
 
+		initAudio();
 		initGround();
 		buildPlayer();
 		setupKeys();
@@ -198,8 +196,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		getPhysicsSpace().addCollisionListener(this);
 
-		initAudio();
-
 		digitalTachometer = new DigitalDisplay(nifty, screen,
 				"digital_tachometer", 80);
 		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
@@ -207,14 +203,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
 	}
-	
+
 	private void initAudio() {
 
 		// Init audio
-		audio_motor = new AudioRender(assetManager, player.getNode());
 		soundStore = SoundStore.getInstance();
 		soundStore.setAssetManager(assetManager);
-		
+
 		soundStore.addEngineSound(1000, "Models/Default/1052_P.wav");
 		// channels.put(1126, "Models/Default/1126_P.wav");
 		// channels.put(1205, "Models/Default/1205_P.wav");
@@ -252,7 +247,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		soundStore.addExtraSound("start_high", "Sound/start_high.wav");
 		soundStore.addExtraSound("burst", "Sound/explosion.wav");
 
-		audio_motor.init(soundStore);
+		audioMotor = new AudioRender(rootNode, soundStore);
 	}
 
 	private void buildPlayer() {
@@ -423,7 +418,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				} else {
 					if (System.currentTimeMillis() - timerRedZone > 3000) {
 						triggerBurst(player);
-						audio_motor.playBurst();
+						player.explode();
 					}
 				}
 			}
@@ -433,12 +428,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Update audio
 		if (soudIsActive) {
-			audio_motor.setRPM(playerRpm);
+			player.updateSound(playerRpm);
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
 
-		//particule_motor.controlBurst();
+		// particule_motor.controlBurst();
 
 		digitalTachometer.setText(((Integer) playerRpm).toString());
 		digitalSpeed.setText(((Integer) playerSpeed).toString());
@@ -468,7 +463,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			long time = System.currentTimeMillis() - countDown;
 			if (time > 5000) {
 				if (!zeroSec) {
-					audio_motor.playStartBeepHigh();
+					audioMotor.playStartBeepHigh();
 					zeroSec = true;
 				}
 				screen.findElementByName("startTimer")
@@ -477,21 +472,21 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
 				if (!oneSec) {
-					audio_motor.playStartBeepLow();
+					audioMotor.playStartBeepLow();
 					oneSec = true;
 				}
 				screen.findElementByName("startTimer")
 						.getRenderer(TextRenderer.class).setText("1");
 			} else if (time > 3000) {
 				if (!twoSec) {
-					audio_motor.playStartBeepLow();
+					audioMotor.playStartBeepLow();
 					twoSec = true;
 				}
 				screen.findElementByName("startTimer")
 						.getRenderer(TextRenderer.class).setText("2");
 			} else if (time > 2000) {
 				if (!threeSec) {
-					audio_motor.playStartBeepLow();
+					audioMotor.playStartBeepLow();
 					threeSec = true;
 				}
 				screen.findElementByName("startTimer")
@@ -507,8 +502,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	 */
 	public void triggerBurst(Car vehicule) {
 		vehicule.explode();
-		audio_motor.playBurst();
-		audio_motor.mute();
 		playerFinish = true;
 		timePlayer = 0;
 		timerStopPlayer = System.currentTimeMillis();
@@ -522,7 +515,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerEnginePhysics.setGear(1);
 		player.resetSuspension();
 		player.steer(0);
-		audio_motor.playStartSound();
+		audioMotor.playStartSound();
 
 		player.accelerate(0);
 		playerEnginePhysics.setSpeed(0);
@@ -579,7 +572,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else if (binding.equals("GearUp")) {
 			if (value) {
-				audio_motor.gearUp();
+				audioMotor.gearUp();
 				playerEnginePhysics.incrementGear();
 			}
 		} else if (binding.equals("GearDown")) {
@@ -641,16 +634,17 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			// Impact, reduce friction
 			float damageForce = (appliedImpulse - event.getCombinedFriction() / 10) / 10000;
 
-			/*System.out.println("Collision between " + car1.getType() + " "
-					+ car1.getDriverName() + " and " + car2.getType() + " "
-					+ car2.getDriverName());
-			System.out.println("Lateral 1 impulse "
-					+ event.getAppliedImpulseLateral1());
-			System.out.println("Lateral 2 impulse "
-					+ event.getAppliedImpulseLateral2());
-			System.out.println("Combined friction "
-					+ event.getCombinedFriction());
-			System.out.println("Force " + appliedImpulse);*/
+			/*
+			 * System.out.println("Collision between " + car1.getType() + " " +
+			 * car1.getDriverName() + " and " + car2.getType() + " " +
+			 * car2.getDriverName()); System.out.println("Lateral 1 impulse " +
+			 * event.getAppliedImpulseLateral1());
+			 * System.out.println("Lateral 2 impulse " +
+			 * event.getAppliedImpulseLateral2());
+			 * System.out.println("Combined friction " +
+			 * event.getCombinedFriction()); System.out.println("Force " +
+			 * appliedImpulse);
+			 */
 
 			Vector3f forward1 = new Vector3f(0, 0, 0).subtract(
 					car1.getForwardVector(null)).normalize();
@@ -664,13 +658,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 			Vector2f pos1 = new Vector2f(position1.x, position1.z);
 			Vector2f pos2 = new Vector2f(position2.x, position2.z);
-			
-			/*System.out.println("Position A: " + pos1);
-			System.out.println("Position B: " + pos2);
-			System.out.println("Forward " + f1 + " " + f2);*/
-			
+
+			/*
+			 * System.out.println("Position A: " + pos1);
+			 * System.out.println("Position B: " + pos2);
+			 * System.out.println("Forward " + f1 + " " + f2);
+			 */
+
 			float angle = Math.abs(MathTools.orientedAngle(f1, f2));
-			//System.out.println("Angle " + angle);
+			// System.out.println("Angle " + angle);
 
 			// Frontal collision
 			if (angle >= Math.PI - Math.PI / 4
@@ -684,9 +680,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				// back collision if (angle <= Math.PI / 4)
 				// the car in front will have 75% of the damages
 				// 25% for the car in back
-				/*System.out.println("Back collision " + speed1 + " " + speed2
-						+ "  at force " + appliedImpulse);
-				System.out.println("Distance 1" + event.getDistance1()); */
+				/*
+				 * System.out.println("Back collision " + speed1 + " " + speed2
+				 * + "  at force " + appliedImpulse);
+				 * System.out.println("Distance 1" + event.getDistance1());
+				 */
 				double speedDifferenceDamage = Math.abs(speed2 - speed1)
 						* damageForce / 2;
 				if (car1.inFront(car2)) {

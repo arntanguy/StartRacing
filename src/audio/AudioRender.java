@@ -4,34 +4,33 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
 
 public class AudioRender {
-	private LinkedHashMap<Integer, AudioNode> channels;
-	private HashMap<String, AudioNode> extraChan;
-	private AssetManager assetM;
+	private LinkedHashMap<Integer, AudioNode> engineSoundNodes;
+	private HashMap<String, AudioNode> extraSoundNodes;
 	private Node rootNode;
 
 	private AudioNode prevLow;
 	private AudioNode prevHigh;
-	
+
 	private SoundStore soundStore;
 
-	public AudioRender(AssetManager asset, Node player) {
-		channels = new LinkedHashMap<Integer, AudioNode>();
-		extraChan = new HashMap<String, AudioNode>();
+	public AudioRender(Node player, SoundStore soundStore) {
+		engineSoundNodes = new LinkedHashMap<Integer, AudioNode>();
+		extraSoundNodes = new HashMap<String, AudioNode>();
 
 		this.rootNode = player;
-		this.assetM = asset;
+		init(soundStore);
 	}
 
-	public void init(SoundStore soundStore) {
-		this.soundStore = soundStore.getInstance();
-		
-		LinkedHashMap<Integer, AudioData> engineSounds = soundStore.getEngineSounds();
+	private void init(SoundStore soundStore) {
+		this.soundStore = soundStore;
+
+		LinkedHashMap<Integer, AudioData> engineSounds = soundStore
+				.getEngineSounds();
 		// Charger les sons
 		Iterator<Integer> it = engineSounds.keySet().iterator();
 
@@ -43,8 +42,8 @@ public class AudioRender {
 			sample.setPositional(true);
 			sample.setVolume(0);
 			sample.play();
+			engineSoundNodes.put(key, sample);
 			rootNode.attachChild(sample);
-			channels.put(key, sample);
 		}
 
 		HashMap<String, AudioData> extraSounds = soundStore.getExtraSounds();
@@ -54,49 +53,49 @@ public class AudioRender {
 			String key = itr.next();
 			AudioNode sample = new AudioNode();
 			sample.setAudioData(extraSounds.get(key), null);
+			extraSoundNodes.put(key, sample);
 			rootNode.attachChild(sample);
-			extraChan.put(key, sample);
 		}
 	}
 
 	public void playStartSound() {
-		AudioNode sample = extraChan.get("start");
+		AudioNode sample = extraSoundNodes.get("start");
 		sample.setVolume(0.6f);
 		sample.playInstance();
 	}
 
 	public void gearUp() {
-		AudioNode sample = extraChan.get("up");
+		AudioNode sample = extraSoundNodes.get("up");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
 
 	public void playWin() {
-		AudioNode sample = extraChan.get("win");
+		AudioNode sample = extraSoundNodes.get("win");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
 
 	public void playLost() {
-		AudioNode sample = extraChan.get("lost");
+		AudioNode sample = extraSoundNodes.get("lost");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
 
 	public void playStartBeepLow() {
-		AudioNode sample = extraChan.get("start_low");
+		AudioNode sample = extraSoundNodes.get("start_low");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
 
 	public void playStartBeepHigh() {
-		AudioNode sample = extraChan.get("start_high");
+		AudioNode sample = extraSoundNodes.get("start_high");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
 
 	public void playBurst() {
-		AudioNode sample = extraChan.get("burst");
+		AudioNode sample = extraSoundNodes.get("burst");
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
@@ -107,7 +106,7 @@ public class AudioRender {
 	}
 
 	public void setRPM(int rpm) {
-		Iterator<Integer> it = channels.keySet().iterator();
+		Iterator<Integer> it = engineSoundNodes.keySet().iterator();
 
 		int rpmLow = 0;
 		int rpmHigh = 0;
@@ -124,8 +123,8 @@ public class AudioRender {
 		float volumLow = (float) (rpm - rpmLow) / denum;
 		float volumHigh = (float) (rpmHigh - rpm) / denum;
 
-		AudioNode low = channels.get(rpmLow);
-		AudioNode high = channels.get(rpmHigh);
+		AudioNode low = engineSoundNodes.get(rpmLow);
+		AudioNode high = engineSoundNodes.get(rpmHigh);
 
 		// Muter le son précédent
 		if (prevLow != null && prevLow != low) {

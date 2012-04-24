@@ -20,7 +20,7 @@ public class SoundStore {
 		return instance;
 	}
 
-	/** 
+	/**
 	 * Redefine constructor as private to disable access
 	 */
 	private SoundStore() {
@@ -28,7 +28,7 @@ public class SoundStore {
 		engineSounds = new LinkedHashMap<Integer, AudioData>();
 		extraSounds = new HashMap<String, AudioData>();
 	}
-	
+
 	public void setAssetManager(AssetManager assetMgr) {
 		this.assetManager = assetMgr;
 		engineSounds = new LinkedHashMap<Integer, AudioData>();

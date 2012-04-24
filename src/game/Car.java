@@ -5,6 +5,9 @@ import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.MathTools;
 
+import audio.AudioRender;
+import audio.SoundStore;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -31,31 +34,41 @@ public class Car extends VehicleControl {
 	private Geometry chasis;
 	private float wheelRadius;
 	private float steeringValue = 0;
-	
+
 	private double life = 100;
 	private String driverName;
-	public enum CarType { BOT, PLAYER };
+
+	public enum CarType {
+		BOT, PLAYER
+	};
+
 	private CarType type;
-	
-	protected ParticuleMotor particule_motor;
-	
+
+	protected ParticuleMotor particuleMotor;
+	protected AudioRender audioRender;
+
 	public Car(AssetManager assetManager, CarProperties properties) {
 		super();
 		this.assetManager = assetManager;
 		this.properties = properties;
 		this.enginePhysics = new EnginePhysics(properties);
 		this.ia = new IA(this, enginePhysics);
-		
+
 		this.driverName = "Unknown";
 		this.type = CarType.BOT;
-		
+
 		buildPlayer();
 		buildParticuleMotor();
+		buildAudioRender();
 	}
-	
+
 	private void buildParticuleMotor() {
 		// Init particule motor
-		particule_motor = new ParticuleMotor(assetManager);
+		particuleMotor = new ParticuleMotor(assetManager);
+	}
+
+	private void buildAudioRender() {
+		audioRender = new AudioRender(carNode, SoundStore.getInstance());
 	}
 
 	private void buildPlayer() {
@@ -177,65 +190,77 @@ public class Car extends VehicleControl {
 		this.steeringValue = (float) ((steeringValue >= -0.5) ? steeringValue
 				: -0.5);
 	}
-	
+
 	public void increaseLife(double value) {
 		life += value;
-		if(life > 100) life = 100;
+		if (life > 100)
+			life = 100;
 	}
-	
+
 	public void decreaseLife(double value) {
 		life -= value;
-		if(life < 0) life = 0;
-		if(life == 0) {
-			if(!particule_motor.getBurstEnabled())
+		if (life < 0)
+			life = 0;
+		if (life == 0) {
+			if (!particuleMotor.getBurstEnabled())
 				explode();
 		}
 	}
-	
+
 	public int getLife() {
-		return (int)life;
+		return (int) life;
 	}
-	
+
 	public void setDriverName(String name) {
 		this.driverName = name;
 	}
-	
+
 	public String getDriverName() {
 		return driverName;
 	}
-	
+
 	public void setType(CarType type) {
 		this.type = type;
 	}
-	
+
 	public CarType getType() {
 		return type;
 	}
-	
+
 	public boolean inFront(Car c) {
 		Vector3f vect3 = getPhysicsLocation().subtract(c.getPhysicsLocation());
 		Vector2f vect = new Vector2f(vect3.x, vect3.z);
-		
+
 		Vector3f ref = new Vector3f().subtract(this.getForwardVector(null));
 		Vector2f referenceOrientation = new Vector2f(ref.x, ref.z);
 
-		float angle = Math.abs(MathTools.orientedAngle(vect, referenceOrientation));
+		float angle = Math.abs(MathTools.orientedAngle(vect,
+				referenceOrientation));
 		if (angle <= Math.PI / 2)
 			return true;
 		else
 			return false;
 	}
-	
+
 	public boolean getBurstEnabled() {
-		return particule_motor.getBurstEnabled();
+		return particuleMotor.getBurstEnabled();
 	}
-	
+
 	public void explode() {
-		particule_motor.addExplosion(carNode);
+		particuleMotor.addExplosion(carNode);
 		enginePhysics.setBreaking(true);
+		audioRender.playBurst();
 	}
-	
+
 	public void removeExplosion() {
-		particule_motor.removeExplosion(carNode);
+		particuleMotor.removeExplosion(carNode);
+	}
+
+	public void updateSound(int rpm) {
+		audioRender.setRPM(rpm);
+	}
+
+	public void updateSound() {
+		audioRender.setRPM(enginePhysics.getRpm());
 	}
 }

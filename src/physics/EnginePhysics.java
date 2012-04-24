@@ -24,6 +24,8 @@ public class EnginePhysics {
 	 * Used to know whether the rpm is over the redline.
 	 */
 	private boolean isBreaking = false;
+	
+	private boolean engineBroken = false;
 
 	public EnginePhysics(CarProperties prop) {
 		this.p = prop;
@@ -181,5 +183,13 @@ public class EnginePhysics {
 
 	public void setBreaking(boolean b) {
 		isBreaking = b;
+	}
+	
+	public void setEngineBroken(boolean state) {
+		engineBroken = state;
+	}
+	
+	public boolean getEngineBroken() {
+		return engineBroken;
 	}
 }

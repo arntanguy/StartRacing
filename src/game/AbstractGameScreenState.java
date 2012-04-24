@@ -93,7 +93,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected boolean needReset;
 
-	protected ParticuleMotor particule_motor;
 	private long timerRedZone = 0;
 	protected boolean playerFinish;
 	protected long timerStopPlayer = 0;
@@ -199,9 +198,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Init audio
 		audio_motor = new AudioRender(assetManager, player.getNode());
-
-		// Init particule motor
-		particule_motor = new ParticuleMotor(assetManager);
 
 		LinkedHashMap<Integer, String> channels = new LinkedHashMap<Integer, String>();
 		channels.put(1000, "Models/Default/1052_P.wav");
@@ -413,7 +409,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Traiter le cas du sur-régime
 		if (playerRpm > (playerCarProperties.getRedline() - 500)) {
-			if (!particule_motor.getBurstEnabled()) {
+			if (!player.getBurstEnabled()) {
 				// Déclencher le timer s'il n'est pas activé
 				if (timerRedZone == 0) {
 					timerRedZone = System.currentTimeMillis();
@@ -430,13 +426,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Update audio
 		if (soudIsActive) {
-			System.out.println("RPM " + playerRpm);
 			audio_motor.setRPM(playerRpm);
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
 
-		particule_motor.controlBurst();
+		//particule_motor.controlBurst();
 
 		digitalTachometer.setText(((Integer) playerRpm).toString());
 		digitalSpeed.setText(((Integer) playerSpeed).toString());
@@ -504,8 +499,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	 * @param vehicule
 	 */
 	public void triggerBurst(Car vehicule) {
+		vehicule.explode();
 		audio_motor.playBurst();
-		particule_motor.addExplosion(vehicule.getNode());
 		audio_motor.mute();
 		playerFinish = true;
 		timePlayer = 0;
@@ -526,8 +521,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerEnginePhysics.setSpeed(0);
 		playerEnginePhysics.setRpm(1000);
 
-		if (particule_motor.getBurstEnabled()) {
-			particule_motor.removeExplosion(player.getNode());
+		if (player.getBurstEnabled()) {
+			player.removeExplosion();
 		}
 
 		timerRedZone = 0;
@@ -592,7 +587,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
-			if (!particule_motor.getBurstEnabled()) {
+			if (!player.getBurstEnabled()) {
 				// Start countdown
 				if (countDown == 0) {
 					countDown = System.currentTimeMillis();
@@ -639,7 +634,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			// Impact, reduce friction
 			float damageForce = (appliedImpulse - event.getCombinedFriction() / 10) / 10000;
 
-			System.out.println("Collision between " + car1.getType() + " "
+			/*System.out.println("Collision between " + car1.getType() + " "
 					+ car1.getDriverName() + " and " + car2.getType() + " "
 					+ car2.getDriverName());
 			System.out.println("Lateral 1 impulse "
@@ -648,7 +643,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					+ event.getAppliedImpulseLateral2());
 			System.out.println("Combined friction "
 					+ event.getCombinedFriction());
-			System.out.println("Force " + appliedImpulse);
+			System.out.println("Force " + appliedImpulse);*/
 
 			Vector3f forward1 = new Vector3f(0, 0, 0).subtract(
 					car1.getForwardVector(null)).normalize();
@@ -662,12 +657,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 			Vector2f pos1 = new Vector2f(position1.x, position1.z);
 			Vector2f pos2 = new Vector2f(position2.x, position2.z);
-			System.out.println("Position A: " + pos1);
+			
+			/*System.out.println("Position A: " + pos1);
 			System.out.println("Position B: " + pos2);
-
-			System.out.println("Forward " + f1 + " " + f2);
+			System.out.println("Forward " + f1 + " " + f2);*/
+			
 			float angle = Math.abs(MathTools.orientedAngle(f1, f2));
-			System.out.println("Angle " + angle);
+			//System.out.println("Angle " + angle);
 
 			// Frontal collision
 			if (angle >= Math.PI - Math.PI / 4
@@ -681,9 +677,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				// back collision if (angle <= Math.PI / 4)
 				// the car in front will have 75% of the damages
 				// 25% for the car in back
-				System.out.println("Back collision " + speed1 + " " + speed2
+				/*System.out.println("Back collision " + speed1 + " " + speed2
 						+ "  at force " + appliedImpulse);
-				System.out.println("Distance 1" + event.getDistance1());
+				System.out.println("Distance 1" + event.getDistance1()); */
 				double speedDifferenceDamage = Math.abs(speed2 - speed1)
 						* damageForce / 2;
 				if (car1.inFront(car2)) {

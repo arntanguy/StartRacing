@@ -37,6 +37,8 @@ public class Car extends VehicleControl {
 	public enum CarType { BOT, PLAYER };
 	private CarType type;
 	
+	protected ParticuleMotor particule_motor;
+	
 	public Car(AssetManager assetManager, CarProperties properties) {
 		super();
 		this.assetManager = assetManager;
@@ -48,6 +50,12 @@ public class Car extends VehicleControl {
 		this.type = CarType.BOT;
 		
 		buildPlayer();
+		buildParticuleMotor();
+	}
+	
+	private void buildParticuleMotor() {
+		// Init particule motor
+		particule_motor = new ParticuleMotor(assetManager);
 	}
 
 	private void buildPlayer() {
@@ -178,6 +186,10 @@ public class Car extends VehicleControl {
 	public void decreaseLife(double value) {
 		life -= value;
 		if(life < 0) life = 0;
+		if(life == 0) {
+			if(!particule_motor.getBurstEnabled())
+				explode();
+		}
 	}
 	
 	public int getLife() {
@@ -212,5 +224,18 @@ public class Car extends VehicleControl {
 			return true;
 		else
 			return false;
+	}
+	
+	public boolean getBurstEnabled() {
+		return particule_motor.getBurstEnabled();
+	}
+	
+	public void explode() {
+		particule_motor.addExplosion(carNode);
+		enginePhysics.setBreaking(true);
+	}
+	
+	public void removeExplosion() {
+		particule_motor.removeExplosion(carNode);
 	}
 }

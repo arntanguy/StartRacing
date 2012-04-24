@@ -39,8 +39,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		addBot(new Vector3f(new Vector3f(10, 27, 700)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(20, 27, 800)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(30, 27, 500)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
+		//addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
+		//addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
 
 		/*
 		 * addBot(new Vector3f(new Vector3f(300, 27, 800)), new

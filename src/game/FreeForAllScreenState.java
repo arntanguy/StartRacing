@@ -39,8 +39,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		addBot(new Vector3f(new Vector3f(10, 27, 700)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(20, 27, 800)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(30, 27, 500)), new BMWM3Properties());
-		//addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
-		//addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
+		// addBot(new Vector3f(new Vector3f(40, 27, 600)), new
+		// BMWM3Properties());
+		// addBot(new Vector3f(new Vector3f(40, 27, 600)), new
+		// BMWM3Properties());
 
 		/*
 		 * addBot(new Vector3f(new Vector3f(300, 27, 800)), new
@@ -58,7 +60,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	}
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
-		Car bot = new Car(assetManager, carProperties, "Models/FerrariGreen/Car.scene");
+		Car bot = new Car(assetManager, carProperties,
+				"Models/FerrariGreen/Car.scene");
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 
@@ -82,12 +85,14 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					.getRenderer(TextRenderer.class)
 					.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
-				bot.getEnginePhysics().setSpeed(
-						Math.abs(Conversion.kmToMiles(bot
-								.getCurrentVehicleSpeedKmHour())));
-				bot.getIA().act();
-				bot.getIA().target(player, 200, 0);
-				bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
+				if (!bot.getBurstEnabled()) {
+					bot.getEnginePhysics().setSpeed(
+							Math.abs(Conversion.kmToMiles(bot
+									.getCurrentVehicleSpeedKmHour())));
+					bot.getIA().act();
+					bot.getIA().target(player, 200, 0);
+					bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
+				}
 			}
 
 			long timeMili = (System.currentTimeMillis() - startTime);

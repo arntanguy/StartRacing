@@ -92,7 +92,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	private long timerRedZone = 0;
 	protected boolean playerFinish;
-	protected long timerStopPlayer = 0;
 	protected long timePlayer = 0;
 
 	boolean zeroSec;
@@ -254,7 +253,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerCarProperties = new BMWM3Properties();
 
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties, "Models/FerrariRed/Car.scene");
+		player = new Car(assetManager, playerCarProperties,
+				"Models/FerrariRed/Car.scene");
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
 		player.getNode().addControl(player);
@@ -386,20 +386,20 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 
 		/** Stops 1 second after the finish line */
-		if (playerFinish
-				&& (System.currentTimeMillis() - timerStopPlayer > 1000)) {
-			player.accelerate(0);
-			player.setLinearVelocity(Vector3f.ZERO);
+		if (playerFinish) {
+			player.stop(1000);
 		}
 
 		if (runIsOn) {
-			playerRpm = player.getEnginePhysics().getRpm();
+			if (!player.getBurstEnabled()) {
+				playerRpm = player.getEnginePhysics().getRpm();
 
-			playerEnginePhysics.setSpeed(Math.abs(Conversion
-					.kmToMiles(playerSpeed)));
-			float force = -(float) playerEnginePhysics.getForce() / 5;
-			player.accelerate(2, force * 2);
-			player.accelerate(3, force * 2);
+				playerEnginePhysics.setSpeed(Math.abs(Conversion
+						.kmToMiles(playerSpeed)));
+				float force = -(float) playerEnginePhysics.getForce() / 5;
+				player.accelerate(2, force * 2);
+				player.accelerate(3, force * 2);
+			}
 		} else {
 			if (!runFinish) {
 				countDown();
@@ -417,8 +417,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					timerRedZone = System.currentTimeMillis();
 				} else {
 					if (System.currentTimeMillis() - timerRedZone > 3000) {
-						triggerBurst(player);
 						player.explode();
+						playerFinish = true;
+						timePlayer = 0;
 					}
 				}
 			}
@@ -495,18 +496,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 	}
 
-	/**
-	 * Triggers an explosion, occurs when you stay in redline for too long
-	 * 
-	 * @param vehicule
-	 */
-	public void triggerBurst(Car vehicule) {
-		vehicule.explode();
-		playerFinish = true;
-		timePlayer = 0;
-		timerStopPlayer = System.currentTimeMillis();
-	}
-
 	protected void reset() {
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		player.setPhysicsRotation(new Matrix3f());
@@ -526,7 +515,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 
 		timerRedZone = 0;
-		timerStopPlayer = 0;
 		playerFinish = false;
 		runIsOn = false;
 		needReset = false;

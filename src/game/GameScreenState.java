@@ -29,7 +29,6 @@ public class GameScreenState extends AbstractGameScreenState {
 
 	private boolean botFinish;
 
-	private long timerStopBot = 0;
 	private long timeBot;
 
 	private GhostControl finishCell;
@@ -89,9 +88,8 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		if (botFinish && (System.currentTimeMillis() - timerStopBot > 1000)) {
-			bot.accelerate(0);
-			bot.setLinearVelocity(Vector3f.ZERO);
+		if (botFinish) {
+			bot.stop(1000);
 		}
 
 		// Tester si le round est fini
@@ -178,7 +176,6 @@ public class GameScreenState extends AbstractGameScreenState {
 					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
 					(timePlayer % 1000) / 10));
 
-			timerStopPlayer = System.currentTimeMillis();
 			playerFinish = true;
 		}
 		if (finishCell.getOverlappingObjects().contains(bot) && !botFinish) {
@@ -187,7 +184,6 @@ public class GameScreenState extends AbstractGameScreenState {
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10));
 
-			timerStopBot = System.currentTimeMillis();
 			botFinish = true;
 		}
 

@@ -1,10 +1,12 @@
 package game;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import ia.IA;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.MathTools;
-
 import audio.AudioRender;
 import audio.SoundStore;
 
@@ -13,7 +15,6 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
-import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -21,7 +22,6 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.texture.Texture.WrapMode;
 
 public class Car extends VehicleControl {
 
@@ -48,6 +48,9 @@ public class Car extends VehicleControl {
 
 	protected ParticuleMotor particuleMotor;
 	protected AudioRender audioRender;
+
+	// Ensures that the stop thread is not launched more than needed
+	private boolean willStop = false;
 
 	public Car(AssetManager assetManager, CarProperties properties, String scene) {
 		super();
@@ -252,6 +255,7 @@ public class Car extends VehicleControl {
 		particuleMotor.addExplosion(carNode);
 		enginePhysics.setBreaking(true);
 		audioRender.playBurst();
+		stop(1000);
 	}
 
 	public void removeExplosion() {
@@ -264,5 +268,25 @@ public class Car extends VehicleControl {
 
 	public void updateSound() {
 		audioRender.setRPM(enginePhysics.getRpm());
+	}
+
+	/**
+	 * Stops the car after a time delay Asynchronous method : will start a
+	 * thread not to block the rest of the application
+	 * 
+	 * @param delay
+	 *            the delay in ms
+	 */
+	public void stop(int delay) {
+		if (!willStop) {
+			willStop = true;
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask() {
+				public void run() {
+					accelerate(0);
+					setLinearVelocity(Vector3f.ZERO);
+				}
+			}, delay);
+		}
 	}
 }

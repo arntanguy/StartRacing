@@ -24,7 +24,7 @@ public class EnginePhysics {
 	 * Used to know whether the rpm is over the redline.
 	 */
 	private boolean isBreaking = false;
-	
+
 	private boolean engineBroken = false;
 
 	public EnginePhysics(CarProperties prop) {
@@ -39,8 +39,10 @@ public class EnginePhysics {
 	 * @return rotation per minute
 	 */
 	public int getRpm() {
-		int rpm = (int) (p.getGearRatio(gear) * speed * 336 * p.getTgr() / p
-				.getTh());
+
+		rpm = (rpm < p.getIdleRpm()) ? p.getIdleRpm() : (int) (p
+				.getGearRatio(gear) * speed * 336 * p.getTgr() / p.getTh());
+		;
 		if (checkRedline()) {
 			isBreaking = true;
 		} else {
@@ -184,11 +186,11 @@ public class EnginePhysics {
 	public void setBreaking(boolean b) {
 		isBreaking = b;
 	}
-	
+
 	public void setEngineBroken(boolean state) {
 		engineBroken = state;
 	}
-	
+
 	public boolean getEngineBroken() {
 		return engineBroken;
 	}

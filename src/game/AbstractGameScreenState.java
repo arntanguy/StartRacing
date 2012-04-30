@@ -201,6 +201,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
+		
+		
 	}
 
 	private void initAudio() {
@@ -662,8 +664,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				System.out.println("Frontal collision " + speed1 + " " + speed2
 						+ "  at force " + appliedImpulse);
 				float speedPercent1 = speed1 / (speed1 + speed2);
-				car1.decreaseLife(speedPercent1 * damageForce);
-				car2.decreaseLife((1 - speedPercent1) * damageForce);
+				float life1 = 10 * speedPercent1 * damageForce;
+				life1 = (life1 <= 50) ? life1 : 50;
+				float life2 = 10 * (1 - speedPercent1) * damageForce;
+				life2 = (life2 <= 50) ? life2 : 50;
+				car1.decreaseLife(life1);
+				car2.decreaseLife(life2);
+				System.out.println("Damage force: "+damageForce);
 			} else {
 				// back collision if (angle <= Math.PI / 4)
 				// the car in front will have 75% of the damages

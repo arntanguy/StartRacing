@@ -12,6 +12,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Node;
 
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
@@ -56,12 +57,11 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(0, 27, 600)),
 		 * new BMWM3Properties());
 		 */
-
 	}
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
 		Car bot = new Car(assetManager, carProperties,
-				"Models/FerrariGreen/Car.scene");
+				"Models/FerrariBlue/Car.scene");
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 
@@ -81,6 +81,12 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		super.update(tpf);
 
 		if (runIsOn) {
+			if(player.getBurstEnabled()) {
+				runIsOn = false;
+				for (Car bot : bots) {
+					bot.stop(1000);
+				}
+			}
 			screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class)
 					.setText(((Integer) player.getLife()).toString());

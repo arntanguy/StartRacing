@@ -94,6 +94,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	private long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
+	private boolean playerStoped = false;
 
 	boolean zeroSec;
 	boolean oneSec;
@@ -392,12 +393,13 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 
 		/** Stops 1 second after the finish line */
-		if (playerFinish) {
+		if (playerFinish && !playerStoped) {
 			player.stop(1000);
+			playerStoped = true;
 		}
 
 		if (runIsOn) {
-			if (!player.getBurstEnabled()) {
+			if (!player.getBurstEnabled() && !playerFinish) {
 				playerRpm = player.getEnginePhysics().getRpm();
 
 				playerEnginePhysics.setSpeed(Math.abs(Conversion
@@ -527,6 +529,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		timerRedZone = 0;
 		playerFinish = false;
+		playerStoped = false;
 		runIsOn = false;
 		needReset = false;
 		runFinish = false;

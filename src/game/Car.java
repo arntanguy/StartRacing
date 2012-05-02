@@ -285,7 +285,7 @@ public class Car extends VehicleControl {
 				public void run() {
 					accelerate(0);
 					setLinearVelocity(Vector3f.ZERO);
-					audioRender.mute();
+//					audioRender.mute();
 					willStop = false;
 				}
 			}, delay);

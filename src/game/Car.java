@@ -39,6 +39,9 @@ public class Car extends VehicleControl {
 
 	private double life = 100;
 	private String driverName;
+	
+	private long timerNos = 0;
+	private int nosCharge = 0;
 
 	public enum CarType {
 		BOT, PLAYER
@@ -51,6 +54,8 @@ public class Car extends VehicleControl {
 
 	// Ensures that the stop thread is not launched more than needed
 	private boolean willStop = false;
+	
+	private boolean nosEnabled = false;
 
 	public Car(AssetManager assetManager, CarProperties properties, String scene) {
 		super();
@@ -249,6 +254,47 @@ public class Car extends VehicleControl {
 
 	public boolean getBurstEnabled() {
 		return particuleMotor.getBurstEnabled();
+	}
+	
+	public void addNos()	{
+		if (!nosEnabled)	{
+			// Vérifier qu'il reste une charge
+			if (nosCharge > 0)	{
+				nosEnabled = true;
+				nosCharge--;
+				enginePhysics.activeNos();
+				particuleMotor.addNos(carNode);
+
+				enginePhysics.activeNos();
+				
+				timerNos = System.currentTimeMillis();
+			}
+		}	
+	}
+
+	public void stopNos()	{
+		if (nosEnabled)	{
+			nosEnabled = false;
+			particuleMotor.removeNos(carNode);
+			timerNos = 0;
+			
+			enginePhysics.stopNos();
+		}
+	}
+	public void controlNos()	{
+		if (nosEnabled && System.currentTimeMillis() - timerNos > 2000)	{
+			particuleMotor.removeNos(carNode);
+			nosEnabled = false;			
+			timerNos = 0;
+		}
+	}
+	
+	public boolean getNosActivity()	 {
+		return nosEnabled;
+	}
+	
+	public void setNosCharge(int nombre)	{
+		nosCharge = nombre;
 	}
 
 	public void explode() {

@@ -48,7 +48,7 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
 public abstract class AbstractGameScreenState extends AbstractScreenController
-		implements ActionListener, AnalogListener, PhysicsCollisionListener {
+implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	private ViewPort viewPort;
 	protected Node rootNode;
@@ -91,6 +91,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected boolean needReset;
 
 	private long timerRedZone = 0;
+	private long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
 
@@ -184,7 +185,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
 		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f)
-				.normalizeLocal()); // light direction
+		.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
 
 		rootNode.setShadowMode(ShadowMode.Off); // reset all
@@ -201,8 +202,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
-		
-		
+
+
 	}
 
 	private void initAudio() {
@@ -247,6 +248,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		soundStore.addExtraSound("start_low", "Sound/start_low.wav");
 		soundStore.addExtraSound("start_high", "Sound/start_high.wav");
 		soundStore.addExtraSound("burst", "Sound/explosion.wav");
+		soundStore.addExtraSound("crash", "Sound/car_crash.wav");
 
 		audioMotor = new AudioRender(rootNode, soundStore);
 	}
@@ -264,6 +266,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		playerCarProperties = player.getProperties();
 		playerEnginePhysics = player.getEnginePhysics();
+		playerEnginePhysics.setNosCharge(1);
 
 		rootNode.attachChild(player.getNode());
 
@@ -344,7 +347,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
 
 		bulletAppState.getPhysicsSpace()
-				.setGravity(new Vector3f(0, -19.81f, 0));
+		.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
 		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
@@ -363,12 +366,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("Throttle", new KeyTrigger(
-				KeyInput.KEY_RCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
+		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
 
-		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		//		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
@@ -380,6 +383,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "GearUp");
 		inputManager.addListener(this, "GearDown");
 		inputManager.addListener(this, "Throttle");
+		inputManager.addListener(this, "NOS");
 	}
 
 	@Override
@@ -470,7 +474,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					zeroSec = true;
 				}
 				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("");
+				.getRenderer(TextRenderer.class).setText("");
 				runIsOn = true;
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
@@ -479,21 +483,21 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					oneSec = true;
 				}
 				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("1");
+				.getRenderer(TextRenderer.class).setText("1");
 			} else if (time > 3000) {
 				if (!twoSec) {
 					audioMotor.playStartBeepLow();
 					twoSec = true;
 				}
 				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("2");
+				.getRenderer(TextRenderer.class).setText("2");
 			} else if (time > 2000) {
 				if (!threeSec) {
 					audioMotor.playStartBeepLow();
 					threeSec = true;
 				}
 				screen.findElementByName("startTimer")
-						.getRenderer(TextRenderer.class).setText("3");
+				.getRenderer(TextRenderer.class).setText("3");
 			}
 		}
 	}
@@ -504,6 +508,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
 		playerEnginePhysics.setGear(1);
+		playerEnginePhysics.setNosCharge(1);
 		player.resetSuspension();
 		player.steer(0);
 		audioMotor.playStartSound();
@@ -530,7 +535,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		zeroSec = false;
 
 		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
-				.setText("Ready ?");
+		.setText("Ready ?");
 	}
 
 	protected PhysicsSpace getPhysicsSpace() {
@@ -569,6 +574,10 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			if (value) {
 				playerEnginePhysics.decrementGear();
 			}
+		} else if (binding.equals("NOS")) {
+			if (value) {
+				playerEnginePhysics.activeNos();
+			}
 		} else if (binding.equals("Menu")) {
 			app.gotoStart();
 		}
@@ -584,7 +593,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				}
 
 				playerEnginePhysics
-						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
+				.setRpm(playerEnginePhysics.getFreeRpm() + 400);
 			}
 		} else if (binding.equals("Rights")) {
 			System.out.println("Value " + value + " tpf: " + tpf);
@@ -618,6 +627,17 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Two cars collide
 		if (car1 != null && car2 != null) {
+			// Trigger crash sound
+			if (car1.getType().equals(CarType.PLAYER) || car2.getType().equals(CarType.PLAYER))	{
+				// Trigger only if the sound is not playing
+				if (timerCrashSound == 0 || System.currentTimeMillis() - timerCrashSound > 2000)	{
+					audioMotor.playCrash();
+
+					timerCrashSound = System.currentTimeMillis();
+				}
+			}
+
+
 			float speed1 = Math.abs(car1.getCurrentVehicleSpeedKmHour());
 			float speed2 = Math.abs(car2.getCurrentVehicleSpeedKmHour());
 			float appliedImpulse = event.getAppliedImpulse();

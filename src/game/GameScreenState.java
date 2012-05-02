@@ -26,6 +26,8 @@ public class GameScreenState extends AbstractGameScreenState {
 	private CarProperties botCarProperties;
 	private EnginePhysics botEnginePhysics;
 	private IA botIA;
+	
+	private Vector3f botArrivalPoint;
 
 	private boolean botFinish;
 
@@ -77,6 +79,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		botIA = bot.getIA();
 		rootNode.attachChild(bot.getNode());
 		super.getPhysicsSpace().add(bot);
+		botArrivalPoint = (new Vector3f(0,0,0)).subtract(bot.getForwardVector(null)).mult(5000);
 	}
 
 	@Override
@@ -131,6 +134,7 @@ public class GameScreenState extends AbstractGameScreenState {
 					.setText(sTimer);
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 			botIA.act();
+			botIA.target(botArrivalPoint, 0, 0);
 		} else if (!runFinish) {
 			botEnginePhysics.setBreaking(true);
 		}

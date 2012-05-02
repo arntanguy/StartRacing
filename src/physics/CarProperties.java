@@ -1,7 +1,10 @@
 package physics;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
+
+import physics.tools.MathTools;
 
 public class CarProperties {
 	// tire height (24.5, 26, 27.5, ...cm)
@@ -23,8 +26,11 @@ public class CarProperties {
 	 * Gear ratio and properties
 	 */
 	protected Gears gears;
-	
-	protected int redline=6000;
+
+	protected int redline = 6000;
+
+	protected String playerModel;
+	protected ArrayList<String> availableModels;
 
 	/**
 	 * Torque corresponding to given engine speed <Engine speed, Torque> ordered
@@ -50,6 +56,8 @@ public class CarProperties {
 		torque.put(0, 0);
 		torque.put(75, 390);
 		torque.put(140, 200);
+
+		availableModels = new ArrayList<String>();
 	}
 
 	public CarProperties(double th, double tgr, int idleRpm) {
@@ -133,14 +141,14 @@ public class CarProperties {
 		w2 = w1;
 		w1 = wt;
 
-		//System.out.println("RMP (" + rpm + ") > value(" + w1 + "," + w2
-		//		+ ") : get torque (" + torque.get(w1) + "," + torque.get(w2)
-		//		+ ")");
+		// System.out.println("RMP (" + rpm + ") > value(" + w1 + "," + w2
+		// + ") : get torque (" + torque.get(w1) + "," + torque.get(w2)
+		// + ")");
 		t1 = torque.get(w1);
 		if (rpm <= w2) {
 			t2 = torque.get(w2);
-		//	System.out.println("torque = " + t1 + (rpm - w1) * (t2 - t1)
-		//			/ (w2 - w1));
+			// System.out.println("torque = " + t1 + (rpm - w1) * (t2 - t1)
+			// / (w2 - w1));
 			return t1 + (rpm - w1) * (t2 - t1) / (w2 - w1);
 		} else {
 			return 0;
@@ -198,8 +206,17 @@ public class CarProperties {
 	public void setMass(float mass) {
 		this.mass = (mass >= 0) ? mass : 0.f;
 	}
-	
+
 	public int getRedline() {
 		return redline;
+	}
+
+	public ArrayList<String> getAvailableModels() {
+		return availableModels;
+	}
+
+	public String getRandomModel() {
+		int rand = MathTools.randBetween(0, availableModels.size());		
+		return availableModels.get(rand);
 	}
 }

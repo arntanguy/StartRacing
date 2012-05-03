@@ -94,6 +94,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	private long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
+	private boolean playerStoped = false;
 
 	boolean zeroSec;
 	boolean oneSec;
@@ -263,10 +264,10 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		player.setDriverName("Player");
 		player.getNode().addControl(player);
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
+		player.setNosCharge(1);
 
 		playerCarProperties = player.getProperties();
 		playerEnginePhysics = player.getEnginePhysics();
-		playerEnginePhysics.setNosCharge(1);
 
 		rootNode.attachChild(player.getNode());
 
@@ -392,12 +393,13 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 
 		/** Stops 1 second after the finish line */
-		if (playerFinish) {
+		if (playerFinish && !playerStoped) {
 			player.stop(1000);
+			playerStoped = true;
 		}
 
 		if (runIsOn) {
-			if (!player.getBurstEnabled()) {
+			if (!player.getBurstEnabled() && !playerFinish) {
 				playerRpm = player.getEnginePhysics().getRpm();
 
 				playerEnginePhysics.setSpeed(Math.abs(Conversion
@@ -439,6 +441,8 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
+		
+		player.controlNos();
 
 		// particule_motor.controlBurst();
 
@@ -507,8 +511,8 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		player.setPhysicsRotation(new Matrix3f());
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
+		player.setNosCharge(1);
 		playerEnginePhysics.setGear(1);
-		playerEnginePhysics.setNosCharge(1);
 		player.resetSuspension();
 		player.steer(0);
 		audioMotor.playStartSound();
@@ -520,9 +524,12 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		if (player.getBurstEnabled()) {
 			player.removeExplosion();
 		}
+		
+		player.stopNos();
 
 		timerRedZone = 0;
 		playerFinish = false;
+		playerStoped = false;
 		runIsOn = false;
 		needReset = false;
 		runFinish = false;
@@ -576,7 +583,9 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 			}
 		} else if (binding.equals("NOS")) {
 			if (value) {
-				playerEnginePhysics.activeNos();
+				if (!player.getNosActivity())	{
+					player.addNos();
+				}
 			}
 		} else if (binding.equals("Menu")) {
 			app.gotoStart();

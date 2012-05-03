@@ -30,6 +30,7 @@ public class GameScreenState extends AbstractGameScreenState {
 	private Vector3f botArrivalPoint;
 
 	private boolean botFinish;
+	private boolean botStoped;
 
 	private long timeBot;
 
@@ -56,6 +57,7 @@ public class GameScreenState extends AbstractGameScreenState {
 
 		playerFinish = false;
 		botFinish = false;
+		botStoped = false;
 	}
 
 	protected void buildFinishLine() {
@@ -93,8 +95,9 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		if (botFinish) {
+		if (botFinish && !botStoped) {
 			bot.stop(1000);
+			botStoped = true;
 		}
 
 		// Tester si le round est fini
@@ -123,7 +126,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
-		if (runIsOn) {
+		if (runIsOn && !botFinish) {
 			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
 			long timeMili = (System.currentTimeMillis() - startTime);
@@ -164,6 +167,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		runFinish = false;
 		playerFinish = false;
 		botFinish = false;
+		botStoped = false;
 
 		startTime = 0;
 		countDown = 0;

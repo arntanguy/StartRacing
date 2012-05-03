@@ -44,11 +44,22 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoGame(String mode) {
-		nifty.addXml("Interface/Nifty/GameScreen.xml");
-		nifty.gotoScreen("hud");
-		AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-				.getCurrentScreen().getScreenController();
-		stateManager.attach(gameScreenController);
+		
+		if(mode.equals("half")) {
+			nifty.addXml("Interface/Nifty/HalfGameScreen.xml");
+			nifty.gotoScreen("hud");
+
+			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
+					.getCurrentScreen().getScreenController();
+			stateManager.attach(gameScreenController);
+		} else {
+			nifty.addXml("Interface/Nifty/QuarterGameScreen.xml");
+			nifty.gotoScreen("hud");
+
+			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
+					.getCurrentScreen().getScreenController();
+			stateManager.attach(gameScreenController);
+		}
 
 	}
 

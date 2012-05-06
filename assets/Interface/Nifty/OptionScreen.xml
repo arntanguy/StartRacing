@@ -13,14 +13,18 @@
 				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="${CALL.getMenuTitle()}" />
 				
-				<panel height="70%" width="60%" align="center" childLayout="vertical">
+				<panel height="70%" width="80%" align="center" childLayout="vertical">
 					<panel childLayout="horizontal">
-						<text font="Interface/Fonts/Default.fnt" height="100%" width="50%" align="center" text="Activer le son" />
-						<control name="checkbox" id="activateSound" />
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Activer le son" />
+						<control name="checkbox" width="40%" id="activateSound" />
 					</panel>
 					<panel childLayout="horizontal">
-						<text font="Interface/Fonts/Default.fnt" height="100%" width="50%" align="center" text="Résolution de l'écran" />
-						<control name="listbox" id="resolutionList" />
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="écran large (16/9)" />
+						<control name="checkbox" width="40%" id="wideScreen" />
+					</panel>
+					<panel childLayout="horizontal">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Résolution de l'écran" />
+						<control name="dropDown" width="40%" id="resolutionDropDown" />
 					</panel>
 				</panel>
 				

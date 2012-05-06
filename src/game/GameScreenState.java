@@ -27,12 +27,15 @@ public class GameScreenState extends AbstractGameScreenState {
 	private EnginePhysics botEnginePhysics;
 	private IA botIA;
 
+	private Vector3f botArrivalPoint;
+
 	private boolean botFinish;
+	private boolean botStoped;
 
 	private long timeBot;
 
-	private GhostControl finishCell;
-	private Node finishNode;
+	protected GhostControl finishCell;
+	protected Node finishNode;
 
 	public GameScreenState() {
 		super();
@@ -54,6 +57,7 @@ public class GameScreenState extends AbstractGameScreenState {
 
 		playerFinish = false;
 		botFinish = false;
+		botStoped = false;
 	}
 
 	protected void buildFinishLine() {
@@ -62,21 +66,24 @@ public class GameScreenState extends AbstractGameScreenState {
 				1)));
 		finishNode = new Node("finish zone");
 		finishNode.addControl(finishCell);
-		finishNode.move(0, 27, 298);
+		finishNode.move(0, 27, 0);
 
-		rootNode.attachChild(finishNode);
+		rootNode.attachChild(finishNode); 
 		super.getPhysicsSpace().add(finishCell);
 	}
-
+	
 	private void buildBot() {
 		botCarProperties = new BMWM3Properties();
-		bot = new Car(assetManager, botCarProperties, "Models/FerrariGreen/Car.scene");
+		bot = new Car(assetManager, botCarProperties,
+				"Models/FerrariGreen/Car.scene");
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();
 		botIA = bot.getIA();
 		rootNode.attachChild(bot.getNode());
 		super.getPhysicsSpace().add(bot);
+		botArrivalPoint = (new Vector3f(0, 0, 0)).subtract(
+				bot.getForwardVector(null)).mult(5000);
 	}
 
 	@Override
@@ -88,8 +95,9 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		if (botFinish) {
+		if (botFinish && !botStoped) {
 			bot.stop(1000);
+			botStoped = true;
 		}
 
 		// Tester si le round est fini
@@ -118,7 +126,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
-		if (runIsOn) {
+		if (runIsOn && !botFinish) {
 			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
 
 			long timeMili = (System.currentTimeMillis() - startTime);
@@ -131,6 +139,7 @@ public class GameScreenState extends AbstractGameScreenState {
 					.setText(sTimer);
 			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 			botIA.act();
+			botIA.target(botArrivalPoint, 0, 0);
 		} else if (!runFinish) {
 			botEnginePhysics.setBreaking(true);
 		}
@@ -158,6 +167,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		runFinish = false;
 		playerFinish = false;
 		botFinish = false;
+		botStoped = false;
 
 		startTime = 0;
 		countDown = 0;
@@ -188,5 +198,4 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 
 	}
-
 }

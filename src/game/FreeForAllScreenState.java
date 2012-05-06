@@ -6,13 +6,13 @@ import java.util.concurrent.TimeUnit;
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.tools.Conversion;
+import physics.tools.MathTools;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.scene.Node;
 
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
@@ -37,31 +37,35 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	protected void initGame() {
 		super.initGame();
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		addBot(new Vector3f(new Vector3f(10, 27, 700)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(20, 27, 800)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(30, 27, 500)), new BMWM3Properties());
-		// addBot(new Vector3f(new Vector3f(40, 27, 600)), new
-		// BMWM3Properties());
-		// addBot(new Vector3f(new Vector3f(40, 27, 600)), new
-		// BMWM3Properties());
+		BMWM3Properties properties = new BMWM3Properties();
+		addBot(new Vector3f(new Vector3f(10, 27, 700)), properties);
+		addBot(new Vector3f(new Vector3f(20, 27, 800)), properties);
+		addBot(new Vector3f(new Vector3f(30, 27, 500)), properties);
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
+		addBot(new Vector3f(new Vector3f(300, 27, 800)), properties);
+		addBot(new Vector3f(new Vector3f(200, 27, 700)), properties);
+		/*addBot(new Vector3f(new Vector3f(100, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(400, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(500, 27, 500)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(70, 27, 650)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(90, 27, 600)), new BMWM3Properties());
+		addBot(new Vector3f(new Vector3f(0, 27, 600)), new BMWM3Properties());*/
 
-		/*
-		 * addBot(new Vector3f(new Vector3f(300, 27, 800)), new
-		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(200, 27, 700)),
-		 * new BMWM3Properties()); addBot(new Vector3f(new Vector3f(100, 27,
-		 * 600)), new BMWM3Properties()); addBot(new Vector3f(new Vector3f(400,
-		 * 27, 600)), new BMWM3Properties()); addBot(new Vector3f(new
-		 * Vector3f(500, 27, 500)), new BMWM3Properties()); addBot(new
-		 * Vector3f(new Vector3f(70, 27, 650)), new BMWM3Properties());
-		 * addBot(new Vector3f(new Vector3f(90, 27, 600)), new
-		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(0, 27, 600)),
-		 * new BMWM3Properties());
-		 */
+		randBotsPos();
+	}
+
+	private void randBotsPos() {
+		for (Car bot : bots) {
+			bot.getNode().setLocalTranslation(
+					MathTools.randBetween(-1000, 1000), 27,
+					MathTools.randBetween(-1000, 1000));
+		}
 	}
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
 		Car bot = new Car(assetManager, carProperties,
-				"Models/FerrariBlue/Car.scene");
+				carProperties.getRandomModel());
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 
@@ -81,7 +85,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		super.update(tpf);
 
 		if (runIsOn) {
-			if(player.getBurstEnabled()) {
+			if (player.getBurstEnabled()) {
 				runIsOn = false;
 				for (Car bot : bots) {
 					bot.stop(1000);
@@ -123,6 +127,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		}
 	}
 
+	protected void reset() {
+		super.reset();
+		randBotsPos();
+	}
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
 		super.collision(event);

@@ -21,9 +21,14 @@ public class ParticuleMotor {
 	private ParticleEmitter smoke;
 	private ParticleEmitter debris;
 	private ParticleEmitter shockwave;
+	private ParticleEmitter nos;
+	private Node nosNode;
 	private Node explosionEffect;
 	private int explosionState;
+
 	private boolean burstEnabled;
+	private boolean nosEnabled;
+
 
 	public ParticuleMotor(AssetManager assetManager) {
 		this.assetManager = assetManager;
@@ -46,6 +51,22 @@ public class ParticuleMotor {
 		if (burstEnabled) {
 			node.detachChild(explosionEffect);
 			burstEnabled = false;
+		}
+	}
+	
+	public void addNos(Node node)	{
+		initNos();
+		nosEnabled = true;
+		node.attachChild(nosNode);
+		
+		nos.emitAllParticles();
+	}
+	
+	public void removeNos(Node node)	{
+		if (nosEnabled)	{
+			nos.killAllParticles();
+			node.detachChild(nosNode);
+			nosEnabled = false;
 		}
 	}
 
@@ -91,7 +112,36 @@ public class ParticuleMotor {
 		createEmbers();
 		createShockwave();
 	}
+	
+	public void initNos()	{
+		nosNode = new Node("nos");
+		
+		createNos();
+	}
 
+	private void createNos()	{
+		nos = new ParticleEmitter("Emitter", Type.Triangle, 200);    
+	    Material fire_mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+	    fire_mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+	    nos.setMaterial(fire_mat);
+	    nos.setImagesX(2); 
+	    nos.setImagesY(2);
+	    nos.setRandomAngle(true);
+	    
+	    nosNode.attachChild(nos);
+	    
+		nos.setStartColor(ColorRGBA.Blue);
+		nos.setEndColor(ColorRGBA.White);
+	    nos.setStartSize(1.5f);
+	    nos.setEndSize(0.05f);
+	    nos.setLowLife(0.1f);
+	    nos.setHighLife(0.3f);
+	    nos.setGravity(0, 0, 0);
+	    nos.getParticleInfluencer().setVelocityVariation(0.1f);
+	    nos.setParticlesPerSec(200);
+	   //nos.getParticleInfluencer().setInitialVelocity(new Vector3f(0,0,3f)); 
+	}
+	
 	private void createFire() {
 		fire = new ParticleEmitter("Emitter", Type.Triangle, 200);
 		Material fire_mat = new Material(assetManager,

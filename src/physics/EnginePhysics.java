@@ -18,6 +18,10 @@ public class EnginePhysics {
 	private double speed = 0;
 	private int rpm;
 
+	//	private int nosCharge = 0;
+	//	private long nosTimer = 0;
+	private boolean nosActif = false;
+
 	private long rpmTimer = 0;
 
 	/**
@@ -131,6 +135,13 @@ public class EnginePhysics {
 		return rpm;
 	}
 
+	public void activeNos()	{
+		nosActif =  true;
+	}
+
+	public void stopNos()	{
+		nosActif = false;
+	}
 	private boolean checkRedline() {
 		int redline = p.getRedline();
 		if (rpm >= redline) {
@@ -172,8 +183,12 @@ public class EnginePhysics {
 			if (speed != 0) {
 				rpm = getRpm();
 			}
-			return p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear)
-					/ p.getTireRadius();
+
+			double force = p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
+			if (nosActif)	{
+				force *= 1.3;
+			}
+			return force;
 		} else {
 			return 0;
 		}
@@ -193,5 +208,9 @@ public class EnginePhysics {
 
 	public boolean getEngineBroken() {
 		return engineBroken;
+	}
+
+	public boolean getNosActivity()	{
+		return nosActif;
 	}
 }

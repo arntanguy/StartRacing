@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<useControls filename="nifty-default-controls.xml" />
+	<useStyles filename="nifty-default-styles.xml" />
+	
+	<screen id="hud" controller="game.HalfGameScreenState">
+		<layer id="background" childLayout="center">
+		</layer>
+		<layer id="foreground" backgroundColor="#0000" childLayout="vertical">
+			<panel id="panel_top" width="100%" height="40%" childLayout="horizontal"
+				backgroundColor="#0000" align="center">
+				<panel height="30%" width="100%" childLayout="horizontal">
+					<panel width="80%"></panel>
+					<panel childLayout="vertical" width="20%">
+						<text text="Temps" font="Interface/Fonts/Default.fnt" width="100%" />
+						<text id="timer" text="0" font="Interface/Fonts/DS-Digital.fnt"
+							width="100%" height="100%" />
+					</panel>
+				</panel>
+			</panel>
+			<panel id="panel_center" width="100%" height="20%" align="center" childLayout="horizontal">
+				<text id="startTimer" text="Ready ?" font="Interface/Fonts/DS-Digital.fnt" width="100%" height="100%"/>
+			</panel>
+			<panel id="panel_bottom" width="100%" height="40%" childLayout="horizontal"
+				align="center" backgroundColor="#0000">
+				<!-- <panel id="tachometer" width="30%" height="100%" childLayout="vertical" 
+					visible="false"> </panel> -->
+				<panel childLayout="horizontal" backgroundColor="#5829" width="35%">
+					<panel childLayout="vertical" align="center">
+						<panel id="shiftlight_panel" width="100%" height="50px"
+							childLayout="vertical">
+							<image id="shiftlight" />
+						</panel>
+						<panel id="digital_tachometer_panel" childLayout="vertical">
+							<text text="RPM" font="Interface/Fonts/Default.fnt" width="100%"
+								height="10%" />
+							<text id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
+								size="20" text="0" width="100%" height="100%" />
+						</panel>
+						<panel id="digital_speed_panel" childLayout="vertical">
+							<text text="SPEED" font="Interface/Fonts/Default.fnt" width="100%"
+								height="10%" />
+							<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
+								size="20" text="0" width="100%" height="100%" />
+						</panel>
+					</panel>
+					<panel childLayout="vertical">
+						<panel id="gear_panel" childLayout="vertical">
+							<text text="Vitesse" font="Interface/Fonts/Default.fnt"
+								width="100%" height="10%" />
+							<text id="digital_gear" font="Interface/Fonts/DS-Digital.fnt"
+								size="20" text="0" width="100%" height="100%" />
+						</panel>
+					</panel>
+				</panel>
+			</panel>
+		</layer>
+	</screen>
+</nifty>

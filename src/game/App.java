@@ -27,7 +27,8 @@ public class App extends SimpleApplication {
 		set.setTitle(StringStore.APP_TITLE);
 		this.setSettings(set);
 
-		gotoStart();
+//		gotoStart();
+		gotoOptions();
 
 		// disable the fly cam
 		flyCam.setEnabled(false);
@@ -85,17 +86,4 @@ public class App extends SimpleApplication {
 	public void gotoAffProfil() {
 		
 	}
-	
-	public boolean validateXML() {
-		try {
-			nifty.validateXml("Interface/Nifty/StartScreen.xml");
-			// nifty.validateXml("Interface/Nifty/GameScreen.xml");
-			// nifty.validateXml("Interface/Nifty/DevTest.xml");
-			return true;
-		} catch (Exception e) {
-			System.out.println("XML Exception: " + e.getMessage());
-			return false;
-		}
-	}
-
 }

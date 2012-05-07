@@ -43,5 +43,9 @@ public class BMWM3Properties extends CarProperties {
 		torque.put(6000, 500);
 		torque.put(8000, 450); // wrong value
 		torque.put(15000, 0);
+		
+		playerModel = "Models/FerrariRed/Car.scene";
+		availableModels.add("Models/FerrariGreen/Car.scene");
+		availableModels.add("Models/FerrariBlue/Car.scene");
 	}
 }

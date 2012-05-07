@@ -145,6 +145,36 @@ public class IA {
 		angle = (float) ((angle < 0.5) ? angle : 0.5);
 		return (float) ((angle < -0.5) ? -0.5 : angle);
 	}
+	
+	/**
+	 * Target a given point
+	 * @param posTarget
+	 * 		the point to target
+	 * @param delayMs
+	 * 		a delay for the bot to react
+	 * @param angularErrorFactor
+	 * 		the maximum error made by the bot when targeting
+	 */
+	public void target(Vector3f posTarget, int delayMs, double angularErrorFactor) {
+		if (followTimer == 0)
+			followTimer = System.currentTimeMillis();
+		if (System.currentTimeMillis() - followTimer > delayMs) {
+			Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
+					iaCar.getForwardVector(null)).normalize();
+			Vector3f targetDirection = posTarget
+					.subtract(iaCar.getPhysicsLocation()).normalize();
+			
+			Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
+			Vector2f targetDirection2 = new Vector2f(targetDirection.x,
+					targetDirection.z);
+			
+			int intError = (int) (angularErrorFactor * 1000);
+			float errorVal = ((float) MathTools
+					.randBetween(-intError, intError)) / 1000.f;
+			this.iaCar.steer(-angle(iaForward2, targetDirection2) + errorVal);
+			followTimer = System.currentTimeMillis();
+		}
+	}
 
 	/**
 	 * The bot will target the given car, and try to bump into it.
@@ -153,24 +183,6 @@ public class IA {
 	 *            the targetted car
 	 */
 	public void target(Car targetCar, int delayMs, double angularErrorFactor) {
-		if (followTimer == 0)
-			followTimer = System.currentTimeMillis();
-		if (System.currentTimeMillis() - followTimer > delayMs) {
-			Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
-					iaCar.getForwardVector(null)).normalize();
-			Vector3f targetDirection = targetCar.getPhysicsLocation()
-					.subtract(iaCar.getPhysicsLocation()).normalize();
-
-			Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
-			Vector2f targetDirection2 = new Vector2f(targetDirection.x,
-					targetDirection.z);
-
-			int intError = (int) (angularErrorFactor * 1000);
-			float errorVal = ((float) MathTools
-					.randBetween(-intError, intError)) / 1000.f;
-			System.out.println("Error " + errorVal);
-			this.iaCar.steer(-angle(iaForward2, targetDirection2) + errorVal);
-			followTimer = System.currentTimeMillis();
-		}
+		target(targetCar.getPhysicsLocation(), delayMs, angularErrorFactor);
 	}
 }

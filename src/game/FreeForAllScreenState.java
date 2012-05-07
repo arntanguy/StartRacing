@@ -37,13 +37,14 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	protected void initGame() {
 		super.initGame();
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		addBot(new Vector3f(new Vector3f(10, 27, 700)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(20, 27, 800)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(30, 27, 500)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(40, 27, 600)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(300, 27, 800)), new BMWM3Properties());
-		addBot(new Vector3f(new Vector3f(200, 27, 700)), new BMWM3Properties());
+		BMWM3Properties properties = new BMWM3Properties();
+		addBot(new Vector3f(new Vector3f(10, 27, 700)), properties);
+		addBot(new Vector3f(new Vector3f(20, 27, 800)), properties);
+		addBot(new Vector3f(new Vector3f(30, 27, 500)), properties);
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
+		addBot(new Vector3f(new Vector3f(300, 27, 800)), properties);
+		addBot(new Vector3f(new Vector3f(200, 27, 700)), properties);
 		/*addBot(new Vector3f(new Vector3f(100, 27, 600)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(400, 27, 600)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(500, 27, 500)), new BMWM3Properties());
@@ -52,7 +53,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		addBot(new Vector3f(new Vector3f(0, 27, 600)), new BMWM3Properties());*/
 
 		randBotsPos();
-
 	}
 
 	private void randBotsPos() {
@@ -65,7 +65,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
 		Car bot = new Car(assetManager, carProperties,
-				"Models/FerrariBlue/Car.scene");
+				carProperties.getRandomModel());
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 

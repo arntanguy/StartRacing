@@ -99,6 +99,13 @@ public class AudioRender {
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
+	
+
+	public void playCrash() {
+		AudioNode sample = extraSoundNodes.get("crash");
+		sample.setVolume(3f);
+		sample.playInstance();
+	}
 
 	public void mute() {
 		prevHigh.setVolume(0);

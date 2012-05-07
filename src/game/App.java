@@ -78,12 +78,15 @@ public class App extends SimpleApplication {
 	public void gotoCrtProfil() {
 		nifty.addXml("Interface/Nifty/CreateProfil.xml");
 		nifty.gotoScreen("createprofil");
+		//XXX
 		
         //stateManager.attach(gameScreenController);
 	}
 	
 	public void gotoAffProfil() {
-		
+		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
+		nifty.gotoScreen("chooseprofil");
+		//XXX
 	}
 	
 	public boolean validateXML() {

@@ -73,16 +73,12 @@ public class StartScreenState extends AbstractScreenController {
 	}
 
 	public void newProfil() {
-/**
- * TO DO
- */
+		//XXX
 		app.gotoCrtProfil();
 	}
 	
 	public void chooseProfil() {
-		/**
-		 * TO DO
-		 */
+		//XXX
 		app.gotoAffProfil();
 	}
 	

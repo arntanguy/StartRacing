@@ -9,21 +9,31 @@
 				width="100%" height="100%" />
 		</layer>
 		<layer id="foreground" childLayout="center">
-			<panel id="centerWrapper" height="100%" childLayout="vertical">
+			<panel height="100%" width="60%" childLayout="vertical">
 				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="${CALL.getMenuTitle()}" />
-				<panel id="centerPanel" height="65%" childLayout="center">
-					<control name="textfield" text="HELLO">
-					</control>
+				
+				<panel height="70%" width="80%" align="center" childLayout="vertical">
+					<panel childLayout="horizontal">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Activer le son" />
+						<control name="checkbox" width="40%" id="activateSound" />
+					</panel>
+					<panel childLayout="horizontal">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="écran large (16/9)" />
+						<control name="checkbox" width="40%" id="wideScreen" />
+					</panel>
+					<panel childLayout="horizontal">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Résolution de l'écran" />
+						<control name="dropDown" width="40%" id="resolutionDropDown" />
+					</panel>
 				</panel>
 				
-				<panel height="14%" width="52%" valign="bottom" align="center" childLayout="horizontal">
-					<control id="returnButton" width="50%" align="center" height="100%" name="button" label="Menu Principal">
+				<panel height="10%" width="100%" valign="bottom" align="center" childLayout="horizontal">
+					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Menu Principal">
 						<interact onClick="gotoMainMenu()" />
 					</control>
-					<panel width="5px" />
-					
-					<control id="applyButton" width="50%" align="center" height="100%" name="button" label="Appliquer">
+					<panel width="5px" />					
+					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="Appliquer">
 						<interact onClick="applyOptions()" />
 					</control>
 				</panel>

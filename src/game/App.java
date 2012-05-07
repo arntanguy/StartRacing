@@ -27,7 +27,8 @@ public class App extends SimpleApplication {
 		set.setTitle(StringStore.APP_TITLE);
 		this.setSettings(set);
 
-		gotoStart();
+//		gotoStart();
+		gotoOptions();
 
 		// disable the fly cam
 		flyCam.setEnabled(false);
@@ -89,24 +90,14 @@ public class App extends SimpleApplication {
 	public void gotoCrtProfil() {
 		nifty.addXml("Interface/Nifty/CreateProfil.xml");
 		nifty.gotoScreen("createprofil");
+		//XXX
 		
         //stateManager.attach(gameScreenController);
 	}
 	
 	public void gotoAffProfil() {
-		
+		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
+		nifty.gotoScreen("chooseprofil");
+		//XXX
 	}
-	
-	public boolean validateXML() {
-		try {
-			nifty.validateXml("Interface/Nifty/StartScreen.xml");
-			// nifty.validateXml("Interface/Nifty/GameScreen.xml");
-			// nifty.validateXml("Interface/Nifty/DevTest.xml");
-			return true;
-		} catch (Exception e) {
-			System.out.println("XML Exception: " + e.getMessage());
-			return false;
-		}
-	}
-
 }

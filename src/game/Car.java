@@ -282,7 +282,7 @@ public class Car extends VehicleControl {
 		}
 	}
 	public void controlNos()	{
-		if (nosEnabled && System.currentTimeMillis() - timerNos > 2000)	{
+		if (nosEnabled && System.currentTimeMillis() - timerNos > 2500)	{
 			particuleMotor.removeNos(carNode);
 			enginePhysics.stopNos();
 			

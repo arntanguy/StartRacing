@@ -102,7 +102,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		if (playerFinish && botFinish && !runFinish) {
 			String text = "";
 
-			if (timePlayer < timeBot && !player.getBurstEnabled()) {
+			if (timePlayer <= timeBot && !player.getBurstEnabled()) {
 				text = "Gagne !\n ";
 				audioMotor.playWin();
 			} else {

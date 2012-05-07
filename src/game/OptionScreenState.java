@@ -119,6 +119,10 @@ public class OptionScreenState extends AbstractScreenController {
 		app.gotoStart();
 	}
 	
+	/**
+	 * Sauvegarde les options contenues dans les variables tampons dans le fichier de sauvegarde
+	 * @author Alexandre GILLE
+	 */
 	public void applyOptions() {
 		System.out.println("Option saved");
 	}

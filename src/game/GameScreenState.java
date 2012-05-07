@@ -111,10 +111,10 @@ public class GameScreenState extends AbstractGameScreenState {
 			}
 			text += String.format("Joueur:  %d : %d\n",
 					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
-					(timePlayer % 1000) / 10);
+					(timePlayer % 1000) / 1);
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
-					(timeBot % 1000) / 10);
+					(timeBot % 1000) / 1);
 
 			screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText(text);
@@ -124,8 +124,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());
-		if (runIsOn && !botFinish) {
-			botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+		if (runIsOn) {
 
 			long timeMili = (System.currentTimeMillis() - startTime);
 
@@ -135,11 +134,13 @@ public class GameScreenState extends AbstractGameScreenState {
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
-			bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
-			botIA.act();
-			botIA.target(botArrivalPoint, 0, 0);
-		} else if (!runFinish) {
-			botEnginePhysics.setBreaking(true);
+
+			if (!botFinish)	{
+				botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+				bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
+				botIA.act();
+				botIA.target(botArrivalPoint, 0, 0);
+			}
 		}
 	}
 
@@ -147,6 +148,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		super.reset();
 
 		bot.accelerate(0);
+		bot.removeExplosion();
 		botEnginePhysics.setSpeed(0);
 		botEnginePhysics.setRpm(1000);
 
@@ -170,6 +172,7 @@ public class GameScreenState extends AbstractGameScreenState {
 		startTime = 0;
 		countDown = 0;
 
+		screen.findElementByName("timer").getRenderer(TextRenderer.class).setText("0 : 0");
 		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
 				.setText("Ready ?");
 	}

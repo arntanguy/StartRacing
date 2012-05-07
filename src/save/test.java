@@ -36,9 +36,9 @@ public class test {
 		
 		//Enregistrement
 		CarProperties car = new CarProperties();
-		BMWM3Properties bmw = new BMWM3Properties();
-		DodgeViperProperties dvp = new DodgeViperProperties();
-		SkylineProperties skp = new SkylineProperties();
+		CarProperties bmw = new BMWM3Properties();
+		CarProperties dvp = new DodgeViperProperties();
+		CarProperties skp = new SkylineProperties();
 		ArrayList<CarProperties> listCar = new ArrayList<CarProperties>();
 		listCar.add(car);
 		listCar.add(bmw);
@@ -53,13 +53,14 @@ public class test {
 		} 
 		// Récupération
 		XStream xstream = new XStream(new DomDriver());
-		ArrayList<CarProperties> listVoitre = new ArrayList<CarProperties>  ();
+		ArrayList<CarProperties> listVoiture = new ArrayList<CarProperties>  ();
         try {
             FileInputStream fs= new FileInputStream("save/Cars.xml");
-            listVoitre = (ArrayList<CarProperties>) xstream.fromXML(fs);
+            listVoiture = (ArrayList<CarProperties>) xstream.fromXML(fs);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }    
+        }
+        
 	}
 
 }

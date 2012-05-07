@@ -52,15 +52,17 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		addBot(new Vector3f(new Vector3f(90, 27, 600)), new BMWM3Properties());
 		addBot(new Vector3f(new Vector3f(0, 27, 600)), new BMWM3Properties());*/
 
-		randBotsPos();
+		resetCars();
 	}
 
-	private void randBotsPos() {
+	private void resetCars() {
 		for (Car bot : bots) {
 			bot.getNode().setLocalTranslation(
-					MathTools.randBetween(-1000, 1000), 27,
-					MathTools.randBetween(-1000, 1000));
+					MathTools.randBetween(-2000, 2000), 27,
+					MathTools.randBetween(-2000, 2000));
+			bot.setLife(100.d);
 		}
+		player.setLife(100.d);
 	}
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
@@ -129,7 +131,13 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void reset() {
 		super.reset();
-		randBotsPos();
+		resetCars();
+		runIsOn = false;
+		
+		for(Car bot: bots) {
+			bot.stop(0);
+		}
+		player.stop(0);
 	}
 	@Override
 	public void collision(PhysicsCollisionEvent event) {

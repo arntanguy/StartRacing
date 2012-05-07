@@ -339,4 +339,8 @@ public class Car extends VehicleControl {
 			}, delay);
 		}
 	}
+
+	public void setLife(double life) {
+		this.life = (life <= 100) ? life : 100; 
+	}
 }

@@ -1,5 +1,7 @@
 package game;
 
+import xml.XMLFileStore;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;

@@ -93,7 +93,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.stop(1000);
 				}
 			}
-			screen.findElementByName("startTimer")
+			screen.findElementByName("life")
 					.getRenderer(TextRenderer.class)
 					.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
@@ -120,8 +120,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					TimeUnit.MILLISECONDS.toSeconds(timeMili),
 					(timeMili % 1000) / 10);
 
-			screen.findElementByName("timer").getRenderer(TextRenderer.class)
-					.setText(sTimer);
 		} else if (!runFinish) {
 			for (Car bot : bots) {
 				bot.getEnginePhysics().setBreaking(true);

@@ -1,5 +1,8 @@
 package game;
 
+import xml.OptionXMLParser;
+import xml.XMLFileStore;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
@@ -16,16 +19,22 @@ public class App extends SimpleApplication {
 
 		AppSettings set = new AppSettings(true);
 
+		/* Options */
+		OptionXMLParser.loadAppOptions(XMLFileStore.OPTION_SAVE_FILE);
+		set.setWidth(OptionXMLParser.screenResolution.width);
+		set.setHeight(OptionXMLParser.screenResolution.height);
+		set.setTitle(StringStore.APP_TITLE);
+		this.setSettings(set);
+		
+		/* Lancement application */
 		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
 				audioRenderer, guiViewPort);
 		nifty = niftyDisplay.getNifty();
 
+		/******* DEBUG ********/
 		XMLFileStore.validateXMLFiles(nifty);
 		addXMLFiles();		
-		set.setHeight(760);
-		set.setWidth(1024);
-		set.setTitle(StringStore.APP_TITLE);
-		this.setSettings(set);
+		/****** FIN DEBUG *****/
 
 //		gotoStart();
 		gotoOptions();

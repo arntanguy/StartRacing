@@ -14,18 +14,20 @@ public class App extends SimpleApplication {
 	private Nifty nifty;
 	private NiftyJmeDisplay niftyDisplay;
 
+	public App() {
+		AppSettings set = new AppSettings(true);
+		
+		/* Options */
+		OptionXMLParser.loadAppOptions(XMLFileStore.OPTION_SAVE_FILE);
+		set.setResolution(OptionXMLParser.screenResolution.width, OptionXMLParser.screenResolution.height);
+		set.setTitle(StringStore.APP_TITLE);
+		this.setSettings(set);
+		this.setShowSettings(false);
+	}
+	
 	@Override
 	public void simpleInitApp() {
 
-		AppSettings set = new AppSettings(true);
-
-		/* Options */
-		OptionXMLParser.loadAppOptions(XMLFileStore.OPTION_SAVE_FILE);
-		set.setWidth(OptionXMLParser.screenResolution.width);
-		set.setHeight(OptionXMLParser.screenResolution.height);
-		set.setTitle(StringStore.APP_TITLE);
-		this.setSettings(set);
-		
 		/* Lancement application */
 		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
 				audioRenderer, guiViewPort);

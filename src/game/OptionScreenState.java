@@ -151,13 +151,11 @@ public class OptionScreenState extends AbstractScreenController {
 		OptionXMLParser.sound = soundCheckbox.isChecked();
 		OptionXMLParser.wideScreen = ratioCheckbox.isChecked();
 		OptionXMLParser.screenResolution = resolution;
-		System.out.println(resolution.width);
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
 		
-		set.setWidth(resolution.width);
-		set.setHeight(resolution.height);
+		set.setResolution(resolution.width, resolution.height);
 
-		app.getContext().setSettings(set);
+		app.setSettings(set);
 	}
 	
 	public String getMenuTitle() {

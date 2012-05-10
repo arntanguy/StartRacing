@@ -19,9 +19,10 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
-public class GameScreenState extends AbstractGameScreenState {
+public abstract class GameScreenState extends AbstractGameScreenState {
 	private Car bot;
 	private CarProperties botCarProperties;
 	private EnginePhysics botEnginePhysics;
@@ -36,6 +37,7 @@ public class GameScreenState extends AbstractGameScreenState {
 
 	protected GhostControl finishCell;
 	protected Node finishNode;
+	
 
 	public GameScreenState() {
 		super();

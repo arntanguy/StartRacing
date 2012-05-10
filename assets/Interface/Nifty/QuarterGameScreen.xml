@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
 	<useControls filename="nifty-default-controls.xml" />
 	<useStyles filename="nifty-default-styles.xml" />
-	
+
 	<screen id="hud" controller="game.QuarterGameScreenState">
 		<layer id="background" childLayout="center">
 		</layer>
@@ -12,14 +14,16 @@
 				<panel height="30%" width="100%" childLayout="horizontal">
 					<panel width="80%"></panel>
 					<panel childLayout="vertical" width="20%">
-						<text text="Temps" font="Interface/Fonts/Default.fnt" width="100%" />
+							<text text="Temps" font="Interface/Fonts/Default.fnt" width="100%" />
 						<text id="timer" text="0" font="Interface/Fonts/DS-Digital.fnt"
 							width="100%" height="100%" />
 					</panel>
 				</panel>
 			</panel>
-			<panel id="panel_center" width="100%" height="20%" align="center" childLayout="horizontal">
-				<text id="startTimer" text="Ready ?" font="Interface/Fonts/DS-Digital.fnt" width="100%" height="100%"/>
+			<panel id="panel_center" width="100%" height="20%" align="center"
+				childLayout="vertical">
+				<control name="label" id="startTimer" text="Ready ?" font="Interface/Fonts/DS-Digital.fnt"
+					width="100%" height="100%" />			 
 			</panel>
 			<panel id="panel_bottom" width="100%" height="40%" childLayout="horizontal"
 				align="center" backgroundColor="#0000">
@@ -32,9 +36,9 @@
 							<image id="shiftlight" />
 						</panel>
 						<panel id="digital_tachometer_panel" childLayout="vertical">
-							<text text="RPM" font="Interface/Fonts/Default.fnt" width="100%"
+							<control name="label" text="RPM" font="Interface/Fonts/Default.fnt" width="100%"
 								height="10%" />
-							<text id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
+							<control name="label" id="digital_tachometer" font="Interface/Fonts/DS-Digital.fnt"
 								size="20" text="0" width="100%" height="100%" />
 						</panel>
 						<panel id="digital_speed_panel" childLayout="vertical">
@@ -46,9 +50,9 @@
 					</panel>
 					<panel childLayout="vertical">
 						<panel id="gear_panel" childLayout="vertical">
-							<text text="Vitesse" font="Interface/Fonts/Default.fnt"
+							<control name="label" text="Vitesse" font="Interface/Fonts/Default.fnt"
 								width="100%" height="10%" />
-							<text id="digital_gear" font="Interface/Fonts/DS-Digital.fnt"
+							<control name="label" id="digital_gear" font="Interface/Fonts/DS-Digital.fnt"
 								size="20" text="0" width="100%" height="100%" />
 						</panel>
 					</panel>

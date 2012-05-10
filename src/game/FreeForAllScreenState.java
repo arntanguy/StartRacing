@@ -32,6 +32,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		bots = new ArrayList<Car>();
 
 		initGame();
+		initNiftyControls();
 	}
 
 	protected void initGame() {
@@ -39,14 +40,14 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		BMWM3Properties properties = new BMWM3Properties();
 		addBot(new Vector3f(new Vector3f(10, 27, 700)), properties);
-		/*
-		 * addBot(new Vector3f(new Vector3f(20, 27, 800)), properties);
-		 * addBot(new Vector3f(new Vector3f(30, 27, 500)), properties);
-		 * addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
-		 * addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
-		 * addBot(new Vector3f(new Vector3f(300, 27, 800)), properties);
-		 * addBot(new Vector3f(new Vector3f(200, 27, 700)), properties);
-		 */
+
+		addBot(new Vector3f(new Vector3f(20, 27, 800)), properties);
+		addBot(new Vector3f(new Vector3f(30, 27, 500)), properties);
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
+		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
+		addBot(new Vector3f(new Vector3f(300, 27, 800)), properties);
+		addBot(new Vector3f(new Vector3f(200, 27, 700)), properties);
+
 		/*
 		 * addBot(new Vector3f(new Vector3f(100, 27, 600)), new
 		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(400, 27, 600)),
@@ -58,6 +59,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		 */
 
 		resetCars();
+	}
+	
+	protected void initNiftyControls() {
+		super.initNiftyControls();
 	}
 
 	private void resetCars() {
@@ -123,12 +128,17 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 		} else {
 			if (runFinish) {
-				if (win)
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("Gagne !");
-				else
-					screen.findElementByName("startTimer")
-							.getRenderer(TextRenderer.class).setText("Perdu !");
+				if (win) {
+					startLabel.setText("Gagne !");
+					//screen.findElementByName("startTimer")
+					//		.getRenderer(TextRenderer.class).setText("Gagne !");
+				}
+				else {
+					startLabel.setText("Perdu !");
+
+					//screen.findElementByName("startTimer")
+					//		.getRenderer(TextRenderer.class).setText("Perdu !");
+				}
 			}
 
 		}

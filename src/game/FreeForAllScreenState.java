@@ -115,6 +115,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
 				}
 			}
+			
 			if (nbBotsAlive == 0 && player.isAlive()) {
 				win = true;
 				runIsOn = false;

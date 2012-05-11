@@ -19,14 +19,15 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
-public class GameScreenState extends AbstractGameScreenState {
+public abstract class GameScreenState extends AbstractGameScreenState {
 	private Car bot;
 	private CarProperties botCarProperties;
 	private EnginePhysics botEnginePhysics;
 	private IA botIA;
-	
+
 	private Vector3f botArrivalPoint;
 
 	private boolean botFinish;
@@ -34,8 +35,9 @@ public class GameScreenState extends AbstractGameScreenState {
 
 	private long timeBot;
 
-	private GhostControl finishCell;
-	private Node finishNode;
+	protected GhostControl finishCell;
+	protected Node finishNode;
+	
 
 	public GameScreenState() {
 		super();
@@ -66,22 +68,24 @@ public class GameScreenState extends AbstractGameScreenState {
 				1)));
 		finishNode = new Node("finish zone");
 		finishNode.addControl(finishCell);
-		finishNode.move(0, 27, 298);
+		finishNode.move(0, 27, 0);
 
-		rootNode.attachChild(finishNode);
+		rootNode.attachChild(finishNode); 
 		super.getPhysicsSpace().add(finishCell);
 	}
-
+	
 	private void buildBot() {
 		botCarProperties = new BMWM3Properties();
-		bot = new Car(assetManager, botCarProperties, "Models/FerrariGreen/Car.scene");
+		bot = new Car(assetManager, botCarProperties,
+				"Models/FerrariGreen/Car.scene");
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();
 		botIA = bot.getIA();
 		rootNode.attachChild(bot.getNode());
 		super.getPhysicsSpace().add(bot);
-		botArrivalPoint = (new Vector3f(0,0,0)).subtract(bot.getForwardVector(null)).mult(5000);
+		botArrivalPoint = (new Vector3f(0, 0, 0)).subtract(
+				bot.getForwardVector(null)).mult(5000);
 	}
 
 	@Override
@@ -199,5 +203,4 @@ public class GameScreenState extends AbstractGameScreenState {
 		}
 
 	}
-
 }

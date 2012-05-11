@@ -300,6 +300,7 @@ public class Car extends VehicleControl {
 	}
 
 	public void explode() {
+		life = 0;
 		particuleMotor.addExplosion(carNode);
 		enginePhysics.setBreaking(true);
 		audioRender.playBurst();
@@ -338,5 +339,13 @@ public class Car extends VehicleControl {
 				}
 			}, delay);
 		}
+	}
+
+	public void setLife(double life) {
+		this.life = (life <= 100) ? life : 100; 
+	}
+	
+	public boolean isAlive() {
+		return life>0;
 	}
 }

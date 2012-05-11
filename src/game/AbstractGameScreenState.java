@@ -44,6 +44,7 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
@@ -102,6 +103,8 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	boolean threeSec;
 
 	protected AudioRender audioMotor;
+	
+	protected Label startLabel;
 
 	public AbstractGameScreenState() {
 		super();
@@ -205,6 +208,10 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				playerEnginePhysics);
 
 
+	}
+	
+	protected void initNiftyControls() {
+		startLabel = screen.findNiftyControl("startTimer", Label.class);		
 	}
 
 	private void initAudio() {

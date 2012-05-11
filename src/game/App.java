@@ -1,5 +1,8 @@
 package game;
 
+import xml.OptionXMLParser;
+import xml.XMLFileStore;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
@@ -11,23 +14,32 @@ public class App extends SimpleApplication {
 	private Nifty nifty;
 	private NiftyJmeDisplay niftyDisplay;
 
+	public App() {
+		AppSettings set = new AppSettings(true);
+		
+		/* Options */
+		OptionXMLParser.loadAppOptions(XMLFileStore.OPTION_SAVE_FILE);
+		set.setResolution(OptionXMLParser.screenResolution.width, OptionXMLParser.screenResolution.height);
+		set.setTitle(StringStore.APP_TITLE);
+		this.setSettings(set);
+		this.setShowSettings(false);
+	}
+	
 	@Override
 	public void simpleInitApp() {
 
-		AppSettings set = new AppSettings(true);
-
+		/* Lancement application */
 		niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager,
 				audioRenderer, guiViewPort);
 		nifty = niftyDisplay.getNifty();
 
+		/******* DEBUG ********/
 		XMLFileStore.validateXMLFiles(nifty);
 		addXMLFiles();		
-		set.setHeight(760);
-		set.setWidth(1024);
-		set.setTitle(StringStore.APP_TITLE);
-		this.setSettings(set);
+		/****** FIN DEBUG *****/
 
-		gotoStart();
+//		gotoStart();
+		gotoOptions();
 
 		// disable the fly cam
 		flyCam.setEnabled(false);
@@ -44,11 +56,22 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoGame(String mode) {
-		nifty.addXml("Interface/Nifty/GameScreen.xml");
-		nifty.gotoScreen("hud");
-		AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-				.getCurrentScreen().getScreenController();
-		stateManager.attach(gameScreenController);
+		
+		if(mode.equals("half")) {
+			nifty.addXml("Interface/Nifty/HalfGameScreen.xml");
+			nifty.gotoScreen("hud");
+
+			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
+					.getCurrentScreen().getScreenController();
+			stateManager.attach(gameScreenController);
+		} else {
+			nifty.addXml("Interface/Nifty/QuarterGameScreen.xml");
+			nifty.gotoScreen("hud");
+
+			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
+					.getCurrentScreen().getScreenController();
+			stateManager.attach(gameScreenController);
+		}
 
 	}
 
@@ -78,24 +101,14 @@ public class App extends SimpleApplication {
 	public void gotoCrtProfil() {
 		nifty.addXml("Interface/Nifty/CreateProfil.xml");
 		nifty.gotoScreen("createprofil");
+		//XXX
 		
         //stateManager.attach(gameScreenController);
 	}
 	
 	public void gotoAffProfil() {
-		
+		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
+		nifty.gotoScreen("chooseprofil");
+		//XXX
 	}
-	
-	public boolean validateXML() {
-		try {
-			nifty.validateXml("Interface/Nifty/StartScreen.xml");
-			// nifty.validateXml("Interface/Nifty/GameScreen.xml");
-			// nifty.validateXml("Interface/Nifty/DevTest.xml");
-			return true;
-		} catch (Exception e) {
-			System.out.println("XML Exception: " + e.getMessage());
-			return false;
-		}
-	}
-
 }

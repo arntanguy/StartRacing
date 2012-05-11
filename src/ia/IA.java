@@ -171,7 +171,6 @@ public class IA {
 			int intError = (int) (angularErrorFactor * 1000);
 			float errorVal = ((float) MathTools
 					.randBetween(-intError, intError)) / 1000.f;
-			System.out.println("Error " + errorVal);
 			this.iaCar.steer(-angle(iaForward2, targetDirection2) + errorVal);
 			followTimer = System.currentTimeMillis();
 		}

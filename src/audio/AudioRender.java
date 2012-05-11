@@ -103,7 +103,7 @@ public class AudioRender {
 
 	public void playCrash() {
 		AudioNode sample = extraSoundNodes.get("crash");
-		sample.setVolume(3f);
+		sample.setVolume(20f);
 		sample.playInstance();
 	}
 

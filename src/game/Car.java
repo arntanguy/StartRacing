@@ -312,6 +312,8 @@ public class Car extends VehicleControl {
 	}
 
 	public void updateSound(int rpm) {
+		//XXX
+		System.out.println(rpm);
 		audioRender.setRPM(rpm);
 	}
 

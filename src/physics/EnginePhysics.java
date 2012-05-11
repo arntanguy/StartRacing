@@ -18,8 +18,6 @@ public class EnginePhysics {
 	private double speed = 0;
 	private int rpm;
 
-	//	private int nosCharge = 0;
-	//	private long nosTimer = 0;
 	private boolean nosActif = false;
 
 	private long rpmTimer = 0;

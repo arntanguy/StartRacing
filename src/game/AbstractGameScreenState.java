@@ -66,6 +66,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	protected boolean runIsOn;
 	protected boolean runFinish;
+	protected boolean playerStartKickDone;
 
 	private ChaseCamera chaseCam;
 
@@ -161,6 +162,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		oneSec = false;
 		twoSec = false;
 		threeSec = false;
+		playerStartKickDone = false;
 
 		initAudio();
 		initGround();
@@ -407,13 +409,22 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		if (runIsOn) {
 			if (!player.getBurstEnabled() && !playerFinish) {
-				playerRpm = player.getEnginePhysics().getRpm();
+				if (playerStartKickDone)	{
+					playerRpm = player.getEnginePhysics().getRpm();
+				}
+				else	{	
+					playerStartKickDone = true;
+				}
 
 				playerEnginePhysics.setSpeed(Math.abs(Conversion
 						.kmToMiles(playerSpeed)));
 				float force = -(float) playerEnginePhysics.getForce() / 5;
 				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
+			}
+			else if (player.getBurstEnabled())	{
+				audioMotor.mute();
+				playerRpm = 0;
 			}
 		} else {
 			if (!runFinish) {
@@ -444,12 +455,16 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		// Update audio
 		if (soudIsActive) {
-			player.updateSound(playerRpm);
+			if (!player.getBurstEnabled())	{
+				player.updateSound(playerRpm);
+			}
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
 		
-		player.controlNos();
+		if (player.getNosActivity())	{
+			player.controlNos();
+		}
 
 		// particule_motor.controlBurst();
 
@@ -525,6 +540,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		audioMotor.playStartSound();
 
 		player.accelerate(0);
+		player.setLife(100);
 		playerEnginePhysics.setSpeed(0);
 		playerEnginePhysics.setRpm(1000);
 
@@ -538,6 +554,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		playerFinish = false;
 		playerStoped = false;
 		runIsOn = false;
+		playerStartKickDone = false;
 		needReset = false;
 		runFinish = false;
 		startTime = 0;

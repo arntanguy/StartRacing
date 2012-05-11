@@ -108,8 +108,11 @@ public class AudioRender {
 	}
 
 	public void mute() {
-		prevHigh.setVolume(0);
-		prevLow.setVolume(0);
+		if (prevHigh != null)
+			prevHigh.setVolume(0);
+		
+		if (prevLow != null)
+			prevLow.setVolume(0);
 	}
 
 	public void setRPM(int rpm) {
@@ -165,5 +168,22 @@ public class AudioRender {
 
 		prevLow = low;
 		prevHigh = high;
+	}
+	
+	public void close()	{
+		Iterator<Integer> it = engineSoundNodes.keySet().iterator();
+		AudioNode aud;
+		while (it.hasNext())	{
+			 aud = engineSoundNodes.get(it.next());
+			 aud.removeFromParent();
+		}
+		
+		it = null;
+		
+		Iterator<String> itr = extraSoundNodes.keySet().iterator();
+		while (itr.hasNext())	{
+			 aud = extraSoundNodes.get(itr.next());
+			 aud.removeFromParent();
+		}
 	}
 }

@@ -67,7 +67,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	}
 
 	protected void initNiftyControls() {
-		super.initNiftyControls();
 	}
 
 	private void resetCars() {

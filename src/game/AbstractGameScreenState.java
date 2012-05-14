@@ -87,6 +87,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	protected DigitalDisplay digitalTachometer;
 	protected DigitalDisplay digitalSpeed;
 	protected DigitalDisplay digitalGear;
+	protected DigitalDisplay digitalStart;
 	protected ShiftlightLed shiftlight;
 	protected boolean isBreaking;
 	protected long rpmTimer;
@@ -209,14 +210,11 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				"digital_tachometer", 80);
 		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
 		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
+		digitalStart = new DigitalDisplay(nifty, screen, "startTimer", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
 
 
-	}
-	
-	protected void initNiftyControls() {
-		startLabel = screen.findNiftyControl("startTimer", Label.class);		
 	}
 
 	private void initAudio() {
@@ -506,8 +504,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 					audioMotor.playStartBeepHigh();
 					zeroSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("");
+				digitalStart.setText("");
 				runIsOn = true;
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
@@ -515,22 +512,19 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 					audioMotor.playStartBeepLow();
 					oneSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("1");
+				digitalStart.setText("1");
 			} else if (time > 3000) {
 				if (!twoSec) {
 					audioMotor.playStartBeepLow();
 					twoSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("2");
+				digitalStart.setText("2");
 			} else if (time > 2000) {
 				if (!threeSec) {
 					audioMotor.playStartBeepLow();
 					threeSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("3");
+				digitalStart.setText("3");
 			}
 		}
 	}
@@ -572,8 +566,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		oneSec = false;
 		zeroSec = false;
 
-		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
-		.setText("Ready ?");
+		digitalStart.setText("Ready ?");
 	}
 
 	protected PhysicsSpace getPhysicsSpace() {

@@ -16,7 +16,7 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.DropDown;
-import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
+import de.lessvoid.nifty.controls.Label;
 
 public class OptionScreenState extends AbstractScreenController {
 
@@ -30,6 +30,7 @@ public class OptionScreenState extends AbstractScreenController {
 	private final String RESOLUTION_DROP_ID = "resolutionDropDown";
 	private final String RATIO_CHECKBOX_ID = "wideScreen";
 	private final String SOUND_CHECKBOX_ID = "activateSound";
+	private final String ON_SAVE_ID = "saveMessage";
 
 	/* Comparateur personnalisé pour la liste */
 	private Comparator<String> myComp = new Comparator<String>() {
@@ -140,22 +141,19 @@ public class OptionScreenState extends AbstractScreenController {
 	}
 	
 	/**
-	 * Sauvegarde les options contenues dans les variables tampons dans le fichier de sauvegarde
-	 * @author Alexandre GILLE
+	 * Sauvegarde les options contenues dans les variables tampons puis dans le fichier de sauvegarde.
 	 */
 	public void applyOptions() {
-		System.out.println("Option saved");
-		AppSettings set = new AppSettings(true);
 		Dimension resolution = this.getCurrentScreenResolution();
 		
 		OptionXMLParser.sound = soundCheckbox.isChecked();
 		OptionXMLParser.wideScreen = ratioCheckbox.isChecked();
 		OptionXMLParser.screenResolution = resolution;
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
-		
-		set.setResolution(resolution.width, resolution.height);
-
-		app.setSettings(set);
+	}
+	
+	public void showMessage() {
+		screen.findNiftyControl(ON_SAVE_ID, Label.class).setText(StringStore.ON_SAVE_OPTION_MESSAGE);
 	}
 	
 	public String getMenuTitle() {

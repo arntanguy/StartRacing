@@ -11,4 +11,5 @@ public final class StringStore {
 	
 	public static final String OPTION_MENU_TITLE = "Options";
 	
+	public static final String ON_SAVE_OPTION_MESSAGE = "Vous devez redémarrer le jeu pour appliquer les options";
 }

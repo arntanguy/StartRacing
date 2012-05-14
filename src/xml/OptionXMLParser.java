@@ -1,6 +1,12 @@
 package xml;
 
 import java.awt.Dimension;
+import java.io.File;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class OptionXMLParser {
 	private static final String ROOT = "StartRacingOptions";
@@ -22,12 +28,25 @@ public class OptionXMLParser {
 	 * 		Chemin vers le fichier xml d'options.
 	 * @return	true si aucun problème, false sinon
 	 */
-	public static boolean loadAppOptions(String file) {
+	public static boolean loadAppOptions(String str_file) {
+		File file = new File(str_file);
+		
+		try {
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+			doc.getDocumentElement().normalize();
+			System.out.println("ROOT: " + doc.getDocumentElement().getNodeName() + ". ");
+			
+		} catch (Exception e) {
+			return false;
+		}
 		
 		return true;
 	}
 	
-	public static boolean saveAppOptions(String file) {
+	public static boolean saveAppOptions(String str_file) {
+		File file = new File(str_file);
+		Element root = new Element(ROOT);
+		
 		return true;
 	}
 }

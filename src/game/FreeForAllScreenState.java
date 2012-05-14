@@ -16,12 +16,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Spatial;
 
-import de.lessvoid.nifty.elements.render.TextRenderer;
-
 public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	private ArrayList<Car> bots;
 	private boolean win = false;
+
+	private DigitalDisplay digitalLife;
 
 	public FreeForAllScreenState() {
 		super();
@@ -67,6 +67,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	}
 
 	protected void initNiftyControls() {
+		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
 	}
 
 	private void resetCars() {
@@ -90,6 +91,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		rootNode.attachChild(bot.getNode());
 		getPhysicsSpace().add(bot);
 
+		bot.setLife(100);
 		bots.add(bot);
 	}
 
@@ -152,8 +154,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		int nbBotsAlive = 0;
 
 		if (runIsOn) {
-			screen.findElementByName("life").getRenderer(TextRenderer.class)
-					.setText(((Integer) player.getLife()).toString());
+			digitalLife.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
 				if (bot.isAlive() && player.isAlive()) {
 					nbBotsAlive++;
@@ -164,6 +165,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.getIA().act();
 					bot.getIA().target(player, 200, 0);
 					bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
+				} else {
+					bot.stop(3000);
 				}
 			}
 			if (nbBotsAlive == 0 && player.isAlive()) {
@@ -180,14 +183,9 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		} else {
 			if (runFinish) {
 				if (win) {
-					startLabel.setText("Gagne !");
-					// screen.findElementByName("startTimer")
-					// .getRenderer(TextRenderer.class).setText("Gagne !");
+					digitalStart.setText("Gagne !");
 				} else {
-					startLabel.setText("Perdu !");
-
-					// screen.findElementByName("startTimer")
-					// .getRenderer(TextRenderer.class).setText("Perdu !");
+					digitalStart.setText("Perdu !");
 				}
 			}
 

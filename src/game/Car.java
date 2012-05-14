@@ -350,6 +350,6 @@ public class Car extends VehicleControl {
 	}
 	
 	public boolean isAlive() {
-		return life>0;
+		return (life>0.f && !getBurstEnabled());
 	}
 }

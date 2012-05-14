@@ -16,8 +16,8 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.DropDown;
-<<<<<<< .mineimport de.lessvoid.nifty.controls.Label;
-=======>>>>>>> .theirs
+import de.lessvoid.nifty.controls.Label;
+
 public class OptionScreenState extends AbstractScreenController {
 
 	private InputManager inputManager;

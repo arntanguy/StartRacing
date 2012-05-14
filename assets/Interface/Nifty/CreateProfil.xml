@@ -10,20 +10,30 @@
 		</layer>
 		
 		<layer id="layer" backgroundColor="#003f" childLayout="horizontal">
-			<text id="text4" style="nifty-label" height="5%" width="20%" text="Saisir votre login : "
-			color="#000f" textHAlign="left" textVAlign="center"/>
-			<control name="textfield" width="40%" height="5%"></control>
+			<panel height="100%" width="100%" childLayout="vertical">
+				<panel height="20%" width="100%" valign="bottom" align="center" childLayout="horizontal">
+					<text id="text4" style="nifty-label" height="20%" width="20%" text="Saisir votre login : "
+					color="#000f" textHAlign="left" textVAlign="center"/>
+					<control name="textfield" width="40%" height="20%"></control>			
+				</panel>
+	
+				<panel height="50%" width="100%" valign="bottom" align="center" childLayout="horizontal">
+					<text id="text4" style="nifty-label" height="5%" width="20%" text="Choisir votre voiture : "
+				color="#000f" textHAlign="left" textVAlign="center"/>
+					<control name="image" src="Interface/Nifty/start_background.jpg" width="20%" height="20%"></control>
+				</panel>
+	
+				<panel height="10%" width="100%" valign="bottom" align="center" childLayout="horizontal">
+					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Menu Principal">
+						<interact onClick="gotoMainMenu()" />
+					</control>
+					<panel width="5px" />					
+					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="Appliquer">
+						<interact onClick="applyOptions()" />
+					</control>
+				</panel>
+			</panel>	
 		</layer>
-		
-		<panel height="14%" width="52%" valign="bottom" align="center" childLayout="horizontal">
-			<control id="returnButton" width="50%" align="center" height="100%" name="button" label="Menu Principal">
-				<interact onClick="gotoMainMenu()" />
-			</control>
-			<panel width="5px" />
-			<control id="applyButton" width="50%" align="center" height="100%" name="button" label="Appliquer">
-				<interact onClick="Enregistrer()" />
-			</control>
-		</panel>
 
 	</screen>
 </nifty>

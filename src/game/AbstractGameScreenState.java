@@ -34,6 +34,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.plugins.blender.BlenderLoader;
 import com.jme3.shadow.PssmShadowRenderer;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
@@ -145,6 +146,8 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		this.viewPort = app.getViewPort();
 		this.assetManager = app.getAssetManager();
 		this.inputManager = app.getInputManager();
+		
+		assetManager.registerLoader(BlenderLoader.class, "blend");
 	}
 
 	protected void initGame() {

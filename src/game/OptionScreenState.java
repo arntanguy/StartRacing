@@ -16,8 +16,8 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.DropDown;
-import de.lessvoid.nifty.controls.Label;
-
+<<<<<<< .mineimport de.lessvoid.nifty.controls.Label;
+=======>>>>>>> .theirs
 public class OptionScreenState extends AbstractScreenController {
 
 	private InputManager inputManager;
@@ -141,9 +141,13 @@ public class OptionScreenState extends AbstractScreenController {
 	}
 	
 	/**
+	 * Sauvegarde les options contenues dans les variables tampons dans le fichier de sauvegarde
+	 * @author Alexandre GILLE
 	 * Sauvegarde les options contenues dans les variables tampons puis dans le fichier de sauvegarde.
 	 */
 	public void applyOptions() {
+		System.out.println("Option saved");
+		AppSettings set = new AppSettings(true);
 		Dimension resolution = this.getCurrentScreenResolution();
 		
 		OptionXMLParser.sound = soundCheckbox.isChecked();

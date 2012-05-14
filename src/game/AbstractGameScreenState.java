@@ -67,6 +67,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	protected boolean runIsOn;
 	protected boolean runFinish;
+	protected boolean playerStartKickDone;
 
 	private ChaseCamera chaseCam;
 
@@ -164,6 +165,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		oneSec = false;
 		twoSec = false;
 		threeSec = false;
+		playerStartKickDone = false;
 
 		initAudio();
 		initGround();
@@ -296,21 +298,21 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		/** 1.2) Add GRASS texture into the red layer (Tex1). */
 		Texture grass = assetManager
-				.loadTexture("Textures/Terrain/splat/grass.jpg");
+				.loadTexture("Textures/grass.jpg");
 		grass.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex1", grass);
 		mat_terrain.setFloat("Tex1Scale", 64f);
 
 		/** 1.3) Add DIRT texture into the green layer (Tex2) */
 		Texture dirt = assetManager
-				.loadTexture("Textures/Terrain/splat/dirt.jpg");
+				.loadTexture("Textures/carreau.jpg");
 		dirt.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex2", dirt);
-		mat_terrain.setFloat("Tex2Scale", 32f);
+		mat_terrain.setFloat("Tex2Scale", 64f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
 		Texture rock = assetManager
-				.loadTexture("Textures/Terrain/splat/road.jpg");
+				.loadTexture("Textures/road.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
@@ -410,13 +412,22 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		if (runIsOn) {
 			if (!player.getBurstEnabled() && !playerFinish) {
-				playerRpm = player.getEnginePhysics().getRpm();
+				if (playerStartKickDone)	{
+					playerRpm = player.getEnginePhysics().getRpm();
+				}
+				else	{	
+					playerStartKickDone = true;
+				}
 
 				playerEnginePhysics.setSpeed(Math.abs(Conversion
 						.kmToMiles(playerSpeed)));
 				float force = -(float) playerEnginePhysics.getForce() / 5;
 				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
+			}
+			else if (player.getBurstEnabled())	{
+				audioMotor.mute();
+				playerRpm = 0;
 			}
 		} else {
 			if (!runFinish) {
@@ -436,6 +447,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				} else {
 					if (System.currentTimeMillis() - timerRedZone > 3000) {
 						player.explode();
+						audioMotor.mute();
 						playerFinish = true;
 						timePlayer = 0;
 					}
@@ -447,12 +459,19 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		// Update audio
 		if (soudIsActive) {
-			player.updateSound(playerRpm);
+			if (!player.getBurstEnabled())	{
+				player.updateSound(playerRpm);
+			}
+			else	{
+				player.mute();
+			}
 			app.getListener().setLocation(
-					player.getNode().getWorldTranslation());
+			player.getNode().getWorldTranslation());
 		}
 		
-		player.controlNos();
+		if (player.getNosActivity())	{
+			player.controlNos();
+		}
 
 		// particule_motor.controlBurst();
 
@@ -528,6 +547,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		audioMotor.playStartSound();
 
 		player.accelerate(0);
+		player.setLife(100);
 		playerEnginePhysics.setSpeed(0);
 		playerEnginePhysics.setRpm(1000);
 
@@ -541,6 +561,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		playerFinish = false;
 		playerStoped = false;
 		runIsOn = false;
+		playerStartKickDone = false;
 		needReset = false;
 		runFinish = false;
 		startTime = 0;

@@ -27,9 +27,11 @@ public class App extends SimpleApplication {
 		set.setTitle(StringStore.APP_TITLE);
 		this.setSettings(set);
 
-//		gotoStart();
-		gotoOptions();
-
+		gotoStart();
+		//gotoOptions();
+		//gotoCrtProfil();
+		//gotoAffProfil();
+		
 		// disable the fly cam
 		flyCam.setEnabled(false);
 
@@ -97,7 +99,9 @@ public class App extends SimpleApplication {
 	
 	public void gotoAffProfil() {
 		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
-		nifty.gotoScreen("chooseprofil");
+        nifty.gotoScreen("chooseprofil");
+        ProfilsScreen pfscreen = (ProfilsScreen) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(pfscreen);
 		//XXX
 	}
 }

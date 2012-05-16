@@ -32,12 +32,32 @@ public class Profil {
 		return car;
 	}
 
-	public String getScore() {
+	public String getTime() {
+		return timequart;
+	}
+
+	public String getTimedemi() {
 		return timedemi;
 	}
 
-	public String getTime() {
+	public void setTimedemi(String timedemi) {
+		this.timedemi = timedemi;
+	}
+
+	public String getTimequart() {
 		return timequart;
+	}
+
+	public void setTimequart(String timequart) {
+		this.timequart = timequart;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public void setCar(ArrayList<CarProperties> car) {
+		this.car = car;
 	}
 	
 }

@@ -8,6 +8,8 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
+import save.Comptes;
+import save.ProfilCurrent;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -111,18 +113,23 @@ public class GameScreenState extends AbstractGameScreenState {
 				audioMotor.playLost();
 				text = "Perdu !\n ";
 			}
-			text += String.format("Joueur:  %d : %d\n",
+			String time = String.format(" %d : %d\n",
 					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
 					(timePlayer % 1000) / 10);
+			text += "Joueur: " + time;
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10);
-
+			
 			screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText(text);
 
 			runFinish = true;
 			runIsOn = false;
+			
+			ProfilCurrent.getInstance().setTimedemi(time);
+			Comptes.modifier(ProfilCurrent.getInstance());
+			Comptes.Enregistrer();
 		}
 
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());

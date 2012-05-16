@@ -151,9 +151,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		int nbBotsAlive = 0;
 
 		if (runIsOn) {
-			// XXX why the hell is it needed !!
-			digitalStart.setText(" ");
-			
 			digitalLife.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
 				if (bot.isAlive() && player.isAlive()) {

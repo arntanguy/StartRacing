@@ -648,13 +648,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
 			}
 		} else if (binding.equals("Rights")) {
-			System.out.println("Value " + value + " tpf: " + tpf);
 			float val = player.getSteeringValue();
 			val = val - value;
 			if (val < -0.5)
 				val = -0.5f;
 			player.setSteeringValue(val);
-			System.out.println("New value " + player.getSteeringValue());
 			player.steer(player.getSteeringValue());
 		} else if (binding.equals("Lefts")) {
 			float val = player.getSteeringValue();

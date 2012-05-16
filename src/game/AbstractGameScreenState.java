@@ -186,6 +186,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		chaseCam = new ChaseCamera(app.getCamera(), player.getChassis(),
 				inputManager);
 		chaseCam.setSmoothMotion(true);
+		chaseCam.setMaxDistance(100);
 
 		// Set up light
 		DirectionalLight dl = new DirectionalLight();
@@ -566,6 +567,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerStartKickDone = false;
 		needReset = false;
 		runFinish = false;
+		needJump = false;
 		startTime = 0;
 		countDown = 0;
 

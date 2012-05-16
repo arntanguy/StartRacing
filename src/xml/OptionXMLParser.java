@@ -19,7 +19,7 @@ public class OptionXMLParser {
 	public static Dimension screenResolution = new Dimension(1024, 768);
 	public static boolean sound = true;
 	public static boolean wideScreen = false;
-	
+		
 	public OptionXMLParser() {}
 	
 	/**
@@ -45,7 +45,15 @@ public class OptionXMLParser {
 	
 	public static boolean saveAppOptions(String str_file) {
 		File file = new File(str_file);
-		Element root = new Element(ROOT);
+		Element root;
+		
+		try {
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+			root = doc.createElement(ROOT);
+			System.out.println("ROOT: " + doc.getDocumentElement().getNodeName() + ". ");
+		} catch (Exception e) {
+			return false;
+		}
 		
 		return true;
 	}

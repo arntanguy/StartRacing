@@ -310,7 +310,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		mat_terrain.setFloat("Tex2Scale", 64f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
-		Texture rock = assetManager.loadTexture("Textures/road.jpg");
+		Texture rock = assetManager.loadTexture("Textures/road2.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);

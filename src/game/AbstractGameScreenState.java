@@ -16,6 +16,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
@@ -717,8 +718,24 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					car2.decreaseLife(0.75 * speedDifferenceDamage);
 				}
 			}
-		} else if (car1 != null) {
-			car = car1;
+		} else {
+			RigidBodyControl control = null;
+
+			if (car1 != null) {
+				car = car1;
+				control = (RigidBodyControl) event.getObjectB();
+			} else if (car2 != null) {
+				car = car2;
+				control = (RigidBodyControl) event.getObjectA();
+			}
+
+			if (car != null && control != null) {
+				float speed = Math.abs(car.getCurrentVehicleSpeedKmHour());
+
+				if (control.getUserObject().equals("Tree")) {
+					car.decreaseLife(speed / 10);
+				}
+			}
 		}
 	}
 }

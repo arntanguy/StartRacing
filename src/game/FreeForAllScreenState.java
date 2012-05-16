@@ -110,8 +110,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			node.setLocalTranslation(MathTools.randBetween(-1000, 1000), 25,
 					MathTools.randBetween(-1000, 1000));
 
-			RigidBodyControl controlTree = new RigidBodyControl(treeShape);
-			controlTree.setMass(0f);
+			RigidBodyControl controlTree = new RigidBodyControl(treeShape, 0.f);
+			controlTree.setUserObject("Tree");
 
 			node.addControl(controlTree);
 			getPhysicsSpace().add(node);

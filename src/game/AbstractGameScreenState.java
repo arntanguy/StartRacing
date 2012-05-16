@@ -51,12 +51,12 @@ import de.lessvoid.nifty.screen.Screen;
 public abstract class AbstractGameScreenState extends AbstractScreenController
 implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
-	private ViewPort viewPort;
+	protected ViewPort viewPort;
 	protected Node rootNode;
 	protected AssetManager assetManager;
-	private InputManager inputManager;
+	protected InputManager inputManager;
 
-	private BulletAppState bulletAppState;
+	protected BulletAppState bulletAppState;
 
 	protected SoundStore soundStore;
 
@@ -68,13 +68,13 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	protected boolean runFinish;
 	protected boolean playerStartKickDone;
 
-	private ChaseCamera chaseCam;
+	protected ChaseCamera chaseCam;
 
-	private TerrainQuad terrain;
-	private Material mat_terrain;
-	private RigidBodyControl terrainPhys;
+	protected TerrainQuad terrain;
+	protected Material mat_terrain;
+	protected RigidBodyControl terrainPhys;
 
-	private PssmShadowRenderer pssmRenderer;
+	protected PssmShadowRenderer pssmRenderer;
 
 	protected long startTime = 0;
 	protected long countDown = 0;
@@ -91,12 +91,16 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	protected long rpmTimer;
 
 	protected boolean needReset;
-
-	private long timerRedZone = 0;
-	private long timerCrashSound = 0;
+	protected boolean needJump = false;
+	
+	protected long timerJump = 0;
+	protected long timerRedZone = 0;
+	protected long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
-	private boolean playerStoped = false;
+	protected boolean playerStoped = false;
+	
+	private Vector3f jumpForce = new Vector3f(0, 15000, 0);
 
 	boolean zeroSec;
 	boolean oneSec;
@@ -129,6 +133,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	@Override
 	public void onEndScreen() {
+		audioMotor.mute();
 		stateManager.detach(this);
 	}
 
@@ -216,7 +221,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		startLabel = screen.findNiftyControl("startTimer", Label.class);		
 	}
 
-	private void initAudio() {
+	protected void initAudio() {
 
 		// Init audio
 		soundStore = SoundStore.getInstance();
@@ -263,7 +268,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		audioMotor = new AudioRender(rootNode, soundStore);
 	}
 
-	private void buildPlayer() {
+	protected void buildPlayer() {
 		playerCarProperties = new BMWM3Properties();
 
 		// Create a vehicle control
@@ -363,7 +368,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
-	private void setupKeys() {
+	protected void setupKeys() {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_Q));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_Z));
@@ -380,6 +385,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
+		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
 
 		//		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
@@ -394,6 +400,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		inputManager.addListener(this, "GearDown");
 		inputManager.addListener(this, "Throttle");
 		inputManager.addListener(this, "NOS");
+		inputManager.addListener(this, "Jump");
 	}
 
 	@Override
@@ -421,6 +428,11 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				float force = -(float) playerEnginePhysics.getForce() / 5;
 				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
+				
+				if (needJump)	{
+					player.applyImpulse(jumpForce, Vector3f.ZERO);
+					needJump = false;
+				}
 			}
 			else if (player.getBurstEnabled())	{
 				audioMotor.mute();
@@ -482,7 +494,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	/**
 	 * Displays a countdown
 	 */
-	private void countDown() {
+	protected void countDown() {
 		/*
 		 * long ellapsedTime = System.currentTimeMillis() - countDown;
 		 * 
@@ -615,7 +627,16 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 					player.addNos();
 				}
 			}
-		} else if (binding.equals("Menu")) {
+		}
+		else if (binding.equals("Jump")) {
+			if (value) {
+				if (System.currentTimeMillis() - timerJump > 2000)	{
+					needJump = true;
+					timerJump = System.currentTimeMillis();
+				}
+			}
+		}
+		else if (binding.equals("Menu")) {
 			app.gotoStart();
 		}
 	}

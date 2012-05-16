@@ -10,15 +10,18 @@ import physics.tools.MathTools;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-
-import de.lessvoid.nifty.elements.render.TextRenderer;
+import com.jme3.scene.Spatial;
 
 public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	private ArrayList<Car> bots;
 	private boolean win = false;
+
+	private DigitalDisplay digitalLife;
 
 	public FreeForAllScreenState() {
 		super();
@@ -59,10 +62,12 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		 */
 
 		resetCars();
+
+		addObjects();
 	}
-	
+
 	protected void initNiftyControls() {
-		super.initNiftyControls();
+		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
 	}
 
 	private void resetCars() {
@@ -86,7 +91,55 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		rootNode.attachChild(bot.getNode());
 		getPhysicsSpace().add(bot);
 
+		bot.setLife(100);
 		bots.add(bot);
+	}
+
+	protected void addObjects() {
+		BoxCollisionShape treeShape = new BoxCollisionShape(new Vector3f(0.5f,
+				10.f, 1.f));
+		BoxCollisionShape plotShape = new BoxCollisionShape(new Vector3f(0.5f,
+				0.6f, 1.f));
+
+		Spatial node2 = assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
+		node2.setShadowMode(ShadowMode.Cast);
+		node2.setName("Tree");
+		for (int i = 0; i < 60; i++) {
+			Spatial node = node2.clone();
+			node.scale(5);
+			node.setLocalTranslation(MathTools.randBetween(-1000, 1000), 25,
+					MathTools.randBetween(-1000, 1000));
+
+			RigidBodyControl controlTree = new RigidBodyControl(treeShape, 0.f);
+			controlTree.setUserObject("Tree");
+
+			node.addControl(controlTree);
+			getPhysicsSpace().add(node);
+
+			rootNode.attachChild(node);
+
+		}
+
+		Spatial node = assetManager
+				.loadModel("Models/cone_altglass/cone_altglass.j3o");
+		node.scale(0.2f);
+		rootNode.attachChild(node);
+		node.setShadowMode(ShadowMode.Cast);
+		node.setLocalTranslation(0, 27, 200);
+
+		for (int i = 0; i < 200; i++) {
+			Spatial plot = node.clone();
+			plot.setLocalTranslation(MathTools.randBetween(-1000, 1000), 27,
+					MathTools.randBetween(-1000, 1000));
+
+			RigidBodyControl controlPlot = new RigidBodyControl(plotShape);
+			controlPlot.setMass(0.75f);
+			controlPlot.setFriction(10);
+
+			plot.addControl(controlPlot);
+			getPhysicsSpace().add(plot);
+			rootNode.attachChild(plot);
+		}
 	}
 
 	@Override
@@ -101,8 +154,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		int nbBotsAlive = 0;
 
 		if (runIsOn) {
-			screen.findElementByName("life").getRenderer(TextRenderer.class)
-					.setText(((Integer) player.getLife()).toString());
+			digitalLife.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
 				if (bot.isAlive() && player.isAlive()) {
 					nbBotsAlive++;
@@ -113,9 +165,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.getIA().act();
 					bot.getIA().target(player, 200, 0);
 					bot.accelerate(-(float) bot.getEnginePhysics().getForce() / 5);
+				} else {
+					bot.stop(3000);
 				}
 			}
-			
 			if (nbBotsAlive == 0 && player.isAlive()) {
 				win = true;
 				runIsOn = false;
@@ -130,15 +183,9 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		} else {
 			if (runFinish) {
 				if (win) {
-					startLabel.setText("Gagne !");
-					//screen.findElementByName("startTimer")
-					//		.getRenderer(TextRenderer.class).setText("Gagne !");
-				}
-				else {
-					startLabel.setText("Perdu !");
-
-					//screen.findElementByName("startTimer")
-					//		.getRenderer(TextRenderer.class).setText("Perdu !");
+					digitalStart.setText("Gagne !");
+				} else {
+					digitalStart.setText("Perdu !");
 				}
 			}
 

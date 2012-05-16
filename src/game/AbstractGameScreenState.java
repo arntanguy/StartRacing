@@ -564,6 +564,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerStartKickDone = false;
 		needReset = false;
 		runFinish = false;
+		needJump = false;
 		startTime = 0;
 		countDown = 0;
 

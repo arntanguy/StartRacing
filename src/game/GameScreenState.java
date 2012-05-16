@@ -144,6 +144,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				botIA.act();
 				botIA.target(botArrivalPoint, 0, 0);
 			}
+			else if (player.getBurstEnabled())	{
+				playerFinish = true;
+			}
 		}
 	}
 

@@ -123,10 +123,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		Spatial node = assetManager
 				.loadModel("Models/cone_altglass/cone_altglass.j3o");
 		node.scale(0.2f);
-		rootNode.attachChild(node);
-		node.setShadowMode(ShadowMode.Cast);
 		node.setLocalTranslation(0, 27, 200);
-
 		for (int i = 0; i < 200; i++) {
 			Spatial plot = node.clone();
 			plot.setLocalTranslation(MathTools.randBetween(-1000, 1000), 27,
@@ -154,6 +151,9 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		int nbBotsAlive = 0;
 
 		if (runIsOn) {
+			// XXX why the hell is it needed !!
+			digitalStart.setText(" ");
+			
 			digitalLife.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
 				if (bot.isAlive() && player.isAlive()) {

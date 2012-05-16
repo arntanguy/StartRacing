@@ -218,7 +218,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		digitalStart = new DigitalDisplay(nifty, screen, "startTimer", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
-
 	}
 
 	protected void initAudio() {
@@ -511,7 +510,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					audioMotor.playStartBeepHigh();
 					zeroSec = true;
 				}
-				digitalStart.setText("");
+				digitalStart.setText(" ");
 				runIsOn = true;
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
@@ -746,10 +745,18 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 			if (car1 != null) {
 				car = car1;
-				control = (RigidBodyControl) event.getObjectB();
+				try {
+					control = (RigidBodyControl) event.getObjectB();
+				} catch (Exception e) {
+					control = null;
+				}
 			} else if (car2 != null) {
 				car = car2;
-				control = (RigidBodyControl) event.getObjectA();
+				try {
+					control = (RigidBodyControl) event.getObjectA();
+				} catch (Exception e) {
+					control = null;
+				}
 			}
 
 			if (car != null && control != null) {

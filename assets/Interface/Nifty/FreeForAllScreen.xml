@@ -15,7 +15,7 @@
 					<panel width="80%"></panel>
 					<panel childLayout="vertical" width="20%">
 						<control name="label" text="Vie" font="Interface/Fonts/Default.fnt" width="100%" />
-						<control name="label" id="life" text="0" font="Interface/Fonts/DS-Digital.fnt"
+						<control name="label" id="life" text="100" font="Interface/Fonts/DS-Digital.fnt"
 							width="100%" height="100%" />
 					</panel>
 				</panel>
@@ -44,7 +44,7 @@
 						<panel id="digital_speed_panel" childLayout="vertical">
 							<text text="SPEED" font="Interface/Fonts/Default.fnt" width="100%"
 								height="10%" />
-							<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
+							<control name="label" id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
 								size="20" text="0" width="100%" height="100%" />
 						</panel>
 					</panel>

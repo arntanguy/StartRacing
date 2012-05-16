@@ -44,7 +44,7 @@
 						<panel id="digital_speed_panel" childLayout="vertical">
 							<text text="SPEED" font="Interface/Fonts/Default.fnt" width="100%"
 								height="10%" />
-							<text id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
+							<control name="label" id="digital_speed" font="Interface/Fonts/DS-Digital.fnt"
 								size="20" text="0" width="100%" height="100%" />
 						</panel>
 					</panel>

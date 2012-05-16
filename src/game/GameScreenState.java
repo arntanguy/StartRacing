@@ -22,17 +22,17 @@ import com.jme3.scene.Node;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
 public abstract class GameScreenState extends AbstractGameScreenState {
-	private Car bot;
-	private CarProperties botCarProperties;
-	private EnginePhysics botEnginePhysics;
-	private IA botIA;
+	protected Car bot;
+	protected CarProperties botCarProperties;
+	protected EnginePhysics botEnginePhysics;
+	protected IA botIA;
 
-	private Vector3f botArrivalPoint;
+	protected Vector3f botArrivalPoint;
 
-	private boolean botFinish;
-	private boolean botStoped;
+	protected boolean botFinish;
+	protected boolean botStoped;
 
-	private long timeBot;
+	protected long timeBot;
 
 	protected GhostControl finishCell;
 	protected Node finishNode;

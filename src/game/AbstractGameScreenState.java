@@ -53,12 +53,12 @@ import de.lessvoid.nifty.screen.Screen;
 public abstract class AbstractGameScreenState extends AbstractScreenController
 		implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
-	private ViewPort viewPort;
+	protected ViewPort viewPort;
 	protected Node rootNode;
 	protected AssetManager assetManager;
-	private InputManager inputManager;
+	protected InputManager inputManager;
 
-	private BulletAppState bulletAppState;
+	protected BulletAppState bulletAppState;
 
 	protected SoundStore soundStore;
 
@@ -70,13 +70,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected boolean runFinish;
 	protected boolean playerStartKickDone;
 
-	private ChaseCamera chaseCam;
+	protected ChaseCamera chaseCam;
 
-	private TerrainQuad terrain;
-	private Material mat_terrain;
-	private RigidBodyControl terrainPhys;
+	protected TerrainQuad terrain;
+	protected Material mat_terrain;
+	protected RigidBodyControl terrainPhys;
 
-	private PssmShadowRenderer pssmRenderer;
+	protected PssmShadowRenderer pssmRenderer;
 
 	protected long startTime = 0;
 	protected long countDown = 0;
@@ -94,12 +94,16 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected long rpmTimer;
 
 	protected boolean needReset;
-
-	private long timerRedZone = 0;
-	private long timerCrashSound = 0;
+	protected boolean needJump = false;
+	
+	protected long timerJump = 0;
+	protected long timerRedZone = 0;
+	protected long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
-	private boolean playerStoped = false;
+	protected boolean playerStoped = false;
+	
+	private Vector3f jumpForce = new Vector3f(0, 15000, 0);
 
 	boolean zeroSec;
 	boolean oneSec;
@@ -130,6 +134,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void onEndScreen() {
+		audioMotor.mute();
 		stateManager.detach(this);
 	}
 
@@ -214,7 +219,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				playerEnginePhysics);
 	}
 
-	private void initAudio() {
+	protected void initAudio() {
 
 		// Init audio
 		soundStore = SoundStore.getInstance();
@@ -261,7 +266,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		audioMotor = new AudioRender(rootNode, soundStore);
 	}
 
-	private void buildPlayer() {
+	protected void buildPlayer() {
 		playerCarProperties = new BMWM3Properties();
 
 		// Create a vehicle control
@@ -358,7 +363,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
-	private void setupKeys() {
+	protected void setupKeys() {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_Q));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_Z));
@@ -376,6 +381,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
+		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
 
 		// inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
@@ -390,6 +396,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "GearDown");
 		inputManager.addListener(this, "Throttle");
 		inputManager.addListener(this, "NOS");
+		inputManager.addListener(this, "Jump");
 	}
 
 	@Override
@@ -416,7 +423,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				float force = -(float) playerEnginePhysics.getForce() / 5;
 				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
-			} else if (player.getBurstEnabled()) {
+				
+				if (needJump)	{
+					player.applyImpulse(jumpForce, Vector3f.ZERO);
+					needJump = false;
+				}
+			}
+			else if (player.getBurstEnabled())	{
 				audioMotor.mute();
 				playerRpm = 0;
 			}
@@ -475,7 +488,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	/**
 	 * Displays a countdown
 	 */
-	private void countDown() {
+	protected void countDown() {
 		/*
 		 * long ellapsedTime = System.currentTimeMillis() - countDown;
 		 * 
@@ -603,7 +616,16 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					player.addNos();
 				}
 			}
-		} else if (binding.equals("Menu")) {
+		}
+		else if (binding.equals("Jump")) {
+			if (value) {
+				if (System.currentTimeMillis() - timerJump > 2000 && !player.getBurstEnabled() && runIsOn)	{
+					needJump = true;
+					timerJump = System.currentTimeMillis();
+				}
+			}
+		}
+		else if (binding.equals("Menu")) {
 			app.gotoStart();
 		}
 	}

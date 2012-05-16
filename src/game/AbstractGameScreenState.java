@@ -412,6 +412,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 
 		if (runIsOn) {
+			// XXX why the hell is it needed !!			
+			digitalStart.setText(" ");
+			
 			if (!player.getBurstEnabled() && !playerFinish) {
 				if (playerStartKickDone) {
 					playerRpm = player.getEnginePhysics().getRpm();

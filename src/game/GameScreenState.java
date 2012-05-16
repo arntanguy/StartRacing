@@ -229,9 +229,6 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		if (finishCell.getOverlappingObjects().contains(player)
 				&& !playerFinish) {
 			timePlayer = (System.currentTimeMillis() - startTime);
-			System.out.println(String.format("player : %d : %d",
-					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
-					(timePlayer % 1000) / 10));
 
 			playerFinish = true;
 		}

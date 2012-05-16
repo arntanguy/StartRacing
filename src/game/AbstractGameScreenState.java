@@ -723,10 +723,18 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 			if (car1 != null) {
 				car = car1;
-				control = (RigidBodyControl) event.getObjectB();
+				try {
+					control = (RigidBodyControl) event.getObjectB();
+				} catch (Exception e) {
+					control = null;
+				}
 			} else if (car2 != null) {
 				car = car2;
-				control = (RigidBodyControl) event.getObjectA();
+				try {
+					control = (RigidBodyControl) event.getObjectA();
+				} catch (Exception e) {
+					control = null;
+				}
 			}
 
 			if (car != null && control != null) {

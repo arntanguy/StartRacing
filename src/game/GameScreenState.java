@@ -163,6 +163,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		bot.resetSuspension();
 
 		bot.steer(0);
+		
+		bot.setLife(100);
 
 		botFinish = false;
 		runIsOn = false;

@@ -16,6 +16,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
@@ -34,6 +35,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.plugins.blender.BlenderLoader;
 import com.jme3.shadow.PssmShadowRenderer;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
@@ -44,18 +46,19 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
 public abstract class AbstractGameScreenState extends AbstractScreenController
-implements ActionListener, AnalogListener, PhysicsCollisionListener {
+		implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
-	private ViewPort viewPort;
+	protected ViewPort viewPort;
 	protected Node rootNode;
 	protected AssetManager assetManager;
-	private InputManager inputManager;
+	protected InputManager inputManager;
 
-	private BulletAppState bulletAppState;
+	protected BulletAppState bulletAppState;
 
 	protected SoundStore soundStore;
 
@@ -65,14 +68,15 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	protected boolean runIsOn;
 	protected boolean runFinish;
+	protected boolean playerStartKickDone;
 
-	private ChaseCamera chaseCam;
+	protected ChaseCamera chaseCam;
 
-	private TerrainQuad terrain;
-	private Material mat_terrain;
-	private RigidBodyControl terrainPhys;
+	protected TerrainQuad terrain;
+	protected Material mat_terrain;
+	protected RigidBodyControl terrainPhys;
 
-	private PssmShadowRenderer pssmRenderer;
+	protected PssmShadowRenderer pssmRenderer;
 
 	protected long startTime = 0;
 	protected long countDown = 0;
@@ -84,17 +88,22 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	protected DigitalDisplay digitalTachometer;
 	protected DigitalDisplay digitalSpeed;
 	protected DigitalDisplay digitalGear;
+	protected DigitalDisplay digitalStart;
 	protected ShiftlightLed shiftlight;
 	protected boolean isBreaking;
 	protected long rpmTimer;
 
 	protected boolean needReset;
-
-	private long timerRedZone = 0;
-	private long timerCrashSound = 0;
+	protected boolean needJump = false;
+	
+	protected long timerJump = 0;
+	protected long timerRedZone = 0;
+	protected long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
-	private boolean playerStoped = false;
+	protected boolean playerStoped = false;
+	
+	private Vector3f jumpForce = new Vector3f(0, 15000, 0);
 
 	boolean zeroSec;
 	boolean oneSec;
@@ -125,6 +134,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 	@Override
 	public void onEndScreen() {
+		audioMotor.mute();
 		stateManager.detach(this);
 	}
 
@@ -142,6 +152,8 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		this.viewPort = app.getViewPort();
 		this.assetManager = app.getAssetManager();
 		this.inputManager = app.getInputManager();
+
+		assetManager.registerLoader(BlenderLoader.class, "blend");
 	}
 
 	protected void initGame() {
@@ -158,6 +170,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		oneSec = false;
 		twoSec = false;
 		threeSec = false;
+		playerStartKickDone = false;
 
 		initAudio();
 		initGround();
@@ -186,7 +199,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
 		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f)
-		.normalizeLocal()); // light direction
+				.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
 
 		rootNode.setShadowMode(ShadowMode.Off); // reset all
@@ -201,13 +214,12 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				"digital_tachometer", 80);
 		digitalSpeed = new DigitalDisplay(nifty, screen, "digital_speed", 50);
 		digitalGear = new DigitalDisplay(nifty, screen, "digital_gear", 50);
+		digitalStart = new DigitalDisplay(nifty, screen, "startTimer", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
-
-
 	}
 
-	private void initAudio() {
+	protected void initAudio() {
 
 		// Init audio
 		soundStore = SoundStore.getInstance();
@@ -254,7 +266,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		audioMotor = new AudioRender(rootNode, soundStore);
 	}
 
-	private void buildPlayer() {
+	protected void buildPlayer() {
 		playerCarProperties = new BMWM3Properties();
 
 		// Create a vehicle control
@@ -285,22 +297,19 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				assetManager.loadTexture("Textures/alphamap.png"));
 
 		/** 1.2) Add GRASS texture into the red layer (Tex1). */
-		Texture grass = assetManager
-				.loadTexture("Textures/Terrain/splat/grass.jpg");
+		Texture grass = assetManager.loadTexture("Textures/grass.jpg");
 		grass.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex1", grass);
 		mat_terrain.setFloat("Tex1Scale", 64f);
 
 		/** 1.3) Add DIRT texture into the green layer (Tex2) */
-		Texture dirt = assetManager
-				.loadTexture("Textures/Terrain/splat/dirt.jpg");
+		Texture dirt = assetManager.loadTexture("Textures/carreau.jpg");
 		dirt.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex2", dirt);
-		mat_terrain.setFloat("Tex2Scale", 32f);
+		mat_terrain.setFloat("Tex2Scale", 64f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
-		Texture rock = assetManager
-				.loadTexture("Textures/Terrain/splat/road.jpg");
+		Texture rock = assetManager.loadTexture("Textures/road.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
@@ -348,13 +357,13 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		bulletAppState.getPhysicsSpace().add(terrainPhys);
 
 		bulletAppState.getPhysicsSpace()
-		.setGravity(new Vector3f(0, -19.81f, 0));
+				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
 		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
-	private void setupKeys() {
+	protected void setupKeys() {
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_Q));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_Z));
@@ -367,12 +376,14 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(
+				KeyInput.KEY_RCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
+		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
 
-		//		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		// inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
@@ -385,6 +396,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		inputManager.addListener(this, "GearDown");
 		inputManager.addListener(this, "Throttle");
 		inputManager.addListener(this, "NOS");
+		inputManager.addListener(this, "Jump");
 	}
 
 	@Override
@@ -399,14 +411,30 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		}
 
 		if (runIsOn) {
+			// XXX why the hell is it needed !!			
+			digitalStart.setText(" ");
+			
 			if (!player.getBurstEnabled() && !playerFinish) {
-				playerRpm = player.getEnginePhysics().getRpm();
+				if (playerStartKickDone) {
+					playerRpm = player.getEnginePhysics().getRpm();
+				} else {
+					playerStartKickDone = true;
+				}
 
 				playerEnginePhysics.setSpeed(Math.abs(Conversion
 						.kmToMiles(playerSpeed)));
 				float force = -(float) playerEnginePhysics.getForce() / 5;
 				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
+				
+				if (needJump)	{
+					player.applyImpulse(jumpForce, Vector3f.ZERO);
+					needJump = false;
+				}
+			}
+			else if (player.getBurstEnabled())	{
+				audioMotor.mute();
+				playerRpm = 0;
 			}
 		} else {
 			if (!runFinish) {
@@ -426,6 +454,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				} else {
 					if (System.currentTimeMillis() - timerRedZone > 3000) {
 						player.explode();
+						audioMotor.mute();
 						playerFinish = true;
 						timePlayer = 0;
 					}
@@ -437,12 +466,18 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
 		// Update audio
 		if (soudIsActive) {
-			player.updateSound(playerRpm);
+			if (!player.getBurstEnabled()) {
+				player.updateSound(playerRpm);
+			} else {
+				player.mute();
+			}
 			app.getListener().setLocation(
 					player.getNode().getWorldTranslation());
 		}
-		
-		player.controlNos();
+
+		if (player.getNosActivity()) {
+			player.controlNos();
+		}
 
 		// particule_motor.controlBurst();
 
@@ -456,7 +491,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	/**
 	 * Displays a countdown
 	 */
-	private void countDown() {
+	protected void countDown() {
 		/*
 		 * long ellapsedTime = System.currentTimeMillis() - countDown;
 		 * 
@@ -477,8 +512,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 					audioMotor.playStartBeepHigh();
 					zeroSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("");
+				digitalStart.setText(" ");
 				runIsOn = true;
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
@@ -486,22 +520,19 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 					audioMotor.playStartBeepLow();
 					oneSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("1");
+				digitalStart.setText("1");
 			} else if (time > 3000) {
 				if (!twoSec) {
 					audioMotor.playStartBeepLow();
 					twoSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("2");
+				digitalStart.setText("2");
 			} else if (time > 2000) {
 				if (!threeSec) {
 					audioMotor.playStartBeepLow();
 					threeSec = true;
 				}
-				screen.findElementByName("startTimer")
-				.getRenderer(TextRenderer.class).setText("3");
+				digitalStart.setText("3");
 			}
 		}
 	}
@@ -518,19 +549,21 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		audioMotor.playStartSound();
 
 		player.accelerate(0);
+		player.setLife(100);
 		playerEnginePhysics.setSpeed(0);
 		playerEnginePhysics.setRpm(1000);
 
 		if (player.getBurstEnabled()) {
 			player.removeExplosion();
 		}
-		
+
 		player.stopNos();
 
 		timerRedZone = 0;
 		playerFinish = false;
 		playerStoped = false;
 		runIsOn = false;
+		playerStartKickDone = false;
 		needReset = false;
 		runFinish = false;
 		startTime = 0;
@@ -541,8 +574,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		oneSec = false;
 		zeroSec = false;
 
-		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
-		.setText("Ready ?");
+		digitalStart.setText("Ready ?");
 	}
 
 	protected PhysicsSpace getPhysicsSpace() {
@@ -583,11 +615,20 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 			}
 		} else if (binding.equals("NOS")) {
 			if (value) {
-				if (!player.getNosActivity())	{
+				if (!player.getNosActivity()) {
 					player.addNos();
 				}
 			}
-		} else if (binding.equals("Menu")) {
+		}
+		else if (binding.equals("Jump")) {
+			if (value) {
+				if (System.currentTimeMillis() - timerJump > 2000 && !player.getBurstEnabled() && runIsOn)	{
+					needJump = true;
+					timerJump = System.currentTimeMillis();
+				}
+			}
+		}
+		else if (binding.equals("Menu")) {
 			app.gotoStart();
 		}
 	}
@@ -602,7 +643,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				}
 
 				playerEnginePhysics
-				.setRpm(playerEnginePhysics.getFreeRpm() + 400);
+						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
 			}
 		} else if (binding.equals("Rights")) {
 			System.out.println("Value " + value + " tpf: " + tpf);
@@ -627,6 +668,7 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 	public void collision(PhysicsCollisionEvent event) {
 		Car car1 = null;
 		Car car2 = null;
+		Car car = null;
 		if (event.getObjectA() instanceof Car) {
 			car1 = (Car) event.getObjectA();
 		}
@@ -637,15 +679,16 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 		// Two cars collide
 		if (car1 != null && car2 != null) {
 			// Trigger crash sound
-			if (car1.getType().equals(CarType.PLAYER) || car2.getType().equals(CarType.PLAYER))	{
+			if (car1.getType().equals(CarType.PLAYER)
+					|| car2.getType().equals(CarType.PLAYER)) {
 				// Trigger only if the sound is not playing
-				if (timerCrashSound == 0 || System.currentTimeMillis() - timerCrashSound > 2000)	{
+				if (timerCrashSound == 0
+						|| System.currentTimeMillis() - timerCrashSound > 2000) {
 					audioMotor.playCrash();
 
 					timerCrashSound = System.currentTimeMillis();
 				}
 			}
-
 
 			float speed1 = Math.abs(car1.getCurrentVehicleSpeedKmHour());
 			float speed2 = Math.abs(car2.getCurrentVehicleSpeedKmHour());
@@ -672,26 +715,11 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 			Vector2f f1 = new Vector2f(forward1.x, forward1.z);
 			Vector2f f2 = new Vector2f(forward2.x, forward2.z);
 
-			Vector3f position1 = event.getPositionWorldOnA();
-			Vector3f position2 = event.getPositionWorldOnB();
-
-			Vector2f pos1 = new Vector2f(position1.x, position1.z);
-			Vector2f pos2 = new Vector2f(position2.x, position2.z);
-
-			/*
-			 * System.out.println("Position A: " + pos1);
-			 * System.out.println("Position B: " + pos2);
-			 * System.out.println("Forward " + f1 + " " + f2);
-			 */
-
 			float angle = Math.abs(MathTools.orientedAngle(f1, f2));
-			// System.out.println("Angle " + angle);
 
 			// Frontal collision
 			if (angle >= Math.PI - Math.PI / 4
 					&& angle <= Math.PI + Math.PI / 4) {
-				System.out.println("Frontal collision " + speed1 + " " + speed2
-						+ "  at force " + appliedImpulse);
 				float speedPercent1 = speed1 / (speed1 + speed2);
 				float life1 = 10 * speedPercent1 * damageForce;
 				life1 = (life1 <= 50) ? life1 : 50;
@@ -699,32 +727,47 @@ implements ActionListener, AnalogListener, PhysicsCollisionListener {
 				life2 = (life2 <= 50) ? life2 : 50;
 				car1.decreaseLife(life1);
 				car2.decreaseLife(life2);
-				System.out.println("Damage force: "+damageForce);
 			} else {
-				// back collision if (angle <= Math.PI / 4)
-				// the car in front will have 75% of the damages
-				// 25% for the car in back
 				/*
-				 * System.out.println("Back collision " + speed1 + " " + speed2
-				 * + "  at force " + appliedImpulse);
-				 * System.out.println("Distance 1" + event.getDistance1());
+				 * back collision if (angle <= Math.PI / 4) the car in front
+				 * will have 75% of the damages 25% for the car in back
 				 */
 				double speedDifferenceDamage = Math.abs(speed2 - speed1)
 						* damageForce / 2;
 				if (car1.inFront(car2)) {
 					car1.decreaseLife(0.75 * speedDifferenceDamage);
 					car2.decreaseLife(0.25 * speedDifferenceDamage);
-					System.out.println(car1.getType() + " In Front");
 				} else {
 					car1.decreaseLife(0.25 * speedDifferenceDamage);
 					car2.decreaseLife(0.75 * speedDifferenceDamage);
-					System.out.println(car2.getType() + " In Front");
+				}
+			}
+		} else {
+			RigidBodyControl control = null;
+
+			if (car1 != null) {
+				car = car1;
+				try {
+					control = (RigidBodyControl) event.getObjectB();
+				} catch (Exception e) {
+					control = null;
+				}
+			} else if (car2 != null) {
+				car = car2;
+				try {
+					control = (RigidBodyControl) event.getObjectA();
+				} catch (Exception e) {
+					control = null;
 				}
 			}
 
-			System.out.println(car1.getType() + " life " + car1.getLife());
-			System.out.println(car2.getType() + " life " + car2.getLife());
+			if (car != null && control != null) {
+				float speed = Math.abs(car.getCurrentVehicleSpeedKmHour());
 
+				if (control.getUserObject().equals("Tree")) {
+					car.decreaseLife(speed / 10);
+				}
+			}
 		}
 	}
 }

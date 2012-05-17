@@ -77,8 +77,9 @@ public class Comptes {
 			if (listProfil.get(i).getId() == profil.getId()) {
 				listProfil.get(i).setCar(profil.getCar());
 				listProfil.get(i).setLogin(profil.getLogin());
-				listProfil.get(i).setTimedemi(profil.getTimedemi());
-				listProfil.get(i).setTimequart(profil.getTimequart());
+				listProfil.get(i).setTimedemi(profil.getTimeDemi());
+				listProfil.get(i).setTimequart(profil.getTimeQuart());
+				listProfil.get(i).setMonnaie(profil.getMonnaie());
 			}
 		}
 	}

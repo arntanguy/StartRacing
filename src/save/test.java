@@ -19,22 +19,27 @@ public class test {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		CarProperties bmw = new CarProperties();
+		/*CarProperties bmw = new CarProperties();
 		CarProperties dvp = new CarProperties();
 		CarProperties skp = new CarProperties();
 		ArrayList<CarProperties> listCar = new ArrayList<CarProperties>();
 		listCar.add(bmw);
 		listCar.add(dvp);
 		listCar.add(skp);
-		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", listCar, "", "");
+		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", listCar, "", "", 0);
 		Comptes.addProfil(joueur1);
-		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", listCar, "", "");
+		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", listCar, "", "", 0);
 		Comptes.addProfil(joueur2);
-		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", listCar, "", "");
+		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", listCar, "", "", 0);
 		Comptes.addProfil(joueur3);
-		Comptes.Enregistrer();
+		Comptes.Enregistrer();*/
 		Comptes.Recuperer();
-		System.out.println(Comptes.getListProfil().get(1));
+		//System.out.println(Comptes.getListProfil().get(1));
+		ProfilCurrent pc = new ProfilCurrent(Comptes.getListProfil().get(1));
+		ProfilCurrent.getInstance().setMonnaie(1000);
+		Comptes.Enregistrer();
+		
+		
 		/*Comptes compte = new Comptes();
 		compte.Recuperer();
 		ArrayList<Profil> listProfil = compte.getListProfil();

@@ -115,27 +115,32 @@ public class IA {
 	 * chance de changer de vitesse avant le point optimal qu'après
 	 */
 	public void act() {
-		if (System.currentTimeMillis() - time >= delay) {
-			time = System.currentTimeMillis();
-			int gear = enginePhysics.getGear();
-			double optimalShiftPoint = carProperties.getOptimalShiftPoint(gear);
-			double rpm = enginePhysics.getRpm();
+		if (iaCar.isAlive()) {
+			if (System.currentTimeMillis() - time >= delay) {
+				time = System.currentTimeMillis();
+				int gear = enginePhysics.getGear();
+				double optimalShiftPoint = carProperties
+						.getOptimalShiftPoint(gear);
+				double rpm = enginePhysics.getRpm();
 
-			if (rpm >= optimalShiftPoint - zone) {
-				if (rpm <= carProperties.getRedline()) {
-					if (isProba(proba(rpm, optimalShiftPoint))) {
-						enginePhysics.incrementGear();
-						System.out.println("Shifting to gear "
-								+ enginePhysics.getGear() + " at RPM: " + rpm);
+				if (rpm >= optimalShiftPoint - zone) {
+					if (rpm <= carProperties.getRedline()) {
+						if (isProba(proba(rpm, optimalShiftPoint))) {
+							enginePhysics.incrementGear();
+							System.out.println("Shifting to gear "
+									+ enginePhysics.getGear() + " at RPM: "
+									+ rpm);
+						}
 					}
+				} else if (gear != 1 && rpm <= optimalShiftPoint / 5) {
+					enginePhysics.decrementGear();
+					System.out.println("Shifting to gear "
+							+ enginePhysics.getGear() + " at RPM: " + rpm);
 				}
-			} else if (gear != 1 && rpm <= optimalShiftPoint / 5) {
-				enginePhysics.decrementGear();
-				System.out.println("Shifting to gear "
-						+ enginePhysics.getGear() + " at RPM: " + rpm);
-			}
-			if (rpm > carProperties.getRedline() && isProba(redlineShiftProba)) {
-				enginePhysics.incrementGear();
+				if (rpm > carProperties.getRedline()
+						&& isProba(redlineShiftProba)) {
+					enginePhysics.incrementGear();
+				}
 			}
 		}
 	}
@@ -145,29 +150,31 @@ public class IA {
 		angle = (float) ((angle < 0.5) ? angle : 0.5);
 		return (float) ((angle < -0.5) ? -0.5 : angle);
 	}
-	
+
 	/**
 	 * Target a given point
+	 * 
 	 * @param posTarget
-	 * 		the point to target
+	 *            the point to target
 	 * @param delayMs
-	 * 		a delay for the bot to react
+	 *            a delay for the bot to react
 	 * @param angularErrorFactor
-	 * 		the maximum error made by the bot when targeting
+	 *            the maximum error made by the bot when targeting
 	 */
-	public void target(Vector3f posTarget, int delayMs, double angularErrorFactor) {
+	public void target(Vector3f posTarget, int delayMs,
+			double angularErrorFactor) {
 		if (followTimer == 0)
 			followTimer = System.currentTimeMillis();
 		if (System.currentTimeMillis() - followTimer > delayMs) {
 			Vector3f iaForward = new Vector3f(0, 0, 0).subtract(
 					iaCar.getForwardVector(null)).normalize();
-			Vector3f targetDirection = posTarget
-					.subtract(iaCar.getPhysicsLocation()).normalize();
-			
+			Vector3f targetDirection = posTarget.subtract(
+					iaCar.getPhysicsLocation()).normalize();
+
 			Vector2f iaForward2 = new Vector2f(iaForward.x, iaForward.z);
 			Vector2f targetDirection2 = new Vector2f(targetDirection.x,
 					targetDirection.z);
-			
+
 			int intError = (int) (angularErrorFactor * 1000);
 			float errorVal = ((float) MathTools
 					.randBetween(-intError, intError)) / 1000.f;

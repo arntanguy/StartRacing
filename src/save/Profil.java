@@ -11,15 +11,26 @@ public class Profil {
 	private ArrayList<CarProperties> car;
 	private String timedemi;
 	private String timequart;
+	private int monnaie;
 	
-	public Profil (int id, String login, ArrayList<CarProperties> car, String timedemi, String timequart) {
+	public Profil (int id, String login, ArrayList<CarProperties> car, 
+					String timedemi, String timequart, int monnaie) {
 		this.id = id;
 		this.login = login;
 		this.car = car;
 		this.timedemi = timedemi;
 		this.timequart = timequart;
+		this.monnaie = monnaie;
 	}
 		
+	public int getMonnaie() {
+		return monnaie;
+	}
+
+	public void setMonnaie(int monnaie) {
+		this.monnaie = monnaie;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -32,20 +43,16 @@ public class Profil {
 		return car;
 	}
 
-	public String getTime() {
+	public String getTimeQuart() {
 		return timequart;
 	}
 
-	public String getTimedemi() {
+	public String getTimeDemi() {
 		return timedemi;
-	}
+	}	
 
 	public void setTimedemi(String timedemi) {
 		this.timedemi = timedemi;
-	}
-
-	public String getTimequart() {
-		return timequart;
 	}
 
 	public void setTimequart(String timequart) {

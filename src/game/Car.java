@@ -282,7 +282,7 @@ public class Car extends VehicleControl {
 		}
 	}
 	public void controlNos()	{
-		if (nosEnabled && System.currentTimeMillis() - timerNos > 2000)	{
+		if (nosEnabled && System.currentTimeMillis() - timerNos > 2500)	{
 			particuleMotor.removeNos(carNode);
 			enginePhysics.stopNos();
 			
@@ -300,6 +300,7 @@ public class Car extends VehicleControl {
 	}
 
 	public void explode() {
+		life = 0;
 		particuleMotor.addExplosion(carNode);
 		enginePhysics.setBreaking(true);
 		audioRender.playBurst();
@@ -312,6 +313,10 @@ public class Car extends VehicleControl {
 
 	public void updateSound(int rpm) {
 		audioRender.setRPM(rpm);
+	}
+	
+	public void mute()	{
+		audioRender.mute();
 	}
 
 	public void updateSound() {
@@ -338,5 +343,13 @@ public class Car extends VehicleControl {
 				}
 			}, delay);
 		}
+	}
+
+	public void setLife(double life) {
+		this.life = (life <= 100) ? life : 100; 
+	}
+	
+	public boolean isAlive() {
+		return (life>0.f && !getBurstEnabled());
 	}
 }

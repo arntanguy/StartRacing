@@ -237,20 +237,15 @@
     </car>
     <timedemi></timedemi>
     <timequart></timequart>
-  </save.Profil>
-  <save.Profil>
-    <id>2</id>
-    <login>joueur2</login>
-    <car reference="../../save.Profil/car"/>
-    <timedemi> 0 : 0
-</timedemi>
-    <timequart></timequart>
+    <monnaie>0</monnaie>
   </save.Profil>
   <save.Profil>
     <id>3</id>
     <login>joueur3</login>
     <car reference="../../save.Profil/car"/>
     <timedemi></timedemi>
-    <timequart></timequart>
+    <timequart>22 : 84
+</timequart>
+    <monnaie>500</monnaie>
   </save.Profil>
 </list>

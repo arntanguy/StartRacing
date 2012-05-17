@@ -123,37 +123,47 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10);
-			
-			screen.findElementByName("startTimer")
-					.getRenderer(TextRenderer.class).setText(text);
-
-			runFinish = true;
-			runIsOn = false;
-			
+			int argent = 0;
 			//Enregistrement du temps lorsque le temps est meilleur que le précédent
 			if (this instanceof HalfGameScreenState) {
+				argent = (int) (11000 / secondes);
 				if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
 					String tps[] = ProfilCurrent.getInstance().getTimeDemi().split(" : ");
 					if (Long.parseLong(tps[0]) > secondes || 
 							(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
 						ProfilCurrent.getInstance().setTimedemi(time);
+						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+						text += "\n" + argent + " Eur";
 					}
 				} else {
 					ProfilCurrent.getInstance().setTimedemi(time);
+					ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+					text += "\n" + argent + " Eur";
 				}
 			} else if (this instanceof QuarterGameScreenState) {
-				if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
-					String tps[] = ProfilCurrent.getInstance().getTimeDemi().split(" : ");
+				argent = (int) (5000 / secondes);
+				if (!ProfilCurrent.getInstance().getTimeQuart().equals("")) {
+					String tps[] = ProfilCurrent.getInstance().getTimeQuart().split(" : ");
 					if (Long.parseLong(tps[0]) > secondes ||
 							(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
 						ProfilCurrent.getInstance().setTimequart(time);
+						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+						text += "\n" + argent + " Eur";
 					}
 				} else {
 					ProfilCurrent.getInstance().setTimequart(time);
+					ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+					text += "\n" + argent + " Eur";
 				}
 			}
 			Comptes.modifier(ProfilCurrent.getInstance());
 			Comptes.Enregistrer();
+			
+			screen.findElementByName("startTimer")
+			.getRenderer(TextRenderer.class).setText(text);
+
+			runFinish = true;
+			runIsOn = false;
 		}
 
 		int botSpeed = (int) Math.abs(bot.getCurrentVehicleSpeedKmHour());

@@ -79,6 +79,8 @@ public class Comptes {
 				listProfil.get(i).setLogin(profil.getLogin());
 				listProfil.get(i).setTimedemi(profil.getTimeDemi());
 				listProfil.get(i).setTimequart(profil.getTimeQuart());
+				listProfil.get(i).setTimefree(profil.getTimefree());
+				listProfil.get(i).setCardead(profil.getCardead());
 				listProfil.get(i).setMonnaie(profil.getMonnaie());
 			}
 		}

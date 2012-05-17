@@ -11,15 +11,19 @@ public class Profil {
 	private ArrayList<CarProperties> car;
 	private String timedemi;
 	private String timequart;
+	private String timefree;
+	private int cardead;
 	private int monnaie;
 	
-	public Profil (int id, String login, ArrayList<CarProperties> car, 
-					String timedemi, String timequart, int monnaie) {
+	public Profil (int id, String login, ArrayList<CarProperties> car, String timedemi, 
+			String timequart, String timefree, int cardead, int monnaie) {
 		this.id = id;
 		this.login = login;
 		this.car = car;
 		this.timedemi = timedemi;
 		this.timequart = timequart;
+		this.timefree = timefree;
+		this.cardead = cardead;
 		this.monnaie = monnaie;
 	}
 		
@@ -65,6 +69,22 @@ public class Profil {
 
 	public void setCar(ArrayList<CarProperties> car) {
 		this.car = car;
+	}
+
+	public String getTimefree() {
+		return timefree;
+	}
+
+	public void setTimefree(String timefree) {
+		this.timefree = timefree;
+	}
+
+	public int getCardead() {
+		return cardead;
+	}
+
+	public void setCardead(int cardead) {
+		this.cardead = cardead;
 	}
 	
 }

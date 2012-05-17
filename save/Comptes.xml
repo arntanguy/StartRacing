@@ -237,15 +237,30 @@
     </car>
     <timedemi></timedemi>
     <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
     <monnaie>0</monnaie>
+  </save.Profil>
+  <save.Profil>
+    <id>2</id>
+    <login>joueur2</login>
+    <car reference="../../save.Profil/car"/>
+    <timedemi>42 : 65
+</timedemi>
+    <timequart>22 : 74
+</timequart>
+    <timefree>82 : 99</timefree>
+    <cardead>3</cardead>
+    <monnaie>216</monnaie>
   </save.Profil>
   <save.Profil>
     <id>3</id>
     <login>joueur3</login>
     <car reference="../../save.Profil/car"/>
     <timedemi></timedemi>
-    <timequart>22 : 84
-</timequart>
-    <monnaie>500</monnaie>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>0</monnaie>
   </save.Profil>
 </list>

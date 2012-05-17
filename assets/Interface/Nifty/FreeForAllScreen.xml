@@ -20,7 +20,7 @@
 					<panel width="55%"></panel>
 					<panel childLayout="vertical" width="20%">
 						<control name="label" text="Vie" font="Interface/Fonts/Default.fnt" width="100%" />
-						<control name="label" id="" text="100" font="Interface/Fonts/DS-Digital.fnt"
+						<control name="label" id="life" text="100" font="Interface/Fonts/DS-Digital.fnt"
 							width="100%" height="100%" />
 					</panel>
 				</panel>

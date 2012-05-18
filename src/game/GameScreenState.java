@@ -8,18 +8,24 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
+
 import save.Comptes;
 import save.ProfilCurrent;
+
+import physics.tools.MathTools;
+
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.control.GhostControl;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 import de.lessvoid.nifty.elements.render.TextRenderer;
 
@@ -57,10 +63,45 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 		buildBot();
 		buildFinishLine();
-
+		initObjects();
+		
 		playerFinish = false;
 		botFinish = false;
 		botStoped = false;
+	}
+	
+
+	private void initObjects() {
+		BoxCollisionShape treeShape = new BoxCollisionShape(new Vector3f(0.5f,
+				10.f, 1.f));
+
+		Spatial node2 = assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
+		node2.setShadowMode(ShadowMode.Cast);
+		node2.setName("Tree");
+		node2.scale(5);
+		for (int i = -15; i <= 15; i++) {
+			Spatial node = node2.clone();
+			node.setLocalTranslation(-20, 25,
+					i*60);
+			
+			Spatial nodeD = node2.clone();
+			nodeD.setLocalTranslation(40, 25, i*60);
+
+			RigidBodyControl controlTree = new RigidBodyControl(treeShape, 0.f);
+			controlTree.setUserObject("Tree");
+
+			RigidBodyControl controlTreeD = new RigidBodyControl(treeShape, 0.f);
+			controlTreeD.setUserObject("Tree");
+
+			
+			node.addControl(controlTree);
+			nodeD.addControl(controlTreeD);
+			getPhysicsSpace().add(node);
+			getPhysicsSpace().add(nodeD);
+
+			rootNode.attachChild(node);
+			rootNode.attachChild(nodeD);
+		}
 	}
 
 	protected void buildFinishLine() {
@@ -186,6 +227,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				botIA.act();
 				botIA.target(botArrivalPoint, 0, 0);
 			}
+			else if (player.getBurstEnabled())	{
+				playerFinish = true;
+			}
 		}
 	}
 
@@ -230,9 +274,6 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		if (finishCell.getOverlappingObjects().contains(player)
 				&& !playerFinish) {
 			timePlayer = (System.currentTimeMillis() - startTime);
-			System.out.println(String.format("player : %d : %d",
-					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
-					(timePlayer % 1000) / 10));
 
 			playerFinish = true;
 		}

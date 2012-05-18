@@ -186,6 +186,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		chaseCam = new ChaseCamera(app.getCamera(), player.getChassis(),
 				inputManager);
 		chaseCam.setSmoothMotion(true);
+		chaseCam.setMaxDistance(100);
 
 		// Set up light
 		DirectionalLight dl = new DirectionalLight();
@@ -309,7 +310,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		mat_terrain.setFloat("Tex2Scale", 64f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
-		Texture rock = assetManager.loadTexture("Textures/road.jpg");
+		Texture rock = assetManager.loadTexture("Textures/road2.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
@@ -566,6 +567,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerStartKickDone = false;
 		needReset = false;
 		runFinish = false;
+		needJump = false;
 		startTime = 0;
 		countDown = 0;
 
@@ -646,13 +648,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
 			}
 		} else if (binding.equals("Rights")) {
-			System.out.println("Value " + value + " tpf: " + tpf);
 			float val = player.getSteeringValue();
 			val = val - value;
 			if (val < -0.5)
 				val = -0.5f;
 			player.setSteeringValue(val);
-			System.out.println("New value " + player.getSteeringValue());
 			player.steer(player.getSteeringValue());
 		} else if (binding.equals("Lefts")) {
 			float val = player.getSteeringValue();

@@ -34,6 +34,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	private int argent = 0;
 	
 	private DigitalDisplay digitalLife;
+	private DigitalDisplay digitalRemainingBots;
+
+	private int nbBots;
+	private int nbBotsAlive = 0;
 
 	protected GhostControl finishCell;
 	protected Node finishNode;
@@ -49,33 +53,23 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 		bots = new ArrayList<Car>();
 
-		initGame();
 		initNiftyControls();
+		initGame();
 	}
 
 	protected void initGame() {
 		super.initGame();
 
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
+		
+		nbBots = 8;
+		digitalRemainingBots.setText(nbBots+"/"+nbBots);
+		nbBotsAlive = nbBots;
+		
+		for(int i=0;i<nbBots; i++) {
 		BMWM3Properties properties = new BMWM3Properties();
-		addBot(new Vector3f(new Vector3f(10, 27, 700)), properties);
-
-		addBot(new Vector3f(new Vector3f(20, 27, 800)), properties);
-		addBot(new Vector3f(new Vector3f(30, 27, 500)), properties);
-		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
-		addBot(new Vector3f(new Vector3f(40, 27, 600)), properties);
-		addBot(new Vector3f(new Vector3f(300, 27, 800)), properties);
-		addBot(new Vector3f(new Vector3f(200, 27, 700)), properties);
-
-		/*
-		 * addBot(new Vector3f(new Vector3f(100, 27, 600)), new
-		 * BMWM3Properties()); addBot(new Vector3f(new Vector3f(400, 27, 600)),
-		 * new BMWM3Properties()); addBot(new Vector3f(new Vector3f(500, 27,
-		 * 500)), new BMWM3Properties()); addBot(new Vector3f(new Vector3f(70,
-		 * 27, 650)), new BMWM3Properties()); addBot(new Vector3f(new
-		 * Vector3f(90, 27, 600)), new BMWM3Properties()); addBot(new
-		 * Vector3f(new Vector3f(0, 27, 600)), new BMWM3Properties());
-		 */
+			addBot(new Vector3f(new Vector3f(i*50, 27, i*50)), properties);
+		}
 
 		resetCars();
 
@@ -86,6 +80,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void initNiftyControls() {
 		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
+		digitalRemainingBots = new DigitalDisplay(nifty, screen, "digital_remaining_bots", 500);
 	}
 
 	private void resetCars() {
@@ -171,6 +166,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		String conclusion;
 		
 		if (runIsOn) {
+			nbBotsAlive = 0;
 			digitalLife.setText(((Integer) player.getLife()).toString());
 			for (Car bot : bots) {
 				if (bot.isAlive() && player.isAlive()) {
@@ -186,6 +182,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.stop(3000);
 				}
 			}
+
+			digitalRemainingBots.setText(nbBotsAlive+"/"+nbBots);
 
 			if (nbBotsAlive == 0 && player.isAlive()) {
 				win = true;

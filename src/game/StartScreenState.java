@@ -1,5 +1,8 @@
 package game;
 
+import audio.AudioRender;
+import audio.SoundStore;
+
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
@@ -11,7 +14,7 @@ import de.lessvoid.nifty.elements.Element;
 public class StartScreenState extends AbstractScreenController {
 
 	private InputManager inputManager;
-
+	
 	public StartScreenState() {
 		super();
 	}
@@ -23,7 +26,7 @@ public class StartScreenState extends AbstractScreenController {
 
 		inputManager = app.getInputManager();
 		inputManager.setCursorVisible(true);
-
+		
 		this.inputManager = app.getInputManager();
 	}
 
@@ -85,6 +88,10 @@ public class StartScreenState extends AbstractScreenController {
 		app.stop();
 	}
 
+	public void hover(String name) {
+		System.out.println("Hover: "+name);
+		voiceRender.playVoice(name);
+	}
 	/**
 	 * Permet d'interfacer avec le format XML.
 	 * 
@@ -93,5 +100,4 @@ public class StartScreenState extends AbstractScreenController {
 	public static String getTitle() {
 		return StringStore.APP_TITLE;
 	}
-
 }

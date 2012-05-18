@@ -12,6 +12,7 @@ public class SoundStore {
 	private AssetManager assetManager;
 	private LinkedHashMap<Integer, AudioData> engineSounds;
 	private HashMap<String, AudioData> extraSounds;
+	private HashMap<String, AudioData> voiceSounds;
 
 	public static SoundStore getInstance() {
 		if (null == instance) { // Premier appel
@@ -27,6 +28,7 @@ public class SoundStore {
 		this.assetManager = null;
 		engineSounds = new LinkedHashMap<Integer, AudioData>();
 		extraSounds = new HashMap<String, AudioData>();
+		voiceSounds = new HashMap<String, AudioData>();
 	}
 
 	public void setAssetManager(AssetManager assetMgr) {
@@ -56,5 +58,18 @@ public class SoundStore {
 
 	public HashMap<String, AudioData> getExtraSounds() {
 		return extraSounds;
+	}
+	
+	
+	public void addVoiceSound(String key, String path) {
+		voiceSounds.put(key, assetManager.loadAudio(path));
+	}
+	
+	public AudioData getVoiceSound(String key) {
+		return voiceSounds.get(key);
+	}
+	
+	public HashMap<String, AudioData> getVoiceSounds() {
+		return voiceSounds;
 	}
 }

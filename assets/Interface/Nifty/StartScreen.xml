@@ -2,7 +2,7 @@
 <nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<useStyles filename="nifty-default-styles.xml" />
 	<useControls filename="nifty-default-controls.xml" />
-	
+	<registerSound id="freeforallSound" filename="Sound/win.wav" />
 	<screen id="start" controller="game.StartScreenState">
 		<layer id="background" childLayout="center">
 			<image filename="Interface/Nifty/start_background.jpg"
@@ -15,7 +15,8 @@
 					
 				<control id="freeRunButton" align="center" name="button" label="Course Libre"
 					width="32%" height="10%">
-					<interact onClick="startFreeForAll()" />
+					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()" />
+					 <effect><onFocus oneShot="true" name="playSound" sound="freeforallSound" /></effect>
 				</control>
 				<panel height="5px" />
 				

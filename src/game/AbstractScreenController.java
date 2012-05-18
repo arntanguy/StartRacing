@@ -1,5 +1,8 @@
 package game;
 
+import audio.AudioRender;
+import audio.SoundStore;
+
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -15,6 +18,7 @@ public class AbstractScreenController extends AbstractAppState implements
 	protected Screen screen;
 	protected App app;
 	protected AppStateManager stateManager;
+	protected AudioRender voiceRender;
 
 	public AbstractScreenController() {
 	}
@@ -24,6 +28,8 @@ public class AbstractScreenController extends AbstractAppState implements
 		System.err.println("INITIALIZE");
 		this.stateManager = stateManager;
 		this.app = (App) app;
+		
+		initAudioVoices();
 	}
 
 	@Override
@@ -57,5 +63,15 @@ public class AbstractScreenController extends AbstractAppState implements
 	public void quitGame() {
 		System.out.println("quitGame");
 		app.stop();
+	}
+
+	protected void initAudioVoices() {
+		SoundStore soundStore = SoundStore.getInstance();
+		soundStore.setAssetManager(app.getAssetManager());
+
+		soundStore.addVoiceSound("freeforall", "Sound/win.wav");
+		
+		voiceRender = new AudioRender(app.getGuiNode(),
+				SoundStore.getInstance());
 	}
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import javax.sound.midi.VoiceStatus;
+
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
@@ -11,24 +13,22 @@ import com.jme3.scene.Node;
 public class AudioRender {
 	private LinkedHashMap<Integer, AudioNode> engineSoundNodes;
 	private HashMap<String, AudioNode> extraSoundNodes;
+	private HashMap<String, AudioNode> voiceSoundNodes;
 	private Node rootNode;
 
 	private AudioNode prevLow;
 	private AudioNode prevHigh;
 
-	private SoundStore soundStore;
-
 	public AudioRender(Node player, SoundStore soundStore) {
 		engineSoundNodes = new LinkedHashMap<Integer, AudioNode>();
 		extraSoundNodes = new HashMap<String, AudioNode>();
+		voiceSoundNodes = new HashMap<String, AudioNode>();
 
 		this.rootNode = player;
 		init(soundStore);
 	}
 
 	private void init(SoundStore soundStore) {
-		this.soundStore = soundStore;
-
 		LinkedHashMap<Integer, AudioData> engineSounds = soundStore
 				.getEngineSounds();
 		// Charger les sons
@@ -56,6 +56,36 @@ public class AudioRender {
 			extraSoundNodes.put(key, sample);
 			rootNode.attachChild(sample);
 		}
+
+		HashMap<String, AudioData> voicesSounds = soundStore.getVoiceSounds();
+		itr = voicesSounds.keySet().iterator();
+
+		while (itr.hasNext()) {
+			String key = itr.next();
+			AudioNode sample = new AudioNode();
+			sample.setAudioData(extraSounds.get(key), null);
+			voiceSoundNodes.put(key, sample);
+			rootNode.attachChild(sample);
+		}
+	}
+
+	public void playVoice(String key) {
+		playVoice(key, 1.f);
+	}
+
+	public void playVoice(String key, float volume) {
+		System.out.println("Play voice "+key);
+		AudioNode node = null;
+		try {
+			node = extraSoundNodes.get("win");
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		if (node != null) {
+			node.setVolume(1.f);
+			node.playInstance();
+		}
+
 	}
 
 	public void playStartSound() {
@@ -99,7 +129,6 @@ public class AudioRender {
 		sample.setVolume(1f);
 		sample.playInstance();
 	}
-	
 
 	public void playCrash() {
 		AudioNode sample = extraSoundNodes.get("crash");
@@ -110,7 +139,7 @@ public class AudioRender {
 	public void mute() {
 		if (prevHigh != null)
 			prevHigh.setVolume(0);
-		
+
 		if (prevLow != null)
 			prevLow.setVolume(0);
 	}
@@ -169,21 +198,21 @@ public class AudioRender {
 		prevLow = low;
 		prevHigh = high;
 	}
-	
-	public void close()	{
+
+	public void close() {
 		Iterator<Integer> it = engineSoundNodes.keySet().iterator();
 		AudioNode aud;
-		while (it.hasNext())	{
-			 aud = engineSoundNodes.get(it.next());
-			 aud.removeFromParent();
+		while (it.hasNext()) {
+			aud = engineSoundNodes.get(it.next());
+			aud.removeFromParent();
 		}
-		
+
 		it = null;
-		
+
 		Iterator<String> itr = extraSoundNodes.keySet().iterator();
-		while (itr.hasNext())	{
-			 aud = extraSoundNodes.get(itr.next());
-			 aud.removeFromParent();
+		while (itr.hasNext()) {
+			aud = extraSoundNodes.get(itr.next());
+			aud.removeFromParent();
 		}
 	}
 }

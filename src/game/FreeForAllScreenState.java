@@ -209,8 +209,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					if (givePt == false) {
 						argent = 500;
 						givePt = true;
+						if (ProfilCurrent.getInstance() != null)
+							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					}
-					conclusion ="Gagneg!\nVous avez gagne 500 Eur";
+					conclusion ="Gagne! 500 Eur";
 				} else {
 					int nbbot = 0;
 					int nbbotlive = 0;
@@ -223,15 +225,15 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 						nbBotDead = nbbot - nbbotlive;
 						argent = (int) ((nbBotDead * 4000) / secondes);
 						givePt = true;
+						if (ProfilCurrent.getInstance() != null)
+							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					}
-					conclusion = "Perdu !\n" + "Vous avez gagne " + argent + " Eur";
+					conclusion = "Perdu! "+ argent + " Eur";
 					
 				}
 				String text = String.format("%d : %d", secondes, millisec);
 				
 				if (ProfilCurrent.getInstance() != null) {
-					//ProfilCurrent.getInstance().setTimefree(text);
-					ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					if (!ProfilCurrent.getInstance().getTimefree().equals("")) {
 						String tps[] = ProfilCurrent.getInstance().getTimefree().split(" : ");
 						//bat le nombre de bot tué
@@ -254,8 +256,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 						//Premier score
 						ProfilCurrent.getInstance().setTimefree(text);
 						ProfilCurrent.getInstance().setCardead(nbBotDead);
-						//argent = (int) ((nbBotDead * 4000) / secondes);
-						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					}
 					Comptes.modifier(ProfilCurrent.getInstance());
 					Comptes.Enregistrer();
@@ -301,11 +301,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		if (finishCell.getOverlappingObjects().contains(player)
 				&& !runFinish) {
 			timePlayer = (System.currentTimeMillis() - startTime);
-			System.out.println(String.format("player : %d : %d",
-					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
-					(timePlayer % 1000) / 10));
-
-			//playerFinish = true;
 		}
 	}
 

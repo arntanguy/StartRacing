@@ -60,7 +60,9 @@ public class Comptes {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;
-        }    
+        } catch (IndexOutOfBoundsException e) {
+        	return false;
+        }
 		return true;
 	}
 

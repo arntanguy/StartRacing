@@ -3,37 +3,40 @@
 	<useStyles filename="nifty-default-styles.xml" />
 	<useControls filename="nifty-default-controls.xml" />
 	
-	<screen id="createprofil" controller="game.ProfilsScreen">
+	<screen id="createprofil" controller="game.CreateProfilScreen">
 		<layer id="background" childLayout="center">
-			<image filename="Interface/Nifty/start_background.jpg"
-				width="100%" height="100%" />
-		</layer>
 		
-		<layer id="layer" backgroundColor="#003f" childLayout="horizontal">
-			<panel height="100%" width="100%" childLayout="vertical">
-				<panel height="20%" width="100%" valign="bottom" align="center" childLayout="horizontal">
-					<text id="text4" style="nifty-label" height="20%" width="20%" text="Saisir votre login : "
-					color="#000f" textHAlign="left" textVAlign="center"/>
-					<control name="textfield" width="40%" height="20%"></control>			
+		</layer>
+		<layer id="foreground" childLayout="center">
+			<panel id="centerWrapper" height="100%" childLayout="vertical">
+				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
+					text="Créer un profil" />
+				
+				<panel height="10%"/>
+				<panel childLayout="horizontal">
+					<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Saisir votre login : " />
+					<control name="textfield" width="40%" id="login" />
 				</panel>
-	
-				<panel height="50%" width="100%" valign="bottom" align="center" childLayout="horizontal">
-					<text id="text4" style="nifty-label" height="5%" width="20%" text="Choisir votre voiture : "
-				color="#000f" textHAlign="left" textVAlign="center"/>
-					<control name="image" src="Interface/Nifty/start_background.jpg" width="20%" height="20%"></control>
+				
+				<panel height="5%"/>
+				<panel childLayout="horizontal">
+					<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Choisir votre voiture : " />
+					<control name="image" src="Interface/Nifty/start_background.jpg" width="20%"></control>
 				</panel>
-	
-				<panel height="10%" width="100%" valign="bottom" align="center" childLayout="horizontal">
-					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Menu Principal">
+						
+				<panel height="15%"/>
+				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
+					<panel width="10%" />
+					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Retour">
 						<interact onClick="gotoMainMenu()" />
 					</control>
-					<panel width="5px" />					
-					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="Appliquer">
-						<interact onClick="applyOptions()" />
+					<panel width="20%" />
+					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="Valider">
+						<interact onClick="Enregistrer()" />
 					</control>
+					<panel width="10%" />
 				</panel>
-			</panel>	
+			</panel>
 		</layer>
-
 	</screen>
 </nifty>

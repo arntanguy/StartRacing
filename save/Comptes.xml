@@ -236,23 +236,20 @@
       </physics.CarProperties>
     </car>
     <timedemi></timedemi>
-    <timequart>25 : 5
-</timequart>
-    <timefree>91 : 74</timefree>
-    <cardead>3</cardead>
-    <monnaie>6489</monnaie>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>0</monnaie>
   </save.Profil>
   <save.Profil>
     <id>2</id>
     <login>joueur2</login>
     <car reference="../../save.Profil/car"/>
-    <timedemi>42 : 65
-</timedemi>
-    <timequart>22 : 74
-</timequart>
-    <timefree>86 : 83</timefree>
-    <cardead>3</cardead>
-    <monnaie>24303</monnaie>
+    <timedemi></timedemi>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>0</monnaie>
   </save.Profil>
   <save.Profil>
     <id>3</id>
@@ -263,5 +260,45 @@
     <timefree></timefree>
     <cardead>0</cardead>
     <monnaie>0</monnaie>
+  </save.Profil>
+  <save.Profil>
+    <id>4</id>
+    <login>sasa</login>
+    <car/>
+    <timedemi></timedemi>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>0</monnaie>
+  </save.Profil>
+  <save.Profil>
+    <id>5</id>
+    <login>sasa</login>
+    <car/>
+    <timedemi></timedemi>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>0</monnaie>
+  </save.Profil>
+  <save.Profil>
+    <id>6</id>
+    <login>sasa</login>
+    <car/>
+    <timedemi></timedemi>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>0</monnaie>
+  </save.Profil>
+  <save.Profil>
+    <id>7</id>
+    <login>Nathalie</login>
+    <car/>
+    <timedemi></timedemi>
+    <timequart></timequart>
+    <timefree>73 : 30</timefree>
+    <cardead>5</cardead>
+    <monnaie>408</monnaie>
   </save.Profil>
 </list>

@@ -13,6 +13,7 @@ import com.jme3.input.InputManager;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
+import de.lessvoid.nifty.controls.TextField;
 
 public class ProfilsScreen extends AbstractScreenController {
 	
@@ -20,15 +21,17 @@ public class ProfilsScreen extends AbstractScreenController {
 	private final String ALLJOUEUR = "allJoueur";
 	private ArrayList<Profil> dataAllJoueur;
 	private DropDown<String> allJoueurDropDown;
+	//private TextField car;
+	private TextField demi;
+	private TextField quart;
+	private TextField free;
+	private TextField deadcarfree;
+	private TextField monnaie;
 	private String logchoose;
 	
 	public ProfilsScreen() {
 		super();
-		Comptes.Recuperer();
 		dataAllJoueur = Comptes.getListProfil();
-		for (int i = 0; i < dataAllJoueur.size(); ++i) {
-			System.out.println(dataAllJoueur.get(i).getLogin());
-		}
 	}
 
 	@Override
@@ -42,25 +45,48 @@ public class ProfilsScreen extends AbstractScreenController {
 		this.inputManager = app.getInputManager();
 		
 		allJoueurDropDown = screen.findNiftyControl(ALLJOUEUR, DropDown.class);
+		//car = screen.findNiftyControl("car", TextField.class);
+		demi = screen.findNiftyControl("demi", TextField.class);
+		quart = screen.findNiftyControl("quart", TextField.class);
+		free = screen.findNiftyControl("free", TextField.class);
+		deadcarfree = screen.findNiftyControl("cardead", TextField.class);
+		monnaie = screen.findNiftyControl("monnaie", TextField.class);
 		
-		fillResolutionDropDown(dataAllJoueur);
+		AffBase();
 	}
 
-	private void fillResolutionDropDown(ArrayList<Profil> allProfil) {
-		for (int i = 0; i < allProfil.size(); ++i) {
-			allJoueurDropDown.addItem(allProfil.get(i).getLogin());
+	private void AffBase() {
+		for (int i = 0; i < dataAllJoueur.size(); ++i) {
+			allJoueurDropDown.addItem(dataAllJoueur.get(i).getLogin());
+			System.out.println(dataAllJoueur.get(i).getLogin());
 		}
+		//car.setText(dataAllJoueur.get(0).getCar());
+		demi.setText(dataAllJoueur.get(0).getTimeDemi());
+		quart.setText(dataAllJoueur.get(0).getTimeQuart());
+		free.setText(dataAllJoueur.get(0).getTimefree());
+		deadcarfree.setText(Integer.toString(dataAllJoueur.get(0).getCardead()));
+		monnaie.setText(Integer.toString(dataAllJoueur.get(0).getMonnaie()));
 	}
 	
 	@NiftyEventSubscriber(id=ALLJOUEUR)
 	public void onResolutionChange(final String id, final DropDownSelectionChangedEvent<String> event) {
 		logchoose = event.getSelection();
+		for (int i = 0; i < dataAllJoueur.size(); ++i) {
+			if (logchoose.equals(dataAllJoueur.get(i).getLogin())) {
+				//car.setText(dataAllJoueur.get(i).getCar());
+				demi.setText(dataAllJoueur.get(i).getTimeDemi());
+				quart.setText(dataAllJoueur.get(i).getTimeQuart());
+				free.setText(dataAllJoueur.get(i).getTimefree());
+				deadcarfree.setText(Integer.toString(dataAllJoueur.get(i).getCardead()));
+				monnaie.setText(Integer.toString(dataAllJoueur.get(i).getMonnaie()));
+				break;
+			}
+		}
 	}
 
 	public void Enregistrer() {
-		ArrayList<Profil> listProfil = Comptes.getListProfil();
-		for (int i = 0; i < listProfil.size(); ++i) {
-			if (logchoose.equals(listProfil.get(i).getLogin())) {
+		for (int i = 0; i < dataAllJoueur.size(); ++i) {
+			if (logchoose.equals(dataAllJoueur.get(i).getLogin())) {
 				ProfilCurrent pc = new ProfilCurrent(Comptes.getListProfil().get(i));
 				break;
 			}
@@ -68,8 +94,23 @@ public class ProfilsScreen extends AbstractScreenController {
 		gotoMainMenu();
 	}
 	
+	public void Remove() {
+		for (int i = 0; i < dataAllJoueur.size(); ++i) {
+			if (logchoose.equals(dataAllJoueur.get(i).getLogin())) {
+				dataAllJoueur.remove(i);
+				Comptes.Enregistrer();
+				break;
+			}
+		}
+		allJoueurDropDown = null;
+		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
+        nifty.gotoScreen("chooseprofil");
+        ProfilsScreen pfscreen = (ProfilsScreen) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(pfscreen);
+	}
+	
 	public void Achat() {
-		
+		app.gotoAchat();
 	}
 	
 	public void gotoMainMenu() {

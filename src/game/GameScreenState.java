@@ -157,9 +157,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			}
 			long secondes = TimeUnit.MILLISECONDS.toSeconds(timePlayer);
 			long millisec = (timePlayer % 1000) / 10;
-			String time = String.format("%d : %d\n",secondes, millisec);
+			String time = String.format("%d : %d",secondes, millisec);
 			
-			text += "Joueur:  " + time;
+			text += "Joueur:  " + time + "\n";
 			
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),

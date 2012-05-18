@@ -230,7 +230,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 				String text = String.format("%d : %d", secondes, millisec);
 				
 				if (ProfilCurrent.getInstance() != null) {
-					ProfilCurrent.getInstance().setTimefree(text);
+					//ProfilCurrent.getInstance().setTimefree(text);
 					ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					if (!ProfilCurrent.getInstance().getTimefree().equals("")) {
 						String tps[] = ProfilCurrent.getInstance().getTimefree().split(" : ");
@@ -254,7 +254,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 						//Premier score
 						ProfilCurrent.getInstance().setTimefree(text);
 						ProfilCurrent.getInstance().setCardead(nbBotDead);
-						argent = (int) ((nbBotDead * 4000) / secondes);
+						//argent = (int) ((nbBotDead * 4000) / secondes);
 						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					}
 					Comptes.modifier(ProfilCurrent.getInstance());

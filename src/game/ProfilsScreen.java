@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import save.Comptes;
 import save.Profil;
+import save.ProfilCurrent;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -19,6 +20,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	private final String ALLJOUEUR = "allJoueur";
 	private ArrayList<Profil> dataAllJoueur;
 	private DropDown<String> allJoueurDropDown;
+	private String logchoose;
 	
 	public ProfilsScreen() {
 		super();
@@ -52,9 +54,24 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 	@NiftyEventSubscriber(id=ALLJOUEUR)
 	public void onResolutionChange(final String id, final DropDownSelectionChangedEvent<String> event) {
-		System.out.println("Joueur selection: " + event.getSelection());
+		logchoose = event.getSelection();
 	}
 
+	public void Enregistrer() {
+		ArrayList<Profil> listProfil = Comptes.getListProfil();
+		for (int i = 0; i < listProfil.size(); ++i) {
+			if (logchoose.equals(listProfil.get(i).getLogin())) {
+				ProfilCurrent pc = new ProfilCurrent(Comptes.getListProfil().get(i));
+				break;
+			}
+		}
+		gotoMainMenu();
+	}
+	
+	public void Achat() {
+		
+	}
+	
 	public void gotoMainMenu() {
 		app.gotoStart();
 	}

@@ -18,14 +18,19 @@
 					<control name="dropDown" width="40%" id="allJoueur" />
 				</panel>
 				
-				<panel height="14%" width="52%" valign="bottom" align="center" childLayout="horizontal">
-					<control id="returnButton" width="50%" align="center" height="100%" name="button" label="Menu Principal">
+				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
+					<panel width="10%" />
+					<control id="returnButton" width="20%" align="center" height="100%" name="button" label="Menu Principal">
 						<interact onClick="gotoMainMenu()" />
 					</control>
-					<panel width="5px" />
-					
-					<control id="applyButton" width="50%" align="center" height="100%" name="button" label="Appliquer">
+					<panel width="10%" />
+					<control id="applyButton" width="20%" align="center" height="100%" name="button" label="Appliquer">
 						<interact onClick="Enregistrer()" />
+					</control>
+					<panel width="10%" />
+					<control id="achatButton" width="20%" align="center" height="100%" name="button" label="Achat">
+						<interact onClick="Achat()" />
+					<panel width="10%" />
 					</control>
 				</panel>
 			</panel>

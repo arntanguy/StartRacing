@@ -236,10 +236,11 @@
       </physics.CarProperties>
     </car>
     <timedemi></timedemi>
-    <timequart></timequart>
-    <timefree></timefree>
-    <cardead>0</cardead>
-    <monnaie>0</monnaie>
+    <timequart>25 : 5
+</timequart>
+    <timefree>91 : 74</timefree>
+    <cardead>3</cardead>
+    <monnaie>6489</monnaie>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -249,9 +250,9 @@
 </timedemi>
     <timequart>22 : 74
 </timequart>
-    <timefree>82 : 99</timefree>
+    <timefree>86 : 83</timefree>
     <cardead>3</cardead>
-    <monnaie>216</monnaie>
+    <monnaie>24303</monnaie>
   </save.Profil>
   <save.Profil>
     <id>3</id>

@@ -38,10 +38,10 @@ public class App extends SimpleApplication {
 		addXMLFiles();		
 		/****** FIN DEBUG *****/
 
-		gotoStart();
+		//gotoStart();
 		//gotoOptions();
 		//gotoCrtProfil();
-		//gotoAffProfil();
+		gotoAffProfil();
 		
 		// disable the fly cam
 		flyCam.setEnabled(false);

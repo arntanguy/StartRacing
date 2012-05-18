@@ -209,8 +209,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			if (runFinish) {
 				if (win) {
 					if (givePt == false) {
-						ProfilCurrent.getInstance().setMonnaie
-							(ProfilCurrent.getInstance().getMonnaie() + 500);
+						argent = 500;
 						givePt = true;
 					}
 					conclusion ="Gagneg!\nVous avez gagne 500 Eur";
@@ -225,41 +224,45 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					if (givePt == false) {
 						nbBotDead = nbbot - nbbotlive;
 						argent = (int) ((nbBotDead * 4000) / secondes);
-						ProfilCurrent.getInstance().setMonnaie(argent);
 						givePt = true;
 					}
 					conclusion = "Perdu !\n" + "Vous avez gagne " + argent + " Eur";
 					
 				}
 				String text = String.format("%d : %d", secondes, millisec);
-				ProfilCurrent.getInstance().setTimefree(text);
-				if (!ProfilCurrent.getInstance().getTimefree().equals("")) {
-					String tps[] = ProfilCurrent.getInstance().getTimefree().split(" : ");
-					//bat le nombre de bot tué
-					if (ProfilCurrent.getInstance().getCardead() < nbBotDead) {
-						ProfilCurrent.getInstance().setTimefree(text);
-						ProfilCurrent.getInstance().setCardead(nbBotDead);
-						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + 70);
-						bonus = true;
-					}
-					//bat le temps de bot tué
-					else if (ProfilCurrent.getInstance().getCardead() == nbBotDead) {
-						if (Long.parseLong(tps[0]) > secondes || 
-								(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+				
+				if (ProfilCurrent.getInstance() != null) {
+					ProfilCurrent.getInstance().setTimefree(text);
+					ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+					if (!ProfilCurrent.getInstance().getTimefree().equals("")) {
+						String tps[] = ProfilCurrent.getInstance().getTimefree().split(" : ");
+						//bat le nombre de bot tué
+						if (ProfilCurrent.getInstance().getCardead() < nbBotDead) {
 							ProfilCurrent.getInstance().setTimefree(text);
+							ProfilCurrent.getInstance().setCardead(nbBotDead);
 							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + 70);
 							bonus = true;
 						}
+						//bat le temps de bot tué
+						else if (ProfilCurrent.getInstance().getCardead() == nbBotDead) {
+							if (Long.parseLong(tps[0]) > secondes || 
+									(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+								ProfilCurrent.getInstance().setTimefree(text);
+								ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + 70);
+								bonus = true;
+							}
+						}
+					} else {
+						//Premier score
+						ProfilCurrent.getInstance().setTimefree(text);
+						ProfilCurrent.getInstance().setCardead(nbBotDead);
+						argent = (int) ((nbBotDead * 4000) / secondes);
+						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
 					}
-				} else {
-					//Premier score
-					ProfilCurrent.getInstance().setTimefree(text);
-					ProfilCurrent.getInstance().setCardead(nbBotDead);
-					argent = (int) ((nbBotDead * 4000) / secondes);
-					ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
-				}
-				Comptes.modifier(ProfilCurrent.getInstance());
-				Comptes.Enregistrer();
+					Comptes.modifier(ProfilCurrent.getInstance());
+					Comptes.Enregistrer();
+				} // Fin Enregistrement Profil
+				
 				if (bonus)
 					conclusion = conclusion + "\nBonus de 70 Eur!";
 				digitalStart.setText(conclusion);

@@ -22,9 +22,8 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 	public ProfilsScreen() {
 		super();
-		Comptes compte = new Comptes();
-		compte.Recuperer();
-		dataAllJoueur = compte.getListProfil();
+		Comptes.Recuperer();
+		dataAllJoueur = Comptes.getListProfil();
 		for (int i = 0; i < dataAllJoueur.size(); ++i) {
 			System.out.println(dataAllJoueur.get(i).getLogin());
 		}

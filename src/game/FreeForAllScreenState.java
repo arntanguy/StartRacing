@@ -298,10 +298,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
 		super.collision(event);
-		if (finishCell.getOverlappingObjects().contains(player)
+		/*if (finishCell.getOverlappingObjects().contains(player)
 				&& !runFinish) {
 			timePlayer = (System.currentTimeMillis() - startTime);
-		}
+		}*/
 	}
 
 }

@@ -22,15 +22,21 @@ public class test {
 		CarProperties bmw = new CarProperties();
 		CarProperties dvp = new CarProperties();
 		CarProperties skp = new CarProperties();
-		ArrayList<CarProperties> listCar = new ArrayList<CarProperties>();
-		listCar.add(bmw);
-		listCar.add(dvp);
-		listCar.add(skp);
-		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", listCar, "", "", "", 0, 0);
+		CarProperties bmw1 = new BMWM3Properties();
+		CarProperties dvp2 = new DodgeViperProperties();
+		ArrayList<CarProperties> car1 = new ArrayList<CarProperties>();
+		ArrayList<CarProperties> car2 = new ArrayList<CarProperties>();
+		ArrayList<CarProperties> car3 = new ArrayList<CarProperties>();
+		car1.add(bmw);
+		car1.add(bmw1);
+		car1.add(dvp2);
+		car2.add(dvp);
+		car3.add(skp);
+		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", car1, 0, "", "", "", 0, 0);
 		Comptes.addProfil(joueur1);
-		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", listCar, "", "", "", 0, 0);
+		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", car2, 0, "", "", "", 0, 0);
 		Comptes.addProfil(joueur2);
-		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", listCar, "", "", "", 0, 0);
+		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", car3, 0, "", "", "", 0, 0);
 		Comptes.addProfil(joueur3);
 		Comptes.Enregistrer();
 		/*Comptes.Recuperer();
@@ -65,10 +71,10 @@ public class test {
 		    xs.toXML(listCar, fs);
 		} catch (FileNotFoundException e1) {
 		    e1.printStackTrace();
-		} */
+		}
 		// Récupération
 		
-		/*XStream xstream = new XStream(new DomDriver());
+		XStream xstream = new XStream(new DomDriver());
 		ArrayList<CarProperties> listVoiture = new ArrayList<CarProperties>  ();
         try {
             FileInputStream fs= new FileInputStream("save/Cars.xml");
@@ -76,8 +82,10 @@ public class test {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }*/
-		System.out.println(Comptes.getListProfil().get(1));
-        
+		//System.out.println(Comptes.getListProfil().get(1));
+        Comptes.RecupeCar();
+        if (Comptes.getListCar().get(1) instanceof SkylineProperties)
+        	System.out.println("coucou");
 	}
 
 }

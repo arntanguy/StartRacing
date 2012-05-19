@@ -40,8 +40,9 @@ public class App extends SimpleApplication {
 
 		//gotoStart();
 		//gotoOptions();
-		gotoCrtProfil();
-		//gotoAffProfil();
+		//gotoCrtProfil();
+		gotoAffProfil();
+		
 		
 		// disable the fly cam
 		flyCam.setEnabled(false);
@@ -115,6 +116,9 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoAchat() {
-		gotoStart();
+		nifty.addXml("Interface/Nifty/Achat.xml");
+        nifty.gotoScreen("achat");
+        Achat achat = (Achat) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(achat);
 	}
 }

@@ -180,7 +180,9 @@ public class ProfilsScreen extends AbstractScreenController {
 			allJoueurDropDown.addItem(dataAllJoueur.get(i).getLogin());
 		}
         if (ProfilCurrent.getInstance() == null) {
-        	AffCars(0);
+        	if (Comptes.getListProfil().size() != 0) {
+        		AffCars(0);
+        	}
         } else {
     		for (int i = 0; i < dataAllJoueur.size(); ++i) {
     			if (dataAllJoueur.get(i).getId() == ProfilCurrent.getInstance().getId()) {

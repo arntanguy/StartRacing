@@ -8,8 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		if (!Comptes.Recuperer())
-			System.out.println("Il n'y a pas de donnée");
+		Comptes.Recuperer();
 		
 		java.util.logging.Logger.getLogger("de.lessvoid.nifty.*").setLevel(java.util.logging.Level.SEVERE);
 		java.util.logging.Logger.getAnonymousLogger().getParent().setLevel(java.util.logging.Level.SEVERE);

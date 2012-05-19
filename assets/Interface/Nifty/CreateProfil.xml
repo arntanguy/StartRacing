@@ -52,7 +52,7 @@
 				<panel height="30%"/>
 				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
 					<panel width="10%" />
-					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Retour">
+					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Retour" >
 						<interact onClick="gotoMainMenu()" />
 					</control>
 					<panel width="20%" />

@@ -62,7 +62,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		nbBotsAlive = nbBots;
 		
 		for(int i=0;i<nbBots; i++) {
-		BMWM3Properties properties = new BMWM3Properties();
+			//XXX
+			CarProperties properties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties() :
+				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+			//BMWM3Properties properties = new BMWM3Properties();
 			addBot(new Vector3f(new Vector3f(i*50, 27, i*50)), properties);
 		}
 
@@ -216,7 +219,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					}
 					if (givePt == false) {
 						nbBotDead = nbbot - nbbotlive;
-						argent = (int) ((nbBotDead * 4000) / secondes);
+						argent = (int) ((nbBotDead * 400000) / secondes);
 						givePt = true;
 						if (ProfilCurrent.getInstance() != null)
 							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);

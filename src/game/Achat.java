@@ -70,9 +70,9 @@ public class Achat extends AbstractScreenController {
 		super();
 		Comptes.RecupeCar();
 		dataAllCar = Comptes.getListCar();
-		prixbmw = 22000;
-		prixdv = 48000;
-		prixsk = 34000;
+		prixbmw = 48000;
+		prixdv = 34000;
+		prixsk = 22000;
 		calcul = ProfilCurrent.getInstance().getMonnaie();
 		hasBmw = false;
 		hasDv = false;

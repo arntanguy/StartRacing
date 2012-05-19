@@ -117,7 +117,10 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	}
 	
 	private void buildBot() {
-		botCarProperties = new BMWM3Properties();
+		//botCarProperties = new BMWM3Properties();
+		//XXX
+		botCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		bot = new Car(assetManager, botCarProperties,
 				"Models/FerrariGreen/Car.scene");
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
@@ -169,7 +172,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			if (ProfilCurrent.getInstance() != null) {
 			//Enregistrement du temps lorsque le temps est meilleur que le précédent
 				if (this instanceof HalfGameScreenState) {
-					argent = (int) (11000 / secondes);
+					if (secondes != 0)
+						argent = (int) (1200000 / secondes);
 					if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
 						String tps[] = ProfilCurrent.getInstance().getTimeDemi().split(" : ");
 						if (Long.parseLong(tps[0]) > secondes || 
@@ -184,7 +188,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 						text += "\n" + argent + " Eur";
 					}
 				} else if (this instanceof QuarterGameScreenState) {
-					argent = (int) (5000 / secondes);
+					if (secondes != 0)
+						argent = (int) (500000 / secondes);
 					if (!ProfilCurrent.getInstance().getTimeQuart().equals("")) {
 						String tps[] = ProfilCurrent.getInstance().getTimeQuart().split(" : ");
 						if (Long.parseLong(tps[0]) > secondes ||

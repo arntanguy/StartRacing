@@ -3,7 +3,9 @@ package game;
 import game.Car.CarType;
 import physics.BMWM3Properties;
 import physics.CarProperties;
+import physics.DodgeViperProperties;
 import physics.EnginePhysics;
+import physics.SkylineProperties;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
 import save.ProfilCurrent;
@@ -272,6 +274,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		//playerCarProperties = new BMWM3Properties();			
 		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
 			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		//XXX
 		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
 			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		

@@ -1023,9 +1023,9 @@
     </car>
     <timedemi></timedemi>
     <timequart></timequart>
-    <timefree></timefree>
+    <timefree>11 : 20</timefree>
     <cardead>0</cardead>
     <monnaie>12000</monnaie>
-    <choixCar>0</choixCar>
+    <choixCar>2</choixCar>
   </save.Profil>
 </list>

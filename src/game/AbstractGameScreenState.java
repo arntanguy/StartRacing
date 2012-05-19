@@ -6,6 +6,7 @@ import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
+import save.ProfilCurrent;
 import audio.AudioRender;
 import audio.SoundStore;
 
@@ -268,8 +269,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	}
 
 	protected void buildPlayer() {
-		playerCarProperties = new BMWM3Properties();
-
+		//playerCarProperties = new BMWM3Properties();			
+		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
+			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties,
 				"Models/FerrariRed/Car.scene");

@@ -14,11 +14,9 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -38,9 +36,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	private int nbBots;
 	private int nbBotsAlive = 0;
-
-	protected GhostControl finishCell;
-	protected Node finishNode;
 	
 	public FreeForAllScreenState() {
 		super();
@@ -74,8 +69,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		resetCars();
 
 		addObjects();
-		
-		buildFinishLine();
 	}
 
 	protected void initNiftyControls() {
@@ -281,27 +274,12 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		}
 		player.stop(0);
 		screen.findElementByName("timer").getRenderer(TextRenderer.class).setText("0 : 0");
-	}
-
-	protected void buildFinishLine() {
-		// Init finish cell detection
-		finishCell = new GhostControl(new BoxCollisionShape(new Vector3f(40, 1,
-				1)));
-		finishNode = new Node("finish zone");
-		finishNode.addControl(finishCell);
-		finishNode.move(0, 27, 0);
-
-		rootNode.attachChild(finishNode); 
-		super.getPhysicsSpace().add(finishCell);
+		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
 	}
 	
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
 		super.collision(event);
-		/*if (finishCell.getOverlappingObjects().contains(player)
-				&& !runFinish) {
-			timePlayer = (System.currentTimeMillis() - startTime);
-		}*/
 	}
 
 }

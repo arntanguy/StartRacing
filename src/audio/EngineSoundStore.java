@@ -5,23 +5,23 @@ import java.util.LinkedHashMap;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 
-public class SoundStore<KeyType> {
-	protected static SoundStore instance;
+public class EngineSoundStore extends SoundStore {
+	protected static EngineSoundStore instance;
 	protected AssetManager assetManager;
 	
-	protected LinkedHashMap<KeyType, AudioData> sounds;
+	protected LinkedHashMap<Integer, AudioData> sounds;
 	
 
-	public static SoundStore getInstance() {
+	public static EngineSoundStore getInstance() {
 		if (null == instance) { // Premier appel
-			instance = new SoundStore();
+			instance = new EngineSoundStore();
 		}
 		return instance;
 	}
 	
-	protected SoundStore() {
+	protected EngineSoundStore() {
 		this.assetManager = null; 
-		sounds = new LinkedHashMap<KeyType, AudioData>();
+		sounds = new LinkedHashMap<Integer, AudioData>();
 	}
 	
 	public void setAssetManager(AssetManager assetMgr) {
@@ -29,7 +29,7 @@ public class SoundStore<KeyType> {
 	}
 	
 
-	public void addSound(KeyType id, String path) throws Exception {
+	public void addSound(Integer id, String path) throws Exception {
 		if(assetManager != null) {
 			sounds.put(id, assetManager.loadAudio(path));
 		} else {
@@ -37,11 +37,11 @@ public class SoundStore<KeyType> {
 		}
 	}
 	
-	public LinkedHashMap<KeyType, AudioData> getSounds() {
+	public LinkedHashMap<Integer, AudioData> getSounds() {
 		return sounds;
 	}
 	
-	public AudioData getSound(KeyType key) {
+	public AudioData getSound(Integer key) {
 		return sounds.get(key);
 	}
 }

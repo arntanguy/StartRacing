@@ -8,7 +8,6 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
-import physics.tools.MathTools;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -50,10 +49,14 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		/** init the screen */
 		super.initialize(stateManager, a);
 
-		initGame();
+		try {
+			initGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	protected void initGame() {
+	protected void initGame() throws Exception {
 		super.initGame();
 
 		buildBot();
@@ -114,7 +117,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	private void buildBot() {
 		botCarProperties = new BMWM3Properties();
 		bot = new Car(assetManager, botCarProperties,
-				"Models/FerrariGreen/Car.scene");
+				"Models/FerrariGreen/Car.scene", engineSoundStore.getInstance(), soundStore.getInstance());
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();
@@ -145,9 +148,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 			if (timePlayer <= timeBot && !player.getBurstEnabled()) {
 				text = "Gagne !\n ";
-				audioMotor.playWin();
+				audioRender.play("win");
 			} else {
-				audioMotor.playLost();
+				audioRender.play("lost");
 				text = "Perdu !\n ";
 			}
 			text += String.format("Joueur:  %d : %d\n",

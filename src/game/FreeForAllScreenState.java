@@ -39,20 +39,24 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		bots = new ArrayList<Car>();
 
 		initNiftyControls();
-		initGame();
+		try {
+			initGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	protected void initGame() {
+	protected void initGame() throws Exception {
 		super.initGame();
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		
+
 		nbBots = 8;
-		digitalRemainingBots.setText(nbBots+"/"+nbBots);
+		digitalRemainingBots.setText(nbBots + "/" + nbBots);
 		nbBotsAlive = nbBots;
-		
-		for(int i=0;i<nbBots; i++) {
-		BMWM3Properties properties = new BMWM3Properties();
-			addBot(new Vector3f(new Vector3f(i*50, 27, i*50)), properties);
+
+		for (int i = 0; i < nbBots; i++) {
+			BMWM3Properties properties = new BMWM3Properties();
+			addBot(new Vector3f(new Vector3f(i * 50, 27, i * 50)), properties);
 		}
 
 		resetCars();
@@ -62,7 +66,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void initNiftyControls() {
 		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
-		digitalRemainingBots = new DigitalDisplay(nifty, screen, "digital_remaining_bots", 500);
+		digitalRemainingBots = new DigitalDisplay(nifty, screen,
+				"digital_remaining_bots", 500);
 	}
 
 	private void resetCars() {
@@ -79,7 +84,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
 		Car bot = new Car(assetManager, carProperties,
-				carProperties.getRandomModel());
+				carProperties.getRandomModel(), engineSoundStore.getInstance(),
+				soundStore.getInstance());
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 
@@ -160,7 +166,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.stop(3000);
 				}
 			}
-			digitalRemainingBots.setText(nbBotsAlive+"/"+nbBots);
+			digitalRemainingBots.setText(nbBotsAlive + "/" + nbBots);
 			if (nbBotsAlive == 0 && player.isAlive()) {
 				win = true;
 				runIsOn = false;

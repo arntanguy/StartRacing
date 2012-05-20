@@ -1,6 +1,6 @@
 package game;
 
-import audio.AudioRender;
+import audio.EngineAudioRender;
 import audio.SoundStore;
 
 import com.jme3.app.Application;
@@ -18,7 +18,8 @@ public class AbstractScreenController extends AbstractAppState implements
 	protected Screen screen;
 	protected App app;
 	protected AppStateManager stateManager;
-	protected AudioRender voiceRender;
+	
+	protected EngineAudioRender voiceRender;
 
 	public AbstractScreenController() {
 	}
@@ -66,12 +67,6 @@ public class AbstractScreenController extends AbstractAppState implements
 	}
 
 	protected void initAudioVoices() {
-		SoundStore soundStore = SoundStore.getInstance();
-		soundStore.setAssetManager(app.getAssetManager());
-
-		soundStore.addVoiceSound("freeforall", "Sound/win.wav");
 		
-		voiceRender = new AudioRender(app.getGuiNode(),
-				SoundStore.getInstance());
 	}
 }

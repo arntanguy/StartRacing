@@ -1,15 +1,14 @@
 package game;
 
-import audio.AudioRender;
-import audio.SoundStore;
+import audio.EngineAudioRender;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.screen.Screen;
 
 public class StartScreenState extends AbstractScreenController {
 
@@ -90,7 +89,6 @@ public class StartScreenState extends AbstractScreenController {
 
 	public void hover(String name) {
 		System.out.println("Hover: "+name);
-		voiceRender.playVoice(name);
 	}
 	/**
 	 * Permet d'interfacer avec le format XML.

@@ -1,13 +1,16 @@
 package game;
 
+import ia.IA;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ia.IA;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.MathTools;
 import audio.AudioRender;
+import audio.EngineAudioRender;
+import audio.EngineSoundStore;
 import audio.SoundStore;
 
 import com.jme3.asset.AssetManager;
@@ -39,7 +42,7 @@ public class Car extends VehicleControl {
 
 	private double life = 100;
 	private String driverName;
-	
+
 	private long timerNos = 0;
 	private int nosCharge = 0;
 
@@ -50,14 +53,19 @@ public class Car extends VehicleControl {
 	private CarType type;
 
 	protected ParticuleMotor particuleMotor;
-	protected AudioRender audioRender;
+	protected EngineSoundStore engineSoundStore;
+	protected SoundStore<String> otherSoundStore;
+	protected EngineAudioRender engineRender;
+	protected AudioRender<String> audioRender;
 
 	// Ensures that the stop thread is not launched more than needed
 	private boolean willStop = false;
-	
+
 	private boolean nosEnabled = false;
 
-	public Car(AssetManager assetManager, CarProperties properties, String scene) {
+	public Car(AssetManager assetManager, CarProperties properties,
+			String scene, EngineSoundStore engineSoundStore,
+			SoundStore otherSoundStore) {
 		super();
 		this.assetManager = assetManager;
 		this.properties = properties;
@@ -67,9 +75,12 @@ public class Car extends VehicleControl {
 		this.driverName = "Unknown";
 		this.type = CarType.BOT;
 
+		this.otherSoundStore = otherSoundStore;
+		this.engineSoundStore = engineSoundStore;
+
 		buildCar(scene);
 		buildParticuleMotor();
-		buildAudioRender();
+		buildengineRender();
 	}
 
 	private void buildParticuleMotor() {
@@ -77,8 +88,9 @@ public class Car extends VehicleControl {
 		particuleMotor = new ParticuleMotor(assetManager);
 	}
 
-	private void buildAudioRender() {
-		audioRender = new AudioRender(carNode, SoundStore.getInstance());
+	private void buildengineRender() {
+		engineRender = new EngineAudioRender(carNode, engineSoundStore);
+		audioRender = new AudioRender<String>(carNode, otherSoundStore);
 	}
 
 	private void buildCar(String scene) {
@@ -255,47 +267,48 @@ public class Car extends VehicleControl {
 	public boolean getBurstEnabled() {
 		return particuleMotor.getBurstEnabled();
 	}
-	
-	public void addNos()	{
-		if (!nosEnabled)	{
+
+	public void addNos() {
+		if (!nosEnabled) {
 			// Vérifier qu'il reste une charge
-			if (nosCharge > 0)	{
+			if (nosCharge > 0) {
 				nosEnabled = true;
 				nosCharge--;
 				enginePhysics.activeNos();
 				particuleMotor.addNos(carNode);
 
 				enginePhysics.activeNos();
-				
+
 				timerNos = System.currentTimeMillis();
 			}
-		}	
+		}
 	}
 
-	public void stopNos()	{
-		if (nosEnabled)	{
+	public void stopNos() {
+		if (nosEnabled) {
 			nosEnabled = false;
 			particuleMotor.removeNos(carNode);
 			timerNos = 0;
-			
+
 			enginePhysics.stopNos();
 		}
 	}
-	public void controlNos()	{
-		if (nosEnabled && System.currentTimeMillis() - timerNos > 2500)	{
+
+	public void controlNos() {
+		if (nosEnabled && System.currentTimeMillis() - timerNos > 2500) {
 			particuleMotor.removeNos(carNode);
 			enginePhysics.stopNos();
-			
-			nosEnabled = false;			
+
+			nosEnabled = false;
 			timerNos = 0;
 		}
 	}
-	
-	public boolean getNosActivity()	 {
+
+	public boolean getNosActivity() {
 		return nosEnabled;
 	}
-	
-	public void setNosCharge(int nombre)	{
+
+	public void setNosCharge(int nombre) {
 		nosCharge = nombre;
 	}
 
@@ -303,7 +316,7 @@ public class Car extends VehicleControl {
 		life = 0;
 		particuleMotor.addExplosion(carNode);
 		enginePhysics.setBreaking(true);
-		audioRender.playBurst();
+		audioRender.play("burst");
 		stop(1000);
 	}
 
@@ -312,15 +325,15 @@ public class Car extends VehicleControl {
 	}
 
 	public void updateSound(int rpm) {
-		audioRender.setRPM(rpm);
+		engineRender.setRPM(rpm);
 	}
-	
-	public void mute()	{
-		audioRender.mute();
+
+	public void mute() {
+		engineRender.mute();
 	}
 
 	public void updateSound() {
-		audioRender.setRPM(enginePhysics.getRpm());
+		engineRender.setRPM(enginePhysics.getRpm());
 	}
 
 	/**
@@ -338,7 +351,7 @@ public class Car extends VehicleControl {
 				public void run() {
 					accelerate(0);
 					setLinearVelocity(Vector3f.ZERO);
-//					audioRender.mute();
+					// engineRender.mute();
 					willStop = false;
 				}
 			}, delay);
@@ -346,10 +359,10 @@ public class Car extends VehicleControl {
 	}
 
 	public void setLife(double life) {
-		this.life = (life <= 100) ? life : 100; 
+		this.life = (life <= 100) ? life : 100;
 	}
-	
+
 	public boolean isAlive() {
-		return (life>0.f && !getBurstEnabled());
+		return (life > 0.f && !getBurstEnabled());
 	}
 }

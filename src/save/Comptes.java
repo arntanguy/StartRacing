@@ -5,20 +5,24 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import physics.CarProperties;
+
 import com.thoughtworks.xstream.*;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class Comptes {
 	
-	private final String NOMFICHIERXML = "save/Comptes.xml";
-	private ArrayList<Profil> listProfil;
+	private final static String NOMFICHIERXML = "save/Comptes.xml";
+	private final static String CARXML = "save/Cars.xml";
+	private static ArrayList<Profil> listProfil = new ArrayList<Profil>();
+	private static ArrayList<CarProperties> listCar = new ArrayList<CarProperties>();	
 	
-	public Comptes () {
+	/*public Comptes () {
 		listProfil = new ArrayList<Profil>();
 		Recuperer();
-	}
+	}*/
 	
-	public int searchId () {
+	public static int searchId () {
 		int max = 0;
 		for (int i = 0; i < listProfil.size(); ++i) {
 			if (listProfil.get(i).getId() > max) {
@@ -29,7 +33,7 @@ public class Comptes {
 		return max;
 	}
 	
-	public boolean existLogin(String login) {
+	public static boolean existLogin(String login) {
 		for (int i = 0; i < listProfil.size(); ++i) {
 			if (listProfil.get(i).getLogin().equals(login)) {
 				return true;
@@ -38,8 +42,8 @@ public class Comptes {
 		return false;
 	}
 	
-	public boolean Enregistrer (Profil profil) {
-		listProfil.add(profil);
+	public static boolean Enregistrer () {
+		//listProfil.add(profil);
 		XStream xs = new XStream(new DomDriver());
 		try {
 		    FileOutputStream fs = new FileOutputStream(NOMFICHIERXML);
@@ -51,7 +55,7 @@ public class Comptes {
 		return true;
 	}
 	
-	public boolean Recuperer() {
+	public static boolean Recuperer() {
 		XStream xstream = new XStream(new DomDriver());
 		listProfil = new ArrayList<Profil> ();
         try {
@@ -60,16 +64,64 @@ public class Comptes {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;
-        }    
+        } catch (IndexOutOfBoundsException e) {
+        	return false;
+        }
 		return true;
 	}
 
-	public ArrayList<Profil> getListProfil() {
+	public static ArrayList<Profil> getListProfil() {
 		return listProfil;
 	}
 	
-	/*public void addProfil(Profil profil) {
+	public static void addProfil(Profil profil) {
 		listProfil.add(profil);
-	}*/
+	}
 	
+	public static void modifier (Profil profil) {
+		for (int i = 0; i < listProfil.size(); ++i) {
+			if (listProfil.get(i).getId() == profil.getId()) {
+				listProfil.get(i).setCar(profil.getCar());
+				listProfil.get(i).setChoixCar(profil.getChoixCar());
+				listProfil.get(i).setLogin(profil.getLogin());
+				listProfil.get(i).setTimedemi(profil.getTimeDemi());
+				listProfil.get(i).setTimequart(profil.getTimeQuart());
+				listProfil.get(i).setTimefree(profil.getTimefree());
+				listProfil.get(i).setCardead(profil.getCardead());
+				listProfil.get(i).setMonnaie(profil.getMonnaie());
+			}
+		}
+	}
+	
+	public static boolean RecupeCar() {
+		XStream xstream = new XStream(new DomDriver());
+		listCar = new ArrayList<CarProperties> ();
+        try {
+            FileInputStream fs= new FileInputStream(CARXML);
+            listCar = (ArrayList<CarProperties>) xstream.fromXML(fs);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+        	return false;
+        }
+		return true;
+	}
+	
+	public static boolean SaveCar() {
+		XStream xstream = new XStream(new DomDriver());
+		listCar = new ArrayList<CarProperties>  ();
+        try {
+            FileInputStream fs= new FileInputStream("save/Cars.xml");
+            listCar = (ArrayList<CarProperties>) xstream.fromXML(fs);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	public static ArrayList<CarProperties> getListCar() { 
+		return listCar;
+	}
 }

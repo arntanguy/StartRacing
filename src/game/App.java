@@ -38,9 +38,12 @@ public class App extends SimpleApplication {
 		addXMLFiles();		
 		/****** FIN DEBUG *****/
 
-//		gotoStart();
-		gotoOptions();
-
+		gotoStart();
+		//gotoOptions();
+		//gotoCrtProfil();
+		//gotoAffProfil();
+		
+		
 		// disable the fly cam
 		flyCam.setEnabled(false);
 
@@ -101,14 +104,21 @@ public class App extends SimpleApplication {
 	public void gotoCrtProfil() {
 		nifty.addXml("Interface/Nifty/CreateProfil.xml");
 		nifty.gotoScreen("createprofil");
-		//XXX
-		
-        //stateManager.attach(gameScreenController);
+        CreateProfilScreen cpfscreen = (CreateProfilScreen) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(cpfscreen);
 	}
 	
 	public void gotoAffProfil() {
 		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
-		nifty.gotoScreen("chooseprofil");
-		//XXX
+        nifty.gotoScreen("chooseprofil");
+        ProfilsScreen pfscreen = (ProfilsScreen) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(pfscreen);
+	}
+	
+	public void gotoAchat() {
+		nifty.addXml("Interface/Nifty/Achat.xml");
+        nifty.gotoScreen("achat");
+        Achat achat = (Achat) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(achat);
 	}
 }

@@ -46,4 +46,5 @@ public class SkylineProperties extends CarProperties {
 		torque.put(1000, 50);
 		torque.put(10000, 0);
 	}
+	
 }

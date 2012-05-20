@@ -8,6 +8,8 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
+import save.Comptes;
+import save.ProfilCurrent;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -115,7 +117,10 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	}
 	
 	private void buildBot() {
-		botCarProperties = new BMWM3Properties();
+		//botCarProperties = new BMWM3Properties();
+		//XXX
+		botCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		bot = new Car(assetManager, botCarProperties,
 				"Models/FerrariGreen/Car.scene", engineSoundStore.getInstance(), soundStore.getInstance());
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
@@ -153,15 +158,57 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				audioRender.play("lost");
 				text = "Perdu !\n ";
 			}
-			text += String.format("Joueur:  %d : %d\n",
-					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
-					(timePlayer % 1000) / 1);
+			long secondes = TimeUnit.MILLISECONDS.toSeconds(timePlayer);
+			long millisec = (timePlayer % 1000) / 10;
+			String time = String.format("%d : %d",secondes, millisec);
+			
+			text += "Joueur:  " + time + "\n";
+			
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
-					(timeBot % 1000) / 1);
-
+					(timeBot % 1000) / 10);
+			int argent = 0;
+			
+			if (ProfilCurrent.getInstance() != null) {
+			//Enregistrement du temps lorsque le temps est meilleur que le précédent
+				if (this instanceof HalfGameScreenState) {
+					if (secondes != 0)
+						argent = (int) (1200000 / secondes);
+					if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
+						String tps[] = ProfilCurrent.getInstance().getTimeDemi().split(" : ");
+						if (Long.parseLong(tps[0]) > secondes || 
+								(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+							ProfilCurrent.getInstance().setTimedemi(time);
+							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+							text += "\n" + argent + " Eur";
+						}
+					} else {
+						ProfilCurrent.getInstance().setTimedemi(time);
+						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+						text += "\n" + argent + " Eur";
+					}
+				} else if (this instanceof QuarterGameScreenState) {
+					if (secondes != 0)
+						argent = (int) (500000 / secondes);
+					if (!ProfilCurrent.getInstance().getTimeQuart().equals("")) {
+						String tps[] = ProfilCurrent.getInstance().getTimeQuart().split(" : ");
+						if (Long.parseLong(tps[0]) > secondes ||
+								(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+							ProfilCurrent.getInstance().setTimequart(time);
+							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+							text += "\n" + argent + " Eur";
+						}
+					} else {
+						ProfilCurrent.getInstance().setTimequart(time);
+						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+						text += "\n" + argent + " Eur";
+					}
+				}
+				Comptes.modifier(ProfilCurrent.getInstance());
+				Comptes.Enregistrer();
+			}
 			screen.findElementByName("startTimer")
-					.getRenderer(TextRenderer.class).setText(text);
+			.getRenderer(TextRenderer.class).setText(text);
 
 			runFinish = true;
 			runIsOn = false;

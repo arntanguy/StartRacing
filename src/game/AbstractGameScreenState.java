@@ -3,9 +3,12 @@ package game;
 import game.Car.CarType;
 import physics.BMWM3Properties;
 import physics.CarProperties;
+import physics.DodgeViperProperties;
 import physics.EnginePhysics;
+import physics.SkylineProperties;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
+import save.ProfilCurrent;
 import audio.AudioRender;
 import audio.SoundStore;
 
@@ -268,8 +271,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	}
 
 	protected void buildPlayer() {
-		playerCarProperties = new BMWM3Properties();
-
+		//playerCarProperties = new BMWM3Properties();			
+		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
+			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		//XXX
+		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties, "ferrari");
 //		player = new Car(assetManager, playerCarProperties, "corvette.j3o");

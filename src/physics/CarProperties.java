@@ -219,4 +219,20 @@ public class CarProperties {
 		int rand = MathTools.randBetween(0, availableModels.size());		
 		return availableModels.get(rand);
 	}
+
+	public double getFinalGearRatio() {
+		return finalGearRatio;
+	}
+
+	public void setFinalGearRatio(double finalGearRatio) {
+		this.finalGearRatio = finalGearRatio;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 }

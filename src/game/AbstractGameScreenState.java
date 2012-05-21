@@ -183,7 +183,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		rootNode.attachChild(sky);
 
 		// Enable a chase cam
-		chaseCam = new ChaseCamera(app.getCamera(), player.getChassis(),
+		chaseCam = new ChaseCamera(app.getCamera(), player.getNode(),
 				inputManager);
 		chaseCam.setSmoothMotion(true);
 		chaseCam.setMaxDistance(100);
@@ -271,8 +271,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerCarProperties = new BMWM3Properties();
 
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties,
-				"Models/FerrariRed/Car.scene");
+		player = new Car(assetManager, playerCarProperties, "ferrari");
+//		player = new Car(assetManager, playerCarProperties, "corvette.j3o");
+
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
 		player.getNode().addControl(player);

@@ -114,7 +114,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	private void buildBot() {
 		botCarProperties = new BMWM3Properties();
 		bot = new Car(assetManager, botCarProperties,
-				"Models/FerrariGreen/Car.scene");
+				"ferrari green");
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();

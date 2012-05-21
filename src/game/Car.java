@@ -33,7 +33,7 @@ public class Car extends VehicleControl {
 
 	private Node carNode;
 
-	private Geometry chasis;
+	private Geometry chassis;
 	private float wheelRadius;
 	private float steeringValue = 0;
 
@@ -81,101 +81,41 @@ public class Car extends VehicleControl {
 		audioRender = new AudioRender(carNode, SoundStore.getInstance());
 	}
 
-	private void buildCar(String scene) {
-		float stiffness = properties.getStiffness();// 200=f1 car
-		float compValue = properties.getCompValue(); // (lower than damp!)
-		float dampValue = properties.getDampValue();
-		final float mass = properties.getMass();
-
-		this.setMass(mass);
-
-		// Load model and get chassis Geometry
-		carNode = (Node) assetManager.loadModel(scene);
-		carNode.setShadowMode(ShadowMode.Cast);
-
-		// Create a hull collision shape for the chassis
-		chasis = findGeom(carNode, "Car");
-		BoundingBox box = (BoundingBox) chasis.getModelBound();
-		CollisionShape carHull = CollisionShapeFactory
-				.createDynamicMeshShape(chasis);
-		this.setCollisionShape(carHull);
-
-		// Create a vehicle control
-		carNode.addControl(this);
-
-		// Setting default values for wheels
-		this.setSuspensionCompression(compValue * 2.0f
-				* FastMath.sqrt(stiffness));
-		this.setSuspensionDamping(dampValue * 2.0f * FastMath.sqrt(stiffness));
-		this.setSuspensionStiffness(stiffness);
-		this.setMaxSuspensionForce(10000);
-
-		// Create four wheels and add them at their locations
-		// note that our fancy car actually goes backwards..
-		Vector3f wheelDirection = new Vector3f(0, -1, 0);
-		Vector3f wheelAxle = new Vector3f(-1, 0, 0);
-
-		Geometry wheel_fr = findGeom(carNode, "WheelFrontRight");
-		wheel_fr.center();
-		box = (BoundingBox) wheel_fr.getModelBound();
-		wheelRadius = box.getYExtent();
-		float back_wheel_h = (wheelRadius * 1.7f) - 1f;
-		float front_wheel_h = (wheelRadius * 1.9f) - 1f;
-		this.addWheel(wheel_fr.getParent(),
-				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, true);
-
-		Geometry wheel_fl = findGeom(carNode, "WheelFrontLeft");
-		wheel_fl.center();
-		box = (BoundingBox) wheel_fl.getModelBound();
-		this.addWheel(wheel_fl.getParent(),
-				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, true);
-
-		Geometry wheel_br = findGeom(carNode, "WheelBackRight");
-		wheel_br.center();
-		box = (BoundingBox) wheel_br.getModelBound();
-		this.addWheel(wheel_br.getParent(),
-				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, false);
-
-		Geometry wheel_bl = findGeom(carNode, "WheelBackLeft");
-		wheel_bl.center();
-		box = (BoundingBox) wheel_bl.getModelBound();
-		this.addWheel(wheel_bl.getParent(),
-				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, false);
-
-		this.getWheel(0).setFrictionSlip(11f);
-		this.getWheel(1).setFrictionSlip(11f);
-		this.getWheel(2).setFrictionSlip(10f);
-		this.getWheel(3).setFrictionSlip(10f);
-	}
-
-	private Geometry findGeom(Spatial spatial, String name) {
-		if (spatial instanceof Node) {
-			Node node = (Node) spatial;
-			for (int i = 0; i < node.getQuantity(); i++) {
-				Spatial child = node.getChild(i);
-				Geometry result = findGeom(child, name);
-				if (result != null) {
-					return result;
-				}
-			}
-		} else if (spatial instanceof Geometry) {
-			if (spatial.getName().startsWith(name)) {
-				return (Geometry) spatial;
-			}
+	private void buildCar(String model) {
+		if ("corvette".equals(model))	{
+			CarFactory.createCorvette(assetManager, this);
 		}
-		return null;
+		else if ("ferrari red".equals(model))	{
+			CarFactory.createFerrari(assetManager, this, "Red");
+		}
+		else if ("ferrari blue".equals(model))	{
+			CarFactory.createFerrari(assetManager, this, "Blue");
+		}
+		else if ("ferrari green".equals(model))	{
+			CarFactory.createFerrari(assetManager, this, "Green");
+		}
+		else if ("ferrari orange".equals(model))	{
+			CarFactory.createFerrari(assetManager, this, "Orange");
+		}
+		else	{
+			CarFactory.createFerrari(assetManager, this, "Red");
+		}
 	}
 
 	public Geometry getChassis() {
-		return findGeom(carNode, "Car");
+		return chassis;
 	}
 
+	public void setChassis(Geometry chassis)	{
+		this.chassis = chassis;
+	}
+	
 	public Node getNode() {
 		return carNode;
+	}
+	
+	public void setNode(Node node)	{
+		this.carNode = node;
 	}
 
 	public CarProperties getProperties() {
@@ -199,6 +139,14 @@ public class Car extends VehicleControl {
 				: 0.5);
 		this.steeringValue = (float) ((steeringValue >= -0.5) ? steeringValue
 				: -0.5);
+	}
+	
+	public float getWheelRadius()	{
+		return wheelRadius;
+	}
+	
+	public void setWheelRadius(float radius)	{
+		this.wheelRadius = radius;
 	}
 
 	public void increaseLife(double value) {

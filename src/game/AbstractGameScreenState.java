@@ -49,6 +49,13 @@ import com.jme3.util.SkyFactory;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 
+/**
+ * This class contains the common points between all games, such as the controls
+ * of the car, initializing sounds, maps...
+ * 
+ * @author TANGUY Arnaud
+ * 
+ */
 public abstract class AbstractGameScreenState extends AbstractScreenController
 		implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
@@ -271,13 +278,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	}
 
 	protected void buildPlayer() {
-		//playerCarProperties = new BMWM3Properties();			
-		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
-			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-		//XXX
-		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
-			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-		
+		// playerCarProperties = new BMWM3Properties();
+		// playerCarProperties = (ProfilCurrent.getInstance() == null) ? new
+		// CarProperties () :
+		// ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		// XXX
+		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties()
+				: ProfilCurrent.getInstance().getCar()
+						.get(ProfilCurrent.getInstance().getChoixCar());
+
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties,
 				"Models/FerrariRed/Car.scene", engineSoundStore.getInstance(),

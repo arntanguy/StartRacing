@@ -1,7 +1,7 @@
 package game;
 
-import audio.EngineAudioRender;
 import audio.SoundStore;
+import audio.VoiceRender;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
@@ -11,6 +11,12 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
+/**
+ * A basic ScreenState
+ * 
+ * @author TANGUY arnaud
+ * 
+ */
 public class AbstractScreenController extends AbstractAppState implements
 		ScreenController {
 
@@ -18,8 +24,8 @@ public class AbstractScreenController extends AbstractAppState implements
 	protected Screen screen;
 	protected App app;
 	protected AppStateManager stateManager;
-	
-	protected EngineAudioRender voiceRender;
+
+	protected VoiceRender voiceRender;
 
 	public AbstractScreenController() {
 	}
@@ -29,7 +35,7 @@ public class AbstractScreenController extends AbstractAppState implements
 		System.err.println("INITIALIZE");
 		this.stateManager = stateManager;
 		this.app = (App) app;
-		
+
 		initAudioVoices();
 	}
 
@@ -67,6 +73,15 @@ public class AbstractScreenController extends AbstractAppState implements
 	}
 
 	protected void initAudioVoices() {
-		
+		SoundStore<String> soundStore = SoundStore.getInstance();
+		soundStore.setAssetManager(app.getAssetManager());
+		try {
+			soundStore.addSound("freeforall", "Sound/win.wav");
+			soundStore.addSound("halfmile", "Sound/car_crash.wav");
+			soundStore.addSound("quartermile", "Sound/lost.wav");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		voiceRender = new VoiceRender(app.getGuiNode(), soundStore);
 	}
 }

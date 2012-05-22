@@ -5,15 +5,19 @@ import java.util.LinkedHashMap;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 
-public class EngineSoundStore extends SoundStore {
+/**
+ * Singleton keeping the sound data required by the engine
+ * @author TANGUY Arnaud
+ *
+ */
+public class EngineSoundStore extends SoundStore<Integer> {
 	protected static EngineSoundStore instance;
 	protected AssetManager assetManager;
 	
 	protected LinkedHashMap<Integer, AudioData> sounds;
-	
 
 	public static EngineSoundStore getInstance() {
-		if (null == instance) { // Premier appel
+		if (null == instance) { // First call
 			instance = new EngineSoundStore();
 		}
 		return instance;

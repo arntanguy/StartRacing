@@ -7,6 +7,15 @@ import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
 
+/**
+ * The audioRenderer creates sound nodes from audiodata, and then provide basic
+ * playback functions such as play, stop
+ * 
+ * @author TANGUY Arnaud
+ * 
+ * @param <KeyType>
+ *            The type of the key used to find the audio nodes.
+ */
 public class AudioRender<KeyType> {
 	protected Node rootNode;
 	protected LinkedHashMap<KeyType, AudioNode> soundNodes;
@@ -26,6 +35,7 @@ public class AudioRender<KeyType> {
 			KeyType key = it.next();
 			AudioNode sample = new AudioNode();
 			sample.setAudioData(sounds.get(key), null);
+			sample.setName(key.toString());
 			sample.setLooping(true);
 			sample.setPositional(true);
 			sample.setVolume(0);
@@ -76,6 +86,7 @@ public class AudioRender<KeyType> {
 	}
 
 	public void stop(KeyType sound) {
+		System.out.println("AudioRender :: Stop sound " + sound);
 		AudioNode soundNode = soundNodes.get(sound);
 		soundNode.stop();
 	}

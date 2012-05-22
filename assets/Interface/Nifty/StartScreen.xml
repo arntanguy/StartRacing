@@ -21,13 +21,13 @@
 				
 				<control id="halfMileButton" align="center" name="button" label="Course Demi-Mile"
 					width="32%" height="10%">
-					<interact onClick="startGame(half)" />
+					<interact onMouseOver="hover(halfmile)" onClick="startGame(half)" />
 				</control>
 				<panel height="5px" />
 				
 				<control id="quarterMileButton" align="center" name="button" label="Course Quart de Mile"
 					width="32%" height="10%">
-					<interact onClick="startGame(quarter)" />
+					<interact onMouseOver="hover(quartermile)" onClick="startGame(quarter)" />
 				</control>
 				<panel height="5px" />
 				

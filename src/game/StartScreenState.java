@@ -1,7 +1,5 @@
 package game;
 
-import audio.EngineAudioRender;
-
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
@@ -27,6 +25,7 @@ public class StartScreenState extends AbstractScreenController {
 		inputManager.setCursorVisible(true);
 		
 		this.inputManager = app.getInputManager();
+		voiceRender.setRootNode(app.getGuiNode());
 	}
 
 	@Override
@@ -89,6 +88,7 @@ public class StartScreenState extends AbstractScreenController {
 
 	public void hover(String name) {
 		System.out.println("Hover: "+name);
+		voiceRender.playVoice(name);
 	}
 	/**
 	 * Permet d'interfacer avec le format XML.

@@ -10,6 +10,9 @@ import physics.tools.MathTools;
 import save.Comptes;
 import save.ProfilCurrent;
 
+import audio.EngineSoundStore;
+import audio.SoundStore;
+
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -69,7 +72,6 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			//XXX
 			CarProperties properties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties() :
 				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-			//BMWM3Properties properties = new BMWM3Properties();
 			addBot(new Vector3f(new Vector3f(i*50, 27, i*50)), properties);
 		}
 
@@ -98,8 +100,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void addBot(Vector3f location, CarProperties carProperties) {
 		Car bot = new Car(assetManager, carProperties,
-				carProperties.getRandomModel(), engineSoundStore.getInstance(),
-				soundStore.getInstance());
+				carProperties.getRandomModel(), EngineSoundStore.getInstance(),
+				SoundStore.getInstance());
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 
@@ -163,7 +165,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		int nbBotsAlive = 0;
+		nbBotsAlive = 0;
 		String sTimer;
 		String conclusion;
 		

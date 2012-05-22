@@ -5,6 +5,12 @@ import java.util.LinkedHashMap;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 
+/**
+ * A basic singleton to store audio data
+ * @author TANGUY Arnaud
+ *
+ * @param <KeyType>
+ */
 public class SoundStore<KeyType> {
 	protected static SoundStore instance;
 	protected AssetManager assetManager;

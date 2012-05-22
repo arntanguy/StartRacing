@@ -6,6 +6,11 @@ import java.util.TreeMap;
 
 import physics.tools.MathTools;
 
+/**
+ * Holds the main properties of the car : torque map, redlines, weight...
+ * @author TANGUY Arnaud
+ *
+ */
 public class CarProperties {
 	// tire height (24.5, 26, 27.5, ...cm)
 	private double tireHeight = 24.5;

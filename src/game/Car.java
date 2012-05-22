@@ -26,6 +26,11 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
+/**
+ * Loads a car model, controls 
+ * @author arnaud
+ *
+ */
 public class Car extends VehicleControl {
 
 	private AssetManager assetManager;

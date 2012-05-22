@@ -4,8 +4,14 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.screen.Screen;
 
+/**
+ * Shows a digital display, updating the text without stacking it
+ * 
+ * @author TANGUY Arnaud
+ * 
+ */
 public class DigitalDisplay {
-	
+
 	private Label label;
 	/**
 	 * Delay in ms between two updates

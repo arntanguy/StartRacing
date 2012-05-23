@@ -697,7 +697,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				// Trigger only if the sound is not playing
 				if (timerCrashSound == 0
 						|| System.currentTimeMillis() - timerCrashSound > 2000) {
-					audioRender.play("crash");
+					audioRender.play("crash", 20f);
 
 					timerCrashSound = System.currentTimeMillis();
 				}

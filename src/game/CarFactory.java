@@ -1,7 +1,5 @@
 package game;
 
-import physics.CarProperties;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.shapes.CollisionShape;

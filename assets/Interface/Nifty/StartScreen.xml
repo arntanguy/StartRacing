@@ -12,20 +12,20 @@
 				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="${CALL.getTitle()}" />
 					
-				<control id="freeRunButton" align="center" name="button" label="Course Libre"
+				<control id="freeforall" align="center" name="button" label="Course Libre"
 					width="32%" height="10%">
-					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()" />
-					<!-- <effect><onFocus oneShot="true" name="playSound" sound="freeforallSound" /></effect> -->
+					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>
+					<effect><onFocus id="freeforall" /></effect>
 				</control>
 				<panel height="5px" />
 				
-				<control id="halfMileButton" align="center" name="button" label="Course Demi-Mile"
+				<control id="halfmile" align="center" name="button" label="Course Demi-Mile"
 					width="32%" height="10%">
-					<interact onMouseOver="hover(halfmile)" onClick="startGame(half)" />
+					<interact onMouseOver="hover(halfmile)" onClick="startGame(half)" />					
 				</control>
 				<panel height="5px" />
 				
-				<control id="quarterMileButton" align="center" name="button" label="Course Quart de Mile"
+				<control id="quartermile" align="center" name="button" label="Course Quart de Mile"
 					width="32%" height="10%">
 					<interact onMouseOver="hover(quartermile)" onClick="startGame(quarter)" />
 				</control>

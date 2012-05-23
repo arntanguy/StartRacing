@@ -82,7 +82,7 @@ public class AudioRender<KeyType> {
 		AudioNode sample = soundNodes.get(sound);
 		sample.setVolume(volume);
 		sample.setLooping(looping);
-		sample.playInstance();
+		sample.play();
 	}
 
 	public void stop(KeyType sound) {

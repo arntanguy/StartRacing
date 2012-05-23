@@ -121,9 +121,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		botCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties()
 				: ProfilCurrent.getInstance().getCar()
 						.get(ProfilCurrent.getInstance().getChoixCar());
-		bot = new Car(assetManager, botCarProperties,
-				"Models/FerrariGreen/Car.scene",
-				EngineSoundStore.getInstance(), SoundStore.getInstance());
+		bot = new Car(assetManager, botCarProperties, "ferrari green");
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();

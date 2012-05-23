@@ -16,7 +16,9 @@ public class CarProperties {
 	private double tireHeight = 24.5;
 	// transmission final gear (2.54, 1.43) (final drive ratio)
 	protected double finalGearRatio = 2.5;
-	// Tire radius in meters
+	/**
+	 * Tire radius in meters
+	 */
 	protected double tireRadius = 0.3;
 
 	// Weight in kg

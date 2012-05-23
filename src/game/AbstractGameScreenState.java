@@ -190,7 +190,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		rootNode.attachChild(sky);
 
 		// Enable a chase cam
-		chaseCam = new ChaseCamera(app.getCamera(), player.getChassis(),
+		chaseCam = new ChaseCamera(app.getCamera(), player.getNode(),
 				inputManager);
 		chaseCam.setSmoothMotion(true);
 		chaseCam.setMaxDistance(100);
@@ -276,21 +276,18 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		audioRender = new AudioRender<String>(rootNode, soundStore);
 	}
-
 	protected void buildPlayer() {
-		// playerCarProperties = new BMWM3Properties();
-		// playerCarProperties = (ProfilCurrent.getInstance() == null) ? new
-		// CarProperties () :
-		// ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-		// XXX
-		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties()
-				: ProfilCurrent.getInstance().getCar()
-						.get(ProfilCurrent.getInstance().getChoixCar());
-
+		//playerCarProperties = new F430Properties();			
+		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
+			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		//XXX
+		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties,
-				"Models/FerrariRed/Car.scene", engineSoundStore.getInstance(),
-				soundStore.getInstance());
+		player = new Car(assetManager, playerCarProperties, "ferrari red");
+//		player = new Car(assetManager, playerCarProperties, "corvette.j3o");
+
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
 		player.getNode().addControl(player);

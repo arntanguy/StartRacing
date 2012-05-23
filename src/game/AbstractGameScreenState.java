@@ -280,7 +280,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties, "ferrari");
+		player = new Car(assetManager, playerCarProperties, "ferrari red");
 //		player = new Car(assetManager, playerCarProperties, "corvette.j3o");
 
 		player.setType(CarType.PLAYER);

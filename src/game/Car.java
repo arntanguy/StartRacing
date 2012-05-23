@@ -98,7 +98,7 @@ public class Car extends VehicleControl {
 			CarFactory.createFerrari(assetManager, this, "Orange");
 		}
 		else	{
-			CarFactory.createFerrari(assetManager, this, "Red");
+			CarFactory.createFerrari(assetManager, this, "Blue");
 		}
 	}
 

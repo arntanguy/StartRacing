@@ -257,7 +257,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// channels.put(5338, "Models/Default/5338_P.wav");
 		// channels.put(5712, "Models/Default/5712_P.wav");
 		// channels.put(6112, "Models/Default/6112_P.wav");
-		soundStore.addEngineSound(8540, "Models/Default/6540_P.wav");
+		soundStore.addEngineSound(8700, "Models/Default/6540_P.wav");
 
 		soundStore.addExtraSound("start", "Models/Default/start.wav");
 		soundStore.addExtraSound("up", "Models/Default/up.wav");
@@ -272,12 +272,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	}
 
 	protected void buildPlayer() {
-		playerCarProperties = new F430Properties();			
+		//playerCarProperties = new F430Properties();			
 		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
 			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		//XXX
-		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
-		//	ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties, "ferrari");

@@ -1,5 +1,6 @@
 package audio;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -20,14 +21,14 @@ public class AudioRender<KeyType> {
 	protected Node rootNode;
 	protected LinkedHashMap<KeyType, AudioNode> soundNodes;
 
-	public AudioRender(Node rootNode, SoundStore soundStore) {
+	public AudioRender(Node rootNode, SoundStore<KeyType> soundStore) {
 		soundNodes = new LinkedHashMap<KeyType, AudioNode>();
 		this.rootNode = rootNode;
 		createSoundNodes(soundStore);
 	}
 
-	private void createSoundNodes(SoundStore soundStore) {
-		LinkedHashMap<KeyType, AudioData> sounds = soundStore.getSounds();
+	private void createSoundNodes(SoundStore<KeyType> soundStore) {
+		HashMap<KeyType, AudioData> sounds = soundStore.getSounds();
 		// Charger les sons
 		Iterator<KeyType> it = sounds.keySet().iterator();
 

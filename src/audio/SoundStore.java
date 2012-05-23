@@ -1,6 +1,6 @@
 package audio;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
@@ -15,7 +15,7 @@ public class SoundStore<KeyType> {
 	protected static SoundStore instance;
 	protected AssetManager assetManager;
 	
-	protected LinkedHashMap<KeyType, AudioData> sounds;
+	protected HashMap<KeyType, AudioData> sounds;
 	
 
 	public static SoundStore getInstance() {
@@ -27,7 +27,7 @@ public class SoundStore<KeyType> {
 	
 	protected SoundStore() {
 		this.assetManager = null; 
-		sounds = new LinkedHashMap<KeyType, AudioData>();
+		sounds = new HashMap<KeyType, AudioData>();
 	}
 	
 	public void setAssetManager(AssetManager assetMgr) {
@@ -43,7 +43,7 @@ public class SoundStore<KeyType> {
 		}
 	}
 	
-	public LinkedHashMap<KeyType, AudioData> getSounds() {
+	public HashMap<KeyType, AudioData> getSounds() {
 		return sounds;
 	}
 	

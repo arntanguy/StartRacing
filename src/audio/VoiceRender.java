@@ -13,7 +13,7 @@ public class VoiceRender extends AudioRender<String> {
 
 	private AudioNode playedNode;
 
-	public VoiceRender(Node rootNode, SoundStore<String> soundStore) {
+	public VoiceRender(Node rootNode, VoiceSoundStore soundStore) {
 		super(rootNode, soundStore);
 		playedNode = null;
 	}

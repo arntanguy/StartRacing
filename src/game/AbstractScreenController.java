@@ -2,6 +2,7 @@ package game;
 
 import audio.SoundStore;
 import audio.VoiceRender;
+import audio.VoiceSoundStore;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
@@ -73,7 +74,7 @@ public class AbstractScreenController extends AbstractAppState implements
 	}
 
 	protected void initAudioVoices() {
-		SoundStore<String> soundStore = SoundStore.getInstance();
+		VoiceSoundStore soundStore = VoiceSoundStore.getInstance();
 		soundStore.setAssetManager(app.getAssetManager());
 		try {
 			soundStore.addSound("freeforall", "Sound/win.wav");

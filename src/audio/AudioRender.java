@@ -80,7 +80,9 @@ public class AudioRender<KeyType> {
 	}
 
 	public void play(KeyType sound, float volume, boolean looping) {
+		System.out.println("AudioRender :: play " + sound);
 		AudioNode sample = soundNodes.get(sound);
+		System.out.println("Sound node : " + sample.getName());
 		sample.setVolume(volume);
 		sample.setLooping(looping);
 		sample.play();

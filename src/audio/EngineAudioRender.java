@@ -12,15 +12,22 @@ public class EngineAudioRender extends AudioRender<Integer> {
 
 	public EngineAudioRender(Node rootNode, EngineSoundStore soundStore) {
 		super(rootNode, soundStore);
-
+		
 	}
 
 	public void mute() {
-		if (prevHigh != null)
-			prevHigh.setVolume(0);
+		for(Integer id : soundNodes.keySet()) {
+			soundNodes.get(id).setVolume(0f);
+		}
 
-		if (prevLow != null)
+		System.out.println("mute engine");
+		if (prevHigh != null) {
+			prevHigh.setVolume(0);
+		}
+
+		if (prevLow != null) {
 			prevLow.setVolume(0);
+		}
 	}
 
 	public void setRPM(int rpm) {

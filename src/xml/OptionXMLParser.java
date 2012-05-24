@@ -31,8 +31,8 @@ public class OptionXMLParser {
 			list = (List) xmlStream.fromXML(in);
 			
 			screenResolution = (Dimension) xmlStream.fromXML(list.getItem(0));
-			sound = (boolean) xmlStream.fromXML(list.getItem(1));
-			wideScreen = (boolean) xmlStream.fromXML(list.getItem(2));
+			sound = (Boolean) xmlStream.fromXML(list.getItem(1));
+			wideScreen = (Boolean) xmlStream.fromXML(list.getItem(2));
 			
 			return true;
 		} catch (IOException e) {

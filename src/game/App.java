@@ -35,12 +35,12 @@ public class App extends SimpleApplication {
 
 		/******* DEBUG ********/
 		XMLFileStore.validateXMLFiles(nifty);
-		nifty.setDebugOptionPanelColors(true);
+		nifty.setDebugOptionPanelColors(false);
 		addXMLFiles();		
 		/****** FIN DEBUG *****/
 
-//		gotoStart();
-		gotoOptions();
+		gotoStart();
+//		gotoOptions();
 		//gotoCrtProfil();
 		//gotoAffProfil();
 		

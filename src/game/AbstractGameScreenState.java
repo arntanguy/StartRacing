@@ -144,6 +144,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	public void onEndScreen() {
 		audioRender.mute();
 		stateManager.detach(this);
+		
+		app.gotoStart();
 	}
 
 	@Override
@@ -386,7 +388,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_Z));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_S));
-		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
 		inputManager.addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_A));
@@ -399,15 +400,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
-		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
+		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_LSHIFT));
+		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
 
-		// inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
 		inputManager.addListener(this, "Ups");
 		inputManager.addListener(this, "Downs");
-		inputManager.addListener(this, "Space");
 		inputManager.addListener(this, "Reset");
 		inputManager.addListener(this, "Mute");
 		inputManager.addListener(this, "GearUp");
@@ -415,6 +416,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "Throttle");
 		inputManager.addListener(this, "NOS");
 		inputManager.addListener(this, "Jump");
+		inputManager.addListener(this, "Menu");
+
 	}
 
 	@Override
@@ -646,7 +649,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				}
 			}
 		} else if (binding.equals("Menu")) {
-			app.gotoStart();
+			if (value) {
+				this.onEndScreen();
+			}
 		}
 	}
 

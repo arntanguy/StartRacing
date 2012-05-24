@@ -9,6 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Comptes.Recuperer();
+		Comptes.RecupeCar();
 		
 		java.util.logging.Logger.getLogger("de.lessvoid.nifty.*").setLevel(java.util.logging.Level.SEVERE);
 		java.util.logging.Logger.getAnonymousLogger().getParent().setLevel(java.util.logging.Level.SEVERE);

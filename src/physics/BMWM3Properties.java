@@ -47,5 +47,8 @@ public class BMWM3Properties extends CarProperties {
 		playerModel = "Models/FerrariRed/Car.scene";
 		availableModels.add("Models/FerrariGreen/Car.scene");
 		availableModels.add("Models/FerrariBlue/Car.scene");
+		
+		typeCar = TypeCarProperties.BMWM3;
 	}
+
 }

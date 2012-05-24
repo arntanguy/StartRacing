@@ -19,15 +19,9 @@ public class CreateProfilScreen extends AbstractScreenController {
 	private TextField cinlogin;
 	private ArrayList<CarProperties> dataAllCar;
 	private TextField erreurlog;
-	
-	private TextField standtireHeight;
-	private TextField standfinalGearRatio;
-	private TextField standtireRadius;
+
 	private TextField standweight;
-	private TextField standstiffness;
-	private TextField standmass;
-	private TextField standidleRpm;
-	private TextField standredline;
+	private TextField standpuis;
 	
 	public CreateProfilScreen () {
 		super();
@@ -48,37 +42,19 @@ public class CreateProfilScreen extends AbstractScreenController {
 		erreurlog = screen.findNiftyControl("result", TextField.class);
 		erreurlog.setEnabled(false);
 		
-		standtireHeight = screen.findNiftyControl("StandtireHeight", TextField.class);
-		standfinalGearRatio = screen.findNiftyControl("StandfinalGearRatio", TextField.class);
-		standtireRadius = screen.findNiftyControl("StandtireRadius", TextField.class);
 		standweight = screen.findNiftyControl("Standweight", TextField.class);
-		standstiffness = screen.findNiftyControl("Standstiffness", TextField.class);
-		standmass = screen.findNiftyControl("Standmass", TextField.class);
-		standidleRpm = screen.findNiftyControl("StandidleRpm", TextField.class);
-		standredline = screen.findNiftyControl("Standredline", TextField.class);
+		standpuis = screen.findNiftyControl("Standpuis", TextField.class);
 		
 		AffDataCar();
-		
-        standtireHeight.setEnabled(false);
-        standfinalGearRatio.setEnabled(false);
-        standtireRadius.setEnabled(false);
+
         standweight.setEnabled(false);
-        standstiffness.setEnabled(false);
-        standmass.setEnabled(false);
-        standidleRpm.setEnabled(false);
-        standredline.setEnabled(false);
+        standpuis.setEnabled(false);
 	}
 	
 	public void AffDataCar() {
 		
-		standtireHeight.setText(Double.toString(dataAllCar.get(0).getTireHeight()));
-		standfinalGearRatio.setText(Double.toString(dataAllCar.get(0).getFinalGearRatio()));
-		standtireRadius.setText(Double.toString(dataAllCar.get(0).getTireRadius()));
 		standweight.setText(Integer.toString(dataAllCar.get(0).getWeight()));
-		standstiffness.setText(Double.toString(dataAllCar.get(0).getStiffness()));
-		standmass.setText(Double.toString(dataAllCar.get(0).getMass()));
-		standidleRpm.setText(Integer.toString(dataAllCar.get(0).getIdleRpm()));
-		standredline.setText(Integer.toString(dataAllCar.get(0).getRedline()));
+		standpuis.setText(Double.toString(dataAllCar.get(0).getPuissance()));
 
 	}
 	

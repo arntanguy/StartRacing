@@ -1,13 +1,12 @@
 package game;
 
 import game.Car.CarType;
-import physics.BMWM3Properties;
 import physics.CarProperties;
-import physics.DodgeViperProperties;
 import physics.EnginePhysics;
-import physics.SkylineProperties;
+import physics.TypeCarProperties;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
+import save.Comptes;
 import save.ProfilCurrent;
 import audio.AudioRender;
 import audio.SoundStore;
@@ -272,11 +271,20 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected void buildPlayer() {
 		//playerCarProperties = new BMWM3Properties();			
-		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
+		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
 			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		//XXX
-		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
-			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		if (ProfilCurrent.getInstance() == null) {
+			int lenCar = Comptes.getListCar().size();
+			for (int i = 0; i < lenCar; ++i) {
+				if (Comptes.getListCar().get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+					playerCarProperties = Comptes.getListCar().get(i);
+					break;
+				}
+			}
+		} else {
+			playerCarProperties = ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		}
 		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties,

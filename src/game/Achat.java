@@ -6,6 +6,7 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.DodgeViperProperties;
 import physics.SkylineProperties;
+import physics.TypeCarProperties;
 import save.Comptes;
 import save.ProfilCurrent;
 
@@ -16,6 +17,7 @@ import com.jme3.input.InputManager;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
+import de.lessvoid.nifty.controls.ImageSelect;
 import de.lessvoid.nifty.controls.TextField;
 
 public class Achat extends AbstractScreenController {
@@ -37,38 +39,24 @@ public class Achat extends AbstractScreenController {
 	private CheckBox checkboxdv;
 	private CheckBox checkboxsl;
 	
-	private TextField BmwtireHeight;
-	private TextField BmwfinalGearRatio;
-	private TextField BmwtireRadius;
+
 	private TextField Bmwweight;
-	private TextField Bmwstiffness;
-	private TextField Bmwmass;
-	private TextField BmwidleRpm;
-	private TextField Bmwredline;
-	private TextField DVtireHeight;
-	private TextField DVfinalGearRatio;
-	private TextField DVtireRadius;
+	private TextField Bmwpuis;
 	private TextField DVweight;
-	private TextField DVstiffness;
-	private TextField DVmass;
-	private TextField DVidleRpm;
-	private TextField DVredline;
-	private TextField SLtireHeight;
-	private TextField SLfinalGearRatio;
-	private TextField SLtireRadius;
+	private TextField DVpuis;
 	private TextField SLweight;
-	private TextField SLstiffness;
-	private TextField SLmass;
-	private TextField SLidleRpm;
-	private TextField SLredline;
+	private TextField SLpuis;
 	
 	private TextField SLprix;
 	private TextField DVprix;
 	private TextField BMWprix;
 	
+	private ImageSelect imgCar;
+	private boolean droite;
+	
 	public Achat() {
 		super();
-		Comptes.RecupeCar();
+		//Comptes.RecupeCar();
 		dataAllCar = Comptes.getListCar();
 		prixbmw = 48000;
 		prixdv = 34000;
@@ -77,6 +65,7 @@ public class Achat extends AbstractScreenController {
 		hasBmw = false;
 		hasDv = false;
 		hasSk = false;
+		droite = true;
 	}
 	
 	@Override
@@ -92,30 +81,14 @@ public class Achat extends AbstractScreenController {
 		checkboxdv = screen.findNiftyControl("Dodge", CheckBox.class);
 		checkboxsl = screen.findNiftyControl("Skyline", CheckBox.class);
 		
-		BmwtireHeight = screen.findNiftyControl("BmwtireHeight", TextField.class);
-		BmwfinalGearRatio = screen.findNiftyControl("BmwfinalGearRatio", TextField.class);
-		BmwtireRadius = screen.findNiftyControl("BmwtireRadius", TextField.class);
+		imgCar = screen.findNiftyControl("imgcar", ImageSelect.class);
+		
 		Bmwweight = screen.findNiftyControl("Bmwweight", TextField.class);
-		Bmwstiffness = screen.findNiftyControl("Bmwstiffness", TextField.class);
-		Bmwmass = screen.findNiftyControl("Bmwmass", TextField.class);
-		BmwidleRpm = screen.findNiftyControl("BmwidleRpm", TextField.class);
-		Bmwredline = screen.findNiftyControl("Bmwredline", TextField.class);
-		DVtireHeight = screen.findNiftyControl("DVtireHeight", TextField.class);
-		DVfinalGearRatio = screen.findNiftyControl("DVfinalGearRatio", TextField.class);
-		DVtireRadius = screen.findNiftyControl("DVtireRadius", TextField.class);
+		Bmwpuis  = screen.findNiftyControl("Bmwpuis", TextField.class);
 		DVweight = screen.findNiftyControl("DVweight", TextField.class);
-		DVstiffness = screen.findNiftyControl("DVstiffness", TextField.class);
-		DVmass = screen.findNiftyControl("DVmass", TextField.class);
-		DVidleRpm = screen.findNiftyControl("DVidleRpm", TextField.class);
-		DVredline = screen.findNiftyControl("DVredline", TextField.class);
-		SLtireHeight = screen.findNiftyControl("SLtireHeight", TextField.class);
-		SLfinalGearRatio = screen.findNiftyControl("SLfinalGearRatio", TextField.class);
-		SLtireRadius = screen.findNiftyControl("SLtireRadius", TextField.class);
+		DVpuis = screen.findNiftyControl("DVpuis", TextField.class);
 		SLweight = screen.findNiftyControl("SLweight", TextField.class);
-		SLstiffness = screen.findNiftyControl("SLstiffness", TextField.class);
-		SLmass = screen.findNiftyControl("SLmass", TextField.class);
-		SLidleRpm = screen.findNiftyControl("SLidleRpm", TextField.class);
-		SLredline = screen.findNiftyControl("SLredline", TextField.class);
+		SLpuis  = screen.findNiftyControl("SLpuis", TextField.class);
 		
 		BMWprix = screen.findNiftyControl("Bmwprix", TextField.class);
 		DVprix = screen.findNiftyControl("DVprix", TextField.class);
@@ -127,78 +100,42 @@ public class Achat extends AbstractScreenController {
 		DVprix.setEnabled(false);
 		SLprix.setEnabled(false);
 		
-		BmwtireHeight.setEnabled(false);
-		BmwfinalGearRatio.setEnabled(false);
-		BmwtireRadius.setEnabled(false);
 		Bmwweight.setEnabled(false);
-		Bmwstiffness.setEnabled(false);
-		Bmwmass.setEnabled(false);
-		BmwidleRpm.setEnabled(false);
-		Bmwredline.setEnabled(false);
-		DVtireHeight.setEnabled(false);
-		DVfinalGearRatio.setEnabled(false);
-		DVtireRadius.setEnabled(false);
+		Bmwpuis.setEnabled(false);
 		DVweight.setEnabled(false);
-		DVstiffness.setEnabled(false);
-		DVmass.setEnabled(false);
-		DVidleRpm.setEnabled(false);
-		DVredline.setEnabled(false);
-		SLtireHeight.setEnabled(false);
-		SLfinalGearRatio.setEnabled(false);
-		SLtireRadius.setEnabled(false);
+		DVpuis.setEnabled(false);
 		SLweight.setEnabled(false);
-		SLstiffness.setEnabled(false);
-		SLmass.setEnabled(false);
-		SLidleRpm.setEnabled(false);
-		SLredline.setEnabled(false);
+		SLpuis.setEnabled(false);
 		
 		for (int i = 0; i < dataAllCar.size(); ++i) {
-			if (dataAllCar.get(i) instanceof BMWM3Properties) {
-				BmwtireHeight.setText(Double.toString(dataAllCar.get(i).getTireHeight()));
-				BmwfinalGearRatio.setText(Double.toString(dataAllCar.get(i).getFinalGearRatio()));
-				BmwtireRadius.setText(Double.toString(dataAllCar.get(i).getTireRadius()));
+			if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
 				Bmwweight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
-				Bmwstiffness.setText(Double.toString(dataAllCar.get(i).getStiffness()));
-				Bmwmass.setText(Double.toString(dataAllCar.get(i).getMass()));
-				BmwidleRpm.setText(Integer.toString(dataAllCar.get(i).getIdleRpm()));
-				Bmwredline.setText(Integer.toString(dataAllCar.get(i).getRedline()));
+				Bmwpuis.setText(Double.toString(dataAllCar.get(i).getPuissance()));
 				checkboxbmw.setEnabled(true);
-			} else if (dataAllCar.get(i) instanceof DodgeViperProperties) {
-				DVtireHeight.setText(Double.toString(dataAllCar.get(i).getTireHeight()));
-				DVfinalGearRatio.setText(Double.toString(dataAllCar.get(i).getFinalGearRatio()));
-				DVtireRadius.setText(Double.toString(dataAllCar.get(i).getTireRadius()));
+			} else if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
 				DVweight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
-				DVstiffness.setText(Double.toString(dataAllCar.get(i).getStiffness()));
-				DVmass.setText(Double.toString(dataAllCar.get(i).getMass()));
-				DVidleRpm.setText(Integer.toString(dataAllCar.get(i).getIdleRpm()));
-				DVredline.setText(Integer.toString(dataAllCar.get(i).getRedline()));
+				DVpuis.setText(Double.toString(dataAllCar.get(i).getPuissance()));
 				checkboxdv.setEnabled(true);
-			} else if (dataAllCar.get(i) instanceof SkylineProperties) {
-				SLtireHeight.setText(Double.toString(dataAllCar.get(i).getTireHeight()));
-				SLfinalGearRatio.setText(Double.toString(dataAllCar.get(i).getFinalGearRatio()));
-				SLtireRadius.setText(Double.toString(dataAllCar.get(i).getTireRadius()));
+			} else if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
 				SLweight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
-				SLstiffness.setText(Double.toString(dataAllCar.get(i).getStiffness()));
-				SLmass.setText(Double.toString(dataAllCar.get(i).getMass()));
-				SLidleRpm.setText(Integer.toString(dataAllCar.get(i).getIdleRpm()));
-				SLredline.setText(Integer.toString(dataAllCar.get(i).getRedline()));
+				SLpuis.setText(Double.toString(dataAllCar.get(i).getPuissance()));
 				checkboxsl.setEnabled(true);
 			}
 		}
 		
 		ArrayList<CarProperties> allCarJoueur = ProfilCurrent.getInstance().getCar();
 		for (int i = 0; i < allCarJoueur.size(); ++i) {
-			if (allCarJoueur.get(i) instanceof BMWM3Properties) {
+			if (allCarJoueur.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
 				checkboxbmw.check();
 				hasBmw = true;
 				checkboxbmw.setEnabled(false);
 			}
-			if (allCarJoueur.get(i) instanceof DodgeViperProperties) {
+			if (allCarJoueur.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
 				checkboxdv.check();
 				hasDv = true;
 				checkboxdv.setEnabled(false);
 			}
-			if (allCarJoueur.get(i) instanceof SkylineProperties) {
+			if (allCarJoueur.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
 				checkboxsl.check();
 				hasSk = true;
 				checkboxsl.setEnabled(false);
@@ -281,6 +218,36 @@ public class Achat extends AbstractScreenController {
 		blockcheckdv();
 	}
 	
+	public void changePhoto() {
+		int maxphoto = 3;
+		if (imgCar.getSelectedImageIndex() == maxphoto) {
+			imgCar.setSelectedImageIndex(1);
+			droite = false;
+		} else if (droite || imgCar.getSelectedImageIndex() == 0){
+			imgCar.forwardClick();
+			switch (imgCar.getSelectedImageIndex()) {
+				case 0:
+					//checkboxstand.check();
+					break;
+				case 1:
+					checkboxbmw.check();
+					break;
+				case 2:
+					checkboxdv.check();
+					break;
+				case 3:
+					checkboxsl.check();
+					break;
+			}
+		} else if (!droite) {
+			imgCar.backClick();
+			/*NiftyImage img;
+			imgCar.addImage();*/
+			droite = true;
+			//checkboxstand.check();
+		}
+	}
+	
 	public void gotoChooseProfil() {
 		app.gotoAffProfil();
 	}
@@ -289,7 +256,7 @@ public class Achat extends AbstractScreenController {
 		ArrayList<CarProperties> allCarJoueur = ProfilCurrent.getInstance().getCar();
 		if (checkboxbmw.isChecked()) {
 			for (int i = 0; i < dataAllCar.size(); ++i) {
-				if (dataAllCar.get(i) instanceof BMWM3Properties) {
+				if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
 					allCarJoueur.add(dataAllCar.get(i));
 					break;
 				}
@@ -297,7 +264,7 @@ public class Achat extends AbstractScreenController {
 		}
 		if (checkboxdv.isChecked()) {
 			for (int i = 0; i < dataAllCar.size(); ++i) {
-				if (dataAllCar.get(i) instanceof DodgeViperProperties) {
+				if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
 					allCarJoueur.add(dataAllCar.get(i));
 					break;
 				}
@@ -305,7 +272,7 @@ public class Achat extends AbstractScreenController {
 		}
 		if (checkboxsl.isChecked()) {
 			for (int i = 0; i < dataAllCar.size(); ++i) {
-				if (dataAllCar.get(i) instanceof SkylineProperties) {
+				if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
 					allCarJoueur.add(dataAllCar.get(i));
 					break;
 				}

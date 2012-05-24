@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
 import physics.CarProperties;
+import physics.DodgeViperProperties;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
 import save.Comptes;
@@ -63,9 +64,11 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		
 		for(int i=0;i<nbBots; i++) {
 			//XXX
-			CarProperties properties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties() :
-				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-			//BMWM3Properties properties = new BMWM3Properties();
+			/*int Min = 1;
+			int Max = Comptes.getListCar().size()-1;
+			int random = Min + (int)(Math.random() * ((Max - Min) + 1));
+			CarProperties properties = Comptes.getListCar().get(random);*/
+			BMWM3Properties properties = new BMWM3Properties();
 			addBot(new Vector3f(new Vector3f(i*50, 27, i*50)), properties);
 		}
 
@@ -258,7 +261,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 				} // Fin Enregistrement Profil
 				
 				if (bonus)
-					conclusion = conclusion + "\nBonus de 70 Eur!";
+					conclusion = conclusion + "\nBonus 70 Eur!";
 				digitalStart.setText(conclusion);
 			}
 

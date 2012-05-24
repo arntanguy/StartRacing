@@ -23,6 +23,10 @@
 						<panel childLayout="center"><control name="checkbox" id="wideScreen" /></panel>
 					</panel>
 					<panel childLayout="horizontal" height="20%">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Plein écran" />
+						<panel childLayout="center"><control name="checkbox" id="fullScreen" /></panel>
+					</panel>
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Résolution de l'écran" />
 						<panel childLayout="center"><control name="dropDown" id="resolutionDropDown" /></panel>
 					</panel>

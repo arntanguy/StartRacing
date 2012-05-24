@@ -36,10 +36,10 @@ public class OptionXMLParser {
 			
 			if (Toolkit.getDefaultToolkit().getScreenSize().height >= screenSize.height) {
 				screenResolution = screenSize;
-				wideScreen = (boolean) xmlStream.fromXML(list.getItem(2));
+				wideScreen = (Boolean) xmlStream.fromXML(list.getItem(2));
 			}
-			sound = (boolean) xmlStream.fromXML(list.getItem(1));
-			fullScreen = (boolean) xmlStream.fromXML(list.getItem(3));
+			sound = (Boolean) xmlStream.fromXML(list.getItem(1));
+			fullScreen = (Boolean) xmlStream.fromXML(list.getItem(3));
 			
 			return true;
 		} catch (IOException e) {	 /* Si le fichier n'existe pas, on le crée avec des valeurs par défaut */

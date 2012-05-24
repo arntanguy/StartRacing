@@ -290,7 +290,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties, "ferrari red");
-//		player = new Car(assetManager, playerCarProperties, "corvette.j3o");
+		//player = new Car(assetManager, playerCarProperties, "corvette");
 
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
@@ -380,7 +380,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
-	//	bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+//		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
 	protected void setupKeys() {

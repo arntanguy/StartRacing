@@ -380,7 +380,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
-		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+	//	bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
 	protected void setupKeys() {

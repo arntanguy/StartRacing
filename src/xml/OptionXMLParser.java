@@ -1,24 +1,20 @@
 package xml;
 
 import java.awt.Dimension;
-import java.io.File;
+import java.awt.List;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class OptionXMLParser {
-	private static final String ROOT = "StartRacingOptions";
-	private static final String SOUND_ELEMENT = "sound";
-	private static final String WIDE_SCREEN_ELEMENT = "wideScreen";
-	private static final String RESOLUTION_ELEMENT = "resolution";
-	private static final String WIDTH_ATTRIBUTE = "width";
-	private static final String HEIGHT_ATTRIBUTE = "height";
 	
 	public static Dimension screenResolution = new Dimension(1024, 768);
 	public static boolean sound = true;
 	public static boolean wideScreen = false;
+	private static XStream xmlStream = new XStream(new DomDriver());
 		
 	public OptionXMLParser() {}
 	
@@ -29,32 +25,37 @@ public class OptionXMLParser {
 	 * @return	true si aucun problème, false sinon
 	 */
 	public static boolean loadAppOptions(String str_file) {
-		File file = new File(str_file);
-		
 		try {
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-			doc.getDocumentElement().normalize();
-			System.out.println("ROOT: " + doc.getDocumentElement().getNodeName() + ". ");
+			FileInputStream in = new FileInputStream(XMLFileStore.OPTION_SAVE_FILE);
+			List list = new List();
+			list = (List) xmlStream.fromXML(in);
 			
-		} catch (Exception e) {
-			return false;
+			screenResolution = (Dimension) xmlStream.fromXML(list.getItem(0));
+			sound = (boolean) xmlStream.fromXML(list.getItem(1));
+			wideScreen = (boolean) xmlStream.fromXML(list.getItem(2));
+			
+			return true;
+		} catch (IOException e) {
+			System.out.println("ERREUR: Fichier d'options introuvable.");
 		}
-		
-		return true;
+		return false;
 	}
 	
 	public static boolean saveAppOptions(String str_file) {
-		File file = new File(str_file);
-		Element root;
-		
 		try {
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-			root = doc.createElement(ROOT);
-			System.out.println("ROOT: " + doc.getDocumentElement().getNodeName() + ". ");
-		} catch (Exception e) {
-			return false;
+			FileOutputStream out = new FileOutputStream(XMLFileStore.OPTION_SAVE_FILE);
+			List list = new List();
+			
+			list.add(xmlStream.toXML(screenResolution));
+			list.add(xmlStream.toXML(sound));
+			list.add(xmlStream.toXML(wideScreen));
+
+			out.write(xmlStream.toXML(list).getBytes());
+			
+			return true;
+		} catch (IOException e) {
+			System.out.println("ERREUR: Fichier d'options introuvable.");
 		}
-		
-		return true;
+		return false;
 	}
 }

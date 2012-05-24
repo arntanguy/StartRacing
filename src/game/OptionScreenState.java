@@ -77,9 +77,10 @@ public class OptionScreenState extends AbstractScreenController {
 	}
 	
 	/**
-	 * Modifie l'interface graphique pour convenir aux options
+	 * Modifie l'interface graphique pour convenir aux options.<br />
+	 * Le chargement depuis le fichier est fait à l'instantiation de App.
 	 */
-	private void before() {
+	private void before() {		
 		soundCheckbox.setChecked(OptionXMLParser.sound);
 		ratioCheckbox.setChecked(OptionXMLParser.wideScreen);
 		resolutionDropDown.clear();
@@ -89,7 +90,6 @@ public class OptionScreenState extends AbstractScreenController {
 			fillResolutionDropDown(normalResolutions);
 		}
 		resolutionDropDown.selectItem(OptionXMLParser.screenResolution.width + " x " + OptionXMLParser.screenResolution.height);
-		System.out.println("OK on commence avec " + OptionXMLParser.screenResolution.width + " x " + OptionXMLParser.screenResolution.height);
 	}
 	
 	/**
@@ -123,7 +123,6 @@ public class OptionScreenState extends AbstractScreenController {
 	 * @return	Dimension équivalent à la résolution
 	 */
 	public Dimension getCurrentScreenResolution() {
-		System.out.println("La résolution change (" + resolutionDropDown.getSelection() + ")");
 		if (ratioCheckbox.isChecked()) {
 			return wideResolutions.get(resolutionDropDown.getSelection());
 		} else {
@@ -133,6 +132,7 @@ public class OptionScreenState extends AbstractScreenController {
 	
 	@Override
 	public void onEndScreen() {
+		System.out.println("Choco ?");
 		stateManager.detach(this);
 	}
 	
@@ -147,16 +147,13 @@ public class OptionScreenState extends AbstractScreenController {
 	 */
 	public void applyOptions() {
 		System.out.println("Option saved");
-		AppSettings set = new AppSettings(true);
 		Dimension resolution = this.getCurrentScreenResolution();
 		
 		OptionXMLParser.sound = soundCheckbox.isChecked();
 		OptionXMLParser.wideScreen = ratioCheckbox.isChecked();
 		OptionXMLParser.screenResolution = resolution;
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
-	}
-	
-	public void showMessage() {
+		
 		screen.findNiftyControl(ON_SAVE_ID, Label.class).setText(StringStore.ON_SAVE_OPTION_MESSAGE);
 	}
 	

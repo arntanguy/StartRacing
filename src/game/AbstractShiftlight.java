@@ -3,12 +3,15 @@ package game;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.elements.render.ImageRenderer;
-import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 
-public class AbstractShiftlight {
+/**
+ * Displays a shiftlight to know when to change the rpm values
+ * 
+ * @author TANGUY Arnaud
+ * 
+ */
+public abstract class AbstractShiftlight {
 
 	protected Nifty nifty;
 	protected Screen screen;
@@ -16,8 +19,8 @@ public class AbstractShiftlight {
 	protected CarProperties carProperties;
 	protected EnginePhysics enginePhysics;
 
-	public AbstractShiftlight(Nifty nifty, Screen screen, CarProperties carProperties,
-			EnginePhysics enginePhysics) {
+	public AbstractShiftlight(Nifty nifty, Screen screen,
+			CarProperties carProperties, EnginePhysics enginePhysics) {
 		this.nifty = nifty;
 		this.screen = screen;
 		this.carProperties = carProperties;

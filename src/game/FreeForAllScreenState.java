@@ -10,6 +10,9 @@ import physics.tools.MathTools;
 import save.Comptes;
 import save.ProfilCurrent;
 
+import audio.EngineSoundStore;
+import audio.SoundStore;
+
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -30,13 +33,13 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	private boolean bonus = false;
 	private int nbBotDead = 0;
 	private int argent = 0;
-	
+
 	private DigitalDisplay digitalLife;
 	private DigitalDisplay digitalRemainingBots;
 
 	private int nbBots;
 	private int nbBotsAlive = 0;
-	
+
 	public FreeForAllScreenState() {
 		super();
 	}
@@ -49,24 +52,28 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		bots = new ArrayList<Car>();
 
 		initNiftyControls();
-		initGame();
+		try {
+			initGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	protected void initGame() {
+	protected void initGame() throws Exception {
 		super.initGame();
 
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		
+
 		nbBots = 8;
-		digitalRemainingBots.setText(nbBots+"/"+nbBots);
+		digitalRemainingBots.setText(nbBots + "/" + nbBots);
 		nbBotsAlive = nbBots;
-		
-		for(int i=0;i<nbBots; i++) {
-			//XXX
-			CarProperties properties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties() :
-				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-			//BMWM3Properties properties = new BMWM3Properties();
-			addBot(new Vector3f(new Vector3f(i*50, 27, i*50)), properties);
+
+		for (int i = 0; i < nbBots; i++) {
+			// XXX
+			CarProperties properties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties()
+					: ProfilCurrent.getInstance().getCar()
+							.get(ProfilCurrent.getInstance().getChoixCar());
+			addBot(new Vector3f(new Vector3f(i * 50, 27, i * 50)), properties);
 		}
 
 		resetCars();
@@ -76,7 +83,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	protected void initNiftyControls() {
 		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
-		digitalRemainingBots = new DigitalDisplay(nifty, screen, "digital_remaining_bots", 500);
+		digitalRemainingBots = new DigitalDisplay(nifty, screen,
+				"digital_remaining_bots", 500);
 	}
 
 	private void resetCars() {
@@ -157,10 +165,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		}
 		super.update(tpf);
 
-		int nbBotsAlive = 0;
+		nbBotsAlive = 0;
 		String sTimer;
 		String conclusion;
-		
+
 		if (runIsOn) {
 			nbBotsAlive = 0;
 			digitalLife.setText(((Integer) player.getLife()).toString());
@@ -178,8 +186,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					bot.stop(3000);
 				}
 			}
-
-			digitalRemainingBots.setText(nbBotsAlive+"/"+nbBots);
+			digitalRemainingBots.setText(nbBotsAlive + "/" + nbBots);
 
 			if (nbBotsAlive == 0 && player.isAlive()) {
 				win = true;
@@ -195,8 +202,9 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			sTimer = String.format("%d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timePlayer),
 					(timePlayer % 1000) / 10);
-			
-			screen.findElementByName("timer").getRenderer(TextRenderer.class).setText(sTimer);
+
+			screen.findElementByName("timer").getRenderer(TextRenderer.class)
+					.setText(sTimer);
 		} else {
 			long secondes = TimeUnit.MILLISECONDS.toSeconds(timePlayer);
 			long millisec = (timePlayer % 1000) / 10;
@@ -206,57 +214,69 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 						argent = 500;
 						givePt = true;
 						if (ProfilCurrent.getInstance() != null)
-							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+							ProfilCurrent.getInstance().setMonnaie(
+									ProfilCurrent.getInstance().getMonnaie()
+											+ argent);
 					}
-					conclusion ="Gagne! 500 Eur";
+					conclusion = "Gagne! 500 Eur";
 				} else {
 					int nbbot = 0;
 					int nbbotlive = 0;
-					
+
 					for (Car bot : bots) {
 						++nbbot;
-						if (bot.isAlive()) ++nbbotlive;
+						if (bot.isAlive())
+							++nbbotlive;
 					}
 					if (givePt == false) {
 						nbBotDead = nbbot - nbbotlive;
 						argent = (int) ((nbBotDead * 400000) / secondes);
 						givePt = true;
 						if (ProfilCurrent.getInstance() != null)
-							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+							ProfilCurrent.getInstance().setMonnaie(
+									ProfilCurrent.getInstance().getMonnaie()
+											+ argent);
 					}
-					conclusion = "Perdu! "+ argent + " Eur";
-					
+					conclusion = "Perdu! " + argent + " Eur";
+
 				}
 				String text = String.format("%d : %d", secondes, millisec);
-				
+
 				if (ProfilCurrent.getInstance() != null) {
 					if (!ProfilCurrent.getInstance().getTimefree().equals("")) {
-						String tps[] = ProfilCurrent.getInstance().getTimefree().split(" : ");
-						//bat le nombre de bot tué
+						String tps[] = ProfilCurrent.getInstance()
+								.getTimefree().split(" : ");
+						// bat le nombre de bot tué
 						if (ProfilCurrent.getInstance().getCardead() < nbBotDead) {
 							ProfilCurrent.getInstance().setTimefree(text);
 							ProfilCurrent.getInstance().setCardead(nbBotDead);
-							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + 70);
+							ProfilCurrent.getInstance()
+									.setMonnaie(
+											ProfilCurrent.getInstance()
+													.getMonnaie() + 70);
 							bonus = true;
 						}
-						//bat le temps de bot tué
+						// bat le temps de bot tué
 						else if (ProfilCurrent.getInstance().getCardead() == nbBotDead) {
-							if (Long.parseLong(tps[0]) > secondes || 
-									(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+							if (Long.parseLong(tps[0]) > secondes
+									|| (Long.parseLong(tps[0]) == secondes && Long
+											.parseLong(tps[1]) > millisec)) {
 								ProfilCurrent.getInstance().setTimefree(text);
-								ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + 70);
+								ProfilCurrent.getInstance().setMonnaie(
+										ProfilCurrent.getInstance()
+												.getMonnaie() + 70);
 								bonus = true;
 							}
 						}
 					} else {
-						//Premier score
+						// Premier score
 						ProfilCurrent.getInstance().setTimefree(text);
 						ProfilCurrent.getInstance().setCardead(nbBotDead);
 					}
 					Comptes.modifier(ProfilCurrent.getInstance());
 					Comptes.Enregistrer();
 				} // Fin Enregistrement Profil
-				
+
 				if (bonus)
 					conclusion = conclusion + "\nBonus de 70 Eur!";
 				digitalStart.setText(conclusion);
@@ -276,10 +296,11 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			bot.stop(0);
 		}
 		player.stop(0);
-		screen.findElementByName("timer").getRenderer(TextRenderer.class).setText("0 : 0");
+		screen.findElementByName("timer").getRenderer(TextRenderer.class)
+				.setText("0 : 0");
 		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
 	}
-	
+
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
 		super.collision(event);

@@ -8,12 +8,11 @@ import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.tools.Conversion;
-
 import save.Comptes;
 import save.ProfilCurrent;
 
-import physics.tools.MathTools;
-
+import audio.EngineSoundStore;
+import audio.SoundStore;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -44,7 +43,6 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 	protected GhostControl finishCell;
 	protected Node finishNode;
-	
 
 	public GameScreenState() {
 		super();
@@ -55,21 +53,24 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		/** init the screen */
 		super.initialize(stateManager, a);
 
-		initGame();
+		try {
+			initGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	protected void initGame() {
+	protected void initGame() throws Exception {
 		super.initGame();
 
 		buildBot();
 		buildFinishLine();
 		initObjects();
-		
+
 		playerFinish = false;
 		botFinish = false;
 		botStoped = false;
 	}
-	
 
 	private void initObjects() {
 		BoxCollisionShape treeShape = new BoxCollisionShape(new Vector3f(0.5f,
@@ -81,11 +82,10 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		node2.scale(5);
 		for (int i = -15; i <= 15; i++) {
 			Spatial node = node2.clone();
-			node.setLocalTranslation(-20, 25,
-					i*60);
-			
+			node.setLocalTranslation(-20, 25, i * 60);
+
 			Spatial nodeD = node2.clone();
-			nodeD.setLocalTranslation(40, 25, i*60);
+			nodeD.setLocalTranslation(40, 25, i * 60);
 
 			RigidBodyControl controlTree = new RigidBodyControl(treeShape, 0.f);
 			controlTree.setUserObject("Tree");
@@ -93,7 +93,6 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			RigidBodyControl controlTreeD = new RigidBodyControl(treeShape, 0.f);
 			controlTreeD.setUserObject("Tree");
 
-			
 			node.addControl(controlTree);
 			nodeD.addControl(controlTreeD);
 			getPhysicsSpace().add(node);
@@ -112,17 +111,17 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		finishNode.addControl(finishCell);
 		finishNode.move(0, 27, 0);
 
-		rootNode.attachChild(finishNode); 
+		rootNode.attachChild(finishNode);
 		super.getPhysicsSpace().add(finishCell);
 	}
-	
+
 	private void buildBot() {
-		//botCarProperties = new BMWM3Properties();
-		//XXX
-		botCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
-				ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
-		bot = new Car(assetManager, botCarProperties,
-				"Models/FerrariGreen/Car.scene");
+		// botCarProperties = new BMWM3Properties();
+		// XXX
+		botCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties()
+				: ProfilCurrent.getInstance().getCar()
+						.get(ProfilCurrent.getInstance().getChoixCar());
+		bot = new Car(assetManager, botCarProperties, "ferrari green");
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();
@@ -153,54 +152,67 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 			if (timePlayer <= timeBot && !player.getBurstEnabled()) {
 				text = "Gagne !\n ";
-				audioMotor.playWin();
+				audioRender.play("win");
 			} else {
-				audioMotor.playLost();
+				audioRender.play("lost");
 				text = "Perdu !\n ";
 			}
 			long secondes = TimeUnit.MILLISECONDS.toSeconds(timePlayer);
 			long millisec = (timePlayer % 1000) / 10;
-			String time = String.format("%d : %d",secondes, millisec);
-			
+			String time = String.format("%d : %d", secondes, millisec);
+
 			text += "Joueur:  " + time + "\n";
-			
+
 			text += String.format("Bot:  %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10);
 			int argent = 0;
-			
+
 			if (ProfilCurrent.getInstance() != null) {
-			//Enregistrement du temps lorsque le temps est meilleur que le précédent
+				// Enregistrement du temps lorsque le temps est meilleur que le
+				// précédent
 				if (this instanceof HalfGameScreenState) {
 					if (secondes != 0)
 						argent = (int) (1200000 / secondes);
 					if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
-						String tps[] = ProfilCurrent.getInstance().getTimeDemi().split(" : ");
-						if (Long.parseLong(tps[0]) > secondes || 
-								(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+						String tps[] = ProfilCurrent.getInstance()
+								.getTimeDemi().split(" : ");
+						if (Long.parseLong(tps[0]) > secondes
+								|| (Long.parseLong(tps[0]) == secondes && Long
+										.parseLong(tps[1]) > millisec)) {
 							ProfilCurrent.getInstance().setTimedemi(time);
-							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+							ProfilCurrent.getInstance().setMonnaie(
+									ProfilCurrent.getInstance().getMonnaie()
+											+ argent);
 							text += "\n" + argent + " Eur";
 						}
 					} else {
 						ProfilCurrent.getInstance().setTimedemi(time);
-						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+						ProfilCurrent.getInstance().setMonnaie(
+								ProfilCurrent.getInstance().getMonnaie()
+										+ argent);
 						text += "\n" + argent + " Eur";
 					}
 				} else if (this instanceof QuarterGameScreenState) {
 					if (secondes != 0)
 						argent = (int) (500000 / secondes);
 					if (!ProfilCurrent.getInstance().getTimeQuart().equals("")) {
-						String tps[] = ProfilCurrent.getInstance().getTimeQuart().split(" : ");
-						if (Long.parseLong(tps[0]) > secondes ||
-								(Long.parseLong(tps[0]) == secondes && Long.parseLong(tps[1]) > millisec)) {
+						String tps[] = ProfilCurrent.getInstance()
+								.getTimeQuart().split(" : ");
+						if (Long.parseLong(tps[0]) > secondes
+								|| (Long.parseLong(tps[0]) == secondes && Long
+										.parseLong(tps[1]) > millisec)) {
 							ProfilCurrent.getInstance().setTimequart(time);
-							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+							ProfilCurrent.getInstance().setMonnaie(
+									ProfilCurrent.getInstance().getMonnaie()
+											+ argent);
 							text += "\n" + argent + " Eur";
 						}
 					} else {
 						ProfilCurrent.getInstance().setTimequart(time);
-						ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + argent);
+						ProfilCurrent.getInstance().setMonnaie(
+								ProfilCurrent.getInstance().getMonnaie()
+										+ argent);
 						text += "\n" + argent + " Eur";
 					}
 				}
@@ -208,7 +220,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				Comptes.Enregistrer();
 			}
 			screen.findElementByName("startTimer")
-			.getRenderer(TextRenderer.class).setText(text);
+					.getRenderer(TextRenderer.class).setText(text);
 
 			runFinish = true;
 			runIsOn = false;
@@ -226,13 +238,13 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
 
-			if (!botFinish)	{
-				botEnginePhysics.setSpeed(Math.abs(Conversion.kmToMiles(botSpeed)));
+			if (!botFinish) {
+				botEnginePhysics.setSpeed(Math.abs(Conversion
+						.kmToMiles(botSpeed)));
 				bot.accelerate(-(float) botEnginePhysics.getForce() / 5);
 				botIA.act();
 				botIA.target(botArrivalPoint, 0, 0);
-			}
-			else if (player.getBurstEnabled())	{
+			} else if (player.getBurstEnabled()) {
 				playerFinish = true;
 			}
 		}
@@ -254,7 +266,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		bot.resetSuspension();
 
 		bot.steer(0);
-		
+
 		bot.setLife(100);
 
 		botFinish = false;
@@ -268,7 +280,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		startTime = 0;
 		countDown = 0;
 
-		screen.findElementByName("timer").getRenderer(TextRenderer.class).setText("0 : 0");
+		screen.findElementByName("timer").getRenderer(TextRenderer.class)
+				.setText("0 : 0");
 		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
 				.setText("Ready ?");
 	}

@@ -8,12 +8,12 @@ public class F430Properties extends CarProperties {
 	public F430Properties() {
 		super();
 		gears = new Gears();
-		gears.setRatio(1, 3.29);
+		gears.setRatio(1, 3.49);
 		gears.setRatio(2, 2.16);
 		gears.setRatio(3, 1.61);
 		gears.setRatio(4, 1.27);
 		gears.setRatio(5, 1.03);
-		gears.setRatio(6, 0.76);
+		gears.setRatio(6, 0.87);
 		gears.setOptimalShiftPoint(1, 7998);
 		gears.setOptimalShiftPoint(2, 7999);
 		gears.setOptimalShiftPoint(3, 7996);
@@ -36,7 +36,7 @@ public class F430Properties extends CarProperties {
 		torque.put(6000, 470);
 		torque.put(7000, 460);
 		torque.put(8000, 450);
-		torque.put(8700, 430); 
+		torque.put(8700, 400); 
 		torque.put(15000, 0);
 		
 		playerModel = "Models/FerrariRed/Car.scene";

@@ -4,6 +4,7 @@ import game.Car.CarType;
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.EnginePhysics;
+import physics.F430Properties;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
 import save.ProfilCurrent;
@@ -236,7 +237,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		engineSoundStore = engineSoundStore.getInstance();
 		engineSoundStore.setAssetManager(assetManager);
 
-		engineSoundStore.addSound(1000, "Models/Default/1052_P.wav");
+		//engineSoundStore.addSound(1000, "Models/Default/1052_P.wav");
+		engineSoundStore.addSound(1000, "Models/V8/idle.wav");
 		// channels.put(1126, "Models/Default/1126_P.wav");
 		// channels.put(1205, "Models/Default/1205_P.wav");
 		// channels.put(1289, "Models/Default/1289_P.wav");
@@ -250,20 +252,20 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// channels.put(2215, "Models/Default/2215_P.wav");
 		// channels.put(2370, "Models/Default/2370_P.wav");
 		// channels.put(2536, "Models/Default/2536_P.wav");
-		engineSoundStore.addSound(2714, "Models/Default/2714_P.wav");
+		engineSoundStore.addSound(4000, "Models/V8/med.wav");
 		// channels.put(2904, "Models/Default/2904_P.wav");
 		// channels.put(3107, "Models/Default/3107_P.wav");
 		// channels.put(3324, "Models/Default/3324_P.wav");
 		// channels.put(3557, "Models/Default/3557_P.wav");
 		// channels.put(3806, "Models/Default/3806_P.wav");
 		// channels.put(4073, "Models/Default/4073_P.wav");
-		engineSoundStore.addSound(4358, "Models/Default/4358_P.wav");
+		//engineSoundStore.addSound(7358, "Models/V8/high.wav");
 		// channels.put(4663, "Models/Default/4663_P.wav");
 		// channels.put(4989, "Models/Default/4989_P.wav");
 		// channels.put(5338, "Models/Default/5338_P.wav");
 		// channels.put(5712, "Models/Default/5712_P.wav");
 		// channels.put(6112, "Models/Default/6112_P.wav");
-		engineSoundStore.addSound(8540, "Models/Default/6540_P.wav");
+		engineSoundStore.addSound(9650, "Models/V8/high.wav");
 
 		soundStore.addSound("start", "Models/Default/start.wav");
 		soundStore.addSound("up", "Models/Default/up.wav");
@@ -277,12 +279,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		audioRender = new AudioRender<String>(rootNode, soundStore);
 	}
 	protected void buildPlayer() {
-		//playerCarProperties = new F430Properties();			
 		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
 			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		//XXX
 		playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
 			ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
+		//playerCarProperties = new F430Properties();			
 		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties, "ferrari red");

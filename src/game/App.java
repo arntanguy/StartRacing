@@ -35,11 +35,12 @@ public class App extends SimpleApplication {
 
 		/******* DEBUG ********/
 		XMLFileStore.validateXMLFiles(nifty);
+		nifty.setDebugOptionPanelColors(true);
 		addXMLFiles();		
 		/****** FIN DEBUG *****/
 
-		gotoStart();
-		//gotoOptions();
+//		gotoStart();
+		gotoOptions();
 		//gotoCrtProfil();
 		//gotoAffProfil();
 		
@@ -50,6 +51,12 @@ public class App extends SimpleApplication {
 		// attach the nifty display to the gui view port as a processor
 		guiViewPort.addProcessor(niftyDisplay);
 		inputManager.setCursorVisible(false);
+	}
+	
+	@Override
+	public void stop() {
+		super.stop();
+		audioRenderer.cleanup();
 	}
 	
 	public void addXMLFiles() {
@@ -93,7 +100,6 @@ public class App extends SimpleApplication {
 	}
 
 	public void gotoStart() {
-		// nifty.addXml("Interface/Nifty/DevTest.xml");
 		nifty.addXml("Interface/Nifty/StartScreen.xml");
 		nifty.gotoScreen("start");
 		StartScreenState startScreenController = (StartScreenState) nifty

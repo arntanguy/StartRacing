@@ -103,6 +103,80 @@ public class CarFactory {
 		car.getWheel(3).setFrictionSlip(10f);
 	}
 	
+	public static void createBuggy(AssetManager assetManager, Car car)	{
+		float stiffness = car.getProperties().getStiffness();// 200=f1 car
+		float compValue = car.getProperties().getCompValue(); // (lower than damp!)
+		float dampValue = car.getProperties().getDampValue();
+		final float mass = car.getProperties().getMass();
+
+		car.setMass(mass);
+
+		// Load model and get chassis Geometry
+		car.setNode((Node) assetManager.loadModel("Models/Buggy/Buggy.j3o"));
+		car.getNode().setShadowMode(ShadowMode.Cast);
+
+		// Create a hull collision shape for the chassis
+		car.setChassis(findGeom(car.getNode(), "Chassis-geom-1"));
+		
+		BoundingBox box = (BoundingBox) car.getChassis().getModelBound();
+		CollisionShape carHull = CollisionShapeFactory
+				.createDynamicMeshShape(car.getChassis());
+		car.setCollisionShape(carHull);
+
+		// Create a vehicle control
+		car.getNode().addControl(car);
+
+		// Setting default values for wheels
+		car.setSuspensionCompression(compValue * 2.0f
+				* FastMath.sqrt(stiffness));
+		car.setSuspensionDamping(dampValue * 2.0f * FastMath.sqrt(stiffness));
+		car.setSuspensionStiffness(stiffness);
+		car.setMaxSuspensionForce(10000);
+
+		// Create four wheels and add them at their locations
+		// note that our fancy car actually goes backwards..
+		Vector3f wheelDirection = new Vector3f(0, -1, 0);
+		Vector3f wheelAxle = new Vector3f(-1, 0, 0);
+
+		Geometry wheel_fr = findGeom(car.getNode(), "Wheel_RF-geom-1");
+//		wheel_fr.center();
+		box = (BoundingBox) wheel_fr.getModelBound();
+		float wheelRadius = box.getYExtent();
+		car.setWheelRadius(wheelRadius);
+		
+		float back_wheel_h = (wheelRadius * 1.7f) - 1f;
+		float front_wheel_h = (wheelRadius * 1.9f) - 1f;
+		car.addWheel(wheel_fr.getParent(),
+				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, true);
+
+		Geometry wheel_fl = findGeom(car.getNode(), "Wheel_LF-geom-1");
+//		wheel_fl.center();
+		box = (BoundingBox) wheel_fl.getModelBound();
+		car.addWheel(wheel_fl.getParent(),
+				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, true);
+
+		Geometry wheel_br = findGeom(car.getNode(), "Wheel_RR-geom-1");
+//		wheel_br.center();
+		box = (BoundingBox) wheel_br.getModelBound();
+		car.addWheel(wheel_br.getParent(),
+				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, false);
+
+		Geometry wheel_bl = findGeom(car.getNode(), "Wheel_LR-geom-1");
+//		wheel_bl.center();
+		box = (BoundingBox) wheel_bl.getModelBound();
+		car.addWheel(wheel_bl.getParent(),
+				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
+				wheelAxle, 0.2f, wheelRadius, false);
+
+		car.getWheel(0).setFrictionSlip(11f);
+		car.getWheel(1).setFrictionSlip(11f);
+		car.getWheel(2).setFrictionSlip(10f);
+		car.getWheel(3).setFrictionSlip(10f);
+	}
+	
 	public static void createCorvette(AssetManager assetManager, Car car)	{
 		float stiffness = car.getProperties().getStiffness();// 200=f1 car
 		float compValue = car.getProperties().getCompValue(); // (lower than damp!)
@@ -112,7 +186,7 @@ public class CarFactory {
 		car.setMass(mass);
 
 		// Load model and get chassis Geometry
-		car.setNode((Node) assetManager.loadModel("Models/Corvette/Corvette.scene"));
+		car.setNode((Node) assetManager.loadModel("Models/Corvette/corvette.scene"));
 		car.getNode().setShadowMode(ShadowMode.Cast);
 
 		// Create a hull collision shape for the chassis
@@ -140,10 +214,9 @@ public class CarFactory {
 		Vector3f wheelDirection = new Vector3f(0, -1, 0);
 		Vector3f wheelAxle = new Vector3f(-1, 0, 0);
 
-//		Geometry wheel_fr = findGeom(carNode, "WheelFrontRight");
 		nodeLoader = (Node) assetManager.loadModel("Models/Corvette/TireFR.mesh.xml");
 		Geometry wheel_fr = (Geometry) nodeLoader.getChild(0);
-		wheel_fr.center();
+//		wheel_fr.center();
 		box = (BoundingBox) wheel_fr.getModelBound();
 		float wheelRadius = box.getYExtent();
 		car.setWheelRadius(wheelRadius);
@@ -154,28 +227,25 @@ public class CarFactory {
 				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
 				wheelAxle, 0.2f, wheelRadius, true);
 
-//		Geometry wheel_fl = findGeom(carNode, "WheelFrontLeft");
 		nodeLoader = (Node) assetManager.loadModel("Models/Corvette/TireFL.mesh.xml");
 		Geometry wheel_fl = (Geometry) nodeLoader.getChild(0);
-		wheel_fl.center();
+//		wheel_fl.center();
 		box = (BoundingBox) wheel_fl.getModelBound();
 		car.addWheel(wheel_fl.getParent(),
 				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
 				wheelAxle, 0.2f, wheelRadius, true);
 
-//		Geometry wheel_br = findGeom(carNode, "WheelBackRight");
 		nodeLoader = (Node) assetManager.loadModel("Models/Corvette/TireRR.mesh.xml");
 		Geometry wheel_br = (Geometry) nodeLoader.getChild(0);
-		wheel_br.center();
+//		wheel_br.center();
 		box = (BoundingBox) wheel_br.getModelBound();
 		car.addWheel(wheel_br.getParent(),
 				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
 				wheelAxle, 0.2f, wheelRadius, false);
 
-//		Geometry wheel_bl = findGeom(carNode, "WheelBackLeft");
 		nodeLoader = (Node) assetManager.loadModel("Models/Corvette/TireRL.mesh.xml");
 		Geometry wheel_bl = (Geometry) nodeLoader.getChild(0);
-		wheel_bl.center();
+//		wheel_bl.center();
 		box = (BoundingBox) wheel_bl.getModelBound();
 		car.addWheel(wheel_bl.getParent(),
 				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
@@ -186,6 +256,8 @@ public class CarFactory {
 		car.getWheel(2).setFrictionSlip(10f);
 		car.getWheel(3).setFrictionSlip(10f);
 	}
+	
+	
 	
 	private static Geometry findGeom(Spatial spatial, String name) {
 		if (spatial instanceof Node) {

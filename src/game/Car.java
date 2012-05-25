@@ -85,7 +85,11 @@ public class Car extends VehicleControl {
 	private void buildCar(String model) {
 		if ("corvette".equals(model)) {
 			CarFactory.createCorvette(assetManager, this);
-		} else if ("ferrari red".equals(model)) {
+		}
+		else if ("buggy".equals(model))	{
+			CarFactory.createBuggy(assetManager, this);
+		}
+		else if ("ferrari red".equals(model))	{
 			CarFactory.createFerrari(assetManager, this, "Red");
 		} else if ("ferrari blue".equals(model)) {
 			CarFactory.createFerrari(assetManager, this, "Blue");

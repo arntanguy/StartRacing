@@ -21,6 +21,7 @@ public class App extends SimpleApplication {
 		OptionXMLParser.loadAppOptions(XMLFileStore.OPTION_SAVE_FILE);
 		set.setResolution(OptionXMLParser.screenResolution.width, OptionXMLParser.screenResolution.height);
 		set.setTitle(StringStore.APP_TITLE);
+		set.setFullscreen(OptionXMLParser.fullScreen);
 		this.setSettings(set);
 		this.setShowSettings(false);
 	}
@@ -35,8 +36,8 @@ public class App extends SimpleApplication {
 
 		/******* DEBUG ********/
 		XMLFileStore.validateXMLFiles(nifty);
-		nifty.setDebugOptionPanelColors(false);
-		addXMLFiles();		
+//		nifty.setDebugOptionPanelColors(true);
+		addXMLFiles();
 		/****** FIN DEBUG *****/
 
 		gotoStart();
@@ -56,7 +57,6 @@ public class App extends SimpleApplication {
 	@Override
 	public void stop() {
 		super.stop();
-		audioRenderer.cleanup();
 	}
 	
 	public void addXMLFiles() {

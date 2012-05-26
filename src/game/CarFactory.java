@@ -2,7 +2,9 @@ package game;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -184,6 +186,9 @@ public class CarFactory {
 		final float mass = car.getProperties().getMass();
 
 		car.setMass(mass);
+		
+		CompoundCollisionShape compoundShape = new CompoundCollisionShape();
+		BoxCollisionShape box = new BoxCollisionShape(new Vector3f(1.2f, 0.5f, 2.4f));
 
 		// Load model and get chassis Geometry
 		car.setNode((Node) assetManager.loadModel("Models/Corvette/corvette.scene"));

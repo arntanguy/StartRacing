@@ -410,8 +410,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("Throttle", new KeyTrigger(
-				KeyInput.KEY_RCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_LCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));

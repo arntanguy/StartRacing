@@ -11,6 +11,11 @@ import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 
+/**
+ * XXX : todo
+ * @author arnaud
+ *
+ */
 public class Tachometer {
 	private double alpha;
 	private Vector2f start;

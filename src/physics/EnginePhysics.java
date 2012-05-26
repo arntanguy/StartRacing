@@ -180,6 +180,8 @@ public class EnginePhysics {
 		if (!isBreaking) {
 			if (speed != 0) {
 				rpm = getRpm();
+			} else {
+				rpm = getFreeRpm();
 			}
 
 			double force = p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();

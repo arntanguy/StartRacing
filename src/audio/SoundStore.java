@@ -1,17 +1,22 @@
 package audio;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 
-public class SoundStore {
-	private static SoundStore instance;
-
-	private AssetManager assetManager;
-	private LinkedHashMap<Integer, AudioData> engineSounds;
-	private HashMap<String, AudioData> extraSounds;
+/**
+ * A basic singleton to store audio data
+ * @author TANGUY Arnaud
+ *
+ * @param <KeyType>
+ */
+public class SoundStore<KeyType> {
+	protected static SoundStore instance;
+	protected AssetManager assetManager;
+	
+	protected HashMap<KeyType, AudioData> sounds;
+	
 
 	public static SoundStore getInstance() {
 		if (null == instance) { // Premier appel
@@ -19,42 +24,30 @@ public class SoundStore {
 		}
 		return instance;
 	}
-
-	/**
-	 * Redefine constructor as private to disable access
-	 */
-	private SoundStore() {
-		this.assetManager = null;
-		engineSounds = new LinkedHashMap<Integer, AudioData>();
-		extraSounds = new HashMap<String, AudioData>();
+	
+	protected SoundStore() {
+		this.assetManager = null; 
+		sounds = new HashMap<KeyType, AudioData>();
 	}
-
+	
 	public void setAssetManager(AssetManager assetMgr) {
 		this.assetManager = assetMgr;
-		engineSounds = new LinkedHashMap<Integer, AudioData>();
 	}
+	
 
-	public void addEngineSound(Integer key, String path) {
-		engineSounds.put(key, assetManager.loadAudio(path));
+	public void addSound(KeyType id, String path) throws Exception {
+		if(assetManager != null) {
+			sounds.put(id, assetManager.loadAudio(path));
+		} else {
+			throw new Exception("Error in AbstractSoundStore : no asset manager defined !");
+		}
 	}
-
-	public void addExtraSound(String key, String path) {
-		extraSounds.put(key, assetManager.loadAudio(path));
+	
+	public HashMap<KeyType, AudioData> getSounds() {
+		return sounds;
 	}
-
-	public AudioData getEngineSound(int rpm) {
-		return engineSounds.get(rpm);
-	}
-
-	public AudioData getExtraSound(String key) {
-		return extraSounds.get(key);
-	}
-
-	public LinkedHashMap<Integer, AudioData> getEngineSounds() {
-		return engineSounds;
-	}
-
-	public HashMap<String, AudioData> getExtraSounds() {
-		return extraSounds;
+	
+	public AudioData getSound(KeyType key) {
+		return sounds.get(key);
 	}
 }

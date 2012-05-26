@@ -1,0 +1,484 @@
+<scene formatVersion="1.0" upAxis="y" unitsPerMeter="39.3701" minOgreVersion="1.7" ogreMaxVersion="2.4.1" author="OgreMax Scene Exporter (www.ogremax.com)" application="3DS Max">
+    <environment>
+        <colourAmbient r="0.333333" g="0.333333" b="0.333333" />
+        <colourBackground r="0" g="0" b="0" />
+        <clipping near="0" far="100000" />
+    </environment>
+    <nodes>
+        <node name="Base">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Base" castShadows="true" receiveShadows="true" meshFile="Base.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BLightL">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BLightL" castShadows="true" receiveShadows="true" meshFile="BLightL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BLightLG">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BLightLG" castShadows="true" receiveShadows="true" meshFile="BLightLG.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#581" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BLightR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BLightR" castShadows="true" receiveShadows="true" meshFile="BLightR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BLightRG">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BLightRG" castShadows="true" receiveShadows="true" meshFile="BLightRG.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#581" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Body">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Body" castShadows="true" receiveShadows="true" meshFile="Body.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BadgingChrome" />
+                    <subentity index="1" materialName="DoorLine" />
+                    <subentity index="2" materialName="Black" />
+                    <subentity index="3" materialName="Misc" />
+                    <subentity index="4" materialName="Misc" />
+                    <subentity index="5" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BrakeFL">
+            <position x="0.886974" y="0.317003" z="1.3" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-0.00617056" qy="0.70708" qz="0.00617053" qw="0.70708" />
+            <entity name="BrakeFL" castShadows="true" receiveShadows="true" meshFile="BrakeFL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakePadsLeft" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BrakeFR">
+            <position x="-0.886974" y="0.317001" z="1.3" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="0.70708" qz="-0.00617062" qw="0.70708" />
+            <entity name="BrakeFR" castShadows="true" receiveShadows="true" meshFile="BrakeFR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakePadsRight" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BrakeRL">
+            <position x="0.915974" y="0.317001" z="-1.359" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-0.00617056" qy="0.70708" qz="0.00617053" qw="0.70708" />
+            <entity name="BrakeRL" castShadows="true" receiveShadows="true" meshFile="BrakeRL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakePadsLeft" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BrakeRR">
+            <position x="-0.916" y="0.317001" z="-1.359" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-0.00617056" qy="0.70708" qz="0.00617053" qw="0.70708" />
+            <entity name="BrakeRR" castShadows="true" receiveShadows="true" meshFile="BrakeRR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakePadsRight" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BumperF">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BumperF" castShadows="true" receiveShadows="true" meshFile="BumperF.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                    <subentity index="1" materialName="MiscChrome" />
+                    <subentity index="2" materialName="MiscChrome" />
+                    <subentity index="3" materialName="Bottom" />
+                    <subentity index="4" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BumperFB">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BumperFB" castShadows="true" receiveShadows="true" meshFile="BumperFB.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BadgingChrome" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BumperR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BumperR" castShadows="true" receiveShadows="true" meshFile="BumperR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#585" />
+                    <subentity index="1" materialName="Bottom" />
+                    <subentity index="2" materialName="Material#586" />
+                    <subentity index="3" materialName="Misc" />
+                    <subentity index="4" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="BumperRB">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="BumperRB" castShadows="true" receiveShadows="true" meshFile="BumperRB.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BadgingChrome" />
+                    <subentity index="1" materialName="DoorLine" />
+                    <subentity index="2" materialName="Misc" />
+                    <subentity index="3" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="DoorL">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="DoorL" castShadows="true" receiveShadows="true" meshFile="DoorL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                    <subentity index="1" materialName="Misc" />
+                    <subentity index="2" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="DoorLine">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="DoorLine" castShadows="true" receiveShadows="true" meshFile="DoorLine.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Bottom" />
+                    <subentity index="1" materialName="DoorLine" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="DoorR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="DoorR" castShadows="true" receiveShadows="true" meshFile="DoorR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                    <subentity index="1" materialName="Misc" />
+                    <subentity index="2" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Exhaust">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Exhaust" castShadows="true" receiveShadows="true" meshFile="Exhaust.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                    <subentity index="1" materialName="Misc" />
+                    <subentity index="2" materialName="MiscChrome" />
+                    <subentity index="3" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="HLightL">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="HLightL" castShadows="true" receiveShadows="true" meshFile="HLightL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#591" />
+                    <subentity index="1" materialName="Material#592" />
+                    <subentity index="2" materialName="Misc" />
+                    <subentity index="3" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="HLightLG">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="HLightLG" castShadows="true" receiveShadows="true" meshFile="HLightLG.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#593" />
+                    <subentity index="1" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="HLightR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="HLightR" castShadows="true" receiveShadows="true" meshFile="HLightR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#591" />
+                    <subentity index="1" materialName="Material#592" />
+                    <subentity index="2" materialName="Misc" />
+                    <subentity index="3" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="HLightRG">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="HLightRG" castShadows="true" receiveShadows="true" meshFile="HLightRG.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#593" />
+                    <subentity index="1" materialName="Misc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Hood">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Hood" castShadows="true" receiveShadows="true" meshFile="Hood.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Interior">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Interior" castShadows="true" receiveShadows="true" meshFile="Interior.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Interior" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="LicenseF">
+            <position x="-4.62599e-025" y="0.40118" z="2.11076" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-3.43548e-008" qy="0.785946" qz="0.618295" qw="-2.70265e-008" />
+            <entity name="LicenseF" castShadows="true" receiveShadows="true" meshFile="LicenseF.mesh">
+                <subentities>
+                    <subentity index="0" materialName="License" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="LicenseR">
+            <position x="-4.62599e-025" y="0.619331" z="-2.07554" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-0.617593" qy="6.13748e-008" qz="-7.38308e-009" qw="0.786498" />
+            <entity name="LicenseR" castShadows="true" receiveShadows="true" meshFile="LicenseR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="License" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="MirrorL">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="MirrorL" castShadows="true" receiveShadows="true" meshFile="MirrorL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="DoorLine" />
+                    <subentity index="1" materialName="Misc" />
+                    <subentity index="2" materialName="Material#595" />
+                    <subentity index="3" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="MirrorR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="MirrorR" castShadows="true" receiveShadows="true" meshFile="MirrorR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="DoorLine" />
+                    <subentity index="1" materialName="Misc" />
+                    <subentity index="2" materialName="Material#595" />
+                    <subentity index="3" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Roof">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Roof" castShadows="true" receiveShadows="true" meshFile="Roof.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                    <subentity index="1" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="RotorFL">
+            <position x="0.886974" y="0.317003" z="1.3" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-0.00617056" qy="0.70708" qz="0.00617053" qw="0.70708" />
+            <entity name="RotorFL" castShadows="true" receiveShadows="true" meshFile="RotorFL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakeDisc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="RotorFR">
+            <position x="-0.88684" y="0.316999" z="1.3" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="0.70708" qz="-0.00617062" qw="0.70708" />
+            <entity name="RotorFR" castShadows="true" receiveShadows="true" meshFile="RotorFR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakeDisc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="RotorRL">
+            <position x="0.915974" y="0.317001" z="-1.359" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="-0.00617056" qy="0.70708" qz="0.00617053" qw="0.70708" />
+            <entity name="RotorRL" castShadows="true" receiveShadows="true" meshFile="RotorRL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakeDisc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="RotorRR">
+            <position x="-0.91598" y="0.317081" z="-1.359" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="0.70708" qz="-0.00617062" qw="0.70708" />
+            <entity name="RotorRR" castShadows="true" receiveShadows="true" meshFile="RotorRR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="BrakeDisc" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Skirt">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="Skirt" castShadows="true" receiveShadows="true" meshFile="Skirt.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Misc" />
+                    <subentity index="1" materialName="Bottom" />
+                    <subentity index="2" materialName="Bodypaint" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="TireFL">
+            <position x="0.959969" y="0.317919" z="1.30008" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="-0.70708" qz="0.00617062" qw="0.70708" />
+            <entity name="TireFL" castShadows="true" receiveShadows="true" meshFile="TireFL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#599" />
+                    <subentity index="1" materialName="Mat" />
+                    <subentity index="2" materialName="Tire" />
+                    <subentity index="3" materialName="TireBack" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="TireFR">
+            <position x="-0.960208" y="0.317921" z="1.30008" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="0.70708" qz="-0.00617062" qw="0.70708" />
+            <entity name="TireFR" castShadows="true" receiveShadows="true" meshFile="TireFR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#599" />
+                    <subentity index="1" materialName="Mat" />
+                    <subentity index="2" materialName="Tire" />
+                    <subentity index="3" materialName="TireBack" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="TireRL">
+            <position x="0.988969" y="0.317917" z="-1.35935" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="-0.70708" qz="0.00617062" qw="0.70708" />
+            <entity name="TireRL" castShadows="true" receiveShadows="true" meshFile="TireRL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#599" />
+                    <subentity index="1" materialName="Mat" />
+                    <subentity index="2" materialName="Tire" />
+                    <subentity index="3" materialName="TireBack" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="TireRR">
+            <position x="-0.989212" y="0.318001" z="-1.35935" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0.00617059" qy="0.70708" qz="-0.00617062" qw="0.70708" />
+            <entity name="TireRR" castShadows="true" receiveShadows="true" meshFile="TireRR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#599" />
+                    <subentity index="1" materialName="Mat" />
+                    <subentity index="2" materialName="Tire" />
+                    <subentity index="3" materialName="TireBack" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="WindF">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="WindF" castShadows="true" receiveShadows="true" meshFile="WindF.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#600" />
+                    <subentity index="1" materialName="Material#600" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="WindFL">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="WindFL" castShadows="true" receiveShadows="true" meshFile="WindFL.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#600" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="WindFR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="WindFR" castShadows="true" receiveShadows="true" meshFile="WindFR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#600" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="WindR">
+            <position x="2.98023e-008" y="0.0922574" z="0.000500313" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0.707107" qz="-3.09086e-008" qw="0.707107" />
+            <entity name="WindR" castShadows="true" receiveShadows="true" meshFile="WindR.mesh">
+                <subentities>
+                    <subentity index="0" materialName="Material#603" />
+                    <subentity index="1" materialName="Material#604" />
+                </subentities>
+            </entity>
+        </node>
+    </nodes>
+</scene>

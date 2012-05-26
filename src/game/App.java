@@ -121,4 +121,11 @@ public class App extends SimpleApplication {
         Achat achat = (Achat) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(achat);
 	}
+	
+	public void gotoGarage() {
+		nifty.addXml("Interface/Nifty/Garage.xml");
+        nifty.gotoScreen("garage");
+        Garage garage = (Garage) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(garage);
+	}
 }

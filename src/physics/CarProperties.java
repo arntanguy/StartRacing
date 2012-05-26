@@ -8,12 +8,19 @@ import java.util.TreeMap;
 
 import physics.tools.MathTools;
 
+/**
+ * Holds the main properties of the car : torque map, redlines, weight...
+ * @author TANGUY Arnaud
+ *
+ */
 public class CarProperties {
 	// tire height (24.5, 26, 27.5, ...cm)
 	private double tireHeight = 24.5;
 	// transmission final gear (2.54, 1.43) (final drive ratio)
 	protected double finalGearRatio = 2.5;
-	// Tire radius in meters
+	/**
+	 * Tire radius in meters
+	 */
 	protected double tireRadius = 0.3;
 
 	// Weight in kg
@@ -110,7 +117,7 @@ public class CarProperties {
 
 		availableModels = new ArrayList<String>();
 		
-		typeCar = TypeCarProperties.STANDARD;
+		//typeCar = TypeCarProperties.STANDARD;
 		
 		playerModel = "Models/FerrariRed/Car.scene";
 		availableModels.add("Models/FerrariGreen/Car.scene");

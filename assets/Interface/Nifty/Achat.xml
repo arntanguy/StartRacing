@@ -18,37 +18,36 @@
 					<control name="textfield" height="35px" width="40%" id="monnaie" />
 					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" text="Eur" height="35px" width="10%" align="left" />
 				</panel>
-
-				<panel height="5%"/>
-				<panel childLayout="horizontal">
-					<panel width="3%"/>
-					<panel childLayout="vertical" width="25%">
-						<panel childLayout="horizontal">		
-							<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="25px" text="Les voitures à vendre : " />
-						</panel>
-						<panel height="3%"/>
-						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="25px" text="Poids : " />
-						<panel height="3%"/>
-						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="25px" text="Prix en Euro :" />
-					</panel>
-					<panel width="5%"/>
-					<panel childLayout="vertical" width="15%" >
-						<panel childLayout="horizontal">
-							<control name="checkbox" height="25px" width="15%" id="Bmw" />
-							<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="25px" width="100%" align="center" text="BMWM3" />
-						</panel>
-						<panel height="3%"/>
-						<control name="textfield" height="25px" id="Bmwweight" color="#ffff"/>
-						<control name="textfield" height="25px" id="Bmwpuis" color="#ffff"/>
-						<panel height="3%"/>
-						<control name="textfield" height="25px" id="Bmwprix" color="#ffff"/>
-					</panel>
-				</panel>
 				
-				<panel childLayout="horizontal" height="30%">
-					<panel width="20%"/>
-					<control id="imgcar" name="imageSelect" height="100%" width="60%" imageWidth="90%" imageHeight="100%" 
-				          imageList="Interface/Nifty/bmwm3.jpg,Interface/Nifty/viper.jpg,Interface/Nifty/skyline.jpg">
+				<panel height="7%"/>
+				<panel childLayout="horizontal" height="40px">
+					<panel width="20%"></panel>
+					<control name="textfield" id="msgerr" height="35px" width="70%"></control>
+				</panel>
+
+				<panel childLayout="horizontal">
+					<panel childLayout="vertical" width="11%">
+						<panel height="25%"/>
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="A vendre : " />
+						<panel height="3%"/>
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Poids : " />
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Puissance : " />
+						<panel height="3%"/>
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Prix :" />
+					</panel>
+					<panel width="1%"/>
+					<panel childLayout="vertical" width="20%" >
+						<panel height="25%"/>
+						<control name="textfield" height="35px" id="typeCar" />
+						<panel height="3%"/>
+						<control name="textfield" height="35px" id="weight" />
+						<control name="textfield" height="35px" id="puis" />
+						<panel height="3%"/>
+						<control name="textfield" height="35px" id="prix" />
+					</panel>
+					<panel width="2%"/>
+					<control id="imgcar" name="imageSelect"  height="70%" width="60%" imageWidth="100%" imageHeight="100%" 
+				          imageList="Interface/Nifty/viper.jpg,Interface/Nifty/bmwm3.jpg,Interface/Nifty/start_background.jpg,">
 				    	<interact onClick="changePhoto()"/>
 				    </control>
 				</panel>
@@ -59,7 +58,7 @@
 						<interact onClick="gotoChooseProfil()" />
 					</control>
 					<panel width="20%" />
-					<control id="applyButton" width="18%" align="center" height="100%" name="button" label="VALIDER">
+					<control id="applyButton" width="18%" align="center" height="100%" name="button" label="ACHETER">
 						<interact onClick="Enregistrer()" />
 					</control>
 					<panel width="22%" />

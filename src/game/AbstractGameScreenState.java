@@ -9,6 +9,7 @@ import physics.tools.MathTools;
 import save.Comptes;
 import save.ProfilCurrent;
 import audio.AudioRender;
+import audio.EngineSoundStore;
 import audio.SoundStore;
 
 import com.jme3.app.Application;
@@ -18,7 +19,6 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
@@ -48,10 +48,15 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 
+/**
+ * This class contains the common points between all games, such as the controls
+ * of the car, initializing sounds, maps...
+ * 
+ * @author TANGUY Arnaud
+ * 
+ */
 public abstract class AbstractGameScreenState extends AbstractScreenController
 		implements ActionListener, AnalogListener, PhysicsCollisionListener {
 
@@ -62,7 +67,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected BulletAppState bulletAppState;
 
-	protected SoundStore soundStore;
+	protected SoundStore<String> soundStore;
+	protected EngineSoundStore engineSoundStore;
 
 	protected Car player;
 	protected CarProperties playerCarProperties;
@@ -97,14 +103,14 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected boolean needReset;
 	protected boolean needJump = false;
-	
+
 	protected long timerJump = 0;
 	protected long timerRedZone = 0;
 	protected long timerCrashSound = 0;
 	protected boolean playerFinish;
 	protected long timePlayer = 0;
 	protected boolean playerStoped = false;
-	
+
 	private Vector3f jumpForce = new Vector3f(0, 15000, 0);
 
 	boolean zeroSec;
@@ -112,7 +118,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	boolean twoSec;
 	boolean threeSec;
 
-	protected AudioRender audioMotor;
+	protected AudioRender<String> audioRender;
 
 	public AbstractGameScreenState() {
 		super();
@@ -136,7 +142,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void onEndScreen() {
-		audioMotor.mute();
+		audioRender.mute();
 		stateManager.detach(this);
 	}
 
@@ -158,7 +164,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		assetManager.registerLoader(BlenderLoader.class, "blend");
 	}
 
-	protected void initGame() {
+	protected void initGame() throws Exception {
 		app.setDisplayStatView(false);
 
 		bulletAppState = new BulletAppState();
@@ -185,7 +191,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		rootNode.attachChild(sky);
 
 		// Enable a chase cam
-		chaseCam = new ChaseCamera(app.getCamera(), player.getChassis(),
+		chaseCam = new ChaseCamera(app.getCamera(), player.getNode(),
 				inputManager);
 		chaseCam.setSmoothMotion(true);
 		chaseCam.setMaxDistance(100);
@@ -222,13 +228,16 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				playerEnginePhysics);
 	}
 
-	protected void initAudio() {
+	protected void initAudio() throws Exception {
 
 		// Init audio
 		soundStore = SoundStore.getInstance();
 		soundStore.setAssetManager(assetManager);
 
-		soundStore.addEngineSound(1000, "Models/Default/1052_P.wav");
+		engineSoundStore = engineSoundStore.getInstance();
+		engineSoundStore.setAssetManager(assetManager);
+
+		engineSoundStore.addSound(1000, "Models/Default/1052_P.wav");
 		// channels.put(1126, "Models/Default/1126_P.wav");
 		// channels.put(1205, "Models/Default/1205_P.wav");
 		// channels.put(1289, "Models/Default/1289_P.wav");
@@ -242,36 +251,38 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// channels.put(2215, "Models/Default/2215_P.wav");
 		// channels.put(2370, "Models/Default/2370_P.wav");
 		// channels.put(2536, "Models/Default/2536_P.wav");
-		soundStore.addEngineSound(2714, "Models/Default/2714_P.wav");
+		engineSoundStore.addSound(2714, "Models/Default/2714_P.wav");
 		// channels.put(2904, "Models/Default/2904_P.wav");
 		// channels.put(3107, "Models/Default/3107_P.wav");
 		// channels.put(3324, "Models/Default/3324_P.wav");
 		// channels.put(3557, "Models/Default/3557_P.wav");
 		// channels.put(3806, "Models/Default/3806_P.wav");
 		// channels.put(4073, "Models/Default/4073_P.wav");
-		soundStore.addEngineSound(4358, "Models/Default/4358_P.wav");
+		engineSoundStore.addSound(4358, "Models/Default/4358_P.wav");
 		// channels.put(4663, "Models/Default/4663_P.wav");
 		// channels.put(4989, "Models/Default/4989_P.wav");
 		// channels.put(5338, "Models/Default/5338_P.wav");
 		// channels.put(5712, "Models/Default/5712_P.wav");
 		// channels.put(6112, "Models/Default/6112_P.wav");
-		soundStore.addEngineSound(8540, "Models/Default/6540_P.wav");
+		engineSoundStore.addSound(8540, "Models/Default/6540_P.wav");
 
-		soundStore.addExtraSound("start", "Models/Default/start.wav");
-		soundStore.addExtraSound("up", "Models/Default/up.wav");
-		soundStore.addExtraSound("lost", "Sound/lost.wav");
-		soundStore.addExtraSound("win", "Sound/win.wav");
-		soundStore.addExtraSound("start_low", "Sound/start_low.wav");
-		soundStore.addExtraSound("start_high", "Sound/start_high.wav");
-		soundStore.addExtraSound("burst", "Sound/explosion.wav");
-		soundStore.addExtraSound("crash", "Sound/car_crash.wav");
+		soundStore.addSound("start", "Models/Default/start.wav");
+		soundStore.addSound("up", "Models/Default/up.wav");
+		soundStore.addSound("lost", "Sound/lost.wav");
+		soundStore.addSound("win", "Sound/win.wav");
+		soundStore.addSound("start_low", "Sound/start_low.wav");
+		soundStore.addSound("start_high", "Sound/start_high.wav");
+		soundStore.addSound("burst", "Sound/explosion.wav");
+		soundStore.addSound("crash", "Sound/car_crash.wav");
 
-		audioMotor = new AudioRender(rootNode, soundStore);
+		audioRender = new AudioRender<String>(rootNode, soundStore);
 	}
-
 	protected void buildPlayer() {
 		//playerCarProperties = new BMWM3Properties();			
 		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
+		//playerCarProperties = new F430Properties();			
+		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new CarProperties () :
+
 			//ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar());
 		//XXX
 		if (ProfilCurrent.getInstance() == null) {
@@ -287,8 +298,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 		
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties,
-				"Models/FerrariRed/Car.scene");
+		player = new Car(assetManager, playerCarProperties, "ferrari red");
+//		player = new Car(assetManager, playerCarProperties, "corvette.j3o");
+
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
 		player.getNode().addControl(player);
@@ -428,9 +440,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 
 		if (runIsOn) {
-			// XXX why the hell is it needed !!			
+			// XXX why the hell is it needed !!
 			digitalStart.setText(" ");
-			
+
 			if (!player.getBurstEnabled() && !playerFinish) {
 				if (playerStartKickDone) {
 					playerRpm = player.getEnginePhysics().getRpm();
@@ -443,14 +455,13 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				float force = -(float) playerEnginePhysics.getForce() / 5;
 				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
-				
-				if (needJump)	{
+
+				if (needJump) {
 					player.applyImpulse(jumpForce, Vector3f.ZERO);
 					needJump = false;
 				}
-			}
-			else if (player.getBurstEnabled())	{
-				audioMotor.mute();
+			} else if (player.getBurstEnabled()) {
+				audioRender.mute();
 				playerRpm = 0;
 			}
 		} else {
@@ -471,7 +482,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				} else {
 					if (System.currentTimeMillis() - timerRedZone > 3000) {
 						player.explode();
-						audioMotor.mute();
+						audioRender.mute();
 						playerFinish = true;
 						timePlayer = 0;
 					}
@@ -526,7 +537,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			long time = System.currentTimeMillis() - countDown;
 			if (time > 5000) {
 				if (!zeroSec) {
-					audioMotor.playStartBeepHigh();
+					audioRender.play("start_high");
 					zeroSec = true;
 				}
 				digitalStart.setText(" ");
@@ -534,19 +545,19 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
 				if (!oneSec) {
-					audioMotor.playStartBeepLow();
+					audioRender.play("start_low");
 					oneSec = true;
 				}
 				digitalStart.setText("1");
 			} else if (time > 3000) {
 				if (!twoSec) {
-					audioMotor.playStartBeepLow();
+					audioRender.play("start_low");
 					twoSec = true;
 				}
 				digitalStart.setText("2");
 			} else if (time > 2000) {
 				if (!threeSec) {
-					audioMotor.playStartBeepLow();
+					audioRender.play("start_low");
 					threeSec = true;
 				}
 				digitalStart.setText("3");
@@ -563,7 +574,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerEnginePhysics.setGear(1);
 		player.resetSuspension();
 		player.steer(0);
-		audioMotor.playStartSound();
+		audioRender.play("start");
 
 		player.accelerate(0);
 		player.setLife(100);
@@ -624,7 +635,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else if (binding.equals("GearUp")) {
 			if (value) {
-				audioMotor.gearUp();
+				audioRender.play("up");
 				playerEnginePhysics.incrementGear();
 			}
 		} else if (binding.equals("GearDown")) {
@@ -637,16 +648,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 					player.addNos();
 				}
 			}
-		}
-		else if (binding.equals("Jump")) {
+		} else if (binding.equals("Jump")) {
 			if (value) {
-				if (System.currentTimeMillis() - timerJump > 2000 && !player.getBurstEnabled() && runIsOn)	{
+				if (System.currentTimeMillis() - timerJump > 2000
+						&& !player.getBurstEnabled() && runIsOn) {
 					needJump = true;
 					timerJump = System.currentTimeMillis();
 				}
 			}
-		}
-		else if (binding.equals("Menu")) {
+		} else if (binding.equals("Menu")) {
 			app.gotoStart();
 		}
 	}
@@ -700,7 +710,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				// Trigger only if the sound is not playing
 				if (timerCrashSound == 0
 						|| System.currentTimeMillis() - timerCrashSound > 2000) {
-					audioMotor.playCrash();
+					audioRender.play("crash", 20f);
 
 					timerCrashSound = System.currentTimeMillis();
 				}

@@ -20,8 +20,8 @@ public class CreateProfilScreen extends AbstractScreenController {
 	private ArrayList<CarProperties> dataAllCar;
 	private TextField erreurlog;
 
-	private TextField standweight;
-	private TextField standpuis;
+	private TextField weight;
+	private TextField puis;
 	
 	public CreateProfilScreen () {
 		super();
@@ -42,19 +42,19 @@ public class CreateProfilScreen extends AbstractScreenController {
 		erreurlog = screen.findNiftyControl("result", TextField.class);
 		erreurlog.setEnabled(false);
 		
-		standweight = screen.findNiftyControl("Standweight", TextField.class);
-		standpuis = screen.findNiftyControl("Standpuis", TextField.class);
+		weight = screen.findNiftyControl("weight", TextField.class);
+		puis = screen.findNiftyControl("puis", TextField.class);
 		
 		AffDataCar();
 
-        standweight.setEnabled(false);
-        standpuis.setEnabled(false);
+        weight.setEnabled(false);
+        puis.setEnabled(false);
 	}
 	
 	public void AffDataCar() {
 		
-		standweight.setText(Integer.toString(dataAllCar.get(0).getWeight()));
-		standpuis.setText(Double.toString(dataAllCar.get(0).getPuissance()));
+		weight.setText(Integer.toString(dataAllCar.get(0).getWeight()));
+		puis.setText(Double.toString(dataAllCar.get(0).getPuissance()));
 
 	}
 	

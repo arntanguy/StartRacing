@@ -1,5 +1,8 @@
 package physics;
 
+import java.text.DecimalFormat;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -78,6 +81,23 @@ public class SkylineProperties extends CarProperties {
 		availableModels.add("Models/FerrariGreen/Car.scene");
 		availableModels.add("Models/FerrariBlue/Car.scene");
 	
+		Set cles = torque.keySet();
+		Iterator iterator = cles.iterator();
+		Object n = iterator.next();
+		int couple = torque.get(n);
+		while (iterator.hasNext()) {
+			Object newn = iterator.next();
+			int newcouple = torque.get(newn);
+			if (newcouple > couple) {
+				couple = newcouple;
+				n = newn;
+			}
+		}
+		int tourmin = Integer.parseInt(n.toString());
+		DecimalFormat df = new DecimalFormat ( ) ;
+		df.setMaximumFractionDigits ( 2 ) ; 
+		puissance = (int)(couple * tourmin * (Math.PI/30) / 736);
+		
 		typeCar = TypeCarProperties.SKYLINE;
 	}
 }

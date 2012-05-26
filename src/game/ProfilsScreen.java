@@ -25,6 +25,7 @@ import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
 import de.lessvoid.nifty.controls.ImageSelect;
+import de.lessvoid.nifty.controls.ImageSelectSelectionChangedEvent;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.controls.imageselect.builder.ImageSelectBuilder;
 import de.lessvoid.nifty.nulldevice.NullRenderDevice;
@@ -39,6 +40,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	private final String ALLJOUEUR = "allJoueur";
 	private ArrayList<Profil> dataAllJoueur;
 	private ArrayList<CarProperties> dataAllCar;
+	private ArrayList<CarProperties> carsPlayer;
 	private DropDown<String> allJoueurDropDown;
 	private TextField demi;
 	private TextField quart;
@@ -50,17 +52,15 @@ public class ProfilsScreen extends AbstractScreenController {
 	private TextField typeCar;
 	private TextField weight;
 	private TextField puis;
-
 	
 	private ImageSelect imgCar;
-	private ImageSelect imgCarNoView;
-	private boolean droite;
+
 	
 	public ProfilsScreen() {
 		super();
 		dataAllJoueur = Comptes.getListProfil();
 		dataAllCar = Comptes.getListCar();
-		droite=true;
+		carsPlayer = new ArrayList<CarProperties>();
 	}
 
 	@Override
@@ -80,12 +80,8 @@ public class ProfilsScreen extends AbstractScreenController {
 		deadcarfree = screen.findNiftyControl("cardead", TextField.class);
 		monnaie = screen.findNiftyControl("monnaie", TextField.class);
 		
-		imgCarNoView = screen.findNiftyControl("imgcarnoview", ImageSelect.class);
 		imgCar = screen.findNiftyControl("imgcar", ImageSelect.class);
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
-		/*RenderDeviceJme rdjme = new RenderDeviceJme(null);
-		NiftyRenderEngineImpl im = new NiftyRenderEngineImpl(rdjme);
-		imgCar.addImage(im.createImage("Interface/Nifty/Fonts/start_background.jpg", false));*/
 		
 		demi.setEnabled(false);
 		quart.setEnabled(false);
@@ -98,7 +94,8 @@ public class ProfilsScreen extends AbstractScreenController {
 		puis = screen.findNiftyControl("puis", TextField.class);
 		
 		AffBase();
-
+		
+		typeCar.setEnabled(false);
 		weight.setEnabled(false);
 		puis.setEnabled(false);
 	}
@@ -109,12 +106,11 @@ public class ProfilsScreen extends AbstractScreenController {
 		}
         if (ProfilCurrent.getInstance() == null) {
         	if (Comptes.getListProfil().size() != 0) {
-        		AffCars(0);
+        		AffDataPlayer(0);
         	}
         } else {
     		for (int i = 0; i < dataAllJoueur.size(); ++i) {
     			if (dataAllJoueur.get(i).getId() == ProfilCurrent.getInstance().getId()) {
-    				AffCars(i);
     				allJoueurDropDown.selectItemByIndex(i);
     				break;
     			}
@@ -122,8 +118,9 @@ public class ProfilsScreen extends AbstractScreenController {
         }
 	}
 	
-	public void AffCars(int rangProfil) {
+	public void AffDataPlayer(int rangProfil) {
 		
+		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
 		
@@ -132,66 +129,27 @@ public class ProfilsScreen extends AbstractScreenController {
 		free.setText(dataAllJoueur.get(rangProfil).getTimefree());
 		deadcarfree.setText(Integer.toString(dataAllJoueur.get(rangProfil).getCardead()));
 		monnaie.setText(Integer.toString(dataAllJoueur.get(rangProfil).getMonnaie()));
-		ArrayList<CarProperties> cars = dataAllJoueur.get(rangProfil).getCar();
-		int carchosebyplayer = dataAllJoueur.get(rangProfil).getChoixCar();
-
-		//permet d'initialiser toutes les valeurs de chaque voiture du joueur
-		switch (imgCar.getSelectedImageIndex()) {
-			case 0 :
-				//Skyline
-				for (int i = 0; i < cars.size(); ++i) {
-					if (cars.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
-				        weight.setText(Integer.toString(cars.get(i).getWeight()));
-				        puis.setText(Double.toString(cars.get(i).getPuissance()));
-					}
-				}
-				break;
-			case 1 :
-				//Viper
-				for (int i = 0; i < cars.size(); ++i) {
-					if (cars.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
-				        weight.setText(Integer.toString(cars.get(i).getWeight()));
-				        puis.setText(Double.toString(cars.get(i).getPuissance()));
-					}
-				}
-				break;
-			case 2 : 
-				//BMW
-				for (int i = 0; i < cars.size(); ++i) {
-					if (cars.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
-				        weight.setText(Integer.toString(cars.get(i).getWeight()));
-				        puis.setText(Double.toString(cars.get(i).getPuissance()));
-					}
-				}
-				break;
-			case 3 :
-				//Ferrari
-				/*for (int i = 0; i < cars.size(); ++i) {
-					if (cars.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
-				        weight.setText(Integer.toString(cars.get(i).getWeight()));
-				        puis.setText(Double.toString(cars.get(i).getPuissance()));
-					}
-				}*/
-				break;
+		carsPlayer = dataAllJoueur.get(rangProfil).getCar();
+		int numchoixcar = dataAllJoueur.get(rangProfil).getChoixCar();
+		
+		typeCar.setText(carsPlayer.get(numchoixcar).getTypeCar().toString());
+		puis.setText(Integer.toString(carsPlayer.get(numchoixcar).getPuissance()));
+		weight.setText(Integer.toString(carsPlayer.get(numchoixcar).getWeight()));
+		
+		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+			imgCar.setSelectedImageIndex(1);
+			imgCar.backClick();
+		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+			imgCar.setSelectedImageIndex(2);
+			imgCar.backClick();
+		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+			imgCar.setSelectedImageIndex(3);
+			imgCar.backClick();
+		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.FERRARI)) {
+			imgCar.setSelectedImageIndex(2);
+			imgCar.forwardClick();
 		}
 		
-		//ImageSelectBuilder za;
-		//za = (ImageSelectBuilder) screen.findNiftyControl("imgCar", ImageSelect.class);
-		//System.out.println(za.);
-		//za.addImage("start_background.jpg");
-		/*for (int i = 0; i < cars.size(); ++i) {
-			if (cars.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
-				za.addImage("Nifty/Fonts/start_background.jpg");
-			} else if (cars.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
-
-			} else if (cars.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
-
-			} else {
-
-            }
-			Bmwweight.setText(Integer.toString(cars.get(i).getWeight()));
-			Bmwpuis.setText(Double.toString(cars.get(i).getPuissance()));
-		} // for*/
 	}
 	
 	@NiftyEventSubscriber(id=ALLJOUEUR)
@@ -199,7 +157,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		logchoose = event.getSelection();
 		for (int i = 0; i < dataAllJoueur.size(); ++i) {
 			if (logchoose.equals(dataAllJoueur.get(i).getLogin())) {
-				AffCars(i);
+				AffDataPlayer(i);
 				break;
 			}
 		}
@@ -213,12 +171,48 @@ public class ProfilsScreen extends AbstractScreenController {
 		} else if (imgCar.getSelectedImageIndex() >= 0 && imgCar.getSelectedImageIndex() < maxphoto){
 			imgCar.forwardClick();
 		}
-			//NiftyRenderEngine nre = new NiftyRenderEngine();
-			/*NiftyImage im = new NiftyImage( NiftyRenderEngine nre, 
-					NullRenderDevice.createImage("Nifty/Fonts/start_background.jpg", true));*/
-			/*NiftyImageManager imageManager = new NiftyImageManager();
-			NiftyImage im = new NiftyImage(this, imageManager.getImage("Nifty/Fonts/start_background.jpg", true));*/
-
+		
+		typeCar.setText("");
+		weight.setText("");
+		puis.setText("");
+		
+		if (imgCar.getSelectedImageIndex() == 0) {
+			for (int i = 0; i < carsPlayer.size(); ++i) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					break;
+				}						
+			}
+		} else if (imgCar.getSelectedImageIndex() == 1) {
+			for (int i = 0; i < carsPlayer.size(); ++i) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					break;
+				}						
+			}
+		} else if (imgCar.getSelectedImageIndex() == 2) {
+			for (int i = 0; i < carsPlayer.size(); ++i) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					break;
+				}						
+			}
+		} else {
+			for (int i = 0; i < carsPlayer.size(); ++i) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
+					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					break;
+				}						
+			}
+		}
 	}
     
 	public void savemodif(int rangprofil) {
@@ -226,28 +220,28 @@ public class ProfilsScreen extends AbstractScreenController {
 		ArrayList<CarProperties> cars = dataAllJoueur.get(rangprofil).getCar();
 		if (imgCar.getSelectedImageIndex() == 1) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
 					choixCar = j;
 					break;
 				}
 			}
 		} else if (imgCar.getSelectedImageIndex() == 2) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
 					choixCar = j;
 					break;
 				}
 			}
 		} else if (imgCar.getSelectedImageIndex() == 3) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.FERRARI)) {
 					choixCar = j;
 					break;
 				}
 			}
 		} else if (imgCar.getSelectedImageIndex() == 0) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.STANDARD)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
 					choixCar = j;
 					break;
 				}
@@ -292,6 +286,16 @@ public class ProfilsScreen extends AbstractScreenController {
 			}
 		}
 		app.gotoAchat();
+	}
+	
+	public void Garage() {
+		for (int i = 0; i < dataAllJoueur.size(); ++i) {
+			if (logchoose.equals(dataAllJoueur.get(i).getLogin())) {
+				savemodif(i);
+				break;
+			}
+		}
+		app.gotoGarage();
 	}
 	
 	public void gotoMainMenu() {

@@ -11,6 +11,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import physics.BMWM3Properties;
 import physics.CarProperties;
 import physics.DodgeViperProperties;
+import physics.F430Properties;
 import physics.SkylineProperties;
 import physics.TypeCarProperties;
 
@@ -25,11 +26,12 @@ public class test {
 		CarProperties bmw = new BMWM3Properties();
 		CarProperties dvp = new DodgeViperProperties();
 		CarProperties skp = new SkylineProperties();
+		CarProperties fer = new F430Properties();
 		ArrayList<CarProperties> listCar = new ArrayList<CarProperties>();
-		listCar.add(car);
-		listCar.add(bmw);
-		listCar.add(dvp);
 		listCar.add(skp);
+		listCar.add(dvp);
+		listCar.add(bmw);
+		listCar.add(fer);
 		XStream xs = new XStream(new DomDriver());
 		try {
 		    FileOutputStream fs = new FileOutputStream("save/Cars.xml");
@@ -38,18 +40,17 @@ public class test {
 		    e1.printStackTrace();
 		}
 		
-		CarProperties st = new CarProperties();
+		//CarProperties st = new CarProperties();
 		CarProperties bmw1 = new BMWM3Properties();
 		CarProperties dvp2 = new DodgeViperProperties();
 		ArrayList<CarProperties> car1 = new ArrayList<CarProperties>();
 		ArrayList<CarProperties> car2 = new ArrayList<CarProperties>();
 		ArrayList<CarProperties> car3 = new ArrayList<CarProperties>();
-		car1.add(st);
-		car1.add(bmw1);
-		car1.add(dvp2);
 		car1.add(skp);
-		car2.add(st);
-		car3.add(st);
+		car1.add(dvp2);
+		car1.add(bmw1);
+		car2.add(dvp2);
+		car3.add(bmw1);
 		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", car1, 0, "", "", "", 0, 30000);
 		Comptes.addProfil(joueur1);
 		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", car2, 0, "", "", "", 0, 150000);

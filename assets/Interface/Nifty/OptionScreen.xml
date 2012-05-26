@@ -14,35 +14,37 @@
 					text="${CALL.getMenuTitle()}" />
 				
 				<panel height="70%" align="center" childLayout="vertical">
-					<panel childLayout="horizontal">
-						<text font="Interface/Fonts/Default.fnt" width="60%" valign="center" align="center" text="Activer le son" />
-						<control name="checkbox" width="40%" id="activateSound" />
+					<panel childLayout="horizontal" height="20%">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Activer le son" />
+						<panel childLayout="center"><control name="checkbox" id="activateSound" /></panel>
 					</panel>
-					<panel height="20%" />
-					<panel childLayout="horizontal">
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Ecran large (16/9)" />
-						<control name="checkbox" width="40%" id="wideScreen" />
+						<panel childLayout="center"><control name="checkbox" id="wideScreen" /></panel>
 					</panel>
-					<panel height="20%" />
-					<panel childLayout="horizontal">
+					<panel childLayout="horizontal" height="20%">
+						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Plein écran" />
+						<panel childLayout="center"><control name="checkbox" id="fullScreen" /></panel>
+					</panel>
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Résolution de l'écran" />
-						<control name="dropDown" width="40%" id="resolutionDropDown" />
+						<panel childLayout="center"><control name="dropDown" id="resolutionDropDown" /></panel>
 					</panel>
-					<panel height="20%" />
-					<panel childLayout="center">
-						<control name="label" id="saveMessage" text="" color="#f00f" font="Interface/Fonts/ArialBlack_26.fnt" height="100%" width="100%"/>
+					<panel childLayout="center" height="20%">
+						<control name="label" id="saveMessage" text="" color="#f00f" font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="100%" width="100%"/>
 					</panel>
 				</panel>
 				
-				<panel height="10%" width="100%" valign="bottom" align="center" childLayout="horizontal">
-					<control id="returnButton" width="50%" align="center" height="100%" name="button" label="Menu Principal">
-						<interact onClick="gotoMainMenu()" />
-					</control>
-					<panel width="5px" />					
-					<control id="applyButton" width="50%" align="center" height="100%" name="button" label="Appliquer">
-						<interact onClick="applyOptions()" />
-						<interact onClick="showMessage()" />
-					</control>
+				<panel childLayout="center" width="100%">
+					<panel width="50%" childLayout="horizontal">
+						<control id="returnButton" width="48%" align="center" height="100%" name="button" label="Menu Principal">
+							<interact onClick="gotoMainMenu()" />
+						</control>
+						<panel width="4%" />					
+						<control id="applyButton" width="48%" align="center" height="100%" name="button" label="Appliquer">
+							<interact onClick="applyOptions()" />
+						</control>
+					</panel>
 				</panel>
 			</panel>
 		</layer>

@@ -36,7 +36,7 @@ public class Car extends VehicleControl {
 
 	private double life = 100;
 	private String driverName;
-	
+
 	private long timerNos = 0;
 	private int nosCharge = 0;
 
@@ -52,7 +52,7 @@ public class Car extends VehicleControl {
 
 	// Ensures that the stop thread is not launched more than needed
 	private boolean willStop = false;
-	
+
 	private boolean nosEnabled = false;
 
 	public Car(AssetManager assetManager, CarProperties properties, String scene) {
@@ -76,27 +76,28 @@ public class Car extends VehicleControl {
 	}
 
 	private void buildAudioRender() {
-		audioRender = new AudioRender<String>(carNode, SoundStore.getInstance());
-		engineRender = new EngineAudioRender(carNode, EngineSoundStore.getInstance());
+		engineRender = new EngineAudioRender(carNode,
+				EngineSoundStore.getInstance());
+		audioRender = new AudioRender(carNode, SoundStore.getInstance());
+		System.out.println(SoundStore.getInstance().getSounds());
 	}
 
 	private void buildCar(String model) {
-		if ("corvette".equals(model))	{
+		if ("corvette".equals(model)) {
 			CarFactory.createCorvette(assetManager, this);
+		}
+		else if ("buggy".equals(model))	{
+			CarFactory.createBuggy(assetManager, this);
 		}
 		else if ("ferrari red".equals(model))	{
 			CarFactory.createFerrari(assetManager, this, "Red");
-		}
-		else if ("ferrari blue".equals(model))	{
+		} else if ("ferrari blue".equals(model)) {
 			CarFactory.createFerrari(assetManager, this, "Blue");
-		}
-		else if ("ferrari green".equals(model))	{
+		} else if ("ferrari green".equals(model)) {
 			CarFactory.createFerrari(assetManager, this, "Green");
-		}
-		else if ("ferrari orange".equals(model))	{
+		} else if ("ferrari orange".equals(model)) {
 			CarFactory.createFerrari(assetManager, this, "Orange");
-		}
-		else	{
+		} else {
 			CarFactory.createFerrari(assetManager, this, "Blue");
 		}
 	}
@@ -105,15 +106,15 @@ public class Car extends VehicleControl {
 		return chassis;
 	}
 
-	public void setChassis(Geometry chassis)	{
+	public void setChassis(Geometry chassis) {
 		this.chassis = chassis;
 	}
-	
+
 	public Node getNode() {
 		return carNode;
 	}
-	
-	public void setNode(Node node)	{
+
+	public void setNode(Node node) {
 		this.carNode = node;
 	}
 
@@ -139,12 +140,12 @@ public class Car extends VehicleControl {
 		this.steeringValue = (float) ((steeringValue >= -0.5) ? steeringValue
 				: -0.5);
 	}
-	
-	public float getWheelRadius()	{
+
+	public float getWheelRadius() {
 		return wheelRadius;
 	}
-	
-	public void setWheelRadius(float radius)	{
+
+	public void setWheelRadius(float radius) {
 		this.wheelRadius = radius;
 	}
 
@@ -202,47 +203,48 @@ public class Car extends VehicleControl {
 	public boolean getBurstEnabled() {
 		return particuleMotor.getBurstEnabled();
 	}
-	
-	public void addNos()	{
-		if (!nosEnabled)	{
+
+	public void addNos() {
+		if (!nosEnabled) {
 			// Vérifier qu'il reste une charge
-			if (nosCharge > 0)	{
+			if (nosCharge > 0) {
 				nosEnabled = true;
 				nosCharge--;
 				enginePhysics.activeNos();
 				particuleMotor.addNos(carNode);
 
 				enginePhysics.activeNos();
-				
+
 				timerNos = System.currentTimeMillis();
 			}
-		}	
+		}
 	}
 
-	public void stopNos()	{
-		if (nosEnabled)	{
+	public void stopNos() {
+		if (nosEnabled) {
 			nosEnabled = false;
 			particuleMotor.removeNos(carNode);
 			timerNos = 0;
-			
+
 			enginePhysics.stopNos();
 		}
 	}
-	public void controlNos()	{
-		if (nosEnabled && System.currentTimeMillis() - timerNos > 2500)	{
+
+	public void controlNos() {
+		if (nosEnabled && System.currentTimeMillis() - timerNos > 2500) {
 			particuleMotor.removeNos(carNode);
 			enginePhysics.stopNos();
-			
-			nosEnabled = false;			
+
+			nosEnabled = false;
 			timerNos = 0;
 		}
 	}
-	
-	public boolean getNosActivity()	 {
+
+	public boolean getNosActivity() {
 		return nosEnabled;
 	}
-	
-	public void setNosCharge(int nombre)	{
+
+	public void setNosCharge(int nombre) {
 		nosCharge = nombre;
 	}
 
@@ -251,6 +253,7 @@ public class Car extends VehicleControl {
 		particuleMotor.addExplosion(carNode);
 		enginePhysics.setBreaking(true);
 		audioRender.play("burst");
+		engineRender.mute();
 		stop(1000);
 	}
 
@@ -261,9 +264,10 @@ public class Car extends VehicleControl {
 	public void updateSound(int rpm) {
 		engineRender.setRPM(rpm);
 	}
-	
-	public void mute()	{
+
+	public void mute() {
 		audioRender.mute();
+		engineRender.mute();
 	}
 
 	public void updateSound() {
@@ -285,7 +289,7 @@ public class Car extends VehicleControl {
 				public void run() {
 					accelerate(0);
 					setLinearVelocity(Vector3f.ZERO);
-//					audioRender.mute();
+					engineRender.mute();
 					willStop = false;
 				}
 			}, delay);
@@ -293,10 +297,14 @@ public class Car extends VehicleControl {
 	}
 
 	public void setLife(double life) {
-		this.life = (life <= 100) ? life : 100; 
+		this.life = (life <= 100) ? life : 100;
+	}
+
+	public boolean isAlive() {
+		return (life > 0.f && !getBurstEnabled());
 	}
 	
-	public boolean isAlive() {
-		return (life>0.f && !getBurstEnabled());
+	public EngineAudioRender getEngineAudioRender() {
+		return engineRender;
 	}
 }

@@ -21,6 +21,7 @@ public class App extends SimpleApplication {
 		OptionXMLParser.loadAppOptions(XMLFileStore.OPTION_SAVE_FILE);
 		set.setResolution(OptionXMLParser.screenResolution.width, OptionXMLParser.screenResolution.height);
 		set.setTitle(StringStore.APP_TITLE);
+		set.setFullscreen(OptionXMLParser.fullScreen);
 		this.setSettings(set);
 		this.setShowSettings(false);
 	}
@@ -35,11 +36,13 @@ public class App extends SimpleApplication {
 
 		/******* DEBUG ********/
 		XMLFileStore.validateXMLFiles(nifty);
-		addXMLFiles();		
+//		nifty.setDebugOptionPanelColors(true);
+		addXMLFiles();
 		/****** FIN DEBUG *****/
 
-		//gotoStart();
 		//gotoOptions();
+		gotoStart();
+//		gotoOptions();
 		//gotoCrtProfil();
 		gotoAffProfil();
 		
@@ -50,6 +53,11 @@ public class App extends SimpleApplication {
 		// attach the nifty display to the gui view port as a processor
 		guiViewPort.addProcessor(niftyDisplay);
 		inputManager.setCursorVisible(false);
+	}
+	
+	@Override
+	public void stop() {
+		super.stop();
 	}
 	
 	public void addXMLFiles() {
@@ -72,7 +80,7 @@ public class App extends SimpleApplication {
 			nifty.gotoScreen("hud");
 
 			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-					.getCurrentScreen().getScreenController();
+					.getScreen("hud").getScreenController();
 			stateManager.attach(gameScreenController);
 		}
 
@@ -82,29 +90,29 @@ public class App extends SimpleApplication {
 		nifty.addXml("Interface/Nifty/FreeForAllScreen.xml");
 		nifty.gotoScreen("hud");
 		AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-				.getCurrentScreen().getScreenController();
+				.getScreen("hud").getScreenController();
 		stateManager.attach(gameScreenController);
 	}
 	
 	public void gotoOptions() {
         nifty.gotoScreen("options");
-        OptionScreenState gameScreenController = (OptionScreenState) nifty.getCurrentScreen().getScreenController();
+        OptionScreenState gameScreenController = (OptionScreenState) nifty.getScreen("options").getScreenController();
         stateManager.attach(gameScreenController);
 	}
 
 	public void gotoStart() {
-		// nifty.addXml("Interface/Nifty/DevTest.xml");
 		nifty.addXml("Interface/Nifty/StartScreen.xml");
 		nifty.gotoScreen("start");
-		StartScreenState startScreenController = (StartScreenState) nifty
-				.getCurrentScreen().getScreenController();
+		StartScreenState startScreenController = (StartScreenState) nifty.getScreen("start").getScreenController();
+		//StartScreenState startScreenController = (StartScreenState) nifty
+		//		.getCurrentScreen().getScreenController();
 		stateManager.attach(startScreenController);
 	}
 
 	public void gotoCrtProfil() {
 		nifty.addXml("Interface/Nifty/CreateProfil.xml");
 		nifty.gotoScreen("createprofil");
-        CreateProfilScreen cpfscreen = (CreateProfilScreen) nifty.getCurrentScreen().getScreenController();
+        CreateProfilScreen cpfscreen = (CreateProfilScreen) nifty.getScreen("createprofil").getScreenController();
         stateManager.attach(cpfscreen);
 	}
 	

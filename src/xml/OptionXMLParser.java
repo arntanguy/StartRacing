@@ -1,60 +1,70 @@
 package xml;
 
 import java.awt.Dimension;
-import java.io.File;
+import java.awt.List;
+import java.awt.Toolkit;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class OptionXMLParser {
-	private static final String ROOT = "StartRacingOptions";
-	private static final String SOUND_ELEMENT = "sound";
-	private static final String WIDE_SCREEN_ELEMENT = "wideScreen";
-	private static final String RESOLUTION_ELEMENT = "resolution";
-	private static final String WIDTH_ATTRIBUTE = "width";
-	private static final String HEIGHT_ATTRIBUTE = "height";
 	
 	public static Dimension screenResolution = new Dimension(1024, 768);
 	public static boolean sound = true;
 	public static boolean wideScreen = false;
+	public static boolean fullScreen = false;
+	private static XStream xmlStream = new XStream(new DomDriver());
 		
 	public OptionXMLParser() {}
 	
 	/**
 	 * Charge les options de l'application depuis le fichier XML pointé par file.
+	 * Si la résolution enregistrée dans le fichier est supérieure à la résolution de l'écran, la résolution par défaut est instaurée.
 	 * @param file
 	 * 		Chemin vers le fichier xml d'options.
 	 * @return	true si aucun problème, false sinon
 	 */
 	public static boolean loadAppOptions(String str_file) {
-		File file = new File(str_file);
-		
 		try {
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-			doc.getDocumentElement().normalize();
-			System.out.println("ROOT: " + doc.getDocumentElement().getNodeName() + ". ");
+			FileInputStream in = new FileInputStream(XMLFileStore.OPTION_SAVE_FILE);
+			List list = new List();
+			list = (List) xmlStream.fromXML(in);
+			Dimension screenSize = (Dimension) xmlStream.fromXML(list.getItem(0));
 			
-		} catch (Exception e) {
-			return false;
+			if (Toolkit.getDefaultToolkit().getScreenSize().height >= screenSize.height) {
+				screenResolution = screenSize;
+				wideScreen = (Boolean) xmlStream.fromXML(list.getItem(2));
+			}
+			sound = (Boolean) xmlStream.fromXML(list.getItem(1));
+			fullScreen = (Boolean) xmlStream.fromXML(list.getItem(3));
+			
+			return true;
+		} catch (IOException e) {	 /* Si le fichier n'existe pas, on le crée avec des valeurs par défaut */
+			System.out.println("ERREUR: Fichier d'options du jeux introuvable.");
+			saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
 		}
-		
-		return true;
+		return false;
 	}
 	
 	public static boolean saveAppOptions(String str_file) {
-		File file = new File(str_file);
-		Element root;
-		
 		try {
-			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-			root = doc.createElement(ROOT);
-			System.out.println("ROOT: " + doc.getDocumentElement().getNodeName() + ". ");
-		} catch (Exception e) {
-			return false;
+			FileOutputStream out = new FileOutputStream(XMLFileStore.OPTION_SAVE_FILE);
+			List list = new List();
+			
+			list.add(xmlStream.toXML(screenResolution));
+			list.add(xmlStream.toXML(sound));
+			list.add(xmlStream.toXML(wideScreen));
+			list.add(xmlStream.toXML(fullScreen));
+
+			out.write(xmlStream.toXML(list).getBytes());
+			
+			return true;
+		} catch (IOException e) {
+			System.out.println("ERREUR: Fichier d'options introuvable.");
 		}
-		
-		return true;
+		return false;
 	}
 }

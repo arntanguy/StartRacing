@@ -4,6 +4,7 @@ import game.Car.CarType;
 import physics.CarProperties;
 import physics.EnginePhysics;
 import physics.TypeCarProperties;
+import physics.F430Properties;
 import physics.tools.Conversion;
 import physics.tools.MathTools;
 import save.Comptes;
@@ -144,6 +145,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	public void onEndScreen() {
 		audioRender.mute();
 		stateManager.detach(this);
+
+		app.gotoStart();
 	}
 
 	@Override
@@ -230,14 +233,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected void initAudio() throws Exception {
 
-		// Init audio
-		soundStore = SoundStore.getInstance();
-		soundStore.setAssetManager(assetManager);
-
 		engineSoundStore = engineSoundStore.getInstance();
 		engineSoundStore.setAssetManager(assetManager);
 
-		engineSoundStore.addSound(1000, "Models/Default/1052_P.wav");
+		// engineSoundStore.addSound(1000, "Models/Default/1052_P.wav");
+		engineSoundStore.addSound(1000, "Models/V8/idle.wav");
 		// channels.put(1126, "Models/Default/1126_P.wav");
 		// channels.put(1205, "Models/Default/1205_P.wav");
 		// channels.put(1289, "Models/Default/1289_P.wav");
@@ -251,20 +251,24 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// channels.put(2215, "Models/Default/2215_P.wav");
 		// channels.put(2370, "Models/Default/2370_P.wav");
 		// channels.put(2536, "Models/Default/2536_P.wav");
-		engineSoundStore.addSound(2714, "Models/Default/2714_P.wav");
+		engineSoundStore.addSound(4000, "Models/V8/med.wav");
 		// channels.put(2904, "Models/Default/2904_P.wav");
 		// channels.put(3107, "Models/Default/3107_P.wav");
 		// channels.put(3324, "Models/Default/3324_P.wav");
 		// channels.put(3557, "Models/Default/3557_P.wav");
 		// channels.put(3806, "Models/Default/3806_P.wav");
 		// channels.put(4073, "Models/Default/4073_P.wav");
-		engineSoundStore.addSound(4358, "Models/Default/4358_P.wav");
+		// engineSoundStore.addSound(7358, "Models/V8/high.wav");
 		// channels.put(4663, "Models/Default/4663_P.wav");
 		// channels.put(4989, "Models/Default/4989_P.wav");
 		// channels.put(5338, "Models/Default/5338_P.wav");
 		// channels.put(5712, "Models/Default/5712_P.wav");
 		// channels.put(6112, "Models/Default/6112_P.wav");
-		engineSoundStore.addSound(8540, "Models/Default/6540_P.wav");
+		engineSoundStore.addSound(9650, "Models/V8/high.wav");
+
+		// Init audio
+		soundStore = SoundStore.getInstance();
+		soundStore.setAssetManager(assetManager);
 
 		soundStore.addSound("start", "Models/Default/start.wav");
 		soundStore.addSound("up", "Models/Default/up.wav");
@@ -277,6 +281,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		audioRender = new AudioRender<String>(rootNode, soundStore);
 	}
+
 	protected void buildPlayer() {
 		//playerCarProperties = new BMWM3Properties();			
 		//playerCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties () :
@@ -299,7 +304,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		
 		// Create a vehicle control
 		player = new Car(assetManager, playerCarProperties, "ferrari red");
-//		player = new Car(assetManager, playerCarProperties, "corvette.j3o");
+		// player = new Car(assetManager, playerCarProperties, "corvette");
 
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
@@ -389,7 +394,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
-		bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
 	protected void setupKeys() {
@@ -397,7 +402,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_Z));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_S));
-		inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
 		inputManager.addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_A));
@@ -410,15 +414,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
-		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
+		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_LSHIFT));
+		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
 
-		// inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
 		inputManager.addListener(this, "Ups");
 		inputManager.addListener(this, "Downs");
-		inputManager.addListener(this, "Space");
 		inputManager.addListener(this, "Reset");
 		inputManager.addListener(this, "Mute");
 		inputManager.addListener(this, "GearUp");
@@ -426,6 +430,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addListener(this, "Throttle");
 		inputManager.addListener(this, "NOS");
 		inputManager.addListener(this, "Jump");
+		inputManager.addListener(this, "Menu");
+
 	}
 
 	@Override
@@ -578,6 +584,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		player.accelerate(0);
 		player.setLife(100);
+		player.getEngineAudioRender().mute();
 		playerEnginePhysics.setSpeed(0);
 		playerEnginePhysics.setRpm(1000);
 
@@ -657,7 +664,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				}
 			}
 		} else if (binding.equals("Menu")) {
-			app.gotoStart();
+			if (value) {
+				this.onEndScreen();
+			}
 		}
 	}
 

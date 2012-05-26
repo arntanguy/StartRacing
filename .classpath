@@ -18,7 +18,6 @@
 	<classpathentry kind="lib" path="lib/jME3-niftygui.jar"/>
 	<classpathentry kind="lib" path="lib/jME3-plugins.jar"/>
 	<classpathentry kind="lib" path="lib/jME3-terrain.jar"/>
-	<classpathentry kind="lib" path="lib/jME3-testdata.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl.jar"/>
 	<classpathentry kind="lib" path="lib/nifty-default-controls.jar"/>
 	<classpathentry kind="lib" path="lib/nifty-examples.jar"/>
@@ -28,5 +27,6 @@
 	<classpathentry kind="lib" path="lib/vecmath.jar"/>
 	<classpathentry kind="lib" path="lib/xmlpull-xpp3.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/jME3-testdata.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -111,11 +111,6 @@ public class StartScreenState extends AbstractScreenController {
 		app.gotoFreeForAll();
 	}
 
-	public void showQuitPopup(String s) {
-		Element pop = nifty.createPopup("exitPopup");
-		nifty.showPopup(nifty.getCurrentScreen(), pop.getId(), null);
-	}
-
 	public void showOptions() {
 		app.gotoOptions();
 	}

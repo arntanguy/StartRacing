@@ -10,7 +10,6 @@ import xml.XMLFileStore;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
-import com.jme3.system.AppSettings;
 
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
@@ -26,11 +25,13 @@ public class OptionScreenState extends AbstractScreenController {
 	private DropDown<String> resolutionDropDown;			/* Menu déroulant des résolutions */
 	private CheckBox soundCheckbox;
 	private CheckBox ratioCheckbox;
+	private CheckBox fullScreenCheckbox;
 	
 	private final String RESOLUTION_DROP_ID = "resolutionDropDown";
 	private final String RATIO_CHECKBOX_ID = "wideScreen";
 	private final String SOUND_CHECKBOX_ID = "activateSound";
 	private final String ON_SAVE_ID = "saveMessage";
+	private final String FULL_SCREEN_CHECKBOX_ID = "fullScreen";
 
 	/* Comparateur personnalisé pour la liste */
 	private Comparator<String> myComp = new Comparator<String>() {
@@ -53,7 +54,7 @@ public class OptionScreenState extends AbstractScreenController {
 		normalResolutions.put("1024 x 768", new Dimension(1024, 768));
 		normalResolutions.put("1600 x 1200", new Dimension(1600, 1200));
 		
-		wideResolutions.put("1280 x 720", new Dimension(1280, 720));
+		wideResolutions.put("1280 x 768", new Dimension(1280, 768));
 		wideResolutions.put("1600 x 900", new Dimension(1600, 900));
 		wideResolutions.put("1920 x 1080", new Dimension(1920, 1080));
 	}
@@ -72,24 +73,27 @@ public class OptionScreenState extends AbstractScreenController {
 		resolutionDropDown = screen.findNiftyControl(RESOLUTION_DROP_ID, DropDown.class);
 		soundCheckbox = screen.findNiftyControl(SOUND_CHECKBOX_ID, CheckBox.class);
 		ratioCheckbox = screen.findNiftyControl(RATIO_CHECKBOX_ID, CheckBox.class);
+		fullScreenCheckbox = screen.findNiftyControl(FULL_SCREEN_CHECKBOX_ID, CheckBox.class);
 		
 		before();
 	}
 	
 	/**
-	 * Modifie l'interface graphique pour convenir aux options
+	 * Modifie l'interface graphique pour convenir aux options.<br />
+	 * Le chargement depuis le fichier est fait à l'instantiation de App.
 	 */
-	private void before() {
+	private void before() {		
 		soundCheckbox.setChecked(OptionXMLParser.sound);
 		ratioCheckbox.setChecked(OptionXMLParser.wideScreen);
+		fullScreenCheckbox.setChecked(OptionXMLParser.fullScreen);
 		resolutionDropDown.clear();
 		if (OptionXMLParser.wideScreen) {
 			fillResolutionDropDown(wideResolutions);
 		} else {
 			fillResolutionDropDown(normalResolutions);
 		}
+		
 		resolutionDropDown.selectItem(OptionXMLParser.screenResolution.width + " x " + OptionXMLParser.screenResolution.height);
-		System.out.println("OK on commence avec " + OptionXMLParser.screenResolution.width + " x " + OptionXMLParser.screenResolution.height);
 	}
 	
 	/**
@@ -123,7 +127,6 @@ public class OptionScreenState extends AbstractScreenController {
 	 * @return	Dimension équivalent à la résolution
 	 */
 	public Dimension getCurrentScreenResolution() {
-		System.out.println("La résolution change (" + resolutionDropDown.getSelection() + ")");
 		if (ratioCheckbox.isChecked()) {
 			return wideResolutions.get(resolutionDropDown.getSelection());
 		} else {
@@ -147,16 +150,14 @@ public class OptionScreenState extends AbstractScreenController {
 	 */
 	public void applyOptions() {
 		System.out.println("Option saved");
-		AppSettings set = new AppSettings(true);
 		Dimension resolution = this.getCurrentScreenResolution();
 		
 		OptionXMLParser.sound = soundCheckbox.isChecked();
 		OptionXMLParser.wideScreen = ratioCheckbox.isChecked();
+		OptionXMLParser.fullScreen = fullScreenCheckbox.isChecked();
 		OptionXMLParser.screenResolution = resolution;
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
-	}
-	
-	public void showMessage() {
+		
 		screen.findNiftyControl(ON_SAVE_ID, Label.class).setText(StringStore.ON_SAVE_OPTION_MESSAGE);
 	}
 	

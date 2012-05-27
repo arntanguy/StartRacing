@@ -9,136 +9,82 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
-				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
+				<text font="Interface/Fonts/ArialBlack_60.fnt" height="17%" align="center" color="#ffff"
 					text="Choisir un profil" />
 					
 				<panel childLayout="horizontal">
-					<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Voici tous les joueurs existants : " />
-					<control name="dropDown" width="40%" id="allJoueur" />
-				</panel>
-				<panel height="2%"/>
-				<panel childLayout="horizontal">
-					<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Score course-demi : " />
-					<control name="textfield" width="40%" id="demi" />
-				</panel>
-				<panel height="2%"/>
-				<panel childLayout="horizontal">
-					<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Score course-quart : " />
-					<control name="textfield" width="40%" id="quart" />
-				</panel>
-				<panel height="2%"/>
-				<panel childLayout="horizontal">
-					<text font="Interface/Fonts/Default.fnt" width="15%" align="center" text="Score free : " />
-					<control name="textfield" width="30%" id="free" />
-					<text font="Interface/Fonts/Default.fnt" width="15%" align="center" text="Voiture tuée : " />
-					<control name="textfield" width="30%" id="cardead" />
-				</panel>
-				<panel height="2%"/>
-				<panel childLayout="horizontal">
-					<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Monnaie : " />
-					<control name="textfield" width="40%" id="monnaie" />
-				</panel>
-				<panel height="5%"/>
-				<panel childLayout="horizontal">
-					<panel width="3%"/>
-					<panel childLayout="vertical" width="15%">
-						<panel childLayout="horizontal">		
-							<text font="Interface/Fonts/Default.fnt" height="25px" text="Vos voitures : " />
-						</panel>
-						<panel height="5%"/>
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Hauteur pneu : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Rapport engrenage : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Hauteur rayon : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Poids : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Rigidité : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Masse : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="NbrTours / Min :" />
-						<text font="Interface/Fonts/Default.fnt" height="25px" text="Ligne rouge :" />
-					</panel>
-					<panel width="5%"/>
-					<panel childLayout="vertical" width="15%" >
-						<panel childLayout="horizontal">
-							<control name="checkbox" height="25px" width="15%" id="Stand" />
-							<text font="Interface/Fonts/Default.fnt" height="25px" width="60%" align="center" text="Standard" />
-						</panel>
-						<panel height="5%"/>
-						<control name="textfield" height="25px" id="StandtireHeight" color="#ffff"/>
-						<control name="textfield" height="25px" id="StandfinalGearRatio" color="#ffff"/>
-						<control name="textfield" height="25px" id="StandtireRadius" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standweight" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standstiffness" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standmass" color="#ffff"/>
-						<control name="textfield" height="25px" id="StandidleRpm" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standredline" color="#ffff"/>
-					</panel>
-					<panel width="5%"/>
-					<panel childLayout="vertical" width="15%" >
-						<panel childLayout="horizontal">
-							<control name="checkbox" height="25px" width="15%" id="Bmw" />
-							<text font="Interface/Fonts/Default.fnt" height="25px" width="60%" align="center" text="BMWM3" />
-						</panel>
-						<panel height="5%"/>
-						<control name="textfield" height="25px" id="BmwtireHeight" color="#ffff"/>
-						<control name="textfield" height="25px" id="BmwfinalGearRatio" color="#ffff"/>
-						<control name="textfield" height="25px" id="BmwtireRadius" color="#ffff"/>
-						<control name="textfield" height="25px" id="Bmwweight" color="#ffff"/>
-						<control name="textfield" height="25px" id="Bmwstiffness" color="#ffff"/>
-						<control name="textfield" height="25px" id="Bmwmass" color="#ffff"/>
-						<control name="textfield" height="25px" id="BmwidleRpm" color="#ffff"/>
-						<control name="textfield" height="25px" id="Bmwredline" color="#ffff"/>
-					</panel>
-                    <panel width="5%"/>
-					<panel childLayout="vertical" width="15%">
-						<panel childLayout="horizontal">
-							<control height="25px" name="checkbox" width="15%" id="Dodge" />
-							<text height="25px" font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Dodge Viper" />
-						</panel>
-						<panel height="5%"/>
-						<control name="textfield" height="25px" id="DVtireHeight" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVfinalGearRatio" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVtireRadius" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVweight" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVstiffness" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVmass" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVidleRpm" color="#ffff"/>
-						<control name="textfield" height="25px" id="DVredline" color="#ffff"/>					
-					</panel>
-					<panel width="5%"/>
-					<panel childLayout="vertical" width="15%">
-						<panel childLayout="horizontal">
-							<control height="25px" name="checkbox" width="15%" id="Skyline" />
-							<text height="25px" font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Skyline" />
-						</panel>
-						<panel height="5%"/>
-						<control name="textfield" height="25px" id="SLtireHeight" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLfinalGearRatio" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLtireRadius" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLweight" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLstiffness" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLmass" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLidleRpm" color="#ffff"/>
-						<control name="textfield" height="25px" id="SLredline" color="#ffff"/>		
-					</panel>
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Choisir votre profil : " />
+					<control name="dropDown"  width="40%" id="allJoueur" />
 				</panel>
 				
+				<panel height="5%"/>
+				<panel childLayout="horizontal">
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Score course-demi : " />
+					<control name="textfield" width="17%" id="demi" height="35px" />
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Score course-quart : " />
+					<control name="textfield" height="35px" width="17%" id="quart" />
+				</panel>
+				
+				<panel childLayout="horizontal">
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Score free : " />
+					<control name="textfield" height="35px" width="17%" id="free" />
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Monnaie : " />
+					<control name="textfield" width="17%" id="monnaie" height="35px"/>
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="   Euro" align="center" width="3%"/>
+				</panel>
+				
+				<panel height="7%"/>
+				<panel childLayout="horizontal">
+					<panel width="3%"/>
+					<panel childLayout="vertical" width="15%">	
+						<panel height="20%"/>
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Vos voitures : " />
+						<panel height="5%"/>
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Poids : " />
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Puissance : " />
+					</panel>
+					<panel width="2%"/>
+					<panel childLayout="vertical" width="17%" >
+						<panel height="20%"/>
+						<panel childLayout="horizontal">
+							<control name="textfield" height="35px" id="typeCar"/>
+						</panel>
+						<panel height="5%"/>
+						<control name="textfield" height="35px" id="weight"/>
+						<control name="textfield" height="35px" id="puis"/>
+					</panel>
+					<panel width="5%"/>
+					<panel childLayout="horizontal" height="90%" width="80%">
+						<control id="imgcar" name="imageSelect" height="100%" width="60%" imageWidth="100%" imageHeight="100%" 
+					          imageList="Interface/Nifty/skyline.jpg,Interface/Nifty/viper.jpg,Interface/Nifty/bmwm3.jpg,Interface/Nifty/start_background.jpg">
+					    	<interact onClick="changePhoto()"/>
+					    </control>
+					</panel>
+				</panel>
+			
+				<panel height="5%"/>
 				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
-					<panel width="5%" />
-					<control id="returnButton" width="18%" align="center" height="100%" name="button" label="Retour">
+					<panel width="2%" />
+					<control id="returnButton" width="16%" align="center" height="100%" name="button" label="RETOUR">
 						<interact onClick="gotoMainMenu()" />
 					</control>
-					<panel width="6%" />
-					<control id="applyButton" width="18%" align="center" height="100%" name="button" label="Valider">
+					<panel width="4%" />
+					<control id="applyButton" width="16%" align="center" height="100%" name="button" label="VALIDER">
 						<interact onClick="Enregistrer()" />
 					</control>
-					<panel width="6%" />
-					<control id="achatButton" width="18%" align="center" height="100%" name="button" label="Supprimer">
+					<panel width="4%" />
+					<control id="achatButton" width="16%" align="center" height="100%" name="button" label="SUPPRIMER">
 						<interact onClick="Remove()" />
 					</control>
-					<panel width="6%" />
-					<control id="achatButton" width="18%" align="center" height="100%" name="button" label="Achat">
+					<panel width="4%" />
+					<control id="achatButton" width="16%" align="center" height="100%" name="button" label="MAGASIN">
 						<interact onClick="Achat()" />
 					</control>
-					<panel width="5%" />
+					<panel width="4%" />
+					<control id="achatButton" width="16%" align="center" height="100%" name="button" label="GARAGE">
+						<interact onClick="Garage()" />
+					</control>
+					<panel width="2%" />
 				</panel>
 			</panel>
 		</layer>

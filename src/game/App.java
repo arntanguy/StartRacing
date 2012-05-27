@@ -40,11 +40,10 @@ public class App extends SimpleApplication {
 		addXMLFiles();
 		/****** FIN DEBUG *****/
 
-		//gotoOptions();
-		gotoStart();
-//		gotoOptions();
+//		gotoStart();
+		gotoOptions();
 		//gotoCrtProfil();
-		gotoAffProfil();
+//		gotoAffProfil();
 		
 		
 		// disable the fly cam
@@ -95,8 +94,9 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoOptions() {
+		nifty.addXml(XMLFileStore.OPTION_SCREEN_FILE);
         nifty.gotoScreen("options");
-        OptionScreenState gameScreenController = (OptionScreenState) nifty.getScreen("options").getScreenController();
+        OptionScreenController gameScreenController = (OptionScreenController) nifty.getScreen("options").getScreenController();
         stateManager.attach(gameScreenController);
 	}
 

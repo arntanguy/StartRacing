@@ -10,7 +10,6 @@ import xml.XMLFileStore;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
-import com.jme3.system.AppSettings;
 
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
@@ -152,14 +151,12 @@ public class OptionScreenController extends AbstractScreenController {
 	public void applyOptions() {
 		System.out.println("Option saved");
 		Dimension resolution = this.getCurrentScreenResolution();
-		AppSettings set = new AppSettings(true);
 		
 		OptionXMLParser.sound = soundCheckbox.isChecked();
 		OptionXMLParser.wideScreen = ratioCheckbox.isChecked();
 		OptionXMLParser.fullScreen = fullScreenCheckbox.isChecked();
 		OptionXMLParser.screenResolution = resolution;
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
-		app.setResolution(1024, 768);
 		
 		screen.findNiftyControl(ON_SAVE_ID, Label.class).setText(StringStore.ON_SAVE_OPTION_MESSAGE);
 	}

@@ -22,6 +22,7 @@ public class VoiceRender extends AudioRender<String> {
 	 * If it is a different id than the one being played, stop the current playing, and play the new one.
 	 * @param sound
 	 * 		The string id of the sound
+	 * @throws Exception 
 	 */
 	public void playVoice(String sound) {
 		System.out.println("play " + sound);

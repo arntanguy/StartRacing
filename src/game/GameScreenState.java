@@ -56,6 +56,11 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void onEndScreen() {
+		super.onEndScreen();
+	}
 
 	protected void initGame() throws Exception {
 		super.initGame();

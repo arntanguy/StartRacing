@@ -143,6 +143,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	@Override
 	public void onEndScreen() {
 		audioRender.mute();
+		audioRender.close();
 		stateManager.detach(this);
 
 		app.gotoStart();

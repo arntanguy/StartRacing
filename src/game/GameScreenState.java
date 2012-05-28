@@ -6,7 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 import physics.BMWM3Properties;
 import physics.CarProperties;
+import physics.DodgeViperProperties;
 import physics.EnginePhysics;
+import physics.SkylineProperties;
+import physics.TypeCarProperties;
 import physics.tools.Conversion;
 import save.Comptes;
 import save.ProfilCurrent;
@@ -40,6 +43,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 	protected GhostControl finishCell;
 	protected Node finishNode;
+	
+	private boolean win;
 
 	public GameScreenState() {
 		super();
@@ -49,6 +54,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	public void initialize(AppStateManager stateManager, Application a) {
 		/** init the screen */
 		super.initialize(stateManager, a);
+		
+		win = false;
 
 		try {
 			initGame();
@@ -118,12 +125,25 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	}
 
 	private void buildBot() {
-		// botCarProperties = new BMWM3Properties();
-		// XXX
-		botCarProperties = (ProfilCurrent.getInstance() == null) ? new BMWM3Properties()
-				: ProfilCurrent.getInstance().getCar()
-						.get(ProfilCurrent.getInstance().getChoixCar());
+		//botCarProperties = new BMWM3Properties();
+		//XXX
+		if (ProfilCurrent.getInstance() == null) {
+			for (int i = 0; i < Comptes.getListCar().size(); ++i) {
+				if (Comptes.getListCar().get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+					botCarProperties = Comptes.getListCar().get(i);
+					break;
+				}
+			}
+		} else {
+			botCarProperties = ProfilCurrent.getInstance().getCar().get
+									(ProfilCurrent.getInstance().getChoixCar());
+		}
+	    
+	    bot = new Car(assetManager, botCarProperties,
+				"Models/FerrariGreen/Car.scene");
+
 		bot = new Car(assetManager, botCarProperties, "ferrari green");
+
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();
@@ -154,28 +174,35 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 			if (timePlayer <= timeBot && !player.getBurstEnabled()) {
 				text = "Gagne !\n ";
+				win = true;
 				audioRender.play("win");
 			} else {
 				audioRender.play("lost");
 				text = "Perdu !\n ";
+				win = false;
 			}
 			long secondes = TimeUnit.MILLISECONDS.toSeconds(timePlayer);
 			long millisec = (timePlayer % 1000) / 10;
-			String time = String.format("%d : %d", secondes, millisec);
 
-			text += "Joueur:  " + time + "\n";
-
-			text += String.format("Bot:  %d : %d",
-					TimeUnit.MILLISECONDS.toSeconds(timeBot),
+			String time = String.format("%d:%d",secondes, millisec);
+			
+			text += "Vous: " + time + "  /  ";
+			
+			text += String.format("Bot: %d:%d",TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10);
+			
 			int argent = 0;
+			int bonus = 0;
 
 			if (ProfilCurrent.getInstance() != null) {
 				// Enregistrement du temps lorsque le temps est meilleur que le
 				// précédent
 				if (this instanceof HalfGameScreenState) {
-					if (secondes != 0)
-						argent = (int) (1200000 / secondes);
+					if (win) {
+						argent = (int) (120000 / secondes);
+						ProfilCurrent.getInstance().setMonnaie
+							(ProfilCurrent.getInstance().getMonnaie() + argent);
+					}
 					if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
 						String tps[] = ProfilCurrent.getInstance()
 								.getTimeDemi().split(" : ");
@@ -183,44 +210,46 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 								|| (Long.parseLong(tps[0]) == secondes && Long
 										.parseLong(tps[1]) > millisec)) {
 							ProfilCurrent.getInstance().setTimedemi(time);
-							ProfilCurrent.getInstance().setMonnaie(
-									ProfilCurrent.getInstance().getMonnaie()
-											+ argent);
-							text += "\n" + argent + " Eur";
+							bonus = 2500;
+							ProfilCurrent.getInstance().setMonnaie
+								(ProfilCurrent.getInstance().getMonnaie() + bonus);
 						}
 					} else {
 						ProfilCurrent.getInstance().setTimedemi(time);
-						ProfilCurrent.getInstance().setMonnaie(
-								ProfilCurrent.getInstance().getMonnaie()
-										+ argent);
-						text += "\n" + argent + " Eur";
+
 					}
 				} else if (this instanceof QuarterGameScreenState) {
-					if (secondes != 0)
-						argent = (int) (500000 / secondes);
+					if (win) {
+						argent = (int) (50000 / secondes);
+						ProfilCurrent.getInstance().setMonnaie
+							(ProfilCurrent.getInstance().getMonnaie() + argent);
+					}
 					if (!ProfilCurrent.getInstance().getTimeQuart().equals("")) {
-						String tps[] = ProfilCurrent.getInstance()
-								.getTimeQuart().split(" : ");
-						if (Long.parseLong(tps[0]) > secondes
-								|| (Long.parseLong(tps[0]) == secondes && Long
-										.parseLong(tps[1]) > millisec)) {
+						String tps[] = ProfilCurrent.getInstance().getTimeQuart().split(" : ");
+						if (Long.parseLong(tps[0]) > secondes ||
+								(Long.parseLong(tps[0]) == secondes && 
+										Long.parseLong(tps[1]) > millisec)) {
 							ProfilCurrent.getInstance().setTimequart(time);
-							ProfilCurrent.getInstance().setMonnaie(
-									ProfilCurrent.getInstance().getMonnaie()
-											+ argent);
-							text += "\n" + argent + " Eur";
+							bonus = 1000;
+							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + bonus);
 						}
 					} else {
 						ProfilCurrent.getInstance().setTimequart(time);
-						ProfilCurrent.getInstance().setMonnaie(
-								ProfilCurrent.getInstance().getMonnaie()
-										+ argent);
-						text += "\n" + argent + " Eur";
 					}
+				} //Quater
+				if (argent != 0) {
+					text += "\n" + argent;
+					if (bonus != 0)
+						text += " + " + bonus;
+					text += " Eur";
+				} else {
+					if (bonus != 0)
+						text += "\n" + bonus + " Eur";
 				}
 				Comptes.modifier(ProfilCurrent.getInstance());
 				Comptes.Enregistrer();
-			}
+			} //if(ProfilCurrent.getInstance() != null)
+			
 			screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText(text);
 
@@ -271,6 +300,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 		bot.setLife(100);
 
+		win = false;
 		botFinish = false;
 		runIsOn = false;
 		needReset = false;

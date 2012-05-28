@@ -13,50 +13,41 @@
 					text="Créer un profil" />
 				
 				<panel childLayout="horizontal">
-					<text font="Interface/Fonts/Default.fnt" width="30%" align="center" text="Saisir votre login : " />
-					<control name="textfield" width="40%" id="login" />
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="40px" width="30%" align="center" text="Saisir votre login : " />
+					<control name="textfield" height="40px" width="40%" id="login" />
 				</panel>
 				<panel childLayout="horizontal" color="#0000">
-					<panel width="30%"/>
-					<control name="textfield" width="60%" id="result" color="#ffff"/>
+					<panel width="10%"/>
+					<control name="textfield" height="40px" width="80%" id="result" />
+					<panel width="10%"/>
 				</panel>
 				
 				<panel childLayout="horizontal" color="#0000">		
-					<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Voiture Standard : " />
-				</panel>
-				<panel height="5%"/>
-				<panel childLayout="horizontal">
-					<panel childLayout="vertical" width="20%">
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Hauteur pneu : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Rapport engrenage : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Hauteur rayon : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Poids : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Rigidité : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Masse : " />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Nbr Tours / Min :" />
-						<text font="Interface/Fonts/Default.fnt" height="25px" width="30%" align="center" text="Limite : " />
+					<panel childLayout="vertical" width="25%">
+					   	<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Voiture Skyline : " />
+						<panel height="5%"/>
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Poids : " />
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Puissance : " />
 					</panel>
 					<panel width="1%"/>
 					<panel childLayout="vertical" width="20%" >
-						<control name="textfield" height="25px" id="StandtireHeight" color="#ffff"/>
-						<control name="textfield" height="25px" id="StandfinalGearRatio" color="#ffff"/>
-						<control name="textfield" height="25px" id="StandtireRadius" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standweight" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standstiffness" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standmass" color="#ffff"/>
-						<control name="textfield" height="25px" id="StandidleRpm" color="#ffff"/>
-						<control name="textfield" height="25px" id="Standredline" color="#ffff"/>
+						<control name="textfield" height="35px" id="weight" />
+						<control name="textfield" height="35px" id="puis" /> 
 					</panel>
+					<control id="imgcar" name="imageSelect"  height="70%" width="60%" imageWidth="100%" imageHeight="100%" 
+				          imageList="Interface/Nifty/skyline.jpg">
+				    	<interact onClick="changePhoto()"/>
+				    </control>
 				</panel>
 						
 				<panel height="30%"/>
 				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
 					<panel width="10%" />
-					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="Retour" >
+					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="RETOUR" >
 						<interact onClick="gotoMainMenu()" />
 					</control>
 					<panel width="20%" />
-					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="Valider">
+					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="VALIDER">
 						<interact onClick="gotoApply()" />
 					</control>
 					<panel width="10%" />

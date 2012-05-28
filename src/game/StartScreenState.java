@@ -103,7 +103,7 @@ public class StartScreenState extends AbstractScreenController {
 
 	@Override
 	public void onEndScreen() {
-		stateManager.detach(this);
+//		stateManager.detach(this);
 	}
 
 	public void startGame(String nextScreen) {

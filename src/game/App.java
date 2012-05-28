@@ -40,10 +40,10 @@ public class App extends SimpleApplication {
 		addXMLFiles();
 		/****** FIN DEBUG *****/
 
-		gotoStart();
-//		gotoOptions();
+//		gotoStart();
+		gotoOptions();
 		//gotoCrtProfil();
-		//gotoAffProfil();
+//		gotoAffProfil();
 		
 		
 		// disable the fly cam
@@ -94,8 +94,9 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoOptions() {
+		nifty.addXml(XMLFileStore.OPTION_SCREEN_FILE);
         nifty.gotoScreen("options");
-        OptionScreenState gameScreenController = (OptionScreenState) nifty.getScreen("options").getScreenController();
+        OptionScreenController gameScreenController = (OptionScreenController) nifty.getScreen("options").getScreenController();
         stateManager.attach(gameScreenController);
 	}
 
@@ -127,5 +128,12 @@ public class App extends SimpleApplication {
         nifty.gotoScreen("achat");
         Achat achat = (Achat) nifty.getCurrentScreen().getScreenController();
         stateManager.attach(achat);
+	}
+	
+	public void gotoGarage() {
+		nifty.addXml("Interface/Nifty/Garage.xml");
+        nifty.gotoScreen("garage");
+        Garage garage = (Garage) nifty.getCurrentScreen().getScreenController();
+        stateManager.attach(garage);
 	}
 }

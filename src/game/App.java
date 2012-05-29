@@ -44,7 +44,7 @@ public class App extends SimpleApplication {
 		gotoStart();
 //		gotoOptions();
 		//gotoCrtProfil();
-		gotoAffProfil();
+		//gotoAffProfil();
 		
 		
 		// disable the fly cam

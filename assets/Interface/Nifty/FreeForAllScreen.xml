@@ -5,7 +5,7 @@
 	<useControls filename="nifty-default-controls.xml" />
 	<useStyles filename="nifty-default-styles.xml" />
 
-	<screen id="hud" controller="game.FreeForAllScreenState">
+	<screen id="freeForAllScreen" controller="game.FreeForAllScreenState">
 		<layer id="background" childLayout="center">
 		</layer>
 		<layer id="foreground" backgroundColor="#0000" childLayout="vertical">

@@ -417,8 +417,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_LSHIFT));
 		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
 
-		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
-
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
 		inputManager.addListener(this, "Ups");

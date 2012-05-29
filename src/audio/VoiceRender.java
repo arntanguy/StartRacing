@@ -25,22 +25,22 @@ public class VoiceRender extends AudioRender<String> {
 	 * @throws Exception 
 	 */
 	public void playVoice(String sound) {
-		System.out.println("play " + sound);
+//		System.out.println("play " + sound);
 		if (playedNode == null) {
 			playedNode = soundNodes.get(sound);
 			play(sound, false);
-			System.out.println(playedNode.getStatus());
+//			System.out.println(playedNode.getStatus());
 		} else {
 			if (!playedNode.getName().equals(sound)) {
 				if(playedNode.getStatus() == AudioNode.Status.Playing) {
-					System.out.println("Sound "+playedNode.getName()+" is playing, stopping it...");
+//					System.out.println("Sound "+playedNode.getName()+" is playing, stopping it...");
 					stopVoice();
 				}
-				System.out.println("Playing " + sound);
+//				System.out.println("Playing " + sound);
 				playedNode = soundNodes.get(sound);
 				play(sound, false);
 			} else {
-				System.out.println("Same name, do nothing");
+//				System.out.println("Same name, do nothing");
 			}
 		}
 	}

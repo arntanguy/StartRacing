@@ -38,11 +38,11 @@
       <visibleIndex>-1</visibleIndex>
       <items>
         <string>&lt;java.awt.Dimension&gt;
-  &lt;width&gt;1280&lt;/width&gt;
-  &lt;height&gt;768&lt;/height&gt;
+  &lt;width&gt;800&lt;/width&gt;
+  &lt;height&gt;600&lt;/height&gt;
 &lt;/java.awt.Dimension&gt;</string>
         <string>&lt;boolean&gt;true&lt;/boolean&gt;</string>
-        <string>&lt;boolean&gt;true&lt;/boolean&gt;</string>
+        <string>&lt;boolean&gt;false&lt;/boolean&gt;</string>
         <string>&lt;boolean&gt;false&lt;/boolean&gt;</string>
       </items>
       <selected/>

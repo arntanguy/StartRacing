@@ -43,7 +43,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 	protected GhostControl finishCell;
 	protected Node finishNode;
-	
+
 	private boolean win;
 
 	public GameScreenState() {
@@ -54,7 +54,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	public void initialize(AppStateManager stateManager, Application a) {
 		/** init the screen */
 		super.initialize(stateManager, a);
-		
+
 		win = false;
 
 		try {
@@ -63,7 +63,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void onEndScreen() {
 		super.onEndScreen();
@@ -125,21 +125,22 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	}
 
 	private void buildBot() {
-		//botCarProperties = new BMWM3Properties();
-		//XXX
+		// botCarProperties = new BMWM3Properties();
+		// XXX
 		if (ProfilCurrent.getInstance() == null) {
 			for (int i = 0; i < Comptes.getListCar().size(); ++i) {
-				if (Comptes.getListCar().get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+				if (Comptes.getListCar().get(i).getTypeCar()
+						.equals(TypeCarProperties.BMWM3)) {
 					botCarProperties = Comptes.getListCar().get(i);
 					break;
 				}
 			}
 		} else {
-			botCarProperties = ProfilCurrent.getInstance().getCar().get
-									(ProfilCurrent.getInstance().getChoixCar());
+			botCarProperties = ProfilCurrent.getInstance().getCar()
+					.get(ProfilCurrent.getInstance().getChoixCar());
 		}
-	    
-	    bot = new Car(assetManager, botCarProperties,
+
+		bot = new Car(assetManager, botCarProperties,
 				"Models/FerrariGreen/Car.scene");
 
 		bot = new Car(assetManager, botCarProperties, "ferrari green");
@@ -184,13 +185,14 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			long secondes = TimeUnit.MILLISECONDS.toSeconds(timePlayer);
 			long millisec = (timePlayer % 1000) / 10;
 
-			String time = String.format("%d:%d",secondes, millisec);
-			
+			String time = String.format("%d:%d", secondes, millisec);
+
 			text += "Vous: " + time + "  /  ";
-			
-			text += String.format("Bot: %d:%d",TimeUnit.MILLISECONDS.toSeconds(timeBot),
+
+			text += String.format("Bot: %d:%d",
+					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10);
-			
+
 			int argent = 0;
 			int bonus = 0;
 
@@ -200,8 +202,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				if (this instanceof HalfGameScreenState) {
 					if (win) {
 						argent = (int) (120000 / secondes);
-						ProfilCurrent.getInstance().setMonnaie
-							(ProfilCurrent.getInstance().getMonnaie() + argent);
+						ProfilCurrent.getInstance().setMonnaie(
+								ProfilCurrent.getInstance().getMonnaie()
+										+ argent);
 					}
 					if (!ProfilCurrent.getInstance().getTimeDemi().equals("")) {
 						String tps[] = ProfilCurrent.getInstance()
@@ -211,8 +214,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 										.parseLong(tps[1]) > millisec)) {
 							ProfilCurrent.getInstance().setTimedemi(time);
 							bonus = 2500;
-							ProfilCurrent.getInstance().setMonnaie
-								(ProfilCurrent.getInstance().getMonnaie() + bonus);
+							ProfilCurrent.getInstance().setMonnaie(
+									ProfilCurrent.getInstance().getMonnaie()
+											+ bonus);
 						}
 					} else {
 						ProfilCurrent.getInstance().setTimedemi(time);
@@ -221,22 +225,26 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				} else if (this instanceof QuarterGameScreenState) {
 					if (win) {
 						argent = (int) (50000 / secondes);
-						ProfilCurrent.getInstance().setMonnaie
-							(ProfilCurrent.getInstance().getMonnaie() + argent);
+						ProfilCurrent.getInstance().setMonnaie(
+								ProfilCurrent.getInstance().getMonnaie()
+										+ argent);
 					}
 					if (!ProfilCurrent.getInstance().getTimeQuart().equals("")) {
-						String tps[] = ProfilCurrent.getInstance().getTimeQuart().split(" : ");
-						if (Long.parseLong(tps[0]) > secondes ||
-								(Long.parseLong(tps[0]) == secondes && 
-										Long.parseLong(tps[1]) > millisec)) {
+						String tps[] = ProfilCurrent.getInstance()
+								.getTimeQuart().split(" : ");
+						if (Long.parseLong(tps[0]) > secondes
+								|| (Long.parseLong(tps[0]) == secondes && Long
+										.parseLong(tps[1]) > millisec)) {
 							ProfilCurrent.getInstance().setTimequart(time);
 							bonus = 1000;
-							ProfilCurrent.getInstance().setMonnaie(ProfilCurrent.getInstance().getMonnaie() + bonus);
+							ProfilCurrent.getInstance().setMonnaie(
+									ProfilCurrent.getInstance().getMonnaie()
+											+ bonus);
 						}
 					} else {
 						ProfilCurrent.getInstance().setTimequart(time);
 					}
-				} //Quater
+				} // Quater
 				if (argent != 0) {
 					text += "\n" + argent;
 					if (bonus != 0)
@@ -248,8 +256,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				}
 				Comptes.modifier(ProfilCurrent.getInstance());
 				Comptes.Enregistrer();
-			} //if(ProfilCurrent.getInstance() != null)
-			
+			} // if(ProfilCurrent.getInstance() != null)
+
 			screen.findElementByName("startTimer")
 					.getRenderer(TextRenderer.class).setText(text);
 
@@ -324,7 +332,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		if (finishCell.getOverlappingObjects().contains(player)
 				&& !playerFinish) {
 			timePlayer = (System.currentTimeMillis() - startTime);
-
+			System.out.println("Stop player");
 			playerFinish = true;
 		}
 		if (finishCell.getOverlappingObjects().contains(bot) && !botFinish) {
@@ -332,7 +340,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			System.out.println(String.format("player : %d : %d",
 					TimeUnit.MILLISECONDS.toSeconds(timeBot),
 					(timeBot % 1000) / 10));
-
+			System.out.println("Stop bot");
 			botFinish = true;
 		}
 

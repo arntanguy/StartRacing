@@ -64,7 +64,7 @@
           </optimalShiftPoints>
         </gears>
         <redline>6000</redline>
-        <playerModel>Models/FerrariRed/Car.scene</playerModel>
+        <playerModel>charger</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
@@ -288,7 +288,7 @@
           </optimalShiftPoints>
         </gears>
         <redline>8500</redline>
-        <playerModel>ferrari red</playerModel>
+        <playerModel>bmw</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
@@ -340,12 +340,12 @@
         </torque>
       </physics.BMWM3Properties>
     </car>
-    <timedemi>0 : 0</timedemi>
-    <timequart>0 : 0</timequart>
+    <timedemi>16 : 6</timedemi>
+    <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>60000</monnaie>
-    <choixCar>1</choixCar>
+    <monnaie>37500</monnaie>
+    <choixCar>2</choixCar>
   </save.Profil>
   <save.Profil>
     <id>2</id>

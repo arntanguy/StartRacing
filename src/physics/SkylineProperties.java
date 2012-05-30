@@ -77,7 +77,7 @@ public class SkylineProperties extends CarProperties {
 		torque.put(8000, 450); // wrong value
 		torque.put(15000, 0);
 		
-		playerModel = "Models/FerrariRed/Car.scene";
+		playerModel = "charger";
 		availableModels.add("Models/FerrariGreen/Car.scene");
 		availableModels.add("Models/FerrariBlue/Car.scene");
 	

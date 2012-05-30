@@ -112,88 +112,50 @@ public class CarFactory {
 		car.getWheel(3).setFrictionSlip(10f);
 	}
 
-	public static void createBuggy(AssetManager assetManager, Car car)	{
-		float stiffness = car.getProperties().getStiffness();// 200=f1 car
-		float compValue = car.getProperties().getCompValue(); // (lower than damp!)
-		float dampValue = car.getProperties().getDampValue();
-		final float mass = car.getProperties().getMass();
+	public static void createBMW(AssetManager assetManager, Car car) {
+		//create vehicle node
+		car.setNode((Node) assetManager.loadModel("Models/bmw/bm.scene"));
+		car.getNode().scale(1.5f);
 
-		car.setMass(mass);
+		float radius = 0.28f;
+		float restLength = 0.3f;
+		float yOff = 0.6f;
+		float xOff = 1.3f;
+		float zOff = 2f;
 
-		// Load model and get chassis Geometry
-		car.setNode((Node) assetManager.loadModel("Models/Buggy/Buggy.j3o"));
-		car.getNode().setShadowMode(ShadowMode.Cast);
-
-		// Create a hull collision shape for the chassis
-		car.setChassis(findGeom(car.getNode(), "Chassis-geom-1"));
-
-		BoundingBox box = (BoundingBox) car.getChassis().getModelBound();
-		CollisionShape carHull = CollisionShapeFactory
-				.createDynamicMeshShape(car.getChassis());
-		car.setCollisionShape(carHull);
-
-		// Create a vehicle control
-		car.getNode().addControl(car);
-
-		// Setting default values for wheels
-		car.setSuspensionCompression(compValue * 2.0f
-				* FastMath.sqrt(stiffness));
-		car.setSuspensionDamping(dampValue * 2.0f * FastMath.sqrt(stiffness));
-		car.setSuspensionStiffness(stiffness);
-		car.setMaxSuspensionForce(10000);
-
-		// Create four wheels and add them at their locations
-		// note that our fancy car actually goes backwards..
-		Vector3f wheelDirection = new Vector3f(0, -1, 0);
-		Vector3f wheelAxle = new Vector3f(-1, 0, 0);
-
-		Geometry wheel_fr = findGeom(car.getNode(), "Wheel_RF-geom-1");
-		//		wheel_fr.center();
-		box = (BoundingBox) wheel_fr.getModelBound();
-		float wheelRadius = box.getYExtent();
-		car.setWheelRadius(wheelRadius);
-
-		float back_wheel_h = (wheelRadius * 1.7f) - 1f;
-		float front_wheel_h = (wheelRadius * 1.9f) - 1f;
-		car.addWheel(wheel_fr.getParent(),
-				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, true);
-
-		Geometry wheel_fl = findGeom(car.getNode(), "Wheel_LF-geom-1");
-		//		wheel_fl.center();
-		box = (BoundingBox) wheel_fl.getModelBound();
-		car.addWheel(wheel_fl.getParent(),
-				box.getCenter().add(0, -front_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, true);
-
-		Geometry wheel_br = findGeom(car.getNode(), "Wheel_RR-geom-1");
-		//		wheel_br.center();
-		box = (BoundingBox) wheel_br.getModelBound();
-		car.addWheel(wheel_br.getParent(),
-				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, false);
-
-		Geometry wheel_bl = findGeom(car.getNode(), "Wheel_LR-geom-1");
-		//		wheel_bl.center();
-		box = (BoundingBox) wheel_bl.getModelBound();
-		car.addWheel(wheel_bl.getParent(),
-				box.getCenter().add(0, -back_wheel_h, 0), wheelDirection,
-				wheelAxle, 0.2f, wheelRadius, false);
-
-		car.getWheel(0).setFrictionSlip(11f);
-		car.getWheel(1).setFrictionSlip(11f);
-		car.getWheel(2).setFrictionSlip(10f);
-		car.getWheel(3).setFrictionSlip(10f);
+		createCar(assetManager, car, radius, restLength, yOff, xOff, zOff);
 	}
 
 	public static void createCorvette(AssetManager assetManager, Car car)	{
-		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-	
-		mat.getAdditionalRenderState().setWireframe(true);
-//		mat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
-//		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-		
+		//create vehicle node
+		car.setNode((Node) assetManager.loadModel("Models/Corvette/corvette.scene"));
+		car.getNode().scale(1.5f);
 
+		float radius = 0.28f;
+		float restLength = 0.3f;
+		float yOff = 0.6f;
+		float xOff = 1.3f;
+		float zOff = 2f;
+
+		createCar(assetManager, car, radius, restLength, yOff, xOff, zOff);
+	}
+
+	public static void createCharger(AssetManager assetManager, Car car)	{
+		//create vehicle node
+		car.setNode((Node) assetManager.loadModel("Models/Charger/charger.scene"));
+		car.getNode().scale(1.5f);
+
+		float radius = 0.28f;
+		float restLength = 0.3f;
+		float yOff = 0.6f;
+		float xOff = 1.3f;
+		float zOff = 2f;
+
+		createCar(assetManager, car, radius, restLength, yOff, xOff, zOff);
+	}
+
+	private static void createCar(AssetManager assetManager, Car car, float radius, float restLength, float yOff, float xOff, float zOff)	{
+		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
 		//create a compound shape and attach the BoxCollisionShape for the car body at 0,1,0
 		//this shifts the effective center of mass of the BoxCollisionShape to 0,-1,0
@@ -203,8 +165,6 @@ public class CarFactory {
 
 
 		//create vehicle node
-		car.setNode((Node) assetManager.loadModel("Models/Corvette/corvette.scene"));
-		car.getNode().scale(1.5f);
 		car.setCollisionShape(compoundShape);
 		car.getNode().addControl(car);
 		car.getEnginePhysics().setBackward(false);
@@ -227,11 +187,6 @@ public class CarFactory {
 		//Create four wheels and add them at their locations
 		Vector3f wheelDirection = new Vector3f(0, -1, 0); // was 0, -1, 0
 		Vector3f wheelAxle = new Vector3f(-1, 0, 0); // was -1, 0, 0
-		float radius = 0.28f;
-		float restLength = 0.3f;
-		float yOff = 0.6f;
-		float xOff = 1.3f;
-		float zOff = 2f;
 
 
 		Cylinder wheelMesh = new Cylinder(16, 16, radius, radius * 0.6f, true);
@@ -243,7 +198,6 @@ public class CarFactory {
 		wheels1.rotate(0, FastMath.HALF_PI, 0);
 		wheels1.setMaterial(mat);
 		wheels1.setCullHint(CullHint.Always);
-//		wheels1.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node1, new Vector3f(-xOff, yOff, zOff),
 				wheelDirection, wheelAxle, restLength, radius, true);
 
@@ -254,7 +208,6 @@ public class CarFactory {
 		wheels2.rotate(0, FastMath.HALF_PI, 0);
 		wheels2.setMaterial(mat);
 		wheels2.setCullHint(CullHint.Always);
-//		wheels2.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node2, new Vector3f(xOff, yOff, zOff),
 				wheelDirection, wheelAxle, restLength, radius, true);
 
@@ -265,7 +218,6 @@ public class CarFactory {
 		wheels3.rotate(0, FastMath.HALF_PI, 0);
 		wheels3.setMaterial(mat);
 		wheels3.setCullHint(CullHint.Always);
-//		wheels3.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node3, new Vector3f(-xOff, yOff, -zOff),
 				wheelDirection, wheelAxle, restLength, radius, false);
 
@@ -276,7 +228,6 @@ public class CarFactory {
 		wheels4.rotate(0, FastMath.HALF_PI, 0);
 		wheels4.setMaterial(mat);
 		wheels4.setCullHint(CullHint.Always);
-//		wheels4.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node4, new Vector3f(xOff, yOff, -zOff),
 				wheelDirection, wheelAxle, restLength, radius, false);
 

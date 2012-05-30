@@ -437,7 +437,11 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void update(float tpf) {
-		int playerRpm = player.getEnginePhysics().getFreeRpm();
+		int playerRpm = 0;
+		
+		if (!player.getBurstEnabled())	{
+			playerRpm = player.getEnginePhysics().getFreeRpm();
+		}
 		int playerSpeed = (int) Math.abs(player.getCurrentVehicleSpeedKmHour());
 
 		/** Stops 1 second after the finish line */
@@ -460,8 +464,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				playerEnginePhysics.setSpeed(Math.abs(Conversion
 						.kmToMiles(playerSpeed)));
 				float force = -(float) playerEnginePhysics.getForce() / 5;
-				player.accelerate(2, force * 2);
 				player.accelerate(3, force * 2);
+				player.accelerate(2, force * 2);
 
 				if (needJump) {
 					player.applyImpulse(jumpForce, Vector3f.ZERO);
@@ -490,6 +494,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				} else {
 					if (System.currentTimeMillis() - timerRedZone > 3000) {
 						player.explode();
+						playerRpm = 0;
 						audioRender.mute();
 						playerFinish = true;
 						timePlayer = 0;
@@ -705,6 +710,10 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				val = 0.5f;
 			player.setSteeringValue(val);
 			player.steer(val);
+		}
+		else 	{
+			player.setSteeringValue(0);
+			player.steer(0);
 		}
 	}
 

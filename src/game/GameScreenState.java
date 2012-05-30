@@ -89,7 +89,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		node2.setShadowMode(ShadowMode.Cast);
 		node2.setName("Tree");
 		node2.scale(5);
-		for (int i = -15; i <= 15; i++) {
+		for (int i = -4; i <= 12; i++) {
 			Spatial node = node2.clone();
 			node.setLocalTranslation(-20, 25, i * 60);
 
@@ -140,9 +140,6 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 					.get(ProfilCurrent.getInstance().getChoixCar());
 		}
 
-		bot = new Car(assetManager, botCarProperties,
-				"Models/FerrariGreen/Car.scene");
-
 		bot = new Car(assetManager, botCarProperties, "ferrari green");
 
 		bot.setPhysicsLocation(new Vector3f(10, 27, 700));
@@ -151,8 +148,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		botIA = bot.getIA();
 		rootNode.attachChild(bot.getNode());
 		super.getPhysicsSpace().add(bot);
-		botArrivalPoint = (new Vector3f(0, 0, 0)).subtract(
-				bot.getForwardVector(null)).mult(5000);
+//		botArrivalPoint = (new Vector3f(0, 0, -10)).subtract(
+//				bot.getForwardVector(null)).mult(5000);
+		botArrivalPoint = new Vector3f(20, 27, -200);
 	}
 
 	@Override

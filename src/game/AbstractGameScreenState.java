@@ -304,8 +304,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 		
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties, "ferrari red");
-		// player = new Car(assetManager, playerCarProperties, "corvette");
+		//player = new Car(assetManager, playerCarProperties, "ferrari red");
+		player = new Car(assetManager, playerCarProperties, playerCarProperties.getPlayerModel());
 
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
@@ -395,6 +395,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
+		//XXX
 		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
@@ -621,7 +622,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			// XXX: Needs analog controller for releasing the wheels too!
 			if (!value) {
 				player.setSteeringValue(0.f);
-				player.steer(player.getSteeringValue());
+				player.steer(0);
 			}
 		} else if (binding.equals("Rights")) {
 			if (!value) {
@@ -672,7 +673,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
-			if (!player.getBurstEnabled()) {
+			if (!player.getBurstEnabled() && (!runIsOn || playerFinish)) {
 				// Start countdown
 				if (countDown == 0) {
 					countDown = System.currentTimeMillis();
@@ -683,18 +684,20 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else if (binding.equals("Rights")) {
 			float val = player.getSteeringValue();
+			// XXX
+			System.out.println("dr " +value);
 			val = val - value;
 			if (val < -0.5)
 				val = -0.5f;
 			player.setSteeringValue(val);
-			player.steer(player.getSteeringValue());
+			player.steer(val);
 		} else if (binding.equals("Lefts")) {
 			float val = player.getSteeringValue();
 			val = val + value;
 			if (val > 0.5)
 				val = 0.5f;
 			player.setSteeringValue(val);
-			player.steer(player.getSteeringValue());
+			player.steer(val);
 		}
 	}
 

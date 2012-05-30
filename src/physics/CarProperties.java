@@ -130,6 +130,10 @@ public class CarProperties {
 		this.idleRpm = idleRpm;
 	}
 
+	public String getPlayerModel()	{
+		return playerModel;
+	}
+	
 	public double getTireRadius() {
 		return tireRadius;
 	}

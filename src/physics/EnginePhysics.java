@@ -17,7 +17,7 @@ public class EnginePhysics {
 	private int gear = 1;
 	private double speed = 0;
 	private int rpm;
-
+	private double needBackward = 1;
 	private boolean nosActif = false;
 
 	private long rpmTimer = 0;
@@ -184,7 +184,7 @@ public class EnginePhysics {
 				rpm = getFreeRpm();
 			}
 
-			double force = p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
+			double force = needBackward * p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
 			if (nosActif)	{
 				force *= 1.4;
 			}
@@ -212,5 +212,19 @@ public class EnginePhysics {
 
 	public boolean getNosActivity()	{
 		return nosActif;
+	}
+
+	/**
+	 * Set if the car goes backward or forward
+	 * @param backward : true if the car goes backward
+	 */
+	public void setBackward(boolean backward) {
+		if (backward)	{
+			needBackward = 1;
+		}
+		else	{
+			needBackward = -1;
+		}
+		
 	}
 }

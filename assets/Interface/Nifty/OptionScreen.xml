@@ -31,7 +31,7 @@
 						<panel childLayout="center"><control name="dropDown" id="resolutionDropDown" /></panel>
 					</panel>
 					<panel childLayout="center" height="20%">
-						<control name="label" id="saveMessage" text="" color="#f00f" font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="100%" width="100%"/>
+						<control name="label" id="saveMessage" text="" backgroundColor="#000f" color="#ff0f" font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="100%" width="100%"/>
 					</panel>
 				</panel>
 				

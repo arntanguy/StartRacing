@@ -6,6 +6,9 @@ import java.util.List;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.effects.Effect;
@@ -28,23 +31,87 @@ public class StartScreenState extends AbstractScreenController {
 	public void initialize(AppStateManager stateManager, Application a) {
 		/** init the screen */
 		super.initialize(stateManager, a);
-		
-		System.out.println("Init StartScreen");
 
 		inputManager = app.getInputManager();
 		inputManager.setCursorVisible(true);
 
 		this.inputManager = app.getInputManager();
 		voiceRender.setRootNode(app.getGuiNode());
+		
+		setInputMappings();
 
 		initNiftyCallbacks(nifty.getCurrentScreen().getFocusHandler()
 				.getFirstFocusElement().getParent());
-		System.out.println(hoverEffects);
+	}
+	
+	private void setInputMappings() {		
+		inputManager.addMapping("quitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				if (keyPressed) /* Avoid double strikes! */
+					app.stop();
+			}
+		}, "quitGame");
+		
+		inputManager.addMapping("quickPlay", new KeyTrigger(KeyInput.KEY_Q));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoFreeForAll();
+			}
+		}, "quickPlay");
+		
+		inputManager.addMapping("halfGame", new KeyTrigger(KeyInput.KEY_H));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoGame("half");
+			}
+		}, "halfGame");
+		
+		inputManager.addMapping("quarterGame", new KeyTrigger(KeyInput.KEY_H));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoGame("");
+			}
+		}, "halfGame");
+		
+		inputManager.addMapping("options", new KeyTrigger(KeyInput.KEY_O));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoOptions();
+			}
+		}, "options");
+		
+		inputManager.addMapping("createProfil", new KeyTrigger(KeyInput.KEY_C));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoCrtProfil();
+			}
+		}, "createProfil");
+		
+		inputManager.addMapping("chooseProfil", new KeyTrigger(KeyInput.KEY_P));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoAffProfil();
+			}
+		}, "chooseProfil");
+		
+		inputManager.addMapping("achat", new KeyTrigger(KeyInput.KEY_B));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoAchat();
+			}
+		}, "achat");
+		
+		inputManager.addMapping("garage", new KeyTrigger(KeyInput.KEY_G));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoGarage();
+			}
+		}, "garage");
 	}
 
 	@Override
 	public void onStartScreen() {
-		System.out.println("Start StartScreeen");
 		if(voiceRender != null) {
 			voiceRender.stopAndReset();
 		}
@@ -53,9 +120,7 @@ public class StartScreenState extends AbstractScreenController {
 	public void initNiftyCallbacks(Element root) {
 		if (root == null)
 			return;
-		System.out.println("Root: " + root.getElements());
 		List<Element> elements = root.getElements();
-		System.out.println(elements);
 		// get all effects attached to this element (please note that you get a
 		// list back and that you need to provide the actual effect class)
 		List<Effect> hoverHintEffects = null;
@@ -103,7 +168,8 @@ public class StartScreenState extends AbstractScreenController {
 
 	@Override
 	public void onEndScreen() {
-//		stateManager.detach(this);
+		inputManager.clearMappings();
+		stateManager.detach(this);
 	}
 
 	public void startGame(String nextScreen) {

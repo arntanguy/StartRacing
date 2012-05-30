@@ -5,8 +5,15 @@ import xml.XMLFileStore;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.KeyInput;
+import com.jme3.input.RawInputListener;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.event.JoyAxisEvent;
+import com.jme3.input.event.JoyButtonEvent;
+import com.jme3.input.event.KeyInputEvent;
+import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
+import com.jme3.input.event.TouchEvent;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
 
@@ -44,7 +51,7 @@ public class App extends SimpleApplication {
 		/****** FIN DEBUG *****/
 		
 		/* Keyboard Mappings */
-		setInputMapping();
+		setInputMappings();
 
 		gotoStart();
 //		gotoOptions();
@@ -61,77 +68,9 @@ public class App extends SimpleApplication {
 		inputManager.setCursorVisible(false);
 	}
 	
-	void setInputMapping() {
+	void setInputMappings() {
 		inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT);
 		inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_HIDE_STATS);
-		
-		inputManager.addMapping("quitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean keyPressed, float arg2) {
-				System.out.println("Current Screen : " + nifty.getCurrentScreen().getScreenId());
-				if (nifty.getCurrentScreen().getScreenId().equals("start") && keyPressed) {
-					stop();
-				} else {
-					gotoStart();
-				}
-			}
-		}, "quitGame");
-		
-		inputManager.addMapping("quickPlay", new KeyTrigger(KeyInput.KEY_Q));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoFreeForAll();
-			}
-		}, "quickPlay");
-		
-		inputManager.addMapping("halfGame", new KeyTrigger(KeyInput.KEY_H));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoGame("half");
-			}
-		}, "halfGame");
-		
-		inputManager.addMapping("quarterGame", new KeyTrigger(KeyInput.KEY_H));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoGame("");
-			}
-		}, "halfGame");
-		
-		inputManager.addMapping("options", new KeyTrigger(KeyInput.KEY_O));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoOptions();
-			}
-		}, "options");
-		
-		inputManager.addMapping("createProfil", new KeyTrigger(KeyInput.KEY_C));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoCrtProfil();
-			}
-		}, "createProfil");
-		
-		inputManager.addMapping("chooseProfil", new KeyTrigger(KeyInput.KEY_P));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoAffProfil();
-			}
-		}, "chooseProfil");
-		
-		inputManager.addMapping("achat", new KeyTrigger(KeyInput.KEY_B));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoAchat();
-			}
-		}, "achat");
-		
-		inputManager.addMapping("garage", new KeyTrigger(KeyInput.KEY_G));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				gotoGarage();
-			}
-		}, "garage");
 	}
 	
 	@Override

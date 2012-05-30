@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Dimension;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.TreeMap;
 
 import xml.OptionXMLParser;
@@ -10,12 +12,25 @@ import xml.XMLFileStore;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.RawInputListener;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.event.JoyAxisEvent;
+import com.jme3.input.event.JoyButtonEvent;
+import com.jme3.input.event.KeyInputEvent;
+import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
+import com.jme3.input.event.TouchEvent;
 
 import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.NiftyControl;
+import de.lessvoid.nifty.elements.Element;
 
 public class OptionScreenController extends AbstractScreenController {
 
@@ -26,12 +41,19 @@ public class OptionScreenController extends AbstractScreenController {
 	private CheckBox soundCheckbox;
 	private CheckBox ratioCheckbox;
 	private CheckBox fullScreenCheckbox;
+	private Button mainMenu;
+	private Button applyOptions;
 	
-	private final String RESOLUTION_DROP_ID = "resolutionDropDown";
-	private final String RATIO_CHECKBOX_ID = "wideScreen";
-	private final String SOUND_CHECKBOX_ID = "activateSound";
-	private final String ON_SAVE_ID = "saveMessage";
-	private final String FULL_SCREEN_CHECKBOX_ID = "fullScreen";
+	private LinkedList<NiftyControl> elementList;
+	private int listIndex = 0;
+	
+	private static final String RESOLUTION_DROP_ID = "resolutionDropDown";
+	private static final String RATIO_CHECKBOX_ID = "wideScreen";
+	private static final String SOUND_CHECKBOX_ID = "activateSound";
+	private static final String ON_SAVE_ID = "saveMessage";
+	private static final String FULL_SCREEN_CHECKBOX_ID = "fullScreen";
+	private static final String MAIN_MENU_BUTTON_ID = "returnButton";
+	private static final String APPLY_BUTTON_ID = "applyButton";
 
 	/* Comparateur personnalisé pour la liste */
 	private Comparator<String> myComp = new Comparator<String>() {
@@ -70,19 +92,87 @@ public class OptionScreenController extends AbstractScreenController {
 		this.inputManager = app.getInputManager();
 		
 		/* Objet nifty */
-		resolutionDropDown = screen.findNiftyControl(RESOLUTION_DROP_ID, DropDown.class);
 		soundCheckbox = screen.findNiftyControl(SOUND_CHECKBOX_ID, CheckBox.class);
 		ratioCheckbox = screen.findNiftyControl(RATIO_CHECKBOX_ID, CheckBox.class);
 		fullScreenCheckbox = screen.findNiftyControl(FULL_SCREEN_CHECKBOX_ID, CheckBox.class);
+		resolutionDropDown = screen.findNiftyControl(RESOLUTION_DROP_ID, DropDown.class);
+		mainMenu = screen.findNiftyControl(MAIN_MENU_BUTTON_ID, Button.class);
+		applyOptions = screen.findNiftyControl(APPLY_BUTTON_ID, Button.class);
 		
-		before();
+		elementList = new LinkedList<NiftyControl>();
+		
+		elementList.add(soundCheckbox);
+		elementList.add(ratioCheckbox);
+		elementList.add(fullScreenCheckbox);
+		elementList.add(resolutionDropDown);
+		elementList.add(mainMenu);
+		elementList.add(applyOptions);
+		
+		initWidgets();
+		setInputMappings();
+	}
+	
+	private void setInputMappings() {
+		inputManager.addMapping("gotoMenu", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				app.gotoStart();
+			}
+		}, "gotoMenu");
+		
+		inputManager.addMapping("rightArrow", new KeyTrigger(KeyInput.KEY_RIGHT));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				if (!keyPressed) {
+					if (listIndex != (elementList.size() - 1))
+						elementList.get(++listIndex).setFocus();
+					else {
+						elementList.getFirst().setFocus();
+						listIndex = 0;
+					}
+				}
+			}
+		}, "rightArrow");
+		
+		inputManager.addMapping("leftArrow", new KeyTrigger(KeyInput.KEY_LEFT));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				if (!keyPressed) {
+					if (listIndex != 0)
+						elementList.get(--listIndex).setFocus();
+					else {
+						elementList.getLast().setFocus();
+						listIndex = elementList.size()-1;
+					}
+				}
+			}
+		}, "leftArrow");
+		
+		inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				if (!keyPressed) {
+					applyOptions();
+				}
+			}
+		}, "space");
+		
+		inputManager.addMapping("enter", new KeyTrigger(KeyInput.KEY_NUMPADENTER));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				if (!keyPressed) {
+					NiftyControl c = elementList.get(listIndex);
+					c.setEnabled(c.isEnabled() ? false : true);
+				}
+			}
+		}, "enter");
 	}
 	
 	/**
 	 * Modifie l'interface graphique pour convenir aux options.<br />
 	 * Le chargement depuis le fichier est fait à l'instantiation de App.
 	 */
-	private void before() {		
+	private void initWidgets() {		
 		soundCheckbox.setChecked(OptionXMLParser.sound);
 		ratioCheckbox.setChecked(OptionXMLParser.wideScreen);
 		fullScreenCheckbox.setChecked(OptionXMLParser.fullScreen);
@@ -136,6 +226,7 @@ public class OptionScreenController extends AbstractScreenController {
 	
 	@Override
 	public void onEndScreen() {
+		inputManager.clearMappings();
 		stateManager.detach(this);
 	}
 	

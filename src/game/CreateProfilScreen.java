@@ -49,6 +49,12 @@ public class CreateProfilScreen extends AbstractScreenController {
 		puis = screen.findNiftyControl("puis", TextField.class);
 		nitro = screen.findNiftyControl("nitro", TextField.class);
 		
+		cinlogin.setText("");
+		erreurlog.setText("");
+		weight.setText("");
+		puis.setText("");
+		nitro.setText("");
+		
 		AffDataCar();
 
         weight.setEnabled(false);
@@ -60,7 +66,7 @@ public class CreateProfilScreen extends AbstractScreenController {
 		
 		weight.setText(Integer.toString(dataAllCar.get(0).getWeight()));
 		puis.setText(Double.toString(dataAllCar.get(0).getPuissance()));
-		nitro.setText(Boolean.toString(dataAllCar.get(0).isImprovenitro()));
+		nitro.setText((dataAllCar.get(0).isImprovenitro()) ? "Oui" : "Non");
 	}
 	
 	public void gotoApply() {

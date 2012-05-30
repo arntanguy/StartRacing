@@ -71,7 +71,7 @@
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
         </availableModels>
-        <typeCar>SKYLINE</typeCar>
+        <typeCar>CHARGER</typeCar>
         <puissance>391</puissance>
         <improvepuis>false</improvepuis>
         <improvenitro>false</improvenitro>
@@ -183,7 +183,7 @@
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
         </availableModels>
-        <typeCar>DODGEVIPER</typeCar>
+        <typeCar>CORVETTE</typeCar>
         <puissance>391</puissance>
         <improvepuis>false</improvepuis>
         <improvenitro>false</improvenitro>
@@ -342,10 +342,11 @@
     </car>
     <timedemi></timedemi>
     <timequart></timequart>
-    <timefree>147 : 61</timefree>
-    <cardead>7</cardead>
-    <monnaie>52261</monnaie>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>30000</monnaie>
     <choixCar>0</choixCar>
+    <level>PROFESSIONNEL</level>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -353,12 +354,13 @@
     <car>
       <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
     </car>
-    <timedemi>15 : 77</timedemi>
+    <timedemi></timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>184500</monnaie>
+    <monnaie>150000</monnaie>
     <choixCar>0</choixCar>
+    <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>
     <id>3</id>
@@ -372,5 +374,6 @@
     <cardead>0</cardead>
     <monnaie>1000000</monnaie>
     <choixCar>0</choixCar>
+    <level>DEBUTANT</level>
   </save.Profil>
 </list>

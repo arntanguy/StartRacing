@@ -67,7 +67,7 @@
       <string>Models/FerrariGreen/Car.scene</string>
       <string>Models/FerrariBlue/Car.scene</string>
     </availableModels>
-    <typeCar>SKYLINE</typeCar>
+    <typeCar>CHARGER</typeCar>
     <puissance>391</puissance>
     <improvepuis>false</improvepuis>
     <improvenitro>false</improvenitro>
@@ -179,7 +179,7 @@
       <string>Models/FerrariGreen/Car.scene</string>
       <string>Models/FerrariBlue/Car.scene</string>
     </availableModels>
-    <typeCar>DODGEVIPER</typeCar>
+    <typeCar>CORVETTE</typeCar>
     <puissance>391</puissance>
     <improvepuis>false</improvepuis>
     <improvenitro>false</improvenitro>

@@ -98,6 +98,6 @@ public class SkylineProperties extends CarProperties {
 		df.setMaximumFractionDigits ( 2 ) ; 
 		puissance = (int)(couple * tourmin * (Math.PI/30) / 736);
 		
-		typeCar = TypeCarProperties.SKYLINE;
+		typeCar = TypeCarProperties.CHARGER;
 	}
 }

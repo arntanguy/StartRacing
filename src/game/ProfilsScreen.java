@@ -139,7 +139,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	}
 	
 	public void AffDataPlayer(int rangProfil) {
-		
+
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
@@ -153,24 +153,59 @@ public class ProfilsScreen extends AbstractScreenController {
 		niveau.selectItem(dataAllJoueur.get(rangProfil).getLevel().toString());
 		carsPlayer = dataAllJoueur.get(rangProfil).getCar();
 		int numchoixcar = dataAllJoueur.get(rangProfil).getChoixCar();
-		
-		typeCar.setText(carsPlayer.get(numchoixcar).getTypeCar().toString());
-		puis.setText(Integer.toString(carsPlayer.get(numchoixcar).getPuissance()));
-		weight.setText(Integer.toString(carsPlayer.get(numchoixcar).getWeight()));
-		nitro.setText(Boolean.toString(carsPlayer.get(numchoixcar).isImprovenitro()));
-		
-		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+
+		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.CHARGER)) {
 			imgCar.setSelectedImageIndex(1);
 			imgCar.backClick();
-		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+			imgCar.setSelectedImageIndex(0);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.CHARGER)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
+		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 			imgCar.setSelectedImageIndex(2);
 			imgCar.backClick();
+			imgCar.setSelectedImageIndex(1);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
 		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.BMWM3)) {
 			imgCar.setSelectedImageIndex(3);
 			imgCar.backClick();
+			imgCar.setSelectedImageIndex(2);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
 		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.FERRARI)) {
 			imgCar.setSelectedImageIndex(2);
 			imgCar.forwardClick();
+			imgCar.setSelectedImageIndex(3);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.FERRARI)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
 		}
 		
 	}
@@ -208,24 +243,23 @@ public class ProfilsScreen extends AbstractScreenController {
 		weight.setText("");
 		puis.setText("");
 		nitro.setText("");
-		
 		if (imgCar.getSelectedImageIndex() == 0) {
 			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.CHARGER)) {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
 		} else if (imgCar.getSelectedImageIndex() == 1) {
 			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
@@ -235,17 +269,17 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
-		} else {
+		} else if (imgCar.getSelectedImageIndex() == 3){
 			for (int i = 0; i < carsPlayer.size(); ++i) {
 				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
@@ -257,7 +291,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		ArrayList<CarProperties> cars = dataAllJoueur.get(rangprofil).getCar();
 		if (imgCar.getSelectedImageIndex() == 1) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 					choixCar = j;
 					break;
 				}
@@ -278,12 +312,13 @@ public class ProfilsScreen extends AbstractScreenController {
 			}
 		} else if (imgCar.getSelectedImageIndex() == 0) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.CHARGER)) {
 					choixCar = j;
 					break;
 				}
 			}
 		}
+		
 		ProfilCurrent pc = new ProfilCurrent(Comptes.getListProfil().get(rangprofil));
 		ProfilCurrent.getInstance().setChoixCar(choixCar);
 		for (IALevel level : IALevel.values()) {

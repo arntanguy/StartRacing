@@ -1,5 +1,5 @@
 package physics;
 
 public enum TypeCarProperties {
-	BMWM3, DODGEVIPER, SKYLINE, FERRARI
+	BMWM3, CORVETTE, CHARGER, FERRARI
 }

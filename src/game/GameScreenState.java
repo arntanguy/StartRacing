@@ -168,6 +168,9 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			bot.stop(1000);
 			botStoped = true;
 		}
+		else if (!runFinish && !runIsOn)	{
+			bot.setLinearVelocity(Vector3f.ZERO);
+		}
 
 		// Tester si le round est fini
 		if (playerFinish && botFinish && !runFinish) {

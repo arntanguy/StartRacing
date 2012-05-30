@@ -12,8 +12,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class Comptes {
 	
-	private final static String NOMFICHIERXML = "assets/save/Comptes.xml";
-	private final static String CARXML = "assets/save/Cars.xml";
+	private final static String NOMFICHIERXML = "ressources/save/Comptes.xml";
+	private final static String CARXML = "ressources/save/Cars.xml";
 	private static ArrayList<Profil> listProfil = new ArrayList<Profil>();
 	private static ArrayList<CarProperties> listCar = new ArrayList<CarProperties>();	
 	

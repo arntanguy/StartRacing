@@ -1,0 +1,1214 @@
+material Material#601
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.12549 0.152941 0.160784 1
+			diffuse 0.12549 0.152941 0.160784 1
+			specular 0.846 0.846 0.846 1 49
+			scene_blend one_minus_src_colour dest_colour
+			cull_hardware none
+			cull_software none
+		}
+
+	}
+
+}
+
+
+
+material DoorLine
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 10
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture DOORLINE.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.855 0.855 0.855 1 31
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#601
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.12549 0.152941 0.160784 1
+			diffuse 0.12549 0.152941 0.160784 1
+			specular 0.846 0.846 0.846 1 49
+			scene_blend one_minus_src_colour dest_colour
+			cull_hardware none
+			cull_software none
+		}
+
+	}
+
+}
+
+
+
+material Material#602
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 1
+			diffuse 0.588 0.588 0.588 1
+			specular 0.675 0.675 0.675 1 48
+
+			texture_unit
+			{
+				texture WDEFROST.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BadgingChrome
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.783 0.783 0.783 1 59
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 BADGING.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Interior
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.414 0.414 0.414 1 23
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 INTERIOR.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material glass
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.282353 0.282353 0.282353 1
+			diffuse 0.282353 0.282353 0.282353 1
+			specular 0.846 0.846 0.846 1 49
+			scene_blend one_minus_src_colour dest_colour
+			cull_hardware none
+			cull_software none
+		}
+
+	}
+
+}
+
+
+
+material BadgingChrome
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.333 0.333 0.333 1 50
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 BADGING.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Bottom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 10
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BOTTOM.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.873 0.873 0.873 1 37
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material MiscChrome
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.828 0.828 0.828 1 48
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material glass
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.801 0.801 0.801 1 42
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 BRAKELIGHT.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material glass
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.282353 0.282353 0.282353 1
+			diffuse 0.282353 0.282353 0.282353 1
+			specular 0.846 0.846 0.846 1 49
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 BRAKELIGHT GLASS.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BrakeDisc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.765 0.765 0.765 1 36
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BRAKDISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BrakePads
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.864 0.864 0.864 1 36
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BrakeDisc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.738 0.738 0.738 1 28
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BRAKDISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#581
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 1
+			diffuse 0.588 0.588 0.588 1
+			specular 0.828 0.828 0.828 1 42
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 BRAKELIGHT.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BadgingChrome
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.333 0.333 0.333 1 50
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 BADGING.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 10
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material chrom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.920196 0.920196 0.920196 1 35
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.72 0.72 0.72 1 30
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 1.017 1.017 1.017 1 46
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 HEADLIGHT.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#590
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 1
+			diffuse 0.588 0.588 0.588 1
+			specular 1.152 1.152 1.152 1 42
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 HEADLIGHT.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material chrom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.99 0.99 0.99 1 32
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.783 0.783 0.783 1 41
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.882 0.882 0.882 1 58
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 1.08 1.08 1.08 1 47
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material chrom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 1.08663 1.08663 1.08663 1 46
+		}
+
+	}
+
+}
+
+
+
+material Material#25
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material Material#619
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material chrom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.836392 0.836392 0.836392 1 35
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 RIM.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Mat
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.684 0.684 0.684 1 37
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 RIM.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Material#618
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.12549 0.152941 0.160784 1
+			diffuse 0.12549 0.152941 0.160784 1
+			specular 0.846 0.846 0.846 1 49
+			scene_blend one_minus_src_colour dest_colour
+			cull_hardware none
+			cull_software none
+		}
+
+	}
+
+}
+
+
+
+material Material#600
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.145098 0.145098 0.145098 1
+			diffuse 0.145098 0.145098 0.145098 1
+			specular 0.774 0.774 0.774 1 54
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.648 0.648 0.648 1 44
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material DoorLine
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 10
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture DOORLINE.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Black
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 10
+			cull_hardware none
+			cull_software none
+		}
+
+	}
+
+}
+
+
+
+material BadgingChrome
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.333 0.333 0.333 1 50
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 BADGING.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material License
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.333 0.333 0.333 1 50
+
+			texture_unit
+			{
+				texture LICENSE.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material TireBack
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.192157 0.192157 0.192157 1
+			diffuse 0.192157 0.192157 0.192157 1
+			specular 0.2 0.2 0.2 1 15
+		}
+
+	}
+
+}
+
+
+
+material Tire
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.192157 0.192157 0.192157 1
+			diffuse 0.192157 0.192157 0.192157 1
+			specular 0.42 0.42 0.42 1 22
+
+			texture_unit
+			{
+				texture TIRE.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material chrom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.835177 0.835177 0.835177 1 37
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture CHARGER06 RIM.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Misc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.963 0.963 0.963 1 29
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Bottom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 10
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BOTTOM.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material Bottom
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.207 0.207 0.207 1 10
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BOTTOM.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BrakeDisc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.765 0.765 0.765 1 40
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BRAKDISC.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BrakePads
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.711 0.711 0.711 1 30
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture CHARGER06 MISC MIRROR.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material BrakeDisc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.612 0.612 0.612 1 34
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture BRAKDISC.tga
+			}
+		}
+
+	}
+
+}

@@ -473,6 +473,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else {
 			if (!runFinish) {
+				player.setLinearVelocity(Vector3f.ZERO);
 				countDown();
 			}
 
@@ -579,6 +580,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		if (!player.getType().equals(TypeCarProperties.FERRARI))	{
 			player.setPhysicsRotation(new Quaternion(0, 1, 0, 0));
 		}
+	
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
 		player.setNosCharge(1);

@@ -39,7 +39,7 @@ public class IA {
 		this.enginePhysics = enginePhysics;
 		carProperties = enginePhysics.getCarProperties();
 
-		setIALevel(IACurrent.getInstance());
+		setIALevel(IALevel.INTERMEDIAIRE);
 	}
 
 	public void setIALevel(IALevel level) {

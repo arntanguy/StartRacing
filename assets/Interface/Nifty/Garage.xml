@@ -9,13 +9,20 @@
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
 				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="Améliorer votre voiture" />
-				<control name="textfield" id="msg" height="35px" width="60%" />
+				<panel childLayout="horizontal" >
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" width="30%" align="center" text="MONNAIE : " />
+					<control name="textfield" id="monnaie" height="35px" width="30%"/>
+					<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" width="10%" align="center" text="Euro" />
+				</panel>
+				<panel height="2%" />
+				<control name="textfield" id="msg" height="35px" width="100%" />
+				<panel height="2%" />
 				<panel childLayout="horizontal" height="15%">
-					<panel width="10%" />
-					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="NITRO" >
+					<panel width="5%" />
+					<control id="returnButton" width="20%" align="center" height="100%" name="button" label="NITRO" >
 						<interact onClick="givenitro()" />
 					</control>
-					<panel width="10%" />
+					<panel width="1%" />
 					<panel childLayout="vertical" width="10%">
 						<panel height="30%" />
 						<control name="textfield" id="prixnitro" height="35px" />
@@ -24,15 +31,12 @@
 						<panel height="30%" />
 						<control name="textfield" id="euronitro" height="35px" text="Euro" />
 					</panel>
-				</panel>
-				
-				<panel height="7%"/>
-				<panel childLayout="horizontal" height="15%">
-					<panel width="10%" />
-					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="POIDS" >
+					
+					<panel width="13%" />
+					<control id="returnButton" width="20%" align="center" height="100%" name="button" label="POIDS" >
 						<interact onClick="takeoffweight()" />
 					</control>
-					<panel width="10%" />
+					<panel width="1%" />
 					<panel childLayout="vertical" width="10%">
 						<panel height="30%" />
 						<control name="textfield" id="prixpoids" height="35px" />
@@ -45,11 +49,11 @@
 				
 				<panel height="7%"/>
 				<panel childLayout="horizontal" height="15%">
-					<panel width="10%" />
-					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="PUISSANCE" >
+					<panel width="5%" />
+					<control id="returnButton" width="20%" align="center" height="100%" name="button" label="PUISSANCE" >
 						<interact onClick="givepuis()" />
 					</control>
-					<panel width="10%" />
+					<panel width="1%" />
 					<panel childLayout="vertical" width="10%">
 						<panel height="30%" />
 						<control name="textfield" id="prixpuis" height="35px" />
@@ -60,7 +64,8 @@
 					</panel>
 				</panel>
 				
-				<panel height="7%"/>
+				<panel height="10%"/>
+				
 				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
 					<panel width="10%" />
 					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="RETOUR" >

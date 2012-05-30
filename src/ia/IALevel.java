@@ -1,0 +1,5 @@
+package ia;
+
+public enum IALevel {
+	DEBUTANT, INTERMEDIAIRE, PROFESSIONNEL, EXPERT
+}

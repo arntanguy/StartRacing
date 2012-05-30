@@ -18,11 +18,14 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.ImageSelect;
+import de.lessvoid.nifty.controls.ImageSelectSelectionChangedEvent;
 import de.lessvoid.nifty.controls.TextField;
 
 public class Achat extends AbstractScreenController {
 	
 	private InputManager inputManager;
+	
+	private final String IMGCAR = "imgCar";
 	
 	private ArrayList<CarProperties> dataAllCar;
 	private ArrayList<CarProperties> allCarJoueur;
@@ -65,7 +68,7 @@ public class Achat extends AbstractScreenController {
 
 		this.inputManager = app.getInputManager();
 		
-		imgCar = screen.findNiftyControl("imgcar", ImageSelect.class);
+		imgCar = screen.findNiftyControl(IMGCAR, ImageSelect.class);
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
 		weight = screen.findNiftyControl("weight", TextField.class);
 		puis  = screen.findNiftyControl("puis", TextField.class);
@@ -100,71 +103,10 @@ public class Achat extends AbstractScreenController {
 		
 	}
 	
-	/*public void blockcheckbmw () {
-		if (hasBmw == false) {
-			if (calcul < prixbmw) {
-				checkboxbmw.setEnabled(false);
-			} else {
-				checkboxbmw.setEnabled(true);
-			}
-		}
+	@NiftyEventSubscriber(id=IMGCAR)
+	public void onChangePhoto(final String id, final ImageSelectSelectionChangedEvent event) {
+		changeDataPhoto();
 	}
-	
-	public void blockcheckdv() {
-		if (hasDv == false) {
-			if (calcul < prixdv) {
-				checkboxdv.setEnabled(false);
-			} else {
-				checkboxdv.setEnabled(true);
-			}
-		}
-	}
-	
-	public void blockchecksk() {
-		if (hasSk == false) {
-			if (calcul < prixsk) {
-				checkboxsl.setEnabled(false);
-			} else {
-				checkboxsl.setEnabled(true);
-			}
-		}
-	}
-	
-	@NiftyEventSubscriber(id="Bmw")
-	public void checkBmw (final String id, final CheckBoxStateChangedEvent event) {
-		if (event.isChecked()) {
-			calcul -= prixbmw;
-		} else {
-			calcul += prixbmw;
-		}
-		monnaie.setText(Integer.toString(calcul));
-		blockcheckdv();
-		blockchecksk();
-	}
-	
-	@NiftyEventSubscriber(id="Dodge")
-	public void checkDodge (final String id, final CheckBoxStateChangedEvent event) {
-		if (event.isChecked()) {
-			calcul -= prixdv;
-		} else {
-			calcul += prixdv;
-		}
-		monnaie.setText(Integer.toString(calcul));
-		blockchecksk();
-		blockcheckbmw();
-	}
-	
-	@NiftyEventSubscriber(id="Skyline")
-	public void checkSkyline (final String id, final CheckBoxStateChangedEvent event) {
-		if (event.isChecked()) {
-			calcul -= prixsk;
-		} else {
-			calcul += prixsk;
-		}
-		monnaie.setText(Integer.toString(calcul));
-		blockcheckbmw();
-		blockcheckdv();
-	}*/
 	
 	public void changePhoto() {
 		int maxphoto = 2;
@@ -175,6 +117,10 @@ public class Achat extends AbstractScreenController {
 			imgCar.forwardClick();
 		}
 		
+		changeDataPhoto();
+	}
+	
+	public void changeDataPhoto() {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");

@@ -36,8 +36,13 @@
 				<panel height="7%"/>
 				<panel childLayout="horizontal">
 					<panel width="3%"/>
-					<panel childLayout="vertical" width="15%">	
-						<panel height="20%"/>
+					<panel childLayout="vertical" width="15%">
+						<panel height="5%"/>
+						<panel childLayout="horizontal" height="35px">
+							<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Niveau" />
+							<panel childLayout="center"><control name="dropDown" id="niveau" /></panel>
+						</panel>					
+						<panel height="5%"/>
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Vos voitures : " />
 						<panel height="5%"/>
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Poids : " />

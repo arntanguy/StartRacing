@@ -1,5 +1,8 @@
 package game;
 
+import ia.IACurrent;
+import ia.IALevel;
+
 import java.util.ArrayList;
 
 import physics.BMWM3Properties;
@@ -38,6 +41,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 	private InputManager inputManager;
 	private final String ALLJOUEUR = "allJoueur";
+	private final String IMGCAR = "imgcar";
 	private ArrayList<Profil> dataAllJoueur;
 	private ArrayList<CarProperties> dataAllCar;
 	private ArrayList<CarProperties> carsPlayer;
@@ -56,6 +60,9 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 	private ImageSelect imgCar;
 
+	private DropDown<String> niveau;
+	
+	private final String NIVEAU = "niveau";
 	
 	public ProfilsScreen() {
 		super();
@@ -81,8 +88,11 @@ public class ProfilsScreen extends AbstractScreenController {
 		deadcarfree = screen.findNiftyControl("cardead", TextField.class);
 		monnaie = screen.findNiftyControl("monnaie", TextField.class);
 		
-		imgCar = screen.findNiftyControl("imgcar", ImageSelect.class);
+		imgCar = screen.findNiftyControl(IMGCAR, ImageSelect.class);
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
+		
+		niveau = screen.findNiftyControl(NIVEAU, DropDown.class);
+		fillLevelDropDown();
 		
 		demi.setEnabled(false);
 		quart.setEnabled(false);
@@ -103,6 +113,12 @@ public class ProfilsScreen extends AbstractScreenController {
 		nitro.setEnabled(false);
 	}
 
+	private void fillLevelDropDown() {
+		for (IALevel level : IALevel.values()) {
+			niveau.addItem(level.toString());
+		}
+	}
+	
 	private void AffBase() {
 		for (int i = 0; i < dataAllJoueur.size(); ++i) {
 			allJoueurDropDown.addItem(dataAllJoueur.get(i).getLogin());
@@ -168,6 +184,11 @@ public class ProfilsScreen extends AbstractScreenController {
 		}
 	}
 	
+	@NiftyEventSubscriber(id=IMGCAR)
+	public void onChangePhoto(final String id, final ImageSelectSelectionChangedEvent event) {
+		changeDataPhoto();
+	}
+	
 	public void changePhoto() {
 		int maxphoto = 3;
 		if (imgCar.getSelectedImageIndex() == maxphoto) {
@@ -177,6 +198,10 @@ public class ProfilsScreen extends AbstractScreenController {
 			imgCar.forwardClick();
 		}
 		
+		changeDataPhoto();
+	}
+    
+	public void changeDataPhoto() {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
@@ -224,7 +249,7 @@ public class ProfilsScreen extends AbstractScreenController {
 			}
 		}
 	}
-    
+	
 	public void savemodif(int rangprofil) {
 		int choixCar = dataAllJoueur.get(rangprofil).getChoixCar();
 		ArrayList<CarProperties> cars = dataAllJoueur.get(rangprofil).getCar();
@@ -269,6 +294,11 @@ public class ProfilsScreen extends AbstractScreenController {
 				savemodif(i);
 				break;
 			} //if
+		}
+		for (IALevel level : IALevel.values()) {
+			if(niveau.getSelection().equals(level.toString())) {
+				IACurrent ialevel = new IACurrent(level);
+			}
 		}
 		gotoMainMenu();
 	}

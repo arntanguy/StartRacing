@@ -1,5 +1,8 @@
 package game;
 
+import ia.IALevel;
+import ia.IACurrent;
+
 import java.awt.Dimension;
 import java.util.Comparator;
 import java.util.TreeMap;
@@ -26,7 +29,7 @@ public class OptionScreenController extends AbstractScreenController {
 	private CheckBox soundCheckbox;
 	private CheckBox ratioCheckbox;
 	private CheckBox fullScreenCheckbox;
-	
+
 	private final String RESOLUTION_DROP_ID = "resolutionDropDown";
 	private final String RATIO_CHECKBOX_ID = "wideScreen";
 	private final String SOUND_CHECKBOX_ID = "activateSound";
@@ -159,6 +162,7 @@ public class OptionScreenController extends AbstractScreenController {
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
 		
 		screen.findNiftyControl(ON_SAVE_ID, Label.class).setText(StringStore.ON_SAVE_OPTION_MESSAGE);
+		
 	}
 	
 	public String getMenuTitle() {

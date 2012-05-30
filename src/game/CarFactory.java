@@ -7,8 +7,12 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.BlendMode;
+import com.jme3.material.RenderState.FaceCullMode;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -183,8 +187,11 @@ public class CarFactory {
 
 	public static void createCorvette(AssetManager assetManager, Car car)	{
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//		mat.getAdditionalRenderState().setWireframe(true);
-//		mat.setColor("Color", ColorRGBA.Red);
+	
+		mat.getAdditionalRenderState().setWireframe(true);
+		mat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
+//		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+		
 
 
 		//create a compound shape and attach the BoxCollisionShape for the car body at 0,1,0
@@ -234,6 +241,7 @@ public class CarFactory {
 		node1.attachChild(wheels1);
 		wheels1.rotate(0, FastMath.HALF_PI, 0);
 		wheels1.setMaterial(mat);
+//		wheels1.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node1, new Vector3f(-xOff, yOff, zOff),
 				wheelDirection, wheelAxle, restLength, radius, true);
 
@@ -243,6 +251,7 @@ public class CarFactory {
 		node2.attachChild(wheels2);
 		wheels2.rotate(0, FastMath.HALF_PI, 0);
 		wheels2.setMaterial(mat);
+//		wheels2.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node2, new Vector3f(xOff, yOff, zOff),
 				wheelDirection, wheelAxle, restLength, radius, true);
 
@@ -252,6 +261,7 @@ public class CarFactory {
 		node3.attachChild(wheels3);
 		wheels3.rotate(0, FastMath.HALF_PI, 0);
 		wheels3.setMaterial(mat);
+//		wheels3.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node3, new Vector3f(-xOff, yOff, -zOff),
 				wheelDirection, wheelAxle, restLength, radius, false);
 
@@ -261,6 +271,7 @@ public class CarFactory {
 		node4.attachChild(wheels4);
 		wheels4.rotate(0, FastMath.HALF_PI, 0);
 		wheels4.setMaterial(mat);
+//		wheels4.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node4, new Vector3f(xOff, yOff, -zOff),
 				wheelDirection, wheelAxle, restLength, radius, false);
 

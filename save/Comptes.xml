@@ -73,6 +73,9 @@
         </availableModels>
         <typeCar>SKYLINE</typeCar>
         <puissance>391</puissance>
+        <improvepuis>false</improvepuis>
+        <improvenitro>false</improvenitro>
+        <improveweight>false</improveweight>
         <torque>
           <entry>
             <int>0</int>
@@ -182,6 +185,9 @@
         </availableModels>
         <typeCar>DODGEVIPER</typeCar>
         <puissance>391</puissance>
+        <improvepuis>false</improvepuis>
+        <improvenitro>false</improvenitro>
+        <improveweight>false</improveweight>
         <torque>
           <entry>
             <int>0</int>
@@ -291,6 +297,9 @@
         </availableModels>
         <typeCar>BMWM3</typeCar>
         <puissance>391</puissance>
+        <improvepuis>false</improvepuis>
+        <improvenitro>false</improvenitro>
+        <improveweight>false</improveweight>
         <torque>
           <entry>
             <int>0</int>
@@ -331,11 +340,11 @@
         </torque>
       </physics.BMWM3Properties>
     </car>
-    <timedemi>24:53</timedemi>
-    <timequart></timequart>
+    <timedemi>0 : 0</timedemi>
+    <timequart>0 : 0</timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>30000</monnaie>
+    <monnaie>60000</monnaie>
     <choixCar>1</choixCar>
   </save.Profil>
   <save.Profil>
@@ -344,7 +353,7 @@
     <car>
       <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
     </car>
-    <timedemi>0:0</timedemi>
+    <timedemi></timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>

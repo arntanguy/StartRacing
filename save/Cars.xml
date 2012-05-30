@@ -69,6 +69,9 @@
     </availableModels>
     <typeCar>SKYLINE</typeCar>
     <puissance>391</puissance>
+    <improvepuis>false</improvepuis>
+    <improvenitro>false</improvenitro>
+    <improveweight>false</improveweight>
     <torque>
       <entry>
         <int>0</int>
@@ -178,6 +181,9 @@
     </availableModels>
     <typeCar>DODGEVIPER</typeCar>
     <puissance>391</puissance>
+    <improvepuis>false</improvepuis>
+    <improvenitro>false</improvenitro>
+    <improveweight>false</improveweight>
     <torque>
       <entry>
         <int>0</int>
@@ -287,6 +293,9 @@
     </availableModels>
     <typeCar>BMWM3</typeCar>
     <puissance>391</puissance>
+    <improvepuis>false</improvepuis>
+    <improvenitro>false</improvenitro>
+    <improveweight>false</improveweight>
     <torque>
       <entry>
         <int>0</int>
@@ -396,6 +405,9 @@
     </availableModels>
     <typeCar>FERRARI</typeCar>
     <puissance>341</puissance>
+    <improvepuis>false</improvepuis>
+    <improvenitro>false</improvenitro>
+    <improveweight>false</improveweight>
     <torque>
       <entry>
         <int>0</int>

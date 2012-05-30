@@ -34,6 +34,7 @@ public class Achat extends AbstractScreenController {
 	private TextField typeCar;
 	private TextField weight;
 	private TextField puis;
+	private TextField nitro;
 	private TextField prix;
 	private TextField msgerr;
 	private String hasCar = "VOUS AVEZ DEJA CETTE VOITURE !";
@@ -68,6 +69,7 @@ public class Achat extends AbstractScreenController {
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
 		weight = screen.findNiftyControl("weight", TextField.class);
 		puis  = screen.findNiftyControl("puis", TextField.class);
+		nitro  = screen.findNiftyControl("nitro", TextField.class);
 		
 		prix = screen.findNiftyControl("prix", TextField.class);
 		
@@ -77,6 +79,7 @@ public class Achat extends AbstractScreenController {
 		weight.setText(Integer.toString(dataAllCar.get(DODGE+1).getWeight()));
 		puis.setText(Integer.toString(dataAllCar.get(DODGE+1).getPuissance()));
 		prix.setText(Integer.toString(tabprix.get(DODGE)));
+		nitro.setText(Boolean.toString(dataAllCar.get(DODGE+1).isImprovenitro()));
 		for (int j = 0; j < allCarJoueur.size(); ++j) {
 			if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
 				msgerr.setText(hasCar);

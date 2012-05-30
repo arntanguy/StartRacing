@@ -32,6 +32,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
@@ -573,7 +574,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected void reset() {
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		player.setPhysicsRotation(new Matrix3f());
+		
+		player.setPhysicsRotation(new Quaternion(0, 1, 0, 0));
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
 		player.setNosCharge(1);

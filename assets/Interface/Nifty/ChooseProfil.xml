@@ -42,6 +42,7 @@
 						<panel height="5%"/>
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Poids : " />
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Puissance : " />
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Nitro : " />
 					</panel>
 					<panel width="2%"/>
 					<panel childLayout="vertical" width="17%" >
@@ -52,6 +53,7 @@
 						<panel height="5%"/>
 						<control name="textfield" height="35px" id="weight"/>
 						<control name="textfield" height="35px" id="puis"/>
+						<control name="textfield" height="35px" id="nitro"/>
 					</panel>
 					<panel width="5%"/>
 					<panel childLayout="horizontal" height="90%" width="80%">

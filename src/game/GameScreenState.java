@@ -54,7 +54,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	public void initialize(AppStateManager stateManager, Application a) {
 		/** init the screen */
 		super.initialize(stateManager, a);
-
+		
 		win = false;
 
 		try {
@@ -62,6 +62,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.reset();
 	}
 
 	@Override

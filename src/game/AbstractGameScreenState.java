@@ -146,9 +146,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	public void onEndScreen() {
 		audioRender.mute();
 		audioRender.close();
+		rootNode.detachAllChildren();
 		stateManager.detach(this);
-
-		app.gotoStart();
 	}
 
 	@Override
@@ -419,6 +418,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_LSHIFT));
 		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping("Menu", new KeyTrigger(KeyInput.KEY_ESCAPE));
 
 		inputManager.addListener(this, "Lefts");
 		inputManager.addListener(this, "Rights");
@@ -677,7 +677,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else if (binding.equals("Menu")) {
 			if (value) {
-				this.onEndScreen();
+				app.gotoStart();
 			}
 		}
 	}

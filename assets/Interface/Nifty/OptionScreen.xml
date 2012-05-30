@@ -13,7 +13,7 @@
 				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="${CALL.getMenuTitle()}" />
 				
-				<panel height="70%" align="center" childLayout="vertical">
+				<panel height="60%" align="center" childLayout="vertical">
 					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Activer le son" />
 						<panel childLayout="center"><control name="checkbox" id="activateSound" /></panel>
@@ -35,8 +35,8 @@
 					</panel>
 				</panel>
 				
-				<panel childLayout="center" width="100%">
-					<panel width="50%" childLayout="horizontal">
+				<panel childLayout="center" width="100%" height="*">
+					<panel width="70%" height="60%" childLayout="horizontal">
 						<control id="returnButton" width="48%" align="center" height="100%" name="button" label="Menu Principal">
 							<interact onClick="gotoMainMenu()" />
 						</control>

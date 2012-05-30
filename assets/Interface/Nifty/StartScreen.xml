@@ -9,48 +9,48 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
-				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
+				<text font="Interface/Fonts/ArialBlack_60.fnt" height="15%" align="center" color="#ffff"
 					text="${CALL.getTitle()}" />
 					
 				<control id="freeforall" align="center" name="button" label="Course Libre"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>
 					<effect><onFocus id="freeforall" /></effect>
 				</control>
-				<panel height="5px" />
+				<panel height="2%" />
 				
 				<control id="halfmile" align="center" name="button" label="Course Demi-Mile"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onMouseOver="hover(halfmile)" onClick="startGame(half)" />					
 				</control>
-				<panel height="5px" />
+				<panel height="2%" />
 				
 				<control id="quartermile" align="center" name="button" label="Course Quart de Mile"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onMouseOver="hover(quartermile)" onClick="startGame(quarter)" />
 				</control>
-				<panel height="5px" />
+				<panel height="2%" />
 				
 				<control id="optionButton" align="center" name="button" label="Options"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onClick="showOptions()" />
 				</control>
-				<panel height="5px" />
+				<panel height="2%" />
 				
 				<control id="newProfil" align="center" name="button" label="Nouveau profil"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onClick="newProfil()" />
 				</control>
-				<panel height="5px" />
+				<panel height="2%" />
 				
 				<control id="oldProfil" align="center" name="button" label="Choisir / Gérer un profil"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onClick="chooseProfil()" />
 				</control>
-				<panel height="5px" />
+				<panel height="2%" />
 				
 				<control id="quitButton" align="center" name="button" label="Quitter"
-					width="32%" height="10%">
+					width="40%" height="10%">
 					<interact onClick="quitGame()" />
 				</control>
 			</panel>

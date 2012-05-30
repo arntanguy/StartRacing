@@ -20,6 +20,7 @@ public class Garage extends AbstractScreenController {
 	private int rangCar;
 	private CarProperties car;
 	
+	private TextField monnaie;
 	private TextField prixpuis;
 	private TextField prixweight;
 	private TextField prixnitro;
@@ -54,6 +55,7 @@ public class Garage extends AbstractScreenController {
 
 		this.inputManager = app.getInputManager();
 		
+		monnaie = screen.findNiftyControl("monnaie", TextField.class);
 		prixpuis = screen.findNiftyControl("prixpuis", TextField.class);
 		prixweight = screen.findNiftyControl("prixpoids", TextField.class);
 		prixnitro = screen.findNiftyControl("prixnitro", TextField.class);
@@ -62,10 +64,12 @@ public class Garage extends AbstractScreenController {
 		europoids = screen.findNiftyControl("europoids", TextField.class);
 		msg = screen.findNiftyControl("msg", TextField.class);
 		
+		monnaie.setText(Integer.toString(ProfilCurrent.getInstance().getMonnaie()));
 		prixpuis.setText(Integer.toString(ppuis));
 		prixnitro.setText(Integer.toString(pnitro));
 		prixweight.setText(Integer.toString(pweight));
 		
+		monnaie.setEnabled(false);
 		prixpuis.setEnabled(false);
 		prixnitro.setEnabled(false);
 		prixweight.setEnabled(false);
@@ -101,12 +105,13 @@ public class Garage extends AbstractScreenController {
 	}
 	
 	public void Enregistrer() {
-		String msgdejaImprove = "Vous avez déjà améliorer ce composant !";
-		String msgNoMoney = "Vous n'avez pas assez d'argent !";
+		String msgdejaImprove = "VOUS AVEZ DEJA AMELIORER CE COMPOSANT !";
+		String msgNoMoney = "VOUS N'AVEZ PAS ASSEZ D'ARGENT !";
 		if (hasnitro) {
 			if (car.isImprovenitro() == false) {
 				if ( (ProfilCurrent.getInstance().getMonnaie() - pnitro) > 0) {
 					car.setImprovenitro(true);
+					ProfilCurrent.getInstance().setMonnaie((ProfilCurrent.getInstance().getMonnaie() - pnitro));
 					Comptes.modifier(ProfilCurrent.getInstance());
 					app.gotoAffProfil();
 				} else {
@@ -121,6 +126,7 @@ public class Garage extends AbstractScreenController {
 					double puis = 1.5;
 					car.setPuissance((int)(car.getPuissance() * puis));
 					car.setImprovepuis(true);
+					ProfilCurrent.getInstance().setMonnaie((ProfilCurrent.getInstance().getMonnaie() - ppuis));
 					Comptes.modifier(ProfilCurrent.getInstance());
 					app.gotoAffProfil();
 				} else {
@@ -135,6 +141,7 @@ public class Garage extends AbstractScreenController {
 					int poids = 100;
 					car.setWeight(car.getWeight()-poids);
 					car.setImproveweight(true);
+					ProfilCurrent.getInstance().setMonnaie((ProfilCurrent.getInstance().getMonnaie() - pweight));
 					Comptes.modifier(ProfilCurrent.getInstance());
 					app.gotoAffProfil();
 				} else {

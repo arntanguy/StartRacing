@@ -1,5 +1,8 @@
 package game;
 
+import ia.IACurrent;
+import ia.IALevel;
+
 import java.util.ArrayList;
 
 import physics.BMWM3Properties;
@@ -38,6 +41,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 	private InputManager inputManager;
 	private final String ALLJOUEUR = "allJoueur";
+	private final String IMGCAR = "imgcar";
 	private ArrayList<Profil> dataAllJoueur;
 	private ArrayList<CarProperties> dataAllCar;
 	private ArrayList<CarProperties> carsPlayer;
@@ -52,9 +56,13 @@ public class ProfilsScreen extends AbstractScreenController {
 	private TextField typeCar;
 	private TextField weight;
 	private TextField puis;
+	private TextField nitro;
 	
 	private ImageSelect imgCar;
 
+	private DropDown<String> niveau;
+	
+	private final String NIVEAU = "niveau";
 	
 	public ProfilsScreen() {
 		super();
@@ -80,8 +88,11 @@ public class ProfilsScreen extends AbstractScreenController {
 		deadcarfree = screen.findNiftyControl("cardead", TextField.class);
 		monnaie = screen.findNiftyControl("monnaie", TextField.class);
 		
-		imgCar = screen.findNiftyControl("imgcar", ImageSelect.class);
+		imgCar = screen.findNiftyControl(IMGCAR, ImageSelect.class);
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
+		
+		niveau = screen.findNiftyControl(NIVEAU, DropDown.class);
+		fillLevelDropDown();
 		
 		demi.setEnabled(false);
 		quart.setEnabled(false);
@@ -92,14 +103,22 @@ public class ProfilsScreen extends AbstractScreenController {
 		
 		weight = screen.findNiftyControl("weight", TextField.class);
 		puis = screen.findNiftyControl("puis", TextField.class);
+		nitro = screen.findNiftyControl("nitro", TextField.class);
 		
 		AffBase();
 		
 		typeCar.setEnabled(false);
 		weight.setEnabled(false);
 		puis.setEnabled(false);
+		nitro.setEnabled(false);
 	}
 
+	private void fillLevelDropDown() {
+		for (IALevel level : IALevel.values()) {
+			niveau.addItem(level.toString());
+		}
+	}
+	
 	private void AffBase() {
 		for (int i = 0; i < dataAllJoueur.size(); ++i) {
 			allJoueurDropDown.addItem(dataAllJoueur.get(i).getLogin());
@@ -123,6 +142,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
+		nitro.setText("");
 		
 		demi.setText(dataAllJoueur.get(rangProfil).getTimeDemi());
 		quart.setText(dataAllJoueur.get(rangProfil).getTimeQuart());
@@ -135,6 +155,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar.setText(carsPlayer.get(numchoixcar).getTypeCar().toString());
 		puis.setText(Integer.toString(carsPlayer.get(numchoixcar).getPuissance()));
 		weight.setText(Integer.toString(carsPlayer.get(numchoixcar).getWeight()));
+		nitro.setText(Boolean.toString(carsPlayer.get(numchoixcar).isImprovenitro()));
 		
 		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
 			imgCar.setSelectedImageIndex(1);
@@ -163,6 +184,11 @@ public class ProfilsScreen extends AbstractScreenController {
 		}
 	}
 	
+	@NiftyEventSubscriber(id=IMGCAR)
+	public void onChangePhoto(final String id, final ImageSelectSelectionChangedEvent event) {
+		changeDataPhoto();
+	}
+	
 	public void changePhoto() {
 		int maxphoto = 3;
 		if (imgCar.getSelectedImageIndex() == maxphoto) {
@@ -172,9 +198,14 @@ public class ProfilsScreen extends AbstractScreenController {
 			imgCar.forwardClick();
 		}
 		
+		changeDataPhoto();
+	}
+    
+	public void changeDataPhoto() {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
+		nitro.setText("");
 		
 		if (imgCar.getSelectedImageIndex() == 0) {
 			for (int i = 0; i < carsPlayer.size(); ++i) {
@@ -182,6 +213,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
@@ -191,6 +223,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
@@ -200,6 +233,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
@@ -209,12 +243,13 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
 		}
 	}
-    
+	
 	public void savemodif(int rangprofil) {
 		int choixCar = dataAllJoueur.get(rangprofil).getChoixCar();
 		ArrayList<CarProperties> cars = dataAllJoueur.get(rangprofil).getCar();
@@ -259,6 +294,11 @@ public class ProfilsScreen extends AbstractScreenController {
 				savemodif(i);
 				break;
 			} //if
+		}
+		for (IALevel level : IALevel.values()) {
+			if(niveau.getSelection().equals(level.toString())) {
+				IACurrent ialevel = new IACurrent(level);
+			}
 		}
 		gotoMainMenu();
 	}

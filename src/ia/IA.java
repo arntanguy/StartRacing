@@ -9,9 +9,6 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 
 public class IA {
-	public enum IALevel {
-		NOOB, INTERMEDIATE, PRO, BOSS
-	};
 
 	private EnginePhysics enginePhysics;
 	private CarProperties carProperties;
@@ -42,27 +39,27 @@ public class IA {
 		this.enginePhysics = enginePhysics;
 		carProperties = enginePhysics.getCarProperties();
 
-		setIALevel(IALevel.PRO);
+		setIALevel(IALevel.INTERMEDIAIRE);
 	}
 
 	public void setIALevel(IALevel level) {
 		switch (level) {
-		case NOOB:
+		case DEBUTANT:
 			zone = 4000;
 			optimalShiftGearPercentage = 0.5;
 			redlineShiftProba = 0.5;
 			break;
-		case INTERMEDIATE:
+		case INTERMEDIAIRE:
 			zone = 2000;
 			optimalShiftGearPercentage = 0.75;
 			redlineShiftProba = 0.6;
 			break;
-		case PRO:
+		case PROFESSIONNEL:
 			zone = 400;
 			optimalShiftGearPercentage = 0.90;
 			redlineShiftProba = 0.7;
 			break;
-		case BOSS:
+		case EXPERT:
 			zone = 20;
 			optimalShiftGearPercentage = 0.95;
 			redlineShiftProba = 0.8;

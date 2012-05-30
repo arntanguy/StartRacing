@@ -17,7 +17,7 @@ public final class XMLFileStore {
 	public static final String GARAGE_FILE = "Interface/Nifty/Garage.xml";
 	
 	/* Custom XML */
-	public static final String OPTION_SAVE_FILE = "save/startracing_options.xml";
+	public static final String OPTION_SAVE_FILE = "ressources/save/startracing_options.xml";
 	
 	/**
 	 * Méthode de debug!

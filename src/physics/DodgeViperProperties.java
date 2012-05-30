@@ -57,7 +57,7 @@ public class DodgeViperProperties extends CarProperties {
 		torque.put(8000, 450); // wrong value
 		torque.put(15000, 0);
 		
-		playerModel = "Models/FerrariRed/Car.scene";
+		playerModel = "corvette";
 		availableModels.add("Models/FerrariGreen/Car.scene");
 		availableModels.add("Models/FerrariBlue/Car.scene");
 

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import physics.CarProperties;
 import save.Comptes;
-import save.Profil;
 import save.ProfilCurrent;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 
 import de.lessvoid.nifty.controls.TextField;
 
@@ -52,8 +54,9 @@ public class Garage extends AbstractScreenController {
 
 		inputManager = app.getInputManager();
 		inputManager.setCursorVisible(true);
-
-		this.inputManager = app.getInputManager();
+		
+		/* keyboard mappings */
+		setInputMappings();
 		
 		monnaie = screen.findNiftyControl("monnaie", TextField.class);
 		prixpuis = screen.findNiftyControl("prixpuis", TextField.class);
@@ -77,6 +80,30 @@ public class Garage extends AbstractScreenController {
 		euronitro.setEnabled(false);
 		europoids.setEnabled(false);
 		msg.setEnabled(false);
+	}
+	
+	private void setInputMappings() {
+		inputManager.addMapping("return", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoChooseProfil();
+			}
+		}, "return");
+		
+		inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				Enregistrer();
+			}
+		}, "save");
+	}
+	
+	@Override
+	public void onEndScreen() {
+		inputManager.clearMappings();
+		super.onEndScreen();
 	}
 	
 	public void givenitro() {

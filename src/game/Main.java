@@ -17,5 +17,4 @@ public class Main {
 		SimpleApplication app = new App();
 		app.start();
 	}
-
 }

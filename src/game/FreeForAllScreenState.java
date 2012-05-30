@@ -55,8 +55,15 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.reset();
 	}
 
+	@Override
+	public void onEndScreen() {
+		super.onEndScreen();
+	}
+	
 	protected void initGame() throws Exception {
 		super.initGame();
 

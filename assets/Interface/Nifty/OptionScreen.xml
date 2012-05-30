@@ -14,24 +14,23 @@
 					text="${CALL.getMenuTitle()}" />
 				
 				<panel height="70%" align="center" childLayout="vertical">
-
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Activer le son" />
 						<panel childLayout="center"><control name="checkbox" id="activateSound" /></panel>
 					</panel>
-
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Ecran large (16/9)" />
 						<panel childLayout="center"><control name="checkbox" id="wideScreen" /></panel>
 					</panel>
-
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Plein écran" />
 						<panel childLayout="center"><control name="checkbox" id="fullScreen" /></panel>
 					</panel>
-
+					<panel childLayout="horizontal" height="20%">
 						<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Résolution de l'écran" />
 						<panel childLayout="center"><control name="dropDown" id="resolutionDropDown" /></panel>
 					</panel>
-
-						<control name="label" id="saveMessage" text="" color="#f00f" font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="100%" width="100%"/>
+					<panel childLayout="center" height="20%">
 						<control name="label" id="saveMessage" text="" backgroundColor="#000f" color="#ff0f" font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="100%" width="100%"/>
 					</panel>
 				</panel>

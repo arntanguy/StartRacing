@@ -1,6 +1,7 @@
 <java.awt.List serialization="custom">
   <java.awt.Component>
     <default>
+      <autoFocusTransferOnDisposal>true</autoFocusTransferOnDisposal>
       <boundsOp>3</boundsOp>
       <componentSerializedDataVersion>4</componentSerializedDataVersion>
       <enabled>true</enabled>

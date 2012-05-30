@@ -1,8 +1,5 @@
 package game;
 
-import ia.IALevel;
-import ia.IACurrent;
-
 import java.awt.Dimension;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -44,7 +41,6 @@ public class OptionScreenController extends AbstractScreenController {
 	private CheckBox soundCheckbox;
 	private CheckBox ratioCheckbox;
 	private CheckBox fullScreenCheckbox;
-<<<<<<< HEAD
 	private Button mainMenu;
 	private Button applyOptions;
 	
@@ -58,14 +54,6 @@ public class OptionScreenController extends AbstractScreenController {
 	private static final String FULL_SCREEN_CHECKBOX_ID = "fullScreen";
 	private static final String MAIN_MENU_BUTTON_ID = "returnButton";
 	private static final String APPLY_BUTTON_ID = "applyButton";
-=======
-
-	private final String RESOLUTION_DROP_ID = "resolutionDropDown";
-	private final String RATIO_CHECKBOX_ID = "wideScreen";
-	private final String SOUND_CHECKBOX_ID = "activateSound";
-	private final String ON_SAVE_ID = "saveMessage";
-	private final String FULL_SCREEN_CHECKBOX_ID = "fullScreen";
->>>>>>> f3d3f46e652b842f82bded877148153d96a8a613
 
 	/* Comparateur personnalisé pour la liste */
 	private Comparator<String> myComp = new Comparator<String>() {
@@ -262,7 +250,6 @@ public class OptionScreenController extends AbstractScreenController {
 		OptionXMLParser.saveAppOptions(XMLFileStore.OPTION_SAVE_FILE);
 		
 		screen.findNiftyControl(ON_SAVE_ID, Label.class).setText(StringStore.ON_SAVE_OPTION_MESSAGE);
-		
 	}
 	
 	public String getMenuTitle() {

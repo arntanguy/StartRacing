@@ -27,12 +27,15 @@
 						<panel height="5%"/>
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Poids : " />
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Puissance : " />
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Nitro : " />
+						
 					</panel>
 					<panel width="1%"/>
 					<panel childLayout="vertical" width="15%" >
 						<panel height="35px" />
 						<control name="textfield" height="35px" id="weight" />
-						<control name="textfield" height="35px" id="puis" /> 
+						<control name="textfield" height="35px" id="puis" />
+						<control name="textfield" height="35px" id="nitro" />  
 					</panel>
 					<panel width="5%"/>
 					<control id="imgcar" name="imageSelect"  height="100%" width="50%" imageWidth="100%" imageHeight="100%" 

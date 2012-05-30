@@ -4,6 +4,9 @@ import xml.OptionXMLParser;
 import xml.XMLFileStore;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
 
@@ -39,13 +42,16 @@ public class App extends SimpleApplication {
 //		nifty.setDebugOptionPanelColors(true);
 		addXMLFiles();
 		/****** FIN DEBUG *****/
+		
+		/* Keyboard Mappings */
+		setInputMapping();
 
-		//gotoOptions();
 		gotoStart();
 //		gotoOptions();
 		//gotoCrtProfil();
 		//gotoAffProfil();
-		
+//		gotoCrtProfil();
+//		gotoAffProfil();		
 		
 		// disable the fly cam
 		flyCam.setEnabled(false);
@@ -53,6 +59,79 @@ public class App extends SimpleApplication {
 		// attach the nifty display to the gui view port as a processor
 		guiViewPort.addProcessor(niftyDisplay);
 		inputManager.setCursorVisible(false);
+	}
+	
+	void setInputMapping() {
+		inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT);
+		inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_HIDE_STATS);
+		
+		inputManager.addMapping("quitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean keyPressed, float arg2) {
+				System.out.println("Current Screen : " + nifty.getCurrentScreen().getScreenId());
+				if (nifty.getCurrentScreen().getScreenId().equals("start") && keyPressed) {
+					stop();
+				} else {
+					gotoStart();
+				}
+			}
+		}, "quitGame");
+		
+		inputManager.addMapping("quickPlay", new KeyTrigger(KeyInput.KEY_Q));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoFreeForAll();
+			}
+		}, "quickPlay");
+		
+		inputManager.addMapping("halfGame", new KeyTrigger(KeyInput.KEY_H));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoGame("half");
+			}
+		}, "halfGame");
+		
+		inputManager.addMapping("quarterGame", new KeyTrigger(KeyInput.KEY_H));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoGame("");
+			}
+		}, "halfGame");
+		
+		inputManager.addMapping("options", new KeyTrigger(KeyInput.KEY_O));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoOptions();
+			}
+		}, "options");
+		
+		inputManager.addMapping("createProfil", new KeyTrigger(KeyInput.KEY_C));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoCrtProfil();
+			}
+		}, "createProfil");
+		
+		inputManager.addMapping("chooseProfil", new KeyTrigger(KeyInput.KEY_P));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoAffProfil();
+			}
+		}, "chooseProfil");
+		
+		inputManager.addMapping("achat", new KeyTrigger(KeyInput.KEY_B));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoAchat();
+			}
+		}, "achat");
+		
+		inputManager.addMapping("garage", new KeyTrigger(KeyInput.KEY_G));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoGarage();
+			}
+		}, "garage");
 	}
 	
 	@Override
@@ -63,45 +142,43 @@ public class App extends SimpleApplication {
 	public void addXMLFiles() {
 		nifty.addXml(XMLFileStore.START_SCREEN_FILE);
 		nifty.addXml(XMLFileStore.OPTION_SCREEN_FILE);
-		nifty.addXml(XMLFileStore.GAME_SCREEN_FILE);
+		nifty.addXml(XMLFileStore.FREE_4_ALL_FILE);
+		nifty.addXml(XMLFileStore.HALF_GAME_FILE);
+		nifty.addXml(XMLFileStore.QUARTER_GAME_FILE);
+		nifty.addXml(XMLFileStore.CREATE_PROFIL_FILE);
+		nifty.addXml(XMLFileStore.CHOOSE_PROFIL_FILE);
+		nifty.addXml(XMLFileStore.ACHAT_FILE);
+		nifty.addXml(XMLFileStore.GARAGE_FILE);
 	}
 	
 	public void gotoGame(String mode) {
-		
 		if(mode.equals("half")) {
-			nifty.addXml("Interface/Nifty/HalfGameScreen.xml");
-			nifty.gotoScreen("hud");
-
+			nifty.gotoScreen("halfScreen");
 			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-					.getCurrentScreen().getScreenController();
+					.getScreen("halfScreen").getScreenController();
 			stateManager.attach(gameScreenController);
 		} else {
-			nifty.addXml("Interface/Nifty/QuarterGameScreen.xml");
-			nifty.gotoScreen("hud");
-
+			nifty.gotoScreen("quarterScreen");
 			AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-					.getScreen("hud").getScreenController();
+					.getScreen("quarterScreen").getScreenController();
 			stateManager.attach(gameScreenController);
 		}
-
 	}
 
 	public void gotoFreeForAll() {
-		nifty.addXml("Interface/Nifty/FreeForAllScreen.xml");
-		nifty.gotoScreen("hud");
+		nifty.gotoScreen("freeForAllScreen");
 		AbstractGameScreenState gameScreenController = (AbstractGameScreenState) nifty
-				.getScreen("hud").getScreenController();
+				.getScreen("freeForAllScreen").getScreenController();
 		stateManager.attach(gameScreenController);
 	}
 	
 	public void gotoOptions() {
         nifty.gotoScreen("options");
-        OptionScreenState gameScreenController = (OptionScreenState) nifty.getScreen("options").getScreenController();
+        OptionScreenController gameScreenController = (OptionScreenController) nifty.getScreen("options").getScreenController();
         stateManager.attach(gameScreenController);
 	}
 
 	public void gotoStart() {
-		nifty.addXml("Interface/Nifty/StartScreen.xml");
 		nifty.gotoScreen("start");
 		StartScreenState startScreenController = (StartScreenState) nifty.getScreen("start").getScreenController();
 		//StartScreenState startScreenController = (StartScreenState) nifty
@@ -110,30 +187,26 @@ public class App extends SimpleApplication {
 	}
 
 	public void gotoCrtProfil() {
-		nifty.addXml("Interface/Nifty/CreateProfil.xml");
 		nifty.gotoScreen("createprofil");
         CreateProfilScreen cpfscreen = (CreateProfilScreen) nifty.getScreen("createprofil").getScreenController();
         stateManager.attach(cpfscreen);
 	}
 	
 	public void gotoAffProfil() {
-		nifty.addXml("Interface/Nifty/ChooseProfil.xml");
         nifty.gotoScreen("chooseprofil");
-        ProfilsScreen pfscreen = (ProfilsScreen) nifty.getCurrentScreen().getScreenController();
+        ProfilsScreen pfscreen = (ProfilsScreen) nifty.getScreen("chooseprofil").getScreenController();
         stateManager.attach(pfscreen);
 	}
 	
 	public void gotoAchat() {
-		nifty.addXml("Interface/Nifty/Achat.xml");
         nifty.gotoScreen("achat");
-        Achat achat = (Achat) nifty.getCurrentScreen().getScreenController();
+        Achat achat = (Achat) nifty.getScreen("achat").getScreenController();
         stateManager.attach(achat);
 	}
 	
 	public void gotoGarage() {
-		nifty.addXml("Interface/Nifty/Garage.xml");
         nifty.gotoScreen("garage");
-        Garage garage = (Garage) nifty.getCurrentScreen().getScreenController();
+        Garage garage = (Garage) nifty.getScreen("garage").getScreenController();
         stateManager.attach(garage);
 	}
 }

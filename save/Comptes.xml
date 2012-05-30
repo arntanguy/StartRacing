@@ -345,7 +345,7 @@
     <timefree></timefree>
     <cardead>0</cardead>
     <monnaie>30000</monnaie>
-    <choixCar>1</choixCar>
+    <choixCar>2</choixCar>
   </save.Profil>
   <save.Profil>
     <id>2</id>

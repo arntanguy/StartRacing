@@ -28,6 +28,8 @@ public class StartScreenState extends AbstractScreenController {
 	public void initialize(AppStateManager stateManager, Application a) {
 		/** init the screen */
 		super.initialize(stateManager, a);
+		
+		System.out.println("Init StartScreen");
 
 		inputManager = app.getInputManager();
 		inputManager.setCursorVisible(true);
@@ -40,6 +42,14 @@ public class StartScreenState extends AbstractScreenController {
 		System.out.println(hoverEffects);
 	}
 
+	@Override
+	public void onStartScreen() {
+		System.out.println("Start StartScreeen");
+		if(voiceRender != null) {
+			voiceRender.stopAndReset();
+		}
+	}
+	
 	public void initNiftyCallbacks(Element root) {
 		if (root == null)
 			return;
@@ -69,7 +79,7 @@ public class StartScreenState extends AbstractScreenController {
 				//System.out.println("hover "
 				//		+ hoverEffects.get(e));
 				try {
-				voiceRender.playVoice(hoverEffects.get(e).getId());
+					voiceRender.playVoice(hoverEffects.get(e).getId());
 				} catch(Exception ex) {
 					System.err.println(ex);
 				}
@@ -93,11 +103,7 @@ public class StartScreenState extends AbstractScreenController {
 
 	@Override
 	public void onEndScreen() {
-		stateManager.detach(this);
-	}
-
-	@Override
-	public void onStartScreen() {
+//		stateManager.detach(this);
 	}
 
 	public void startGame(String nextScreen) {
@@ -130,7 +136,12 @@ public class StartScreenState extends AbstractScreenController {
 
 	public void hover(String name) {
 		System.out.println("Hover: " + name);
-		voiceRender.play(name);
+		try {
+			voiceRender.play(name);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

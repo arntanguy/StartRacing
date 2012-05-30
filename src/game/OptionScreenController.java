@@ -17,7 +17,7 @@ import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.Label;
 
-public class OptionScreenState extends AbstractScreenController {
+public class OptionScreenController extends AbstractScreenController {
 
 	private InputManager inputManager;
 	private TreeMap<String, Dimension> normalResolutions;
@@ -44,7 +44,7 @@ public class OptionScreenState extends AbstractScreenController {
 		}
 	};
 	
-	public OptionScreenState() {
+	public OptionScreenController() {
 		super();
 		
 		/* Résolutions */

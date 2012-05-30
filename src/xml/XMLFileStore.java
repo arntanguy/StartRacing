@@ -4,10 +4,19 @@ import de.lessvoid.nifty.Nifty;
 
 public final class XMLFileStore {
 
+	/* Nifty GUI */
 	public static final String START_SCREEN_FILE = "Interface/Nifty/StartScreen.xml";
 	public static final String OPTION_SCREEN_FILE = "Interface/Nifty/OptionScreen.xml";
 	public static final String GAME_SCREEN_FILE = "Interface/Nifty/GameScreen.xml";
+	public static final String FREE_4_ALL_FILE = "Interface/Nifty/FreeForAllScreen.xml";
+	public static final String HALF_GAME_FILE = "Interface/Nifty/HalfGameScreen.xml";
+	public static final String QUARTER_GAME_FILE = "Interface/Nifty/QuarterGameScreen.xml";
+	public static final String CREATE_PROFIL_FILE = "Interface/Nifty/CreateProfil.xml";
+	public static final String CHOOSE_PROFIL_FILE = "Interface/Nifty/ChooseProfil.xml";
+	public static final String ACHAT_FILE = "Interface/Nifty/Achat.xml";
+	public static final String GARAGE_FILE = "Interface/Nifty/Garage.xml";
 	
+	/* Custom XML */
 	public static final String OPTION_SAVE_FILE = "save/startracing_options.xml";
 	
 	/**

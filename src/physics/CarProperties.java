@@ -45,6 +45,10 @@ public class CarProperties {
 	
 	protected int puissance;
 	
+	protected boolean improvepuis = false;
+	protected boolean improvenitro = false;
+	protected boolean improveweight = false;
+	
 	/**
 	 * Torque corresponding to given engine speed <Engine speed, Torque> ordered
 	 * by key
@@ -310,6 +314,30 @@ public class CarProperties {
 
 	public void setPuissance(int puissance) {
 		this.puissance = puissance;
+	}
+
+	public boolean isImprovepuis() {
+		return improvepuis;
+	}
+
+	public void setImprovepuis(boolean improvepuis) {
+		this.improvepuis = improvepuis;
+	}
+
+	public boolean isImprovenitro() {
+		return improvenitro;
+	}
+
+	public void setImprovenitro(boolean improvenitro) {
+		this.improvenitro = improvenitro;
+	}
+
+	public boolean isImproveweight() {
+		return improveweight;
+	}
+
+	public void setImproveweight(boolean improveweight) {
+		this.improveweight = improveweight;
 	}
 	
 }

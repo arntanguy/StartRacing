@@ -9,7 +9,7 @@
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
 				<text font="Interface/Fonts/ArialBlack_60.fnt" height="20%" align="center" color="#ffff"
 					text="Améliorer votre voiture" />
-				
+				<control name="textfield" id="msg" height="35px" width="60%" />
 				<panel childLayout="horizontal" height="15%">
 					<panel width="10%" />
 					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="NITRO" >
@@ -22,7 +22,7 @@
 					</panel>
 					<panel childLayout="vertical" width="10%">
 						<panel height="30%" />
-						<control name="textfield" id="prixnitro" height="35px" text="Euro" />
+						<control name="textfield" id="euronitro" height="35px" text="Euro" />
 					</panel>
 				</panel>
 				
@@ -39,7 +39,7 @@
 					</panel>
 					<panel childLayout="vertical" width="10%">
 						<panel height="30%" />
-						<control name="textfield" id="prixnitro" height="35px" text="Euro" />
+						<control name="textfield" id="europoids" height="35px" text="Euro" />
 					</panel>
 				</panel>
 				
@@ -56,7 +56,7 @@
 					</panel>
 					<panel childLayout="vertical" width="10%">
 						<panel height="30%" />
-						<control name="textfield" id="prixnitro" height="35px" text="Euro" />
+						<control name="textfield" id="europuis" height="35px" text="Euro" />
 					</panel>
 				</panel>
 				

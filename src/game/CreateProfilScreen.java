@@ -1,5 +1,7 @@
 package game;
 
+import ia.IALevel;
+
 import java.util.ArrayList;
 
 import com.jme3.app.Application;
@@ -80,7 +82,7 @@ public class CreateProfilScreen extends AbstractScreenController {
 			String timefree = "";
 			int cardead = 0;
 			int monnaie = 0;
-			Profil newprofil = new Profil(id, login, cars, choixCar, timedemi, timequart, timefree, cardead, monnaie);
+			Profil newprofil = new Profil(id, login, cars, choixCar, timedemi, timequart, timefree, cardead, monnaie, IALevel.DEBUTANT);
 			Comptes.addProfil(newprofil);
 			Comptes.Enregistrer();
 			ProfilCurrent pc = new ProfilCurrent(newprofil);

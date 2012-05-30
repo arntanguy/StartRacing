@@ -1,5 +1,7 @@
 package save;
 
+import ia.IALevel;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -51,11 +53,11 @@ public class test {
 		car1.add(bmw1);
 		car2.add(dvp2);
 		car3.add(bmw1);
-		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", car1, 0, "", "", "", 0, 30000);
+		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", car1, 0, "", "", "", 0, 30000, IALevel.PROFESSIONNEL);
 		Comptes.addProfil(joueur1);
-		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", car2, 0, "", "", "", 0, 150000);
+		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", car2, 0, "", "", "", 0, 150000, IALevel.DEBUTANT);
 		Comptes.addProfil(joueur2);
-		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", car3, 0, "", "", "", 0, 1000000);
+		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", car3, 0, "", "", "", 0, 1000000, IALevel.DEBUTANT);
 		Comptes.addProfil(joueur3);
 		Comptes.Enregistrer();
 		

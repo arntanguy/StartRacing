@@ -64,7 +64,7 @@
           </optimalShiftPoints>
         </gears>
         <redline>6000</redline>
-        <playerModel>Models/FerrariRed/Car.scene</playerModel>
+        <playerModel>charger</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
@@ -176,7 +176,7 @@
           </optimalShiftPoints>
         </gears>
         <redline>8500</redline>
-        <playerModel>Models/FerrariRed/Car.scene</playerModel>
+        <playerModel>corvette</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
@@ -288,7 +288,7 @@
           </optimalShiftPoints>
         </gears>
         <redline>8500</redline>
-        <playerModel>ferrari red</playerModel>
+        <playerModel>bmw</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
@@ -341,11 +341,12 @@
       </physics.BMWM3Properties>
     </car>
     <timedemi></timedemi>
-    <timequart>12 : 2</timequart>
+    <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
     <monnaie>30000</monnaie>
-    <choixCar>2</choixCar>
+    <choixCar>0</choixCar>
+    <level>PROFESSIONNEL</level>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -354,11 +355,12 @@
       <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
     </car>
     <timedemi></timedemi>
-    <timequart>19 : 39</timequart>
+    <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
     <monnaie>150000</monnaie>
     <choixCar>0</choixCar>
+    <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>
     <id>3</id>
@@ -372,5 +374,6 @@
     <cardead>0</cardead>
     <monnaie>1000000</monnaie>
     <choixCar>0</choixCar>
+    <level>DEBUTANT</level>
   </save.Profil>
 </list>

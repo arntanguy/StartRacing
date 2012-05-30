@@ -1,7 +1,6 @@
 package game;
 
 import ia.IALevel;
-import ia.IACurrent;
 
 import java.awt.Dimension;
 import java.util.Comparator;

@@ -1,5 +1,7 @@
 package save;
 
+import ia.IALevel;
+
 import java.util.ArrayList;
 
 import physics.CarProperties;
@@ -15,9 +17,10 @@ public class Profil {
 	private int cardead;
 	private int monnaie;
 	private int choixCar;
+	private IALevel level;
 	
 	public Profil (int id, String login, ArrayList<CarProperties> car, int choixCar, String timedemi, 
-			String timequart, String timefree, int cardead, int monnaie) {
+			String timequart, String timefree, int cardead, int monnaie, IALevel level) {
 		this.id = id;
 		this.login = login;
 		this.car = car;
@@ -27,6 +30,7 @@ public class Profil {
 		this.timefree = timefree;
 		this.cardead = cardead;
 		this.monnaie = monnaie;
+		this.level = level;
 	}
 		
 	public int getMonnaie() {
@@ -96,4 +100,13 @@ public class Profil {
 	public void setChoixCar(int choixCar) {
 		this.choixCar = choixCar;
 	}
+
+	public IALevel getLevel() {
+		return level;
+	}
+
+	public void setLevel(IALevel level) {
+		this.level = level;
+	}
+	
 }

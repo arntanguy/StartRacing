@@ -38,10 +38,7 @@
 					<panel width="3%"/>
 					<panel childLayout="vertical" width="15%">
 						<panel height="5%"/>
-						<panel childLayout="horizontal" height="35px">
-							<text font="Interface/Fonts/Default.fnt" width="60%" align="center" text="Niveau" />
-							<panel childLayout="center"><control name="dropDown" id="niveau" /></panel>
-						</panel>					
+						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Niveau adversaire" />				
 						<panel height="5%"/>
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" text="Vos voitures : " />
 						<panel height="5%"/>
@@ -51,10 +48,10 @@
 					</panel>
 					<panel width="2%"/>
 					<panel childLayout="vertical" width="17%" >
-						<panel height="20%"/>
-						<panel childLayout="horizontal">
-							<control name="textfield" height="35px" id="typeCar"/>
-						</panel>
+						<panel height="5%"/>
+						<control name="dropDown" id="niveau" width="100%"/>
+						<panel height="5%"/>
+						<control name="textfield" height="35px" id="typeCar"/>
 						<panel height="5%"/>
 						<control name="textfield" height="35px" id="weight"/>
 						<control name="textfield" height="35px" id="puis"/>

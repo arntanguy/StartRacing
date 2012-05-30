@@ -1,6 +1,5 @@
 package game;
 
-import ia.IACurrent;
 import ia.IALevel;
 
 import java.util.ArrayList;
@@ -149,6 +148,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		free.setText(dataAllJoueur.get(rangProfil).getTimefree());
 		deadcarfree.setText(Integer.toString(dataAllJoueur.get(rangProfil).getCardead()));
 		monnaie.setText(Integer.toString(dataAllJoueur.get(rangProfil).getMonnaie()));
+		niveau.selectItem(dataAllJoueur.get(rangProfil).getLevel().toString());
 		carsPlayer = dataAllJoueur.get(rangProfil).getCar();
 		int numchoixcar = dataAllJoueur.get(rangProfil).getChoixCar();
 		
@@ -283,8 +283,13 @@ public class ProfilsScreen extends AbstractScreenController {
 			}
 		}
 		ProfilCurrent pc = new ProfilCurrent(Comptes.getListProfil().get(rangprofil));
-		pc.getInstance().setChoixCar(choixCar);
-		Comptes.modifier(pc.getInstance());
+		ProfilCurrent.getInstance().setChoixCar(choixCar);
+		for (IALevel level : IALevel.values()) {
+			if(niveau.getSelection().equals(level.toString())) {
+				ProfilCurrent.getInstance().setLevel(level);
+			}
+		}
+		Comptes.modifier(ProfilCurrent.getInstance());
 		Comptes.Enregistrer();
 	}
 	
@@ -294,11 +299,6 @@ public class ProfilsScreen extends AbstractScreenController {
 				savemodif(i);
 				break;
 			} //if
-		}
-		for (IALevel level : IALevel.values()) {
-			if(niveau.getSelection().equals(level.toString())) {
-				IACurrent ialevel = new IACurrent(level);
-			}
 		}
 		gotoMainMenu();
 	}

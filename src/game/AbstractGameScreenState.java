@@ -202,7 +202,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Set up light
 		DirectionalLight dl = new DirectionalLight();
-		dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
+		dl.setDirection(new Vector3f(-0.5f, -0.4f, -0.3f).normalizeLocal());
 		rootNode.addLight(dl);
 
 		AmbientLight al = new AmbientLight();
@@ -211,7 +211,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
-		pssmRenderer.setDirection(new Vector3f(0.5f, -0.1f, 0.3f)
+		pssmRenderer.setDirection(new Vector3f(-0.5f, -0.4f, -0.3f)
 				.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
 

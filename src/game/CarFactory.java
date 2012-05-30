@@ -17,6 +17,7 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Cylinder;
 
 public class CarFactory {
@@ -189,7 +190,7 @@ public class CarFactory {
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 	
 		mat.getAdditionalRenderState().setWireframe(true);
-		mat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
+//		mat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
 //		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		
 
@@ -241,6 +242,7 @@ public class CarFactory {
 		node1.attachChild(wheels1);
 		wheels1.rotate(0, FastMath.HALF_PI, 0);
 		wheels1.setMaterial(mat);
+		wheels1.setCullHint(CullHint.Always);
 //		wheels1.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node1, new Vector3f(-xOff, yOff, zOff),
 				wheelDirection, wheelAxle, restLength, radius, true);
@@ -251,6 +253,7 @@ public class CarFactory {
 		node2.attachChild(wheels2);
 		wheels2.rotate(0, FastMath.HALF_PI, 0);
 		wheels2.setMaterial(mat);
+		wheels2.setCullHint(CullHint.Always);
 //		wheels2.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node2, new Vector3f(xOff, yOff, zOff),
 				wheelDirection, wheelAxle, restLength, radius, true);
@@ -261,6 +264,7 @@ public class CarFactory {
 		node3.attachChild(wheels3);
 		wheels3.rotate(0, FastMath.HALF_PI, 0);
 		wheels3.setMaterial(mat);
+		wheels3.setCullHint(CullHint.Always);
 //		wheels3.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node3, new Vector3f(-xOff, yOff, -zOff),
 				wheelDirection, wheelAxle, restLength, radius, false);
@@ -271,6 +275,7 @@ public class CarFactory {
 		node4.attachChild(wheels4);
 		wheels4.rotate(0, FastMath.HALF_PI, 0);
 		wheels4.setMaterial(mat);
+		wheels4.setCullHint(CullHint.Always);
 //		wheels4.setQueueBucket(Bucket.Transparent);
 		car.addWheel(node4, new Vector3f(xOff, yOff, -zOff),
 				wheelDirection, wheelAxle, restLength, radius, false);

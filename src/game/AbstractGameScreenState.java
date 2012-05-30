@@ -32,6 +32,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
@@ -304,8 +305,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 		
 		// Create a vehicle control
-		player = new Car(assetManager, playerCarProperties, "ferrari red");
-		// player = new Car(assetManager, playerCarProperties, "corvette");
+		//player = new Car(assetManager, playerCarProperties, "ferrari red");
+		player = new Car(assetManager, playerCarProperties, playerCarProperties.getPlayerModel());
 
 		player.setType(CarType.PLAYER);
 		player.setDriverName("Player");
@@ -395,6 +396,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				.setGravity(new Vector3f(0, -19.81f, 0));
 		terrainPhys.setFriction(0.5f);
 
+		//XXX
 		// bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 	}
 
@@ -410,8 +412,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		inputManager.addMapping("GearUp", new KeyTrigger(KeyInput.KEY_UP));
 		inputManager.addMapping("GearDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("Throttle", new KeyTrigger(
-				KeyInput.KEY_RCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_RCONTROL));
+		inputManager.addMapping("Throttle", new KeyTrigger(KeyInput.KEY_LCONTROL));
 		inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
 		inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
 		inputManager.addMapping("NOS", new KeyTrigger(KeyInput.KEY_RSHIFT));
@@ -573,6 +575,10 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected void reset() {
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		player.setPhysicsRotation(new Matrix3f());
+		
+		if (!player.getType().equals(TypeCarProperties.FERRARI))	{
+			player.setPhysicsRotation(new Quaternion(0, 1, 0, 0));
+		}
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
 		player.setNosCharge(1);
@@ -621,7 +627,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			// XXX: Needs analog controller for releasing the wheels too!
 			if (!value) {
 				player.setSteeringValue(0.f);
-				player.steer(player.getSteeringValue());
+				player.steer(0);
 			}
 		} else if (binding.equals("Rights")) {
 			if (!value) {
@@ -672,7 +678,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	@Override
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
-			if (!player.getBurstEnabled()) {
+			if (!player.getBurstEnabled() && (!runIsOn || playerFinish)) {
 				// Start countdown
 				if (countDown == 0) {
 					countDown = System.currentTimeMillis();
@@ -683,18 +689,20 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			}
 		} else if (binding.equals("Rights")) {
 			float val = player.getSteeringValue();
+			// XXX
+			System.out.println("dr " +value);
 			val = val - value;
 			if (val < -0.5)
 				val = -0.5f;
 			player.setSteeringValue(val);
-			player.steer(player.getSteeringValue());
+			player.steer(val);
 		} else if (binding.equals("Lefts")) {
 			float val = player.getSteeringValue();
 			val = val + value;
 			if (val > 0.5)
 				val = 0.5f;
 			player.setSteeringValue(val);
-			player.steer(player.getSteeringValue());
+			player.steer(val);
 		}
 	}
 

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 
 import de.lessvoid.nifty.controls.TextField;
 
@@ -37,6 +40,10 @@ public class CreateProfilScreen extends AbstractScreenController {
 		inputManager.setCursorVisible(true);
 	
 		this.inputManager = app.getInputManager();
+		
+		/* Keyboard Mappings */
+        setInputMappings();
+        
 		Comptes.RecupeCar();
 		dataAllCar = Comptes.getListCar();
 		cinlogin = screen.findNiftyControl("login", TextField.class);
@@ -52,6 +59,30 @@ public class CreateProfilScreen extends AbstractScreenController {
         weight.setEnabled(false);
         puis.setEnabled(false);
         nitro.setEnabled(false);
+	}
+	
+	@Override
+	public void onEndScreen() {
+		inputManager.clearMappings();
+		super.onEndScreen();
+	}
+	
+	private void setInputMappings() {
+		inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoApply();
+			}
+		}, "save");
+		
+		inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoMainMenu();
+			}
+		}, "save");
 	}
 	
 	public void AffDataCar() {

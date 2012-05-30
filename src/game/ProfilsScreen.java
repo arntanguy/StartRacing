@@ -18,6 +18,9 @@ import save.ProfilCurrent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.niftygui.RenderDeviceJme;
 import com.jme3.texture.Image;
 
@@ -81,6 +84,9 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 		this.inputManager = app.getInputManager();
 		
+		/* keyboard mappings */
+		setInputMappings();
+		
 		allJoueurDropDown = screen.findNiftyControl(ALLJOUEUR, DropDown.class);
 		demi = screen.findNiftyControl("demi", TextField.class);
 		quart = screen.findNiftyControl("quart", TextField.class);
@@ -111,6 +117,33 @@ public class ProfilsScreen extends AbstractScreenController {
 		weight.setEnabled(false);
 		puis.setEnabled(false);
 		nitro.setEnabled(false);
+	}
+	
+	/**
+	 * Met en place les évènements clavier.
+	 */
+	private void setInputMappings() {
+		inputManager.addMapping("return", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoMainMenu();
+			}
+		}, "return");
+		
+		inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				Enregistrer();
+			}
+		}, "save");
+	}
+	
+	@Override
+	public void onEndScreen() {
+		inputManager.clearMappings();
+		super.onEndScreen();
 	}
 
 	private void fillLevelDropDown() {

@@ -94,20 +94,6 @@ public class StartScreenState extends AbstractScreenController {
 				app.gotoAffProfil();
 			}
 		}, "chooseProfil");
-		
-		inputManager.addMapping("achat", new KeyTrigger(KeyInput.KEY_B));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				app.gotoAchat();
-			}
-		}, "achat");
-		
-		inputManager.addMapping("garage", new KeyTrigger(KeyInput.KEY_G));
-		inputManager.addListener(new ActionListener() {
-			public void onAction(String arg0, boolean arg1, float arg2) {
-				app.gotoGarage();
-			}
-		}, "garage");
 	}
 
 	@Override
@@ -169,7 +155,7 @@ public class StartScreenState extends AbstractScreenController {
 	@Override
 	public void onEndScreen() {
 		inputManager.clearMappings();
-		stateManager.detach(this);
+		super.onEndScreen();
 	}
 
 	public void startGame(String nextScreen) {

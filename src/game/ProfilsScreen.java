@@ -52,6 +52,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	private TextField typeCar;
 	private TextField weight;
 	private TextField puis;
+	private TextField nitro;
 	
 	private ImageSelect imgCar;
 
@@ -92,12 +93,14 @@ public class ProfilsScreen extends AbstractScreenController {
 		
 		weight = screen.findNiftyControl("weight", TextField.class);
 		puis = screen.findNiftyControl("puis", TextField.class);
+		nitro = screen.findNiftyControl("nitro", TextField.class);
 		
 		AffBase();
 		
 		typeCar.setEnabled(false);
 		weight.setEnabled(false);
 		puis.setEnabled(false);
+		nitro.setEnabled(false);
 	}
 
 	private void AffBase() {
@@ -123,6 +126,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
+		nitro.setText("");
 		
 		demi.setText(dataAllJoueur.get(rangProfil).getTimeDemi());
 		quart.setText(dataAllJoueur.get(rangProfil).getTimeQuart());
@@ -135,6 +139,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar.setText(carsPlayer.get(numchoixcar).getTypeCar().toString());
 		puis.setText(Integer.toString(carsPlayer.get(numchoixcar).getPuissance()));
 		weight.setText(Integer.toString(carsPlayer.get(numchoixcar).getWeight()));
+		nitro.setText(Boolean.toString(carsPlayer.get(numchoixcar).isImprovenitro()));
 		
 		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
 			imgCar.setSelectedImageIndex(1);
@@ -175,6 +180,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
+		nitro.setText("");
 		
 		if (imgCar.getSelectedImageIndex() == 0) {
 			for (int i = 0; i < carsPlayer.size(); ++i) {
@@ -182,6 +188,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
@@ -191,6 +198,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
@@ -200,6 +208,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}
@@ -209,6 +218,7 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
+					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
 					break;
 				}						
 			}

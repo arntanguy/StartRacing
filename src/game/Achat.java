@@ -90,6 +90,7 @@ public class Achat extends AbstractScreenController {
 		prix.setEnabled(false);		
 		weight.setEnabled(false);
 		puis.setEnabled(false);
+		nitro.setEnabled(false);
 		msgerr.setEnabled(false);
 		
 		calcul = ProfilCurrent.getInstance().getMonnaie();
@@ -177,6 +178,7 @@ public class Achat extends AbstractScreenController {
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
+		nitro.setText("");
 		msgerr.setText("");
 		
 		if (imgCar.getSelectedImageIndex() == DODGE) {
@@ -185,6 +187,7 @@ public class Achat extends AbstractScreenController {
 					typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 					weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
+					nitro.setText(Boolean.toString(dataAllCar.get(i).isImprovenitro()));
 					prix.setText(Integer.toString(tabprix.get(DODGE)));
 					for (int j = 0; j < allCarJoueur.size(); ++j) {
 						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
@@ -200,6 +203,7 @@ public class Achat extends AbstractScreenController {
 					typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 					weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
+					nitro.setText(Boolean.toString(dataAllCar.get(i).isImprovenitro()));
 					prix.setText(Integer.toString(tabprix.get(BMWM3)));
 					for (int j = 0; j < allCarJoueur.size(); ++j) {
 						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
@@ -215,6 +219,7 @@ public class Achat extends AbstractScreenController {
 					typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 					weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
+					nitro.setText(Boolean.toString(dataAllCar.get(i).isImprovenitro()));
 					prix.setText(Integer.toString(tabprix.get(FERRARI)));
 					for (int j = 0; j < allCarJoueur.size(); ++j) {
 						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.FERRARI)) {

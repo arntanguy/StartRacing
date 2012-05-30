@@ -188,9 +188,7 @@ public class EnginePhysics {
 	
 				double force = p.getTorque(rpm) * p.getTgr() * p.getGearRatio(gear) / p.getTireRadius();
 				if (nosActif)	{
-					if (p.isImprovenitro() || ProfilCurrent.getInstance() == null) {
 						force *= 1.4;
-					}
 				}
 				return force;
 		} else {

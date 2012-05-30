@@ -43,6 +43,7 @@ public class IA {
 		setIALevel( (ProfilCurrent.getInstance() == null) ? 
 						IALevel.PROFESSIONNEL : 
 							ProfilCurrent.getInstance().getLevel());
+
 	}
 
 	public void setIALevel(IALevel level) {

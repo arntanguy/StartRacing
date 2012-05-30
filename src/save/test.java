@@ -36,7 +36,7 @@ public class test {
 		listCar.add(fer);
 		XStream xs = new XStream(new DomDriver());
 		try {
-		    FileOutputStream fs = new FileOutputStream("save/Cars.xml");
+		    FileOutputStream fs = new FileOutputStream("ressources/save/Cars.xml");
 		    xs.toXML(listCar, fs);
 		} catch (FileNotFoundException e1) {
 		    e1.printStackTrace();

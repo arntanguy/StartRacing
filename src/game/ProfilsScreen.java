@@ -91,6 +91,8 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
 		
 		niveau = screen.findNiftyControl(NIVEAU, DropDown.class);
+		niveau.clear();
+		allJoueurDropDown.clear();
 		fillLevelDropDown();
 		
 		demi.setEnabled(false);

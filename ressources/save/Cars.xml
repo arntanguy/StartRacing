@@ -60,7 +60,7 @@
       </optimalShiftPoints>
     </gears>
     <redline>6000</redline>
-    <playerModel>Models/FerrariRed/Car.scene</playerModel>
+    <playerModel>charger</playerModel>
     <availableModels>
       <string>Models/FerrariGreen/Car.scene</string>
       <string>Models/FerrariBlue/Car.scene</string>
@@ -172,7 +172,7 @@
       </optimalShiftPoints>
     </gears>
     <redline>8500</redline>
-    <playerModel>Models/FerrariRed/Car.scene</playerModel>
+    <playerModel>corvette</playerModel>
     <availableModels>
       <string>Models/FerrariGreen/Car.scene</string>
       <string>Models/FerrariBlue/Car.scene</string>
@@ -284,7 +284,7 @@
       </optimalShiftPoints>
     </gears>
     <redline>8500</redline>
-    <playerModel>ferrari red</playerModel>
+    <playerModel>bmw</playerModel>
     <availableModels>
       <string>Models/FerrariGreen/Car.scene</string>
       <string>Models/FerrariBlue/Car.scene</string>

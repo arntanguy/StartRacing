@@ -341,12 +341,11 @@
       </physics.BMWM3Properties>
     </car>
     <timedemi></timedemi>
-    <timequart>20 : 43</timequart>
-    <timefree></timefree>
-    <cardead>0</cardead>
-    <monnaie>32500</monnaie>
-    <choixCar>2</choixCar>
-    <level>INTERMEDIAIRE</level>
+    <timequart></timequart>
+    <timefree>147 : 61</timefree>
+    <cardead>7</cardead>
+    <monnaie>52261</monnaie>
+    <choixCar>0</choixCar>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -354,13 +353,12 @@
     <car>
       <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
     </car>
-    <timedemi></timedemi>
+    <timedemi>15 : 77</timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>150000</monnaie>
+    <monnaie>184500</monnaie>
     <choixCar>0</choixCar>
-    <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>
     <id>3</id>
@@ -374,6 +372,5 @@
     <cardead>0</cardead>
     <monnaie>1000000</monnaie>
     <choixCar>0</choixCar>
-    <level>DEBUTANT</level>
   </save.Profil>
 </list>

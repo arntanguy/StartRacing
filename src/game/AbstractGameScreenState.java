@@ -318,7 +318,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			if (ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar()).isImprovenitro()) {
 				player.setNosCharge(1);
 			} else {
-				player.setNosCharge(1);
+				player.setNosCharge(0);
 			}
 		}
 

@@ -324,8 +324,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 		screen.findElementByName("timer").getRenderer(TextRenderer.class)
 				.setText("0 : 0");
-		screen.findElementByName("startTimer").getRenderer(TextRenderer.class)
-				.setText("Ready ?");
+		
 	}
 
 	@Override

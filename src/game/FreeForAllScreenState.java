@@ -109,7 +109,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			bot.setLife(100.d);
 			bot.removeExplosion();
 		}
-		player.setLife(100.d);
+		player.setLife(100);
 		player.removeExplosion();
 	}
 
@@ -207,6 +207,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 				runIsOn = false;
 				runFinish = true;
 			} else if (!player.isAlive()) {
+				digitalLife.setText("0");
 				win = false;
 				runIsOn = false;
 				runFinish = true;
@@ -316,7 +317,11 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		player.stop(0);
 		screen.findElementByName("timer").getRenderer(TextRenderer.class)
 				.setText("0 : 0");
-		digitalLife = new DigitalDisplay(nifty, screen, "life", 100);
+		player.setLife(100);
+		
+		digitalRemainingBots.setText(nbBots + "/" + nbBots);
+		digitalLife.setText("100");
+		digitalStart.setText("ready ?");
 	}
 
 	@Override

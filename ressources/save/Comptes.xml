@@ -341,12 +341,12 @@
       </physics.BMWM3Properties>
     </car>
     <timedemi>15 : 97</timedemi>
-    <timequart></timequart>
+    <timequart>10 : 15</timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>63500</monnaie>
+    <monnaie>69500</monnaie>
     <choixCar>1</choixCar>
-    <level>PROFESSIONNEL</level>
+    <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>
     <id>2</id>

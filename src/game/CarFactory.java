@@ -60,6 +60,7 @@ public class CarFactory {
 
 		// Create a vehicle control
 		car.getNode().addControl(car);
+		car.getEnginePhysics().setBackward(true);
 
 		// Setting default values for wheels
 		car.setSuspensionCompression(compValue * 2.0f

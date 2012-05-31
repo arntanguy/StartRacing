@@ -42,7 +42,7 @@ public class F430Properties extends CarProperties {
 		torque.put(8700, 400); 
 		torque.put(15000, 0);
 		
-		playerModel = "Models/FerrariRed/Car.scene";
+		playerModel = "ferrari red";
 		availableModels.add("Models/FerrariGreen/Car.scene");
 		availableModels.add("Models/FerrariBlue/Car.scene");
 		

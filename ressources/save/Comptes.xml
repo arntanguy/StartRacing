@@ -340,12 +340,12 @@
         </torque>
       </physics.BMWM3Properties>
     </car>
-    <timedemi></timedemi>
+    <timedemi>15 : 97</timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>30000</monnaie>
-    <choixCar>0</choixCar>
+    <monnaie>63500</monnaie>
+    <choixCar>1</choixCar>
     <level>PROFESSIONNEL</level>
   </save.Profil>
   <save.Profil>

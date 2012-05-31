@@ -119,6 +119,9 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	boolean oneSec;
 	boolean twoSec;
 	boolean threeSec;
+	
+	float steeringVal = 0.0f;
+	boolean keyReleased = true;
 
 	protected AudioRender<String> audioRender;
 
@@ -646,46 +649,44 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		return bulletAppState.getPhysicsSpace();
 	}
 
-	public void onAction(String binding, boolean value, float tpf) {
-		if (binding.equals("Lefts")) {
-			// XXX: Needs analog controller for releasing the wheels too!
-			if (!value) {
-				player.setSteeringValue(0.f);
+	public void onAction(String binding, boolean keyPressed, float tpf) {
+		if (binding.equals("Lefts") || binding.equals("Rights")) {
+			if (!keyPressed) {
+				player.steer(-player.getSteeringValue());
 				player.steer(0);
-			}
-		} else if (binding.equals("Rights")) {
-			if (!value) {
-				player.setSteeringValue(0);
-				player.steer(0);
+				steeringVal = 0;
+				keyReleased = true;
+			} else {
+				keyReleased = false;
 			}
 		} else if (binding.equals("Space")) {
-			if (value) {
+			if (keyPressed) {
 				player.brake(700f);
 			} else {
 				player.brake(0f);
 			}
 		} else if (binding.equals("Reset")) {
-			if (value) {
+			if (keyPressed) {
 				System.out.println("Reset");
 				needReset = true;
 			}
 		} else if (binding.equals("GearUp")) {
-			if (value) {
+			if (keyPressed) {
 				audioRender.play("up");
 				playerEnginePhysics.incrementGear();
 			}
 		} else if (binding.equals("GearDown")) {
-			if (value) {
+			if (keyPressed) {
 				playerEnginePhysics.decrementGear();
 			}
 		} else if (binding.equals("NOS")) {
-			if (value) {
+			if (keyPressed) {
 				if (!player.getNosActivity()) {
 					player.addNos();
 				}
 			}
 		} else if (binding.equals("Jump")) {
-			if (value) {
+			if (keyPressed) {
 				if (System.currentTimeMillis() - timerJump > 2000
 						&& !player.getBurstEnabled() && runIsOn) {
 					needJump = true;
@@ -693,13 +694,12 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				}
 			}
 		} else if (binding.equals("Menu")) {
-			if (value) {
+			if (keyPressed) {
 				app.gotoStart();
 			}
 		}
 	}
-
-	@Override
+	
 	public void onAnalog(String binding, float value, float tpf) {
 		if (binding.equals("Throttle")) {
 			if (!player.getBurstEnabled() && (!runIsOn || playerFinish)) {
@@ -712,27 +712,58 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
 			}
 		} else if (binding.equals("Rights")) {
-			float val = player.getSteeringValue();
 			// XXX
-			System.out.println("dr " +value);
-			val = val - value;
-			if (val < -0.5)
-				val = -0.5f;
-			player.setSteeringValue(val);
-			player.steer(val);
+			if (!keyReleased) {
+				System.err.println("dr " +value);
+				steeringVal -= value;
+				if (steeringVal < -0.5)
+					steeringVal = -0.5f;
+				player.steer(steeringVal);
+			}
 		} else if (binding.equals("Lefts")) {
-			float val = player.getSteeringValue();
-			val = val + value;
-			if (val > 0.5)
-				val = 0.5f;
-			player.setSteeringValue(val);
-			player.steer(val);
-		}
-		else 	{
-			player.setSteeringValue(0);
-			player.steer(0);
+			if (!keyReleased) {
+				steeringVal += value;
+				if (steeringVal > 0.5)
+					steeringVal = 0.5f;
+				player.steer(steeringVal);
+			}
 		}
 	}
+
+//	@Override
+//	public void onAnalog(String binding, float value, float tpf) {
+//		if (binding.equals("Throttle")) {
+//			if (!player.getBurstEnabled() && (!runIsOn || playerFinish)) {
+//				// Start countdown
+//				if (countDown == 0) {
+//					countDown = System.currentTimeMillis();
+//				}
+//
+//				playerEnginePhysics
+//						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
+//			}
+//		} else if (binding.equals("Rights")) {
+//			float val = player.getSteeringValue();
+//			// XXX
+//			System.out.println("dr " +value);
+//			val = val - value;
+//			if (val < -0.5)
+//				val = -0.5f;
+//			player.setSteeringValue(val);
+//			player.steer(val);
+//		} else if (binding.equals("Lefts")) {
+//			float val = player.getSteeringValue();
+//			val = val + value;
+//			if (val > 0.5)
+//				val = 0.5f;
+//			player.setSteeringValue(val);
+//			player.steer(val);
+//		}
+//		else 	{
+//			player.setSteeringValue(0);
+//			player.steer(0);
+//		}
+//	}
 
 	@Override
 	public void collision(PhysicsCollisionEvent event) {

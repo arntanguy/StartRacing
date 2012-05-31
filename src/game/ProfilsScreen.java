@@ -1,6 +1,5 @@
 package game;
 
-import ia.IACurrent;
 import ia.IALevel;
 
 import java.util.ArrayList;
@@ -18,6 +17,9 @@ import save.ProfilCurrent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.niftygui.RenderDeviceJme;
 import com.jme3.texture.Image;
 
@@ -81,6 +83,9 @@ public class ProfilsScreen extends AbstractScreenController {
 	
 		this.inputManager = app.getInputManager();
 		
+		/* keyboard mappings */
+		setInputMappings();
+		
 		allJoueurDropDown = screen.findNiftyControl(ALLJOUEUR, DropDown.class);
 		demi = screen.findNiftyControl("demi", TextField.class);
 		quart = screen.findNiftyControl("quart", TextField.class);
@@ -92,6 +97,8 @@ public class ProfilsScreen extends AbstractScreenController {
 		typeCar = screen.findNiftyControl("typeCar", TextField.class);
 		
 		niveau = screen.findNiftyControl(NIVEAU, DropDown.class);
+		niveau.clear();
+		allJoueurDropDown.clear();
 		fillLevelDropDown();
 		
 		demi.setEnabled(false);
@@ -111,6 +118,33 @@ public class ProfilsScreen extends AbstractScreenController {
 		weight.setEnabled(false);
 		puis.setEnabled(false);
 		nitro.setEnabled(false);
+	}
+	
+	/**
+	 * Met en place les évènements clavier.
+	 */
+	private void setInputMappings() {
+		inputManager.addMapping("return", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				gotoMainMenu();
+			}
+		}, "return");
+		
+		inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				Enregistrer();
+			}
+		}, "save");
+	}
+	
+	@Override
+	public void onEndScreen() {
+		inputManager.clearMappings();
+		super.onEndScreen();
 	}
 
 	private void fillLevelDropDown() {
@@ -138,7 +172,7 @@ public class ProfilsScreen extends AbstractScreenController {
 	}
 	
 	public void AffDataPlayer(int rangProfil) {
-		
+
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
@@ -149,26 +183,62 @@ public class ProfilsScreen extends AbstractScreenController {
 		free.setText(dataAllJoueur.get(rangProfil).getTimefree());
 		deadcarfree.setText(Integer.toString(dataAllJoueur.get(rangProfil).getCardead()));
 		monnaie.setText(Integer.toString(dataAllJoueur.get(rangProfil).getMonnaie()));
+		niveau.selectItem(dataAllJoueur.get(rangProfil).getLevel().toString());
 		carsPlayer = dataAllJoueur.get(rangProfil).getCar();
 		int numchoixcar = dataAllJoueur.get(rangProfil).getChoixCar();
-		
-		typeCar.setText(carsPlayer.get(numchoixcar).getTypeCar().toString());
-		puis.setText(Integer.toString(carsPlayer.get(numchoixcar).getPuissance()));
-		weight.setText(Integer.toString(carsPlayer.get(numchoixcar).getWeight()));
-		nitro.setText(Boolean.toString(carsPlayer.get(numchoixcar).isImprovenitro()));
-		
-		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+
+		if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.CHARGER)) {
 			imgCar.setSelectedImageIndex(1);
 			imgCar.backClick();
-		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+			imgCar.setSelectedImageIndex(0);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.CHARGER)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
+		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 			imgCar.setSelectedImageIndex(2);
 			imgCar.backClick();
+			imgCar.setSelectedImageIndex(1);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
 		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.BMWM3)) {
 			imgCar.setSelectedImageIndex(3);
 			imgCar.backClick();
+			imgCar.setSelectedImageIndex(2);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
 		} else if (carsPlayer.get(numchoixcar).getTypeCar().equals(TypeCarProperties.FERRARI)) {
 			imgCar.setSelectedImageIndex(2);
 			imgCar.forwardClick();
+			imgCar.setSelectedImageIndex(3);
+			for (int j = 0; j < carsPlayer.size(); ++j) {
+				if (carsPlayer.get(j).getTypeCar().equals(TypeCarProperties.FERRARI)) {
+					typeCar.setText(carsPlayer.get(j).getTypeCar().toString());
+					puis.setText(Integer.toString(carsPlayer.get(j).getPuissance()));
+					weight.setText(Integer.toString(carsPlayer.get(j).getWeight()));
+					nitro.setText((carsPlayer.get(j).isImprovenitro())?"Oui" : "Non");
+					break;
+				}
+			}
 		}
 		
 	}
@@ -206,24 +276,23 @@ public class ProfilsScreen extends AbstractScreenController {
 		weight.setText("");
 		puis.setText("");
 		nitro.setText("");
-		
 		if (imgCar.getSelectedImageIndex() == 0) {
 			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.CHARGER)) {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
 		} else if (imgCar.getSelectedImageIndex() == 1) {
 			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
@@ -233,17 +302,17 @@ public class ProfilsScreen extends AbstractScreenController {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
-		} else {
+		} else if (imgCar.getSelectedImageIndex() == 3){
 			for (int i = 0; i < carsPlayer.size(); ++i) {
 				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
 					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
 					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText(Boolean.toString(carsPlayer.get(i).isImprovenitro()));
+					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
 					break;
 				}						
 			}
@@ -255,7 +324,7 @@ public class ProfilsScreen extends AbstractScreenController {
 		ArrayList<CarProperties> cars = dataAllJoueur.get(rangprofil).getCar();
 		if (imgCar.getSelectedImageIndex() == 1) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 					choixCar = j;
 					break;
 				}
@@ -276,15 +345,21 @@ public class ProfilsScreen extends AbstractScreenController {
 			}
 		} else if (imgCar.getSelectedImageIndex() == 0) {
 			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.SKYLINE)) {
+				if (cars.get(j).getTypeCar().equals(TypeCarProperties.CHARGER)) {
 					choixCar = j;
 					break;
 				}
 			}
 		}
+		
 		ProfilCurrent pc = new ProfilCurrent(Comptes.getListProfil().get(rangprofil));
-		pc.getInstance().setChoixCar(choixCar);
-		Comptes.modifier(pc.getInstance());
+		ProfilCurrent.getInstance().setChoixCar(choixCar);
+		for (IALevel level : IALevel.values()) {
+			if(niveau.getSelection().equals(level.toString())) {
+				ProfilCurrent.getInstance().setLevel(level);
+			}
+		}
+		Comptes.modifier(ProfilCurrent.getInstance());
 		Comptes.Enregistrer();
 	}
 	
@@ -294,11 +369,6 @@ public class ProfilsScreen extends AbstractScreenController {
 				savemodif(i);
 				break;
 			} //if
-		}
-		for (IALevel level : IALevel.values()) {
-			if(niveau.getSelection().equals(level.toString())) {
-				IACurrent ialevel = new IACurrent(level);
-			}
 		}
 		gotoMainMenu();
 	}

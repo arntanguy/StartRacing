@@ -176,7 +176,7 @@ public class StartScreenState extends AbstractScreenController {
 	@Override
 	public void onEndScreen() {
 		inputManager.clearMappings();
-		stateManager.detach(this);
+		super.onEndScreen();
 	}
 
 	public void startGame(String nextScreen) {

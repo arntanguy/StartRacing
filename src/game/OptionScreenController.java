@@ -1,5 +1,7 @@
 package game;
 
+import ia.IALevel;
+
 import java.awt.Dimension;
 import java.util.Comparator;
 import java.util.LinkedList;

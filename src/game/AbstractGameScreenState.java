@@ -588,7 +588,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	
 		player.setLinearVelocity(Vector3f.ZERO);
 		player.setAngularVelocity(Vector3f.ZERO);
-		player.setNosCharge(1);
+		if (ProfilCurrent.getInstance() == null) {
+			player.setNosCharge(1);
+		} else {
+			if (ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar()).isImprovenitro()) {
+				player.setNosCharge(1);
+			} else {
+				player.setNosCharge(0);
+			}
+		}
 		playerEnginePhysics.setGear(1);
 		player.resetSuspension();
 		player.steer(0);

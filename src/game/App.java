@@ -53,10 +53,10 @@ public class App extends SimpleApplication {
 		/* Keyboard Mappings */
 		setInputMappings();
 
-		gotoStart();
+		//gotoStart();
 //		gotoOptions();
 		//gotoCrtProfil();
-		//gotoAffProfil();
+		gotoAffProfil();
 //		gotoCrtProfil();
 //		gotoAffProfil();		
 		
@@ -139,12 +139,14 @@ public class App extends SimpleApplication {
 	}
 	
 	public void gotoAchat() {
+		nifty.addXml(XMLFileStore.ACHAT_FILE);
         nifty.gotoScreen("achat");
         Achat achat = (Achat) nifty.getScreen("achat").getScreenController();
         stateManager.attach(achat);
 	}
 	
 	public void gotoGarage() {
+		nifty.addXml(XMLFileStore.GARAGE_FILE);
         nifty.gotoScreen("garage");
         Garage garage = (Garage) nifty.getScreen("garage").getScreenController();
         stateManager.attach(garage);

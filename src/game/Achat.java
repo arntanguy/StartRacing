@@ -25,7 +25,7 @@ public class Achat extends AbstractScreenController {
 	
 	private InputManager inputManager;
 	
-	private final String IMGCAR = "imgCar";
+	private final String IMGCAR = "imgcar";
 	
 	private ArrayList<CarProperties> dataAllCar;
 	private ArrayList<CarProperties> allCarJoueur;
@@ -78,13 +78,13 @@ public class Achat extends AbstractScreenController {
 		
 		msgerr = screen.findNiftyControl("msgerr", TextField.class);
 		
-		typeCar.setText(TypeCarProperties.DODGEVIPER.toString());
+		typeCar.setText(TypeCarProperties.CORVETTE.toString());
 		weight.setText(Integer.toString(dataAllCar.get(DODGE+1).getWeight()));
 		puis.setText(Integer.toString(dataAllCar.get(DODGE+1).getPuissance()));
 		prix.setText(Integer.toString(tabprix.get(DODGE)));
-		nitro.setText(Boolean.toString(dataAllCar.get(DODGE+1).isImprovenitro()));
+		nitro.setText((dataAllCar.get(DODGE+1).isImprovenitro()) ? "Oui" : "Non");
 		for (int j = 0; j < allCarJoueur.size(); ++j) {
-			if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+			if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 				msgerr.setText(hasCar);
 			}
 		}
@@ -121,6 +121,7 @@ public class Achat extends AbstractScreenController {
 	}
 	
 	public void changeDataPhoto() {
+		
 		typeCar.setText("");
 		weight.setText("");
 		puis.setText("");
@@ -129,14 +130,14 @@ public class Achat extends AbstractScreenController {
 		
 		if (imgCar.getSelectedImageIndex() == DODGE) {
 			for (int i = 0; i < dataAllCar.size(); ++i) {
-				if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+				if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 					typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 					weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
-					nitro.setText(Boolean.toString(dataAllCar.get(i).isImprovenitro()));
+					nitro.setText((dataAllCar.get(i).isImprovenitro()) ? "Oui" : "Non");
 					prix.setText(Integer.toString(tabprix.get(DODGE)));
 					for (int j = 0; j < allCarJoueur.size(); ++j) {
-						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 							msgerr.setText(hasCar);
 						}
 					}
@@ -149,7 +150,7 @@ public class Achat extends AbstractScreenController {
 					typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 					weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
-					nitro.setText(Boolean.toString(dataAllCar.get(i).isImprovenitro()));
+					nitro.setText((dataAllCar.get(i).isImprovenitro()) ? "Oui" : "Non");
 					prix.setText(Integer.toString(tabprix.get(BMWM3)));
 					for (int j = 0; j < allCarJoueur.size(); ++j) {
 						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
@@ -165,7 +166,7 @@ public class Achat extends AbstractScreenController {
 					typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 					puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 					weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
-					nitro.setText(Boolean.toString(dataAllCar.get(i).isImprovenitro()));
+					nitro.setText((dataAllCar.get(i).isImprovenitro()) ? "Oui" : "Non");
 					prix.setText(Integer.toString(tabprix.get(FERRARI)));
 					for (int j = 0; j < allCarJoueur.size(); ++j) {
 						if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.FERRARI)) {
@@ -196,18 +197,16 @@ public class Achat extends AbstractScreenController {
 						break;
 					}
 				}
-			}
-			else if (imgCar.getSelectedImageIndex() == DODGE) {
+			} else if (imgCar.getSelectedImageIndex() == DODGE) {
 				for (int i = 0; i < dataAllCar.size(); ++i) {
-					if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.DODGEVIPER)) {
+					if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
 						ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
 						allCarJoueur.add(dataAllCar.get(i));
 						calcul -= tabprix.get(DODGE);
 						break;
 					}
 				}
-			}
-			else if (imgCar.getSelectedImageIndex() == FERRARI) {
+			} else if (imgCar.getSelectedImageIndex() == FERRARI) {
 				for (int i = 0; i < dataAllCar.size(); ++i) {
 					if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
 						ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
@@ -226,8 +225,7 @@ public class Achat extends AbstractScreenController {
 				ProfilCurrent.getInstance().setMonnaie(calcul);
 				Comptes.modifier(ProfilCurrent.getInstance());
 				app.gotoAffProfil();
-			}
-		
+			}		
 		}
 	}
 }

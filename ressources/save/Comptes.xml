@@ -71,7 +71,7 @@
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
         </availableModels>
-        <typeCar>SKYLINE</typeCar>
+        <typeCar>CHARGER</typeCar>
         <puissance>391</puissance>
         <improvepuis>false</improvepuis>
         <improvenitro>false</improvenitro>
@@ -183,7 +183,7 @@
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
         </availableModels>
-        <typeCar>DODGEVIPER</typeCar>
+        <typeCar>CORVETTE</typeCar>
         <puissance>391</puissance>
         <improvepuis>false</improvepuis>
         <improvenitro>false</improvenitro>
@@ -340,12 +340,13 @@
         </torque>
       </physics.BMWM3Properties>
     </car>
-    <timedemi>17 : 94</timedemi>
-    <timequart></timequart>
-    <timefree>147 : 61</timefree>
-    <cardead>7</cardead>
-    <monnaie>59319</monnaie>
-    <choixCar>1</choixCar>
+    <timedemi></timedemi>
+    <timequart>10 : 11</timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>41545</monnaie>
+    <choixCar>2</choixCar>
+    <level>EXPERT</level>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -353,12 +354,13 @@
     <car>
       <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
     </car>
-    <timedemi>15 : 77</timedemi>
+    <timedemi></timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>184500</monnaie>
+    <monnaie>150000</monnaie>
     <choixCar>0</choixCar>
+    <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>
     <id>3</id>
@@ -366,11 +368,12 @@
     <car>
       <physics.BMWM3Properties reference="../../../save.Profil/car/physics.BMWM3Properties"/>
     </car>
-    <timedemi>16 : 4</timedemi>
+    <timedemi></timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>1007500</monnaie>
+    <monnaie>1000000</monnaie>
     <choixCar>0</choixCar>
+    <level>DEBUTANT</level>
   </save.Profil>
 </list>

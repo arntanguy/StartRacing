@@ -9,9 +9,7 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
-				<text font="Interface/Fonts/ArialBlack_60.fnt" height="15%" align="center" color="#ffff"
-					text="${CALL.getTitle()}" />
-					
+				<panel height="4%" />
 				<control id="freeforall" align="center" name="button" label="Course Libre"
 					width="40%" height="10%">
 					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>

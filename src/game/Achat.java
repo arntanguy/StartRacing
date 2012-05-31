@@ -25,7 +25,7 @@ public class Achat extends AbstractScreenController {
 	
 	private InputManager inputManager;
 	
-	private final String IMGCAR = "imgcar";
+	private final String IMGCAR = "imagecar";
 	
 	private ArrayList<CarProperties> dataAllCar;
 	private ArrayList<CarProperties> allCarJoueur;
@@ -52,9 +52,9 @@ public class Achat extends AbstractScreenController {
 		super();
 		dataAllCar = Comptes.getListCar();
 		tabprix = new ArrayList<Integer>();
-		tabprix.add(22000);
-		tabprix.add(34000);
-		tabprix.add(48000);
+		tabprix.add(44000);
+		tabprix.add(68000);
+		tabprix.add(86000);
 		calcul = ProfilCurrent.getInstance().getMonnaie();
 		allCarJoueur = ProfilCurrent.getInstance().getCar();
 	}
@@ -185,42 +185,46 @@ public class Achat extends AbstractScreenController {
 	
 	public void Enregistrer() {
 		String indic = "IMPOSSIBLE, VOUS AVEZ DEJA LA VOITURE !";
-		if (msgerr.getText().equals(hasCar) || msgerr.getText().equals(indic)) {
+		if (!msgerr.getText().equals("")) {
 			msgerr.setText(indic);
 		} else {
 			if (imgCar.getSelectedImageIndex() == BMWM3) {
-				for (int i = 0; i < dataAllCar.size(); ++i) {
-					if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
-						ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
-						allCarJoueur.add(dataAllCar.get(i));
-						calcul -= tabprix.get(1);
-						break;
-					}
-				}
+				calcul -= tabprix.get(1);
 			} else if (imgCar.getSelectedImageIndex() == DODGE) {
-				for (int i = 0; i < dataAllCar.size(); ++i) {
-					if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
-						ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
-						allCarJoueur.add(dataAllCar.get(i));
-						calcul -= tabprix.get(DODGE);
-						break;
-					}
-				}
+				calcul -= tabprix.get(DODGE);
 			} else if (imgCar.getSelectedImageIndex() == FERRARI) {
-				for (int i = 0; i < dataAllCar.size(); ++i) {
-					if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
-						ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
-						allCarJoueur.add(dataAllCar.get(i));
-						calcul -= tabprix.get(FERRARI);
-						break;
-					}
-				}
+				calcul -= tabprix.get(FERRARI);
 			}
 			
 			if (calcul < 0) {
 				calcul = ProfilCurrent.getInstance().getMonnaie();
 				msgerr.setText("IMPOSSIBLE, VOUS N'AVEZ PAS ASSEZ D'ARGENT !");
 			} else {
+				if (imgCar.getSelectedImageIndex() == BMWM3) {
+					for (int i = 0; i < dataAllCar.size(); ++i) {
+						if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
+							ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
+							allCarJoueur.add(dataAllCar.get(i));
+							break;
+						}
+					}
+				} else if (imgCar.getSelectedImageIndex() == DODGE) {
+					for (int i = 0; i < dataAllCar.size(); ++i) {
+						if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
+							ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
+							allCarJoueur.add(dataAllCar.get(i));
+							break;
+						}
+					}
+				} else if (imgCar.getSelectedImageIndex() == FERRARI) {
+					for (int i = 0; i < dataAllCar.size(); ++i) {
+						if (dataAllCar.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
+							ProfilCurrent.getInstance().setChoixCar(allCarJoueur.size());
+							allCarJoueur.add(dataAllCar.get(i));
+							break;
+						}
+					}
+				}
 				ProfilCurrent.getInstance().setCar(allCarJoueur);
 				ProfilCurrent.getInstance().setMonnaie(calcul);
 				Comptes.modifier(ProfilCurrent.getInstance());

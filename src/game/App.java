@@ -88,6 +88,7 @@ public class App extends SimpleApplication {
 		nifty.addXml(XMLFileStore.CHOOSE_PROFIL_FILE);
 		nifty.addXml(XMLFileStore.ACHAT_FILE);
 		nifty.addXml(XMLFileStore.GARAGE_FILE);
+		nifty.addXml(XMLFileStore.TUTORIEL_FILE);
 	}
 	
 	public void gotoGame(String mode) {
@@ -147,5 +148,11 @@ public class App extends SimpleApplication {
         nifty.gotoScreen("garage");
         Garage garage = (Garage) nifty.getScreen("garage").getScreenController();
         stateManager.attach(garage);
+	}
+	
+	public void gotoTutoriel() {
+        nifty.gotoScreen("tutoriel");
+        TutorielScreen tutoriel = (TutorielScreen) nifty.getScreen("tutoriel").getScreenController();
+        stateManager.attach(tutoriel);
 	}
 }

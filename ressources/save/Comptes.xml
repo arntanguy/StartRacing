@@ -340,11 +340,11 @@
         </torque>
       </physics.BMWM3Properties>
     </car>
-    <timedemi></timedemi>
+    <timedemi>17 : 94</timedemi>
     <timequart></timequart>
     <timefree>147 : 61</timefree>
     <cardead>7</cardead>
-    <monnaie>52261</monnaie>
+    <monnaie>59319</monnaie>
     <choixCar>1</choixCar>
   </save.Profil>
   <save.Profil>
@@ -366,11 +366,11 @@
     <car>
       <physics.BMWM3Properties reference="../../../save.Profil/car/physics.BMWM3Properties"/>
     </car>
-    <timedemi></timedemi>
+    <timedemi>16 : 4</timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>1000000</monnaie>
+    <monnaie>1007500</monnaie>
     <choixCar>0</choixCar>
   </save.Profil>
 </list>

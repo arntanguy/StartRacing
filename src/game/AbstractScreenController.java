@@ -33,7 +33,7 @@ public class AbstractScreenController extends AbstractAppState implements
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
-		System.err.println("INITIALIZE");
+		//System.err.println("INITIALIZE");
 		this.stateManager = stateManager;
 		this.app = (App) app;
 

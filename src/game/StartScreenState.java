@@ -108,6 +108,13 @@ public class StartScreenState extends AbstractScreenController {
 				app.gotoGarage();
 			}
 		}, "garage");
+		
+		inputManager.addMapping("tutoriel", new KeyTrigger(KeyInput.KEY_T));
+		inputManager.addListener(new ActionListener() {
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoTutoriel();
+			}
+		}, "tutoriel");
 	}
 
 	@Override
@@ -178,7 +185,7 @@ public class StartScreenState extends AbstractScreenController {
 	}
 
 	public void startFreeForAll() {
-		System.out.println("START free for all");
+//		System.out.println("START free for all");
 		voiceRender.stopAndReset();
 		app.gotoFreeForAll();
 	}
@@ -191,6 +198,10 @@ public class StartScreenState extends AbstractScreenController {
 		app.gotoCrtProfil();
 	}
 
+	public void showTutoriel() {
+		app.gotoTutoriel();
+	}
+	
 	public void chooseProfil() {
 		// XXX
 		app.gotoAffProfil();
@@ -206,7 +217,7 @@ public class StartScreenState extends AbstractScreenController {
 			voiceRender.play(name);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

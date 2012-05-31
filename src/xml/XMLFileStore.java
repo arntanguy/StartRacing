@@ -15,6 +15,7 @@ public final class XMLFileStore {
 	public static final String CHOOSE_PROFIL_FILE = "Interface/Nifty/ChooseProfil.xml";
 	public static final String ACHAT_FILE = "Interface/Nifty/Achat.xml";
 	public static final String GARAGE_FILE = "Interface/Nifty/Garage.xml";
+	public static final String TUTORIEL_FILE = "Interface/Nifty/Tutoriel.xml";
 	
 	/* Custom XML */
 	public static final String OPTION_SAVE_FILE = "ressources/save/startracing_options.xml";

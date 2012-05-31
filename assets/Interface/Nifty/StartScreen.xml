@@ -37,6 +37,12 @@
 				</control>
 				<panel height="2%" />
 				
+				<control id="tutorielButton" align="center" name="button" label="Tutoriel"
+					width="40%" height="10%">
+					<interact onClick="showTutoriel()" />
+				</control>
+				<panel height="2%" />
+				
 				<control id="newProfil" align="center" name="button" label="Nouveau profil"
 					width="40%" height="10%">
 					<interact onClick="newProfil()" />

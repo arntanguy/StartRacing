@@ -81,6 +81,8 @@ public class App extends SimpleApplication {
 	@Override
 	public void stop() {
 		super.stop();
+		
+		System.exit(0);
 	}
 	
 	public void addXMLFiles() {

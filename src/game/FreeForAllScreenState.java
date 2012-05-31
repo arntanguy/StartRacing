@@ -27,6 +27,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 	private ArrayList<Car> bots;
 	private boolean win = false;
 
+	private boolean flagNeedClear = false;
 	private boolean givePt = false;
 	private boolean bonus = false;
 	private int nbBotDead = 0;
@@ -178,6 +179,11 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			return;
 		}
 		super.update(tpf);
+		
+		if (flagNeedClear)	{
+			digitalStart.setText("Ready ?");
+			flagNeedClear = false;
+		}
 
 		nbBotsAlive = 0;
 		String sTimer;
@@ -257,6 +263,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 											+ argent);
 					}
 					conclusion = "Perdu! " + argent + " Eur";
+					digitalLife.setText("0");
 
 				}
 				String text = String.format("%d : %d", secondes, millisec);
@@ -299,6 +306,8 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 				if (bonus)
 					conclusion = conclusion + "\nBonus 1000 Eur!";
 				digitalStart.setText(conclusion);
+			} else {
+				digitalLife.setText("100");
 			}
 
 		}
@@ -310,6 +319,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		runIsOn = false;
 		givePt = false;
 		bonus = false;
+		flagNeedClear = true;
 		nbBotDead = 0;
 		for (Car bot : bots) {
 			bot.stop(0);

@@ -244,7 +244,11 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 					}
 					if (givePt == false) {
 						nbBotDead = nbbot - nbbotlive;
-						argent = (int) ((nbBotDead * 300000) / secondes);
+						if (secondes > 0) {
+							argent = (int) ((nbBotDead * 45000) / secondes);
+						} else {
+							argent = 0;
+						}
 						givePt = true;
 						if (ProfilCurrent.getInstance() != null)
 							ProfilCurrent.getInstance().setMonnaie(

@@ -339,6 +339,20 @@
           </entry>
         </torque>
       </physics.BMWM3Properties>
+    </car>
+    <timedemi>16 : 5</timedemi>
+    <timequart></timequart>
+    <timefree>170 : 86</timefree>
+    <cardead>7</cardead>
+    <monnaie>31852</monnaie>
+    <choixCar>1</choixCar>
+    <level>PROFESSIONNEL</level>
+  </save.Profil>
+  <save.Profil>
+    <id>2</id>
+    <login>joueur2</login>
+    <car>
+      <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
       <physics.F430Properties>
         <tireHeight>24.5</tireHeight>
         <finalGearRatio>3.0</finalGearRatio>
@@ -461,25 +475,11 @@
       </physics.F430Properties>
     </car>
     <timedemi></timedemi>
-    <timequart>10 : 74</timequart>
+    <timequart>11 : 95</timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>31000</monnaie>
-    <choixCar>3</choixCar>
-    <level>PROFESSIONNEL</level>
-  </save.Profil>
-  <save.Profil>
-    <id>2</id>
-    <login>joueur2</login>
-    <car>
-      <physics.DodgeViperProperties reference="../../../save.Profil/car/physics.DodgeViperProperties"/>
-    </car>
-    <timedemi></timedemi>
-    <timequart></timequart>
-    <timefree></timefree>
-    <cardead>0</cardead>
-    <monnaie>150000</monnaie>
-    <choixCar>0</choixCar>
+    <monnaie>102000</monnaie>
+    <choixCar>1</choixCar>
     <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>

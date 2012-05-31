@@ -60,6 +60,7 @@ public class CarFactory {
 
 		// Create a vehicle control
 		car.getNode().addControl(car);
+		car.getEnginePhysics().setBackward(true);
 
 		// Setting default values for wheels
 		car.setSuspensionCompression(compValue * 2.0f
@@ -110,6 +111,7 @@ public class CarFactory {
 		car.getWheel(1).setFrictionSlip(11f);
 		car.getWheel(2).setFrictionSlip(10f);
 		car.getWheel(3).setFrictionSlip(10f);
+		
 	}
 
 	public static void createBMW(AssetManager assetManager, Car car) {

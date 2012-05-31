@@ -41,16 +41,16 @@ public class IA {
 		carProperties = enginePhysics.getCarProperties();
 
 		setIALevel( (ProfilCurrent.getInstance() == null) ? 
-						IALevel.PROFESSIONNEL : 
+						IALevel.DEBUTANT : 
 							ProfilCurrent.getInstance().getLevel());
 	}
 
 	public void setIALevel(IALevel level) {
 		switch (level) {
 			case DEBUTANT:
-				zone = 4000;
-				optimalShiftGearPercentage = 0.5;
-				redlineShiftProba = 0.5;
+				zone = 6000;
+				optimalShiftGearPercentage = 0.1;
+				redlineShiftProba = 0.4;
 				break;
 			case INTERMEDIAIRE:
 				zone = 2000;

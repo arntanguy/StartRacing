@@ -113,7 +113,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 	protected long timePlayer = 0;
 	protected boolean playerStoped = false;
 
-	private Vector3f jumpForce = new Vector3f(0, 15000, 0);
+	private Vector3f jumpForce = new Vector3f(1000, 15000, 0);
 
 	boolean zeroSec;
 	boolean oneSec;
@@ -314,7 +314,16 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		player.setDriverName("Player");
 		player.getNode().addControl(player);
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
-		player.setNosCharge(1);
+		
+		if (ProfilCurrent.getInstance() == null) {
+			player.setNosCharge(1);
+		} else {
+			if (ProfilCurrent.getInstance().getCar().get(ProfilCurrent.getInstance().getChoixCar()).isImprovenitro()) {
+				player.setNosCharge(1);
+			} else {
+				player.setNosCharge(1);
+			}
+		}
 
 		playerCarProperties = player.getProperties();
 		playerEnginePhysics = player.getEnginePhysics();

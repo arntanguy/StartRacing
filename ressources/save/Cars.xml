@@ -396,7 +396,7 @@
       </optimalShiftPoints>
     </gears>
     <redline>8640</redline>
-    <playerModel>Models/FerrariRed/Car.scene</playerModel>
+    <playerModel>ferrari red</playerModel>
     <availableModels>
       <string>Models/FerrariGreen/Car.scene</string>
       <string>Models/FerrariBlue/Car.scene</string>

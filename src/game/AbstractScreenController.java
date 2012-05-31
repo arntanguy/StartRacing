@@ -74,15 +74,24 @@ public class AbstractScreenController extends AbstractAppState implements
 	}
 
 	protected void initAudioVoices() {
-		VoiceSoundStore soundStore = VoiceSoundStore.getInstance();
-		soundStore.setAssetManager(app.getAssetManager());
+		VoiceSoundStore s = VoiceSoundStore.getInstance();
+		s.setAssetManager(app.getAssetManager());
 		try {
-			soundStore.addSound("freeforall", "Sound/win.wav");
-			soundStore.addSound("halfmile", "Sound/car_crash.wav");
-			soundStore.addSound("quartermile", "Sound/lost.wav");
+			s.addSound("freeforall", "Sound/Vocal/course_libre.ogg");
+			s.addSound("halfmile", "Sound/Vocal/course_demi.ogg");
+			s.addSound("quartermile", "Sound/Vocal/course_quart.ogg");
+			s.addSound("optionButton", "Sound/Vocal/option.ogg");
+			s.addSound("newProfil", "Sound/Vocal/nouveau_profil.ogg");
+			s.addSound("oldProfil", "Sound/Vocal/choisir_gerer_profil.ogg");
+			s.addSound("quitButton", "Sound/Vocal/quitter.ogg");
+
+			s.addSound("applyButton", "Sound/Vocal/appliquer.ogg");
+			s.addSound("returnButton", "Sound/Vocal/retour_main.ogg");
+			s.addSound("valider", "Sound/Vocal/valider.ogg");
+			s.addSound("retour", "Sound/Vocal/retour.ogg");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		voiceRender = new VoiceRender(app.getGuiNode(), soundStore);
+		voiceRender = new VoiceRender(app.getGuiNode(), s);
 	}
 }

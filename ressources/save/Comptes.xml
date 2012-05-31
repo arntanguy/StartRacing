@@ -1,7 +1,7 @@
 <list>
   <save.Profil>
     <id>1</id>
-    <login>Nathoo</login>
+    <login>joueur1</login>
     <car>
       <physics.SkylineProperties>
         <tireHeight>24.5</tireHeight>
@@ -461,20 +461,20 @@
       </physics.F430Properties>
     </car>
     <timedemi></timedemi>
-    <timequart>18 : 15</timequart>
-    <timefree>121 : 75</timefree>
-    <cardead>3</cardead>
-    <monnaie>1867</monnaie>
-    <choixCar>3</choixCar>
-    <level>EXPERT</level>
+    <timequart></timequart>
+    <timefree></timefree>
+    <cardead>0</cardead>
+    <monnaie>30000</monnaie>
+    <choixCar>0</choixCar>
+    <level>PROFESSIONNEL</level>
   </save.Profil>
   <save.Profil>
     <id>2</id>
-    <login>AZeaz</login>
+    <login>joueur2</login>
     <car>
-      <physics.SkylineProperties>
+      <physics.DodgeViperProperties>
         <tireHeight>24.5</tireHeight>
-        <finalGearRatio>3.07</finalGearRatio>
+        <finalGearRatio>3.545</finalGearRatio>
         <tireRadius>0.3266</tireRadius>
         <weight>1552</weight>
         <stiffness>120.0</stiffness>
@@ -486,61 +486,61 @@
           <ratios>
             <entry>
               <int>6</int>
-              <double>0.5</double>
+              <double>0.793</double>
             </entry>
             <entry>
               <int>5</int>
-              <double>0.74</double>
-            </entry>
-            <entry>
-              <int>4</int>
               <double>1.0</double>
             </entry>
             <entry>
+              <int>4</int>
+              <double>1.312</double>
+            </entry>
+            <entry>
               <int>3</int>
-              <double>1.3</double>
+              <double>1.685</double>
             </entry>
             <entry>
               <int>2</int>
-              <double>1.78</double>
+              <double>2.36</double>
             </entry>
             <entry>
               <int>1</int>
-              <double>2.66</double>
+              <double>3.827</double>
             </entry>
           </ratios>
           <optimalShiftPoints>
             <entry>
               <int>5</int>
-              <double>5000.64</double>
+              <double>7562.64</double>
             </entry>
             <entry>
               <int>4</int>
-              <double>5000.66</double>
+              <double>7694.66</double>
             </entry>
             <entry>
               <int>3</int>
-              <double>5000.54</double>
+              <double>7623.54</double>
             </entry>
             <entry>
               <int>2</int>
-              <double>5000.1</double>
+              <double>7911.1</double>
             </entry>
             <entry>
               <int>1</int>
-              <double>5000.29</double>
+              <double>8387.29</double>
             </entry>
           </optimalShiftPoints>
         </gears>
-        <redline>6000</redline>
-        <playerModel>charger</playerModel>
+        <redline>8500</redline>
+        <playerModel>corvette</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
         </availableModels>
-        <typeCar>CHARGER</typeCar>
+        <typeCar>CORVETTE</typeCar>
         <puissance>391</puissance>
         <improvepuis>false</improvepuis>
         <improvenitro>false</improvenitro>
@@ -583,25 +583,25 @@
             <int>0</int>
           </entry>
         </torque>
-      </physics.SkylineProperties>
+      </physics.DodgeViperProperties>
     </car>
     <timedemi></timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>0</monnaie>
+    <monnaie>150000</monnaie>
     <choixCar>0</choixCar>
     <level>DEBUTANT</level>
   </save.Profil>
   <save.Profil>
     <id>3</id>
-    <login>plouf</login>
+    <login>joueur3</login>
     <car>
-      <physics.SkylineProperties>
+      <physics.BMWM3Properties>
         <tireHeight>24.5</tireHeight>
-        <finalGearRatio>3.07</finalGearRatio>
+        <finalGearRatio>2.93</finalGearRatio>
         <tireRadius>0.3266</tireRadius>
-        <weight>1552</weight>
+        <weight>1570</weight>
         <stiffness>120.0</stiffness>
         <compValue>0.2</compValue>
         <dampValue>0.3</dampValue>
@@ -611,61 +611,61 @@
           <ratios>
             <entry>
               <int>6</int>
-              <double>0.5</double>
+              <double>0.85</double>
             </entry>
             <entry>
               <int>5</int>
-              <double>0.74</double>
-            </entry>
-            <entry>
-              <int>4</int>
               <double>1.0</double>
             </entry>
             <entry>
+              <int>4</int>
+              <double>1.23</double>
+            </entry>
+            <entry>
               <int>3</int>
-              <double>1.3</double>
+              <double>1.66</double>
             </entry>
             <entry>
               <int>2</int>
-              <double>1.78</double>
+              <double>2.5</double>
             </entry>
             <entry>
               <int>1</int>
-              <double>2.66</double>
+              <double>4.35</double>
             </entry>
           </ratios>
           <optimalShiftPoints>
             <entry>
               <int>5</int>
-              <double>5000.64</double>
+              <double>7996.0</double>
             </entry>
             <entry>
               <int>4</int>
-              <double>5000.66</double>
+              <double>7996.0</double>
             </entry>
             <entry>
               <int>3</int>
-              <double>5000.54</double>
+              <double>7996.0</double>
             </entry>
             <entry>
               <int>2</int>
-              <double>5000.1</double>
+              <double>7999.0</double>
             </entry>
             <entry>
               <int>1</int>
-              <double>5000.29</double>
+              <double>7998.0</double>
             </entry>
           </optimalShiftPoints>
         </gears>
-        <redline>6000</redline>
-        <playerModel>charger</playerModel>
+        <redline>8500</redline>
+        <playerModel>bmw</playerModel>
         <availableModels>
           <string>Models/FerrariGreen/Car.scene</string>
           <string>Models/FerrariBlue/Car.scene</string>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
+          <string>ferrari blue</string>
+          <string>ferrari green</string>
         </availableModels>
-        <typeCar>CHARGER</typeCar>
+        <typeCar>BMWM3</typeCar>
         <puissance>391</puissance>
         <improvepuis>false</improvepuis>
         <improvenitro>false</improvenitro>
@@ -708,388 +708,13 @@
             <int>0</int>
           </entry>
         </torque>
-      </physics.SkylineProperties>
-    </car>
-    <timedemi></timedemi>
-    <timequart>22 : 62</timequart>
-    <timefree>77 : 35</timefree>
-    <cardead>2</cardead>
-    <monnaie>10064</monnaie>
-    <choixCar>0</choixCar>
-    <level>DEBUTANT</level>
-  </save.Profil>
-  <save.Profil>
-    <id>4</id>
-    <login>ddzda</login>
-    <car>
-      <physics.SkylineProperties>
-        <tireHeight>24.5</tireHeight>
-        <finalGearRatio>3.07</finalGearRatio>
-        <tireRadius>0.3266</tireRadius>
-        <weight>1552</weight>
-        <stiffness>120.0</stiffness>
-        <compValue>0.2</compValue>
-        <dampValue>0.3</dampValue>
-        <mass>1200.0</mass>
-        <idleRpm>1000</idleRpm>
-        <gears>
-          <ratios>
-            <entry>
-              <int>6</int>
-              <double>0.5</double>
-            </entry>
-            <entry>
-              <int>5</int>
-              <double>0.74</double>
-            </entry>
-            <entry>
-              <int>4</int>
-              <double>1.0</double>
-            </entry>
-            <entry>
-              <int>3</int>
-              <double>1.3</double>
-            </entry>
-            <entry>
-              <int>2</int>
-              <double>1.78</double>
-            </entry>
-            <entry>
-              <int>1</int>
-              <double>2.66</double>
-            </entry>
-          </ratios>
-          <optimalShiftPoints>
-            <entry>
-              <int>5</int>
-              <double>5000.64</double>
-            </entry>
-            <entry>
-              <int>4</int>
-              <double>5000.66</double>
-            </entry>
-            <entry>
-              <int>3</int>
-              <double>5000.54</double>
-            </entry>
-            <entry>
-              <int>2</int>
-              <double>5000.1</double>
-            </entry>
-            <entry>
-              <int>1</int>
-              <double>5000.29</double>
-            </entry>
-          </optimalShiftPoints>
-        </gears>
-        <redline>6000</redline>
-        <playerModel>charger</playerModel>
-        <availableModels>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
-        </availableModels>
-        <typeCar>CHARGER</typeCar>
-        <puissance>391</puissance>
-        <improvepuis>false</improvepuis>
-        <improvenitro>false</improvenitro>
-        <improveweight>false</improveweight>
-        <torque>
-          <entry>
-            <int>0</int>
-            <int>0</int>
-          </entry>
-          <entry>
-            <int>1000</int>
-            <int>400</int>
-          </entry>
-          <entry>
-            <int>2000</int>
-            <int>450</int>
-          </entry>
-          <entry>
-            <int>3000</int>
-            <int>480</int>
-          </entry>
-          <entry>
-            <int>4000</int>
-            <int>500</int>
-          </entry>
-          <entry>
-            <int>5000</int>
-            <int>550</int>
-          </entry>
-          <entry>
-            <int>6000</int>
-            <int>500</int>
-          </entry>
-          <entry>
-            <int>8000</int>
-            <int>450</int>
-          </entry>
-          <entry>
-            <int>15000</int>
-            <int>0</int>
-          </entry>
-        </torque>
-      </physics.SkylineProperties>
+      </physics.BMWM3Properties>
     </car>
     <timedemi></timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>0</monnaie>
-    <choixCar>0</choixCar>
-    <level>DEBUTANT</level>
-  </save.Profil>
-  <save.Profil>
-    <id>5</id>
-    <login>dadad</login>
-    <car>
-      <physics.SkylineProperties>
-        <tireHeight>24.5</tireHeight>
-        <finalGearRatio>3.07</finalGearRatio>
-        <tireRadius>0.3266</tireRadius>
-        <weight>1552</weight>
-        <stiffness>120.0</stiffness>
-        <compValue>0.2</compValue>
-        <dampValue>0.3</dampValue>
-        <mass>1200.0</mass>
-        <idleRpm>1000</idleRpm>
-        <gears>
-          <ratios>
-            <entry>
-              <int>6</int>
-              <double>0.5</double>
-            </entry>
-            <entry>
-              <int>5</int>
-              <double>0.74</double>
-            </entry>
-            <entry>
-              <int>4</int>
-              <double>1.0</double>
-            </entry>
-            <entry>
-              <int>3</int>
-              <double>1.3</double>
-            </entry>
-            <entry>
-              <int>2</int>
-              <double>1.78</double>
-            </entry>
-            <entry>
-              <int>1</int>
-              <double>2.66</double>
-            </entry>
-          </ratios>
-          <optimalShiftPoints>
-            <entry>
-              <int>5</int>
-              <double>5000.64</double>
-            </entry>
-            <entry>
-              <int>4</int>
-              <double>5000.66</double>
-            </entry>
-            <entry>
-              <int>3</int>
-              <double>5000.54</double>
-            </entry>
-            <entry>
-              <int>2</int>
-              <double>5000.1</double>
-            </entry>
-            <entry>
-              <int>1</int>
-              <double>5000.29</double>
-            </entry>
-          </optimalShiftPoints>
-        </gears>
-        <redline>6000</redline>
-        <playerModel>charger</playerModel>
-        <availableModels>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
-        </availableModels>
-        <typeCar>CHARGER</typeCar>
-        <puissance>391</puissance>
-        <improvepuis>false</improvepuis>
-        <improvenitro>false</improvenitro>
-        <improveweight>false</improveweight>
-        <torque>
-          <entry>
-            <int>0</int>
-            <int>0</int>
-          </entry>
-          <entry>
-            <int>1000</int>
-            <int>400</int>
-          </entry>
-          <entry>
-            <int>2000</int>
-            <int>450</int>
-          </entry>
-          <entry>
-            <int>3000</int>
-            <int>480</int>
-          </entry>
-          <entry>
-            <int>4000</int>
-            <int>500</int>
-          </entry>
-          <entry>
-            <int>5000</int>
-            <int>550</int>
-          </entry>
-          <entry>
-            <int>6000</int>
-            <int>500</int>
-          </entry>
-          <entry>
-            <int>8000</int>
-            <int>450</int>
-          </entry>
-          <entry>
-            <int>15000</int>
-            <int>0</int>
-          </entry>
-        </torque>
-      </physics.SkylineProperties>
-    </car>
-    <timedemi></timedemi>
-    <timequart></timequart>
-    <timefree></timefree>
-    <cardead>0</cardead>
-    <monnaie>0</monnaie>
-    <choixCar>0</choixCar>
-    <level>DEBUTANT</level>
-  </save.Profil>
-  <save.Profil>
-    <id>6</id>
-    <login>aaaa</login>
-    <car>
-      <physics.SkylineProperties>
-        <tireHeight>24.5</tireHeight>
-        <finalGearRatio>3.07</finalGearRatio>
-        <tireRadius>0.3266</tireRadius>
-        <weight>1552</weight>
-        <stiffness>120.0</stiffness>
-        <compValue>0.2</compValue>
-        <dampValue>0.3</dampValue>
-        <mass>1200.0</mass>
-        <idleRpm>1000</idleRpm>
-        <gears>
-          <ratios>
-            <entry>
-              <int>6</int>
-              <double>0.5</double>
-            </entry>
-            <entry>
-              <int>5</int>
-              <double>0.74</double>
-            </entry>
-            <entry>
-              <int>4</int>
-              <double>1.0</double>
-            </entry>
-            <entry>
-              <int>3</int>
-              <double>1.3</double>
-            </entry>
-            <entry>
-              <int>2</int>
-              <double>1.78</double>
-            </entry>
-            <entry>
-              <int>1</int>
-              <double>2.66</double>
-            </entry>
-          </ratios>
-          <optimalShiftPoints>
-            <entry>
-              <int>5</int>
-              <double>5000.64</double>
-            </entry>
-            <entry>
-              <int>4</int>
-              <double>5000.66</double>
-            </entry>
-            <entry>
-              <int>3</int>
-              <double>5000.54</double>
-            </entry>
-            <entry>
-              <int>2</int>
-              <double>5000.1</double>
-            </entry>
-            <entry>
-              <int>1</int>
-              <double>5000.29</double>
-            </entry>
-          </optimalShiftPoints>
-        </gears>
-        <redline>6000</redline>
-        <playerModel>charger</playerModel>
-        <availableModels>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
-          <string>Models/FerrariGreen/Car.scene</string>
-          <string>Models/FerrariBlue/Car.scene</string>
-        </availableModels>
-        <typeCar>CHARGER</typeCar>
-        <puissance>391</puissance>
-        <improvepuis>false</improvepuis>
-        <improvenitro>false</improvenitro>
-        <improveweight>false</improveweight>
-        <torque>
-          <entry>
-            <int>0</int>
-            <int>0</int>
-          </entry>
-          <entry>
-            <int>1000</int>
-            <int>400</int>
-          </entry>
-          <entry>
-            <int>2000</int>
-            <int>450</int>
-          </entry>
-          <entry>
-            <int>3000</int>
-            <int>480</int>
-          </entry>
-          <entry>
-            <int>4000</int>
-            <int>500</int>
-          </entry>
-          <entry>
-            <int>5000</int>
-            <int>550</int>
-          </entry>
-          <entry>
-            <int>6000</int>
-            <int>500</int>
-          </entry>
-          <entry>
-            <int>8000</int>
-            <int>450</int>
-          </entry>
-          <entry>
-            <int>15000</int>
-            <int>0</int>
-          </entry>
-        </torque>
-      </physics.SkylineProperties>
-    </car>
-    <timedemi></timedemi>
-    <timequart></timequart>
-    <timefree></timefree>
-    <cardead>0</cardead>
-    <monnaie>0</monnaie>
+    <monnaie>1000000</monnaie>
     <choixCar>0</choixCar>
     <level>DEBUTANT</level>
   </save.Profil>

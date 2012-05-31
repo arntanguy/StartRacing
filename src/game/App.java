@@ -1,5 +1,6 @@
 package game;
 
+import save.Comptes;
 import xml.OptionXMLParser;
 import xml.XMLFileStore;
 
@@ -53,10 +54,14 @@ public class App extends SimpleApplication {
 		/* Keyboard Mappings */
 		setInputMappings();
 
-		//gotoStart();
+		gotoStart();
 //		gotoOptions();
 		//gotoCrtProfil();
-		gotoAffProfil();
+		/*if (Comptes.getListProfil().size() == 0) {
+			gotoCrtProfil();
+		} else {
+			gotoAffProfil();
+		}*/
 //		gotoCrtProfil();
 //		gotoAffProfil();		
 		

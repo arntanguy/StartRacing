@@ -3,6 +3,9 @@ package game;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
@@ -65,6 +68,24 @@ public class TutorielScreen extends AbstractScreenController {
 		
 		texte.setText(slide[0]);	
 		texte.setEnabled(false);
+		
+		setInputMappings();
+	}
+	
+	private void setInputMappings() {
+		inputManager.addMapping("return", new KeyTrigger(KeyInput.KEY_ESCAPE));
+		inputManager.addListener(new ActionListener() {
+			@Override
+			public void onAction(String arg0, boolean arg1, float arg2) {
+				app.gotoStart();
+			}
+		}, "return");
+	}
+	
+	@Override
+	public void onEndScreen() {
+		inputManager.clearMappings();
+		super.onEndScreen();
 	}
 
 	public void AffDataPlayer(int rangProfil) {

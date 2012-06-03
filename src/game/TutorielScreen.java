@@ -31,7 +31,7 @@ public class TutorielScreen extends AbstractScreenController {
 		
 		slide = new String[4];
 		slide[0] = 	"Pour démarrer la voiture et commencer \n" +
-					"le compte, appuyez sur l'accélérateur\n" +
+					"le compte à rebour, appuyez sur l'accélérateur\n" +
 					"(touche [Control])";
 		slide[1] = 	"Vous contrôlez la boîte de vitesse de la voiture\n" +
 					"Pour gagner la course, il faut passer les vitesses\n" +
@@ -42,7 +42,7 @@ public class TutorielScreen extends AbstractScreenController {
 					"Elle devient rouge quand le moteur est en sur-régime";
 		slide[2] = 	"Quand votre moteur est en sur-régime trop longtemps,\n" +
 					"la voiture explose.\n" +
-					"Il vous faut aller redémarrer la partie en appuyant \n" +
+					"Il vous faut alors redémarrer la partie en appuyant \n" +
 					"sur la touche [Entrée], ou alors retourner au menu \n" +
 					"principal en appuyant sur la touche [Echappe]";
 		slide[3] = 	"Dans le menu « Gestion de profil », il est possible \n" +

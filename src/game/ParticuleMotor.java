@@ -76,24 +76,24 @@ public class ParticuleMotor {
 			if (time > 100 && explosionState == 0) {
 				explosionState++;
 			}
-			if (time > 500 && explosionState == 1) {
+			else if (time > 500 && explosionState == 1) {
 				shockwave.emitAllParticles();
 				burst.emitAllParticles();
 				debris.emitAllParticles();
 				embers.emitAllParticles();
 				explosionState++;
 			}
-			if (time > 700 && explosionState == 2) {
+			else if (time > 700 && explosionState == 2) {
 				fire.emitAllParticles();
 				smoke.emitAllParticles();
 				explosionState++;
 			}
-			if (time > 1000 && explosionState == 3) {
+			else if (time > 1000 && explosionState == 3) {
 				burst.killAllParticles();
 				debris.killAllParticles();
 				explosionState++;
 			}
-			if (time > 4000 && explosionState == 4) {
+			else if (time > 4000 && explosionState == 4) {
 				// fire.killAllParticles();
 				// smoke.killAllParticles();
 				embers.killAllParticles();

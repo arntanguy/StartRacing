@@ -70,6 +70,9 @@ public class AbstractScreenController extends AbstractAppState implements
 
 	public void quitGame() {
 		System.out.println("quitGame");
+		voiceRender.close();
+		
+		
 		app.stop();
 	}
 
@@ -84,7 +87,8 @@ public class AbstractScreenController extends AbstractAppState implements
 			s.addSound("newProfil", "Sound/Vocal/nouveau_profil.ogg");
 			s.addSound("oldProfil", "Sound/Vocal/choisir_gerer_profil.ogg");
 			s.addSound("quitButton", "Sound/Vocal/quitter.ogg");
-
+			s.addSound("tutorielButton", "Sound/Vocal/tutoriel.ogg");
+			
 			s.addSound("applyButton", "Sound/Vocal/appliquer.ogg");
 			s.addSound("returnButton", "Sound/Vocal/retour_main.ogg");
 			s.addSound("valider", "Sound/Vocal/valider.ogg");

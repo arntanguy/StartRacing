@@ -35,6 +35,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 	protected IA botIA;
 
 	protected Vector3f botArrivalPoint;
+	protected Vector3f playerArrivalPoint;
 
 	protected boolean botFinish;
 	protected boolean botStoped;
@@ -68,6 +69,11 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 	@Override
 	public void onEndScreen() {
+		player.destroy();
+		player.getNode().detachAllChildren();
+		
+		bot.destroy();
+		bot.getNode().detachAllChildren();
 		super.onEndScreen();
 	}
 
@@ -81,6 +87,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		playerFinish = false;
 		botFinish = false;
 		botStoped = false;
+		
+		playerArrivalPoint = new Vector3f(0, 0, 1000);
 	}
 
 	private void initObjects() {
@@ -278,6 +286,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 
 			screen.findElementByName("timer").getRenderer(TextRenderer.class)
 					.setText(sTimer);
+			
+			player.getIA().target(playerArrivalPoint, 0, 0);
 
 			if (!botFinish) {
 				botEnginePhysics.setSpeed(Math.abs(Conversion

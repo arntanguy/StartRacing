@@ -123,15 +123,16 @@ public class IA {
 						.getOptimalShiftPoint(gear);
 				double rpm = enginePhysics.getRpm();
 
-				if (rpm >= optimalShiftPoint - zone) {
-					if (rpm <= carProperties.getRedline()) {
-						if (isProba(proba(rpm, optimalShiftPoint))) {
+				if ( (rpm >= optimalShiftPoint - zone) && (rpm <= carProperties.getRedline()) && 
+						(isProba(proba(rpm, optimalShiftPoint))))	{
+					
+						
 							enginePhysics.incrementGear();
 							System.out.println("Shifting to gear "
 									+ enginePhysics.getGear() + " at RPM: "
 									+ rpm);
-						}
-					}
+						
+					
 				} else if (gear != 1 && rpm <= optimalShiftPoint / 5) {
 					enginePhysics.decrementGear();
 					System.out.println("Shifting to gear "

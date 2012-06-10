@@ -53,11 +53,11 @@ public class test {
 		car1.add(bmw1);
 		car2.add(dvp2);
 		car3.add(bmw1);
-		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", listCar, 0, "", "", "", 0, 30000, IALevel.PROFESSIONNEL);
+		Profil joueur1 = new Profil(Comptes.searchId(), "joueur1", listCar, 0, "", "", "", 0, 30000, IALevel.PROFESSIONNEL, false);
 		Comptes.addProfil(joueur1);
-		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", car2, 0, "", "", "", 0, 150000, IALevel.DEBUTANT);
+		Profil joueur2 = new Profil(Comptes.searchId(), "joueur2", car2, 0, "", "", "", 0, 150000, IALevel.DEBUTANT, true);
 		Comptes.addProfil(joueur2);
-		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", car3, 0, "", "", "", 0, 1000000, IALevel.DEBUTANT);
+		Profil joueur3 = new Profil(Comptes.searchId(), "joueur3", car3, 0, "", "", "", 0, 1000000, IALevel.DEBUTANT, false);
 		Comptes.addProfil(joueur3);
 		Comptes.Enregistrer();
 		

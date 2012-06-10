@@ -18,9 +18,10 @@ public class Profil {
 	private int monnaie;
 	private int choixCar;
 	private IALevel level;
+	private boolean lastchoose;
 	
 	public Profil (int id, String login, ArrayList<CarProperties> car, int choixCar, String timedemi, 
-			String timequart, String timefree, int cardead, int monnaie, IALevel level) {
+			String timequart, String timefree, int cardead, int monnaie, IALevel level, boolean lastchoose) {
 		this.id = id;
 		this.login = login;
 		this.car = car;
@@ -31,6 +32,7 @@ public class Profil {
 		this.cardead = cardead;
 		this.monnaie = monnaie;
 		this.level = level;
+		this.lastchoose = lastchoose;
 	}
 		
 	public int getMonnaie() {
@@ -108,5 +110,12 @@ public class Profil {
 	public void setLevel(IALevel level) {
 		this.level = level;
 	}
-	
+
+	public boolean isLastchoose() {
+		return lastchoose;
+	}
+
+	public void setLastchoose(boolean lastchoose) {
+		this.lastchoose = lastchoose;
+	}	
 }

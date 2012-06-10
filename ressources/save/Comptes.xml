@@ -347,6 +347,7 @@
     <monnaie>69500</monnaie>
     <choixCar>1</choixCar>
     <level>INTERMEDIAIRE</level>
+    <lastchoose>false</lastchoose>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -481,6 +482,7 @@
     <monnaie>108784</monnaie>
     <choixCar>1</choixCar>
     <level>DEBUTANT</level>
+    <lastchoose>false</lastchoose>
   </save.Profil>
   <save.Profil>
     <id>3</id>
@@ -489,11 +491,12 @@
       <physics.BMWM3Properties reference="../../../save.Profil/car/physics.BMWM3Properties"/>
     </car>
     <timedemi></timedemi>
-    <timequart></timequart>
+    <timequart>18 : 76</timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>1000000</monnaie>
+    <monnaie>1002777</monnaie>
     <choixCar>0</choixCar>
     <level>DEBUTANT</level>
+    <lastchoose>true</lastchoose>
   </save.Profil>
 </list>

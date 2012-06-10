@@ -3,6 +3,8 @@ package game;
 import java.util.Hashtable;
 import java.util.List;
 
+import save.ProfilCurrent;
+
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
@@ -11,6 +13,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.effects.Effect;
 import de.lessvoid.nifty.effects.EffectEventId;
 import de.lessvoid.nifty.effects.EffectImpl;
@@ -21,6 +24,8 @@ public class StartScreenState extends AbstractScreenController {
 
 	private InputManager inputManager;
 	private Hashtable<Effect, Element> hoverEffects;
+	
+	private TextField joueurEncours;
 
 	public StartScreenState() {
 		super();
@@ -42,6 +47,11 @@ public class StartScreenState extends AbstractScreenController {
 
 		initNiftyCallbacks(nifty.getCurrentScreen().getFocusHandler()
 				.getFirstFocusElement().getParent());
+		
+		joueurEncours = screen.findNiftyControl("joueurEncours", TextField.class);
+		if (ProfilCurrent.getInstance() != null)
+			joueurEncours.setText(ProfilCurrent.getInstance().getLogin());
+		joueurEncours.setEnabled(false);
 	}
 	
 	private void setInputMappings() {		

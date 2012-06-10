@@ -90,6 +90,7 @@ public class Comptes {
 				listProfil.get(i).setCardead(profil.getCardead());
 				listProfil.get(i).setMonnaie(profil.getMonnaie());
 				listProfil.get(i).setLevel(profil.getLevel());
+				listProfil.get(i).setLastchoose(profil.isLastchoose());
 			}
 		}
 	}

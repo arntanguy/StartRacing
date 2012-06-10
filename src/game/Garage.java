@@ -1,7 +1,5 @@
 package game;
 
-import java.util.ArrayList;
-
 import physics.CarProperties;
 import save.Comptes;
 import save.ProfilCurrent;
@@ -19,8 +17,12 @@ public class Garage extends AbstractScreenController {
 	
 	private InputManager inputManager;
 	
+	private final String msgdejaImprove = "VOUS AVEZ DEJA AMELIORER CE COMPOSANT !";
+	private final String msgNoMoney = "VOUS N'AVEZ PAS ASSEZ D'ARGENT !";
+	
 	private int rangCar;
 	private CarProperties car;
+	private int playermonnaie;
 	
 	private TextField monnaie;
 	private TextField prixpuis;
@@ -35,14 +37,11 @@ public class Garage extends AbstractScreenController {
 	private int pweight;
 	private int pnitro;
 	
-	private boolean hasnitro;
-	private boolean haspuis;
-	private boolean hasweight;
-	
 	public Garage() {
 		super();
 		rangCar = ProfilCurrent.getInstance().getChoixCar();
 		car = ProfilCurrent.getInstance().getCar().get(rangCar);
+		playermonnaie = ProfilCurrent.getInstance().getMonnaie();
 		ppuis = 4000;
 		pweight = 3000;
 		pnitro = 5000;
@@ -67,7 +66,7 @@ public class Garage extends AbstractScreenController {
 		europoids = screen.findNiftyControl("europoids", TextField.class);
 		msg = screen.findNiftyControl("msg", TextField.class);
 		
-		monnaie.setText(Integer.toString(ProfilCurrent.getInstance().getMonnaie()));
+		monnaie.setText(Integer.toString(playermonnaie));
 		prixpuis.setText(Integer.toString(ppuis));
 		prixnitro.setText(Integer.toString(pnitro));
 		prixweight.setText(Integer.toString(pweight));
@@ -91,13 +90,13 @@ public class Garage extends AbstractScreenController {
 			}
 		}, "return");
 		
-		inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_LCONTROL));
+		/*inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_LCONTROL));
 		inputManager.addListener(new ActionListener() {
 			@Override
 			public void onAction(String arg0, boolean arg1, float arg2) {
 				Enregistrer();
 			}
-		}, "save");
+		}, "save");*/
 	}
 	
 	@Override
@@ -107,76 +106,55 @@ public class Garage extends AbstractScreenController {
 	}
 	
 	public void givenitro() {
-		hasnitro=true;
-		hasweight=false;
-		haspuis=false;
 		msg.setText("");
+		if (car.isImprovenitro() == false) {
+			if ( (playermonnaie - pnitro) > 0) {
+				car.setImprovenitro(true);
+				ProfilCurrent.getInstance().setMonnaie((playermonnaie - pnitro));
+				Comptes.modifier(ProfilCurrent.getInstance());
+			} else {
+				msg.setText(msgNoMoney);
+			}
+		} else {
+			msg.setText(msgdejaImprove);
+		}
 	}
 	
 	public void takeoffweight() {
-		hasnitro=false;
-		hasweight=true;
-		haspuis=false;
 		msg.setText("");
+		if (car.isImproveweight() == false) {
+			if ((playermonnaie - pweight) > 0) {
+				int poids = 100;
+				car.setWeight(car.getWeight()-poids);
+				car.setImproveweight(true);
+				ProfilCurrent.getInstance().setMonnaie(playermonnaie - pweight);
+				Comptes.modifier(ProfilCurrent.getInstance());
+			} else {
+				msg.setText(msgNoMoney);
+			}
+		} else {
+			msg.setText(msgdejaImprove);
+		}
 	}
 	
 	public void givepuis() {
-		hasnitro=false;
-		hasweight=false;
-		haspuis=true;
 		msg.setText("");
+		if (car.isImprovepuis() == false) {
+			if ( (playermonnaie - ppuis) > 0) {
+				double puis = 1.5;
+				car.setPuissance((int)(car.getPuissance() * puis));
+				car.setImprovepuis(true);
+				ProfilCurrent.getInstance().setMonnaie((playermonnaie - ppuis));
+				Comptes.modifier(ProfilCurrent.getInstance());
+			} else {
+				msg.setText(msgNoMoney);
+			}
+		} else {
+			msg.setText(msgdejaImprove);
+		}
 	}
 	
 	public void gotoChooseProfil() {
 		app.gotoAffProfil();
-	}
-	
-	public void Enregistrer() {
-		String msgdejaImprove = "VOUS AVEZ DEJA AMELIORER CE COMPOSANT !";
-		String msgNoMoney = "VOUS N'AVEZ PAS ASSEZ D'ARGENT !";
-		if (hasnitro) {
-			if (car.isImprovenitro() == false) {
-				if ( (ProfilCurrent.getInstance().getMonnaie() - pnitro) > 0) {
-					car.setImprovenitro(true);
-					ProfilCurrent.getInstance().setMonnaie((ProfilCurrent.getInstance().getMonnaie() - pnitro));
-					Comptes.modifier(ProfilCurrent.getInstance());
-					app.gotoAffProfil();
-				} else {
-					msg.setText(msgNoMoney);
-				}
-			} else {
-				msg.setText(msgdejaImprove);
-			}
-		} else if (haspuis) {
-			if (car.isImprovepuis() == false) {
-				if ( (ProfilCurrent.getInstance().getMonnaie() - ppuis) > 0) {
-					double puis = 1.5;
-					car.setPuissance((int)(car.getPuissance() * puis));
-					car.setImprovepuis(true);
-					ProfilCurrent.getInstance().setMonnaie((ProfilCurrent.getInstance().getMonnaie() - ppuis));
-					Comptes.modifier(ProfilCurrent.getInstance());
-					app.gotoAffProfil();
-				} else {
-					msg.setText(msgNoMoney);
-				}
-			} else {
-				msg.setText(msgdejaImprove);
-			}
-		} else if (hasweight) {
-			if (car.isImproveweight() == false) {
-				if ((ProfilCurrent.getInstance().getMonnaie() - pweight) > 0) {
-					int poids = 100;
-					car.setWeight(car.getWeight()-poids);
-					car.setImproveweight(true);
-					ProfilCurrent.getInstance().setMonnaie((ProfilCurrent.getInstance().getMonnaie() - pweight));
-					Comptes.modifier(ProfilCurrent.getInstance());
-					app.gotoAffProfil();
-				} else {
-					msg.setText(msgNoMoney);
-				}
-			} else {
-				msg.setText(msgdejaImprove);
-			}
-		}
 	}
 }

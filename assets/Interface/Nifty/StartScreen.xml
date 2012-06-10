@@ -10,11 +10,15 @@
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
 				<panel height="4%" />
-				<control id="freeforall" align="center" name="button" label="Course Libre"
-					width="40%" height="10%">
-					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>
-					<effect><onFocus id="freeforall" /></effect>
-				</control>
+				<panel childLayout="horizontal" width="100%" height="10%">
+					<control name="textfield" id="joueurEncours" height="35px" width="20%"/>
+					<panel width="10%" />
+					<control id="freeforall" align="center" name="button" label="Course Libre"
+						width="40%" height="100%">
+						<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>
+						<effect><onFocus id="freeforall" /></effect>
+					</control>
+				</panel>
 				<panel height="2%" />
 				
 				<control id="halfmile" align="center" name="button" label="Course Demi-Mile"

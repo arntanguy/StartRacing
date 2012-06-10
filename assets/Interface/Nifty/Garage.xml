@@ -67,15 +67,10 @@
 				<panel height="10%"/>
 				
 				<panel height="14%" width="100%" valign="bottom" align="center" childLayout="horizontal">
-					<panel width="10%" />
+					<panel width="30%" />
 					<control id="returnButton" width="30%" align="center" height="100%" name="button" label="RETOUR" >
 						<interact onClick="gotoChooseProfil()" />
 					</control>
-					<panel width="20%" />
-					<control id="applyButton" width="30%" align="center" height="100%" name="button" label="AMELIORER">
-						<interact onClick="Enregistrer()" />
-					</control>
-					<panel width="10%" />
 				</panel>
 			</panel>
 		</layer>

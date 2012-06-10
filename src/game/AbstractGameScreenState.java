@@ -594,7 +594,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		player.setPhysicsLocation(new Vector3f(0, 27, 700));
 		player.setPhysicsRotation(new Matrix3f());
 		
-		if (!player.getType().equals(TypeCarProperties.FERRARI))	{
+		if (!player.getProperties().getTypeCar().equals(TypeCarProperties.FERRARI))	{
 			player.setPhysicsRotation(new Quaternion(0, 1, 0, 0));
 		}
 	

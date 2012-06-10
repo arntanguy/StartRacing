@@ -474,11 +474,11 @@
         </torque>
       </physics.F430Properties>
     </car>
-    <timedemi></timedemi>
+    <timedemi>14 : 86</timedemi>
     <timequart></timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>64000</monnaie>
+    <monnaie>108784</monnaie>
     <choixCar>1</choixCar>
     <level>DEBUTANT</level>
   </save.Profil>

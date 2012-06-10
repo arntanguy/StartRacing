@@ -88,7 +88,12 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		botFinish = false;
 		botStoped = false;
 		
-		playerArrivalPoint = new Vector3f(0, 0, 1000);
+		if (player.getProperties().getTypeCar().equals(TypeCarProperties.FERRARI))	{
+			playerArrivalPoint = new Vector3f(0, 27, -400);			
+		}
+		else	{
+			playerArrivalPoint = new Vector3f(0, 0, 1000);
+		}
 	}
 
 	private void initObjects() {

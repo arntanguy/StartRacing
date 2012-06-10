@@ -110,8 +110,11 @@ public class Garage extends AbstractScreenController {
 		if (car.isImprovenitro() == false) {
 			if ( (playermonnaie - pnitro) > 0) {
 				car.setImprovenitro(true);
-				ProfilCurrent.getInstance().setMonnaie((playermonnaie - pnitro));
+				playermonnaie -= pnitro;
+				ProfilCurrent.getInstance().setMonnaie((playermonnaie));
+				monnaie.setText(Integer.toString(playermonnaie));
 				Comptes.modifier(ProfilCurrent.getInstance());
+				Comptes.Enregistrer();
 			} else {
 				msg.setText(msgNoMoney);
 			}
@@ -127,8 +130,11 @@ public class Garage extends AbstractScreenController {
 				int poids = 100;
 				car.setWeight(car.getWeight()-poids);
 				car.setImproveweight(true);
-				ProfilCurrent.getInstance().setMonnaie(playermonnaie - pweight);
+				playermonnaie -= pweight;
+				ProfilCurrent.getInstance().setMonnaie(playermonnaie);
+				monnaie.setText(Integer.toString(playermonnaie));
 				Comptes.modifier(ProfilCurrent.getInstance());
+				Comptes.Enregistrer();
 			} else {
 				msg.setText(msgNoMoney);
 			}
@@ -144,8 +150,11 @@ public class Garage extends AbstractScreenController {
 				double puis = 1.5;
 				car.setPuissance((int)(car.getPuissance() * puis));
 				car.setImprovepuis(true);
-				ProfilCurrent.getInstance().setMonnaie((playermonnaie - ppuis));
+				playermonnaie -= ppuis;
+				ProfilCurrent.getInstance().setMonnaie((playermonnaie));
+				monnaie.setText(Integer.toString(playermonnaie));
 				Comptes.modifier(ProfilCurrent.getInstance());
+				Comptes.Enregistrer();
 			} else {
 				msg.setText(msgNoMoney);
 			}

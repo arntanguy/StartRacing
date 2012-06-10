@@ -244,84 +244,45 @@ public class ProfilsScreen extends AbstractScreenController {
 		puis.setText("");
 		nitro.setText("");
 		if (imgCar.getSelectedImageIndex() == 0) {
-			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.CHARGER)) {
-					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
-					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
-					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
-					break;
-				}						
-			}
+			forAllCar(TypeCarProperties.CHARGER);
 		} else if (imgCar.getSelectedImageIndex() == 1) {
-			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
-					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
-					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
-					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
-					break;
-				}						
-			}
+			forAllCar(TypeCarProperties.CORVETTE);
 		} else if (imgCar.getSelectedImageIndex() == 2) {
-			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.BMWM3)) {
-					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
-					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
-					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
-					break;
-				}						
-			}
+			forAllCar(TypeCarProperties.BMWM3);
 		} else if (imgCar.getSelectedImageIndex() == 3){
-			for (int i = 0; i < carsPlayer.size(); ++i) {
-				if (carsPlayer.get(i).getTypeCar().equals(TypeCarProperties.FERRARI)) {
-					typeCar.setText(carsPlayer.get(i).getTypeCar().toString());
-					puis.setText(Integer.toString(carsPlayer.get(i).getPuissance()));
-					weight.setText(Integer.toString(carsPlayer.get(i).getWeight()));
-					nitro.setText((carsPlayer.get(i).isImprovenitro()) ? "Oui" : "Non");
-					break;
-				}						
-			}
+			forAllCar(TypeCarProperties.FERRARI);
 		}
 	}
 	
-	public void savemodif(int rangprofil) {
-		int choixCar = dataAllJoueur.get(rangprofil).getChoixCar();
+	public int forCarPlayer (TypeCarProperties typeCarSelect, int rangprofil) {
 		ArrayList<CarProperties> cars = dataAllJoueur.get(rangprofil).getCar();
-		if (imgCar.getSelectedImageIndex() == 1) {
-			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
-					choixCar = j;
-					break;
-				}
-			}
-		} else if (imgCar.getSelectedImageIndex() == 2) {
-			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.BMWM3)) {
-					choixCar = j;
-					break;
-				}
-			}
-		} else if (imgCar.getSelectedImageIndex() == 3) {
-			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.FERRARI)) {
-					choixCar = j;
-					break;
-				}
-			}
-		} else if (imgCar.getSelectedImageIndex() == 0) {
-			for (int j = 0; j < cars.size(); ++j) {
-				if (cars.get(j).getTypeCar().equals(TypeCarProperties.CHARGER)) {
-					choixCar = j;
-					break;
-				}
+		for (int j = 0; j < cars.size(); ++j) {
+			if (cars.get(j).getTypeCar().equals(typeCarSelect)) {
+				return j;
 			}
 		}
+		return -1;
+	}
+	
+	public void savemodif(int rangprofil) {
+		int choixCar = -1;
+		
+		if (imgCar.getSelectedImageIndex() == 1) {
+			choixCar = forCarPlayer (TypeCarProperties.CORVETTE, rangprofil);
+		} else if (imgCar.getSelectedImageIndex() == 2) {
+			choixCar = forCarPlayer (TypeCarProperties.BMWM3, rangprofil);
+		} else if (imgCar.getSelectedImageIndex() == 3) {
+			choixCar = forCarPlayer (TypeCarProperties.FERRARI, rangprofil);
+		} else if (imgCar.getSelectedImageIndex() == 0) {
+			choixCar = forCarPlayer (TypeCarProperties.CHARGER, rangprofil);
+		}
+		
+		if (choixCar == -1)
+			choixCar = dataAllJoueur.get(rangprofil).getChoixCar();
+		
 		if (ProfilCurrent.getInstance() != null) {
 			ProfilCurrent.getInstance().setLastchoose(false);
 			Comptes.modifier(ProfilCurrent.getInstance());
-			Comptes.Enregistrer();
 		}
 		
 		ProfilCurrent.setInstance(Comptes.getListProfil().get(rangprofil));

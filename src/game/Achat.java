@@ -2,10 +2,7 @@ package game;
 
 import java.util.ArrayList;
 
-import physics.BMWM3Properties;
 import physics.CarProperties;
-import physics.DodgeViperProperties;
-import physics.SkylineProperties;
 import physics.TypeCarProperties;
 import save.Comptes;
 import save.ProfilCurrent;
@@ -15,8 +12,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 
 import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.controls.CheckBox;
-import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.ImageSelect;
 import de.lessvoid.nifty.controls.ImageSelectSelectionChangedEvent;
 import de.lessvoid.nifty.controls.TextField;
@@ -120,16 +115,16 @@ public class Achat extends AbstractScreenController {
 		changeDataPhoto();
 	}
 	
-	public void forAllCar(TypeCarProperties typeCarChoose) {
+	public void forAllCar(TypeCarProperties typeCarChoose, int rangprix) {
 		for (int i = 0; i < dataAllCar.size(); ++i) {
 			if (dataAllCar.get(i).getTypeCar().equals(typeCarChoose)) {
 				typeCar.setText(dataAllCar.get(i).getTypeCar().toString());
 				puis.setText(Integer.toString(dataAllCar.get(i).getPuissance()));
 				weight.setText(Integer.toString(dataAllCar.get(i).getWeight()));
 				nitro.setText((dataAllCar.get(i).isImprovenitro()) ? "Oui" : "Non");
-				prix.setText(Integer.toString(tabprix.get(CORVETTE)));
+				prix.setText(Integer.toString(tabprix.get(rangprix)));
 				for (int j = 0; j < allCarJoueur.size(); ++j) {
-					if (allCarJoueur.get(j).getTypeCar().equals(TypeCarProperties.CORVETTE)) {
+					if (allCarJoueur.get(j).getTypeCar().equals(typeCarChoose)) {
 						msgerr.setText(hasCar);
 					}
 				}
@@ -147,11 +142,11 @@ public class Achat extends AbstractScreenController {
 		msgerr.setText("");
 		
 		if (imgCar.getSelectedImageIndex() == CORVETTE) {
-			forAllCar(TypeCarProperties.CORVETTE);
+			forAllCar(TypeCarProperties.CORVETTE, CORVETTE);
 		} else if (imgCar.getSelectedImageIndex() == BMWM3) {
-			forAllCar(TypeCarProperties.BMWM3);
+			forAllCar(TypeCarProperties.BMWM3, BMWM3);
 		} else {
-			forAllCar(TypeCarProperties.FERRARI);
+			forAllCar(TypeCarProperties.FERRARI, FERRARI);
 		}
 	}
 	
@@ -171,33 +166,32 @@ public class Achat extends AbstractScreenController {
 	
 	public void Enregistrer() {
 		String indic = "IMPOSSIBLE, VOUS AVEZ DEJA LA VOITURE !";
-		if (!msgerr.getText().equals("")) {
+
+		if (imgCar.getSelectedImageIndex() == BMWM3) {
+			calcul -= tabprix.get(BMWM3);
+		} else if (imgCar.getSelectedImageIndex() == CORVETTE) {
+			calcul -= tabprix.get(CORVETTE);
+		} else if (imgCar.getSelectedImageIndex() == FERRARI) {
+			calcul -= tabprix.get(FERRARI);
+		}
+		
+		if (msgerr.getText().equals(hasCar)) {
 			msgerr.setText(indic);
+		} else if (calcul < 0) {
+			calcul = ProfilCurrent.getInstance().getMonnaie();
+			msgerr.setText("IMPOSSIBLE, VOUS N'AVEZ PAS ASSEZ D'ARGENT !");
 		} else {
 			if (imgCar.getSelectedImageIndex() == BMWM3) {
-				calcul -= tabprix.get(1);
+				saveCarBuy(TypeCarProperties.BMWM3);
 			} else if (imgCar.getSelectedImageIndex() == CORVETTE) {
-				calcul -= tabprix.get(CORVETTE);
+				saveCarBuy(TypeCarProperties.CORVETTE);
 			} else if (imgCar.getSelectedImageIndex() == FERRARI) {
-				calcul -= tabprix.get(FERRARI);
+				saveCarBuy(TypeCarProperties.FERRARI);
 			}
-			
-			if (calcul < 0) {
-				calcul = ProfilCurrent.getInstance().getMonnaie();
-				msgerr.setText("IMPOSSIBLE, VOUS N'AVEZ PAS ASSEZ D'ARGENT !");
-			} else {
-				if (imgCar.getSelectedImageIndex() == BMWM3) {
-					saveCarBuy(TypeCarProperties.BMWM3);
-				} else if (imgCar.getSelectedImageIndex() == CORVETTE) {
-					saveCarBuy(TypeCarProperties.CORVETTE);
-				} else if (imgCar.getSelectedImageIndex() == FERRARI) {
-					saveCarBuy(TypeCarProperties.FERRARI);
-				}
-				ProfilCurrent.getInstance().setCar(allCarJoueur);
-				ProfilCurrent.getInstance().setMonnaie(calcul);
-				Comptes.modifier(ProfilCurrent.getInstance());
-				app.gotoAffProfil();
-			}		
+			ProfilCurrent.getInstance().setCar(allCarJoueur);
+			ProfilCurrent.getInstance().setMonnaie(calcul);
+			Comptes.modifier(ProfilCurrent.getInstance());
+			app.gotoAffProfil();
 		}
 	}
 }

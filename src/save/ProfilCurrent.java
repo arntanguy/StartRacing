@@ -7,7 +7,6 @@ public class ProfilCurrent {
 	private static Profil profilCourant;
 	
     public static Profil getInstance() {
-    	System.out.println(profilCourant);
     	if (profilCourant == null) {
     		ArrayList<Profil> listProfil = Comptes.getListProfil();
     		for (int i = 0; i < listProfil.size(); ++i) {

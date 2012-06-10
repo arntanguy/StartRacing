@@ -23,7 +23,7 @@
 				</panel>
 				<panel childLayout="horizontal" height="40%" >		
 					<panel childLayout="vertical" width="19%">
-					   	<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Voiture Skyline : " />
+					   	<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Voiture Charger : " />
 						<panel height="5%"/>
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Poids : " />
 						<text font="Interface/Fonts/CenturySchoolbookL_26.fnt" height="35px" width="30%" align="center" text="Puissance : " />

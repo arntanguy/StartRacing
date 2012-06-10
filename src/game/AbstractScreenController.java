@@ -61,6 +61,8 @@ public class AbstractScreenController extends AbstractAppState implements
 	}
 
 	public void onEndScreen() {
+		voiceRender.stopVoice();
+		voiceRender.close();
 		stateManager.detach(this);
 	}
 

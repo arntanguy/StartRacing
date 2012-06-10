@@ -80,6 +80,8 @@ public class App extends SimpleApplication {
 	
 	@Override
 	public void stop() {
+		stateManager.cleanup();
+		
 		super.stop();
 		
 		System.exit(0);

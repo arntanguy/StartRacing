@@ -54,8 +54,7 @@ public class VoiceRender extends AudioRender<String> {
 	 */
 	public void stopVoice() {
 		if (playedNode != null) {
-			System.out.println("VoiceRender :: Stop voice "
-					+ playedNode.getName());
+//			System.out.println("VoiceRender :: Stop voice "	+ playedNode.getName());
 			playedNode.stop();
 		}
 	}

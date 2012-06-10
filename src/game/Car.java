@@ -269,6 +269,11 @@ public class Car extends VehicleControl {
 		audioRender.mute();
 		engineRender.mute();
 	}
+	
+	public void stopSound()	{
+		audioRender.close();
+		engineRender.close();
+	}
 
 	public void updateSound() {
 		engineRender.setRPM(enginePhysics.getRpm());

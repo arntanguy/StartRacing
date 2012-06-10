@@ -72,6 +72,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		player.destroy();
 		player.getNode().detachAllChildren();
 		
+		bot.stopSound();
 		bot.destroy();
 		bot.getNode().detachAllChildren();
 		super.onEndScreen();

@@ -81,13 +81,13 @@ public class AudioRender<KeyType> {
 	}
 
 	public void play(KeyType sound, float volume, boolean looping) {
-		System.out.println("AudioRender :: play " + sound);
+		//System.out.println("AudioRender :: play " + sound);
 		AudioNode sample = soundNodes.get(sound);
 		if(sample == null) {
-			System.out.println("The audio node "+sound+ " doesn't exist, abort playing!!");
+			//System.out.println("The audio node "+sound+ " doesn't exist, abort playing!!");
 			return;
 		}
- 		System.out.println("Sound node : " + sample.getName());
+ 		//System.out.println("Sound node : " + sample.getName());
 		sample.setVolume(volume);
 		sample.setLooping(looping);
 		sample.play();

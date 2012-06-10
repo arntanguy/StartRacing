@@ -62,6 +62,10 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 	@Override
 	public void onEndScreen() {
+		for (Car bot : bots) {
+			bot.mute();
+			bot.stopSound();
+		}
 		super.onEndScreen();
 	}
 	

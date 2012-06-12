@@ -286,7 +286,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		soundStore.addSound("burst", "Sound/explosion.wav");
 		soundStore.addSound("crash", "Sound/car_crash.wav");
 
-		audioRender = new AudioRender<String>(rootNode, soundStore);
+		audioRender = new AudioRender<String>(rootNode, soundStore, true);
 	}
 
 	protected void buildPlayer() {

@@ -11,7 +11,7 @@ public class EngineAudioRender extends AudioRender<Integer> {
 	private AudioNode prevHigh;
 
 	public EngineAudioRender(Node rootNode, EngineSoundStore soundStore) {
-		super(rootNode, soundStore);
+		super(rootNode, soundStore, true);
 
 	}
 

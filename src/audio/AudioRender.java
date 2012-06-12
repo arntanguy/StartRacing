@@ -21,13 +21,13 @@ public class AudioRender<KeyType> {
 	protected Node rootNode;
 	protected LinkedHashMap<KeyType, AudioNode> soundNodes;
 
-	public AudioRender(Node rootNode, SoundStore<KeyType> soundStore) {
+	public AudioRender(Node rootNode, SoundStore<KeyType> soundStore, boolean positional) {
 		soundNodes = new LinkedHashMap<KeyType, AudioNode>();
 		this.rootNode = rootNode;
-		createSoundNodes(soundStore);
+		createSoundNodes(soundStore, positional);
 	}
 
-	private void createSoundNodes(SoundStore<KeyType> soundStore) {
+	private void createSoundNodes(SoundStore<KeyType> soundStore, boolean positional) {
 		HashMap<KeyType, AudioData> sounds = soundStore.getSounds();
 		// Charger les sons
 		Iterator<KeyType> it = sounds.keySet().iterator();
@@ -38,7 +38,7 @@ public class AudioRender<KeyType> {
 			sample.setAudioData(sounds.get(key), null);
 			sample.setName(key.toString());
 			sample.setLooping(true);
-			sample.setPositional(true);
+			sample.setPositional(positional);
 			sample.setVolume(0);
 			sample.play();
 			soundNodes.put(key, sample);

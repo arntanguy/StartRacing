@@ -9,11 +9,13 @@
 		</layer>
 		<layer id="foreground" childLayout="center">
 			<panel id="centerWrapper" height="100%" childLayout="vertical">
-				<panel height="4%" />
+				<control name="button" id="textinvisible" width="0%" height="0%" />
+				
+				<control name="textfield" id="joueurEncours" height="35px" width="20%"/>
 				<control id="freeforall" align="center" name="button" label="Course Libre"
-					width="40%" height="10%">
-					<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>
-					<effect><onFocus id="freeforall" /></effect>
+						width="40%" height="10%">
+						<interact onMouseOver="hover(freeforall)" onClick="startFreeForAll()"/>
+						<effect><onFocus id="freeforall" /></effect>
 				</control>
 				<panel height="2%" />
 				

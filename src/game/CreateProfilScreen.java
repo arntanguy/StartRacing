@@ -119,10 +119,14 @@ public class CreateProfilScreen extends AbstractScreenController {
 			String timefree = "";
 			int cardead = 0;
 			int monnaie = 0;
-			Profil newprofil = new Profil(id, login, cars, choixCar, timedemi, timequart, timefree, cardead, monnaie, IALevel.DEBUTANT);
+			Profil newprofil = new Profil(id, login, cars, choixCar, timedemi, timequart, timefree, cardead, monnaie, IALevel.DEBUTANT, true);
+			if (ProfilCurrent.getInstance() != null) {
+				ProfilCurrent.getInstance().setLastchoose(false);
+				Comptes.modifier(ProfilCurrent.getInstance());
+			}
 			Comptes.addProfil(newprofil);
 			Comptes.Enregistrer();
-			ProfilCurrent pc = new ProfilCurrent(newprofil);
+			ProfilCurrent.setInstance(newprofil);
 			gotoMainMenu();
 		}
 	}

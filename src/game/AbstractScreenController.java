@@ -82,6 +82,7 @@ public class AbstractScreenController extends AbstractAppState implements
 		VoiceSoundStore s = VoiceSoundStore.getInstance();
 		s.setAssetManager(app.getAssetManager());
 		try {
+			s.addSound("textinvisible", "Sound/Vocal/welcome.ogg");
 			s.addSound("freeforall", "Sound/Vocal/course_libre.ogg");
 			s.addSound("halfmile", "Sound/Vocal/course_demi.ogg");
 			s.addSound("quartermile", "Sound/Vocal/course_quart.ogg");

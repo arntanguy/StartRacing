@@ -78,7 +78,7 @@ public class Car extends VehicleControl {
 	private void buildAudioRender() {
 		engineRender = new EngineAudioRender(carNode,
 				EngineSoundStore.getInstance());
-		audioRender = new AudioRender(carNode, SoundStore.getInstance());
+		audioRender = new AudioRender(carNode, SoundStore.getInstance(), true);
 		System.out.println(SoundStore.getInstance().getSounds());
 	}
 

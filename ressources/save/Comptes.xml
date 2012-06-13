@@ -707,10 +707,10 @@
       </physics.F430Properties>
     </car>
     <timedemi></timedemi>
-    <timequart></timequart>
+    <timequart>9 : 74</timequart>
     <timefree></timefree>
     <cardead>0</cardead>
-    <monnaie>64000</monnaie>
+    <monnaie>69555</monnaie>
     <choixCar>1</choixCar>
     <level>DEBUTANT</level>
     <lastchoose>false</lastchoose>

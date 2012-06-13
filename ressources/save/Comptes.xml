@@ -461,13 +461,13 @@
       </physics.F430Properties>
     </car>
     <timedemi></timedemi>
-    <timequart></timequart>
+    <timequart>31 : 93</timequart>
     <timefree></timefree>
     <cardead>0</cardead>
     <monnaie>30000</monnaie>
     <choixCar>0</choixCar>
     <level>PROFESSIONNEL</level>
-    <lastchoose>false</lastchoose>
+    <lastchoose>true</lastchoose>
   </save.Profil>
   <save.Profil>
     <id>2</id>
@@ -713,7 +713,7 @@
     <monnaie>64000</monnaie>
     <choixCar>1</choixCar>
     <level>DEBUTANT</level>
-    <lastchoose>true</lastchoose>
+    <lastchoose>false</lastchoose>
   </save.Profil>
   <save.Profil>
     <id>3</id>

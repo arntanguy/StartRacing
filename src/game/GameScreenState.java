@@ -123,8 +123,8 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 			getPhysicsSpace().add(node);
 			getPhysicsSpace().add(nodeD);
 
-			rootNode.attachChild(node);
-			rootNode.attachChild(nodeD);
+			localNode.attachChild(node);
+			localNode.attachChild(nodeD);
 		}
 	}
 
@@ -136,7 +136,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		finishNode.addControl(finishCell);
 		finishNode.move(0, 27, 0);
 
-		rootNode.attachChild(finishNode);
+		localNode.attachChild(finishNode);
 		super.getPhysicsSpace().add(finishCell);
 	}
 
@@ -162,7 +162,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 		botEnginePhysics = bot.getEnginePhysics();
 		botIA = bot.getIA();
-		rootNode.attachChild(bot.getNode());
+		localNode.attachChild(bot.getNode());
 		super.getPhysicsSpace().add(bot);
 //		botArrivalPoint = (new Vector3f(0, 0, -10)).subtract(
 //				bot.getForwardVector(null)).mult(5000);
@@ -274,8 +274,7 @@ public abstract class GameScreenState extends AbstractGameScreenState {
 				Comptes.Enregistrer();
 			} // if(ProfilCurrent.getInstance() != null)
 
-			screen.findElementByName("startTimer")
-					.getRenderer(TextRenderer.class).setText(text);
+			digitalStart.setText(text);
 
 			runFinish = true;
 			runIsOn = false;

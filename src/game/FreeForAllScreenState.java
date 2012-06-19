@@ -124,7 +124,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 		bot.setPhysicsLocation(location);
 		bot.getNode().setShadowMode(ShadowMode.CastAndReceive);
 
-		rootNode.attachChild(bot.getNode());
+		localNode.attachChild(bot.getNode());
 		getPhysicsSpace().add(bot);
 
 		bot.setLife(100);
@@ -152,7 +152,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			node.addControl(controlTree);
 			getPhysicsSpace().add(node);
 
-			rootNode.attachChild(node);
+			localNode.attachChild(node);
 
 		}
 
@@ -171,7 +171,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 
 			plot.addControl(controlPlot);
 			getPhysicsSpace().add(plot);
-			rootNode.attachChild(plot);
+			localNode.attachChild(plot);
 		}
 	}
 
@@ -235,6 +235,7 @@ public class FreeForAllScreenState extends AbstractGameScreenState {
 			long millisec = (timePlayer % 1000) / 10;
 			if (runFinish) {
 				if (win) {
+					digitalRemainingBots.setText("0" + "/" + nbBots);
 					if (givePt == false) {
 						argent = 500;
 						givePt = true;

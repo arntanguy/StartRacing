@@ -14,4 +14,5 @@ public class HalfGameScreenState extends GameScreenState {
 		finishNode.setLocalTranslation(0, 27, -124);
 		
 	}	
+	
 }

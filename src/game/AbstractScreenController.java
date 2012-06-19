@@ -64,6 +64,8 @@ public class AbstractScreenController extends AbstractAppState implements
 		voiceRender.stopVoice();
 		voiceRender.close();
 		stateManager.detach(this);
+		
+		app.getRootNode().detachAllChildren();
 	}
 
 	public void gotoscreen(String nextscreen) {

@@ -64,6 +64,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected ViewPort viewPort;
 	protected Node rootNode;
+	protected Node localNode;
 	protected AssetManager assetManager;
 	protected InputManager inputManager;
 
@@ -136,7 +137,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void stateDetached(AppStateManager stateManager) {
-
 	}
 
 	@Override
@@ -147,13 +147,15 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	@Override
 	public void onEndScreen() {
+		
 		audioRender.mute();
 		audioRender.close();
 		
 		player.stopSound();
 		
-		rootNode.detachAllChildren();
+		rootNode.detachChild(localNode);
 		stateManager.detach(this);
+		
 	}
 
 	@Override
@@ -176,6 +178,8 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 	protected void initGame() throws Exception {
 		app.setDisplayStatView(false);
+		
+		localNode = new Node("Classic");
 
 		bulletAppState = new BulletAppState();
 		stateManager = app.getStateManager();
@@ -198,7 +202,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		// Active skybox
 		Spatial sky = SkyFactory.createSky(assetManager,
 				"Textures/Skysphere.jpg", true);
-		rootNode.attachChild(sky);
+		localNode.attachChild(sky);
 
 		// Enable a chase cam
 		chaseCam = new ChaseCamera(app.getCamera(), player.getNode(),
@@ -208,20 +212,20 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 
 		// Set up light
 		DirectionalLight dl = new DirectionalLight();
-		dl.setDirection(new Vector3f(-0.5f, -0.4f, -0.3f).normalizeLocal());
-		rootNode.addLight(dl);
+		dl.setDirection(new Vector3f(-0.5f, -0.9f, -0.3f).normalizeLocal());
+		localNode.addLight(dl);
 
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(1.3f));
-		rootNode.addLight(al);
+		localNode.addLight(al);
 
 		// Set up shadow
 		pssmRenderer = new PssmShadowRenderer(assetManager, 1024, 3);
-		pssmRenderer.setDirection(new Vector3f(-0.5f, -0.4f, -0.3f)
+		pssmRenderer.setDirection(new Vector3f(-0.5f, -0.9f, -0.3f)
 				.normalizeLocal()); // light direction
 		viewPort.addProcessor(pssmRenderer);
 
-		rootNode.setShadowMode(ShadowMode.Off); // reset all
+		localNode.setShadowMode(ShadowMode.Off); // reset all
 		player.getNode().setShadowMode(ShadowMode.CastAndReceive); // normal
 
 		// map.setShadowMode(ShadowMode.Receive);
@@ -236,6 +240,10 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		digitalStart = new DigitalDisplay(nifty, screen, "startTimer", 50);
 		shiftlight = new ShiftlightLed(nifty, screen, playerCarProperties,
 				playerEnginePhysics);
+		
+		rootNode.attachChild(localNode);
+		
+		
 	}
 
 	protected void initAudio() throws Exception {
@@ -286,7 +294,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		soundStore.addSound("burst", "Sound/explosion.wav");
 		soundStore.addSound("crash", "Sound/car_crash.wav");
 
-		audioRender = new AudioRender<String>(rootNode, soundStore, true);
+		audioRender = new AudioRender<String>(localNode, soundStore, true);
 	}
 
 	protected void buildPlayer() {
@@ -331,7 +339,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		playerCarProperties = player.getProperties();
 		playerEnginePhysics = player.getEnginePhysics();
 
-		rootNode.attachChild(player.getNode());
+		localNode.attachChild(player.getNode());
 
 		getPhysicsSpace().add(player);
 
@@ -391,7 +399,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		terrain.setMaterial(mat_terrain);
 		terrain.setLocalTranslation(0, -100, 0);
 		terrain.setLocalScale(2f, 1f, 2f);
-		rootNode.attachChild(terrain);
+		localNode.attachChild(terrain);
 
 		/** 5. The LOD (level of detail) depends on were the camera is: */
 		TerrainLodControl control = new TerrainLodControl(terrain,
@@ -565,7 +573,7 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 			long time = System.currentTimeMillis() - countDown;
 			if (time > 5000) {
 				if (!zeroSec) {
-					audioRender.play("start_high");
+					audioRender.play("start_high", 3);
 					zeroSec = true;
 				}
 				digitalStart.setText(" ");
@@ -573,19 +581,19 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 				startTime = System.currentTimeMillis();
 			} else if (time > 4000) {
 				if (!oneSec) {
-					audioRender.play("start_low");
+					audioRender.play("start_low", 3);
 					oneSec = true;
 				}
 				digitalStart.setText("1");
 			} else if (time > 3000) {
 				if (!twoSec) {
-					audioRender.play("start_low");
+					audioRender.play("start_low", 3);
 					twoSec = true;
 				}
 				digitalStart.setText("2");
 			} else if (time > 2000) {
 				if (!threeSec) {
-					audioRender.play("start_low");
+					audioRender.play("start_low", 3);
 					threeSec = true;
 				}
 				digitalStart.setText("3");
@@ -733,40 +741,6 @@ public abstract class AbstractGameScreenState extends AbstractScreenController
 		}
 	}
 
-//	@Override
-//	public void onAnalog(String binding, float value, float tpf) {
-//		if (binding.equals("Throttle")) {
-//			if (!player.getBurstEnabled() && (!runIsOn || playerFinish)) {
-//				// Start countdown
-//				if (countDown == 0) {
-//					countDown = System.currentTimeMillis();
-//				}
-//
-//				playerEnginePhysics
-//						.setRpm(playerEnginePhysics.getFreeRpm() + 400);
-//			}
-//		} else if (binding.equals("Rights")) {
-//			float val = player.getSteeringValue();
-//			// XXX
-//			System.out.println("dr " +value);
-//			val = val - value;
-//			if (val < -0.5)
-//				val = -0.5f;
-//			player.setSteeringValue(val);
-//			player.steer(val);
-//		} else if (binding.equals("Lefts")) {
-//			float val = player.getSteeringValue();
-//			val = val + value;
-//			if (val > 0.5)
-//				val = 0.5f;
-//			player.setSteeringValue(val);
-//			player.steer(val);
-//		}
-//		else 	{
-//			player.setSteeringValue(0);
-//			player.steer(0);
-//		}
-//	}
 
 	@Override
 	public void collision(PhysicsCollisionEvent event) {

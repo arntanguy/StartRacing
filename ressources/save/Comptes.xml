@@ -460,11 +460,11 @@
         </torque>
       </physics.F430Properties>
     </car>
-    <timedemi></timedemi>
-    <timequart>31 : 93</timequart>
-    <timefree></timefree>
+    <timedemi>0 : 0</timedemi>
+    <timequart>11 : 49</timequart>
+    <timefree>9 : 98</timefree>
     <cardead>0</cardead>
-    <monnaie>30000</monnaie>
+    <monnaie>118634</monnaie>
     <choixCar>0</choixCar>
     <level>PROFESSIONNEL</level>
     <lastchoose>true</lastchoose>
